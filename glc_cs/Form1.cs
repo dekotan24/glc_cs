@@ -4,9 +4,10 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
 
 namespace glc_cs
 {
@@ -25,10 +26,26 @@ namespace glc_cs
         string lpKeyName, string lpString,
         string lpFileName);
 
-        public String defaultdir;
+        public String gamedir, basedir = AppDomain.CurrentDomain.BaseDirectory, gameini, configini = AppDomain.CurrentDomain.BaseDirectory + "config.ini";
         public String appname = "Game Launcher C# Edition";
-        public String appver = "0.4";
-        public String appbuild = "4.20.08.14";
+        public String appver = "0.91";
+        public String appbuild = "11.20.12.02";
+        public int gamemax = 0, pfmax = 0;
+        
+        //棒読みちゃん関係
+        public String bysMsg = null;
+        public byte byCode = 2; //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
+        public Int16 byVoice = 0, byVol = -1, bySpd = -1, byTone = -1, byCmd = 0x0001;
+        public byte[] byMsg;
+        public Int32 byLength;
+        public string byHost = "127.0.0.1";
+        public int byPort = 50001;
+        public TcpClient tc = null;
+
+        //profile
+        //config.ini, game.ini自動更新無効有効
+
+        Form2 form2 = new Form2();
 
         public gl()
         {
@@ -39,105 +56,17 @@ namespace glc_cs
         {
             Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
             pictureBox11.Visible = true;
-            //String defaultdir;
-            //iniファイル読み込み
-            string iniFileName = AppDomain.CurrentDomain.BaseDirectory + "config.ini";
 
-            /*
-            StringBuilder sb = new StringBuilder(1024);
-            GetPrivateProfileString(
-                "checkbox",      // セクション名
-                "track",          // キー名    
-                "0",   // 値が取得できなかった場合に返される初期値
-                sb,             // 格納先
-                Convert.ToUInt32(sb.Capacity), // 格納先のキャパ
-                iniFileName);   // iniファイル名
-                */
+            updateconfig();
 
-            //ファイル存在チェック及び読み込み
-            if (File.Exists(iniFileName))
-            {
-
-                //set checkbox
-                StringBuilder ckv0 = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    "checkbox",
-                    "track",
-                    "0",
-                    ckv0,
-                    Convert.ToUInt32(ckv0.Capacity),
-                    iniFileName);
-
-                StringBuilder ckv1 = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    "checkbox",
-                    "winmini",
-                    "0",
-                    ckv1,
-                    Convert.ToUInt32(ckv1.Capacity),
-                    iniFileName);
-
-                StringBuilder defaultdirr = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    "default",
-                    "directory",
-                    AppDomain.CurrentDomain.BaseDirectory,
-                    defaultdirr,
-                    1024,
-                    iniFileName);
-                defaultdir = defaultdirr.ToString();
-                defaultdir += "Data";
-
-                StringBuilder bgimgr = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    "imgd",
-                    "bgimg",
-                    "",
-                    bgimgr,
-                    1024,
-                    iniFileName);
-                String bgimg = bgimgr.ToString();
-
-                if (File.Exists(bgimg))
-                {
-                    this.BackgroundImage = new Bitmap(bgimg);
-                    toolStripStatusLabel2.Text = "！背景画像が適用されました。環境によっては描画に時間がかかる場合があります。！";
-                }
-
-
-                if (int.Parse(ckv0.ToString()) == 1)
-                {
-                    checkBox1.Checked = true;
-                }
-
-                if (int.Parse(ckv1.ToString()) == 1)
-                {
-                    checkBox2.Checked = true;
-                }
-
-            }
-            else
-            {
-                //ini存在しない場合
-                defaultdir = AppDomain.CurrentDomain.BaseDirectory + "Data";
-
-                checkBox1.Checked = true;
-                checkBox2.Checked = true;
-            }
-
-
-            String item = loaditem(defaultdir.ToString());
+            String item = loaditem(gamedir.ToString());
 
             if (item == "_none_game_data" || item == "0")
             {
-                String cfilepass = defaultdir + "\\game.ini";
-                if (!File.Exists(cfilepass))
+
+                if (!(File.Exists(gameini)))
                 {
-                    WritePrivateProfileString(
-                                    "list",
-                                    "game",
-                                    "0",
-                                    cfilepass);
+                    iniwrite(gameini, "list", "game", "0");
                 }
 
 
@@ -148,93 +77,62 @@ namespace glc_cs
                                 MessageBoxIcon.Information);
             }
 
-            if (Directory.Exists(defaultdir))
+            if (Directory.Exists(gamedir))
             {
-                fileSystemWatcher1.Path = defaultdir;
+                fileSystemWatcher1.Path = gamedir;
             }
             else
             {
-                Directory.CreateDirectory(defaultdir);
-                fileSystemWatcher1.Path = defaultdir;
+                Directory.CreateDirectory(gamedir);
+                fileSystemWatcher1.Path = gamedir;
             }
             this.Activate();
-            //delay();
             pictureBox11.Visible = false;
         }
 
-
-        public string loaditem(String defaultdir)
+        public string loaditem(String gamedirname)
         {
-            //String[][] list;
-            //int allgameint;
-            int allgameint;
-            String test = defaultdir.ToString();
-            String loadfileini = test + "\\game.ini";
             listBox1.Items.Clear();
 
-
             //全ゲーム数取得
-            if (File.Exists(loadfileini))
+            if (File.Exists(gameini))
             {
-                StringBuilder allgameintr = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    "list",
-                    "game",
-                    "0",
-                    allgameintr,
-                    Convert.ToUInt32(allgameintr.Capacity),
-                    loadfileini);
-                allgameint = Convert.ToInt32(allgameintr.ToString());
+                gamemax = Convert.ToInt32(iniread(gameini, "list", "game", "0"));
                 button8.Enabled = true;
+                button9.Enabled = true;
                 button2.Enabled = true;
+                button5.Enabled = true;
             }
             else
             {
                 //ゲームが1つもない場合
                 button8.Enabled = false;
+                button9.Enabled = false;
                 button2.Enabled = false;
+                button5.Enabled = false;
                 return "_none_game_data";
             }
 
-            if (allgameint == 0)
+            if (!(gamemax >= 1)) //ゲーム登録数が1以上でない場合
             {
                 button8.Enabled = false;
             }
 
-            /* allgameint = ゲーム数カウンタ
-               defaultdir = iniファイルディレクトリ
-               loadfileini = 全ゲーム数記録ini
-            */
-
             int count;
             String readini;
             String ans = "";
-            String temp;
-            StringBuilder data;
 
             toolStripProgressBar1.Minimum = 0;
-            toolStripProgressBar1.Maximum = allgameint;
+            toolStripProgressBar1.Maximum = gamemax;
 
-
-            for (count = 1; count <= allgameint; count++)
+            for (count = 1; count <= gamemax; count++)
             {
                 //読込iniファイル名更新
-                readini = defaultdir + "\\" + count + ".ini";
+                readini = gamedirname + "\\" + count + ".ini";
 
                 if (File.Exists(readini))
                 {
-                    //ini読込開始
-                    data = new StringBuilder(1024);
-                    GetPrivateProfileString(
-                        "game",
-                        "name",
-                        "",
-                        data,
-                        1024,
-                        readini);
-                    temp = data.ToString();
-
-                    listBox1.Items.Add(temp);
+                    listBox1.Items.Add(iniread(readini, "game", "name", ""));
                 }
                 else
                 {
@@ -246,47 +144,70 @@ namespace glc_cs
                     break;
                 }
             }
-            //変数値の返却
-            if (allgameint >= 1)
+
+            //ゲームが登録されていれば1つ目を選択した状態にする
+            if (gamemax >= 1)
             {
                 listBox1.SelectedIndex = 0;
             }
-
-            //listBox1_SelectedIndexChanged(null,null);
 
             return ans;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            StringBuilder data;
-            int startdata, timedata;
-
+            int startdata, timedata, ratinginfo;
+            button9_Click(null, null);
             if (File.Exists(textBox2.Text))
             {
                 if (checkBox1.Checked == true)
                 {
-                    iniedtchk((listBox1.SelectedIndex + 1).ToString(), "game", "stat", textBox6.Text);
+                    iniedtchk(gamedir + "\\" + (listBox1.SelectedIndex + 1).ToString() + ".ini", "game", "stat", textBox6.Text, "");
 
                     //propertiesファイル書き込み
-                    String propertiesfile = AppDomain.CurrentDomain.BaseDirectory + "run.properties";
-                    Encoding enc = Encoding.GetEncoding("Shift_JIS");
+                    String propertiesfile = basedir + "run.properties";
+                    Encoding enc = Encoding.GetEncoding("Shift-JIS");
                     StreamWriter writer = new StreamWriter(propertiesfile, false, enc);
-                    writer.WriteLine("title = " + textBox1.Text + "\nstat = " + textBox6.Text);
+
+                    if (radioButton1.Checked)
+                    {
+                        ratinginfo = 0;
+                    }
+                    else
+                    {
+                        ratinginfo = 1;
+                    }
+
+                    if (checkBox4.Checked)
+                    {
+                        //センシティブモード有効
+                        writer.WriteLine("title = " + "Unknown" + "\nrating = " + ratinginfo + "\nstat = " + textBox6.Text);
+                    }
+                    else
+                    {
+                        writer.WriteLine("title = " + textBox1.Text + "\nrating = " + ratinginfo + "\nstat = " + textBox6.Text);
+                    }
+
                     writer.Close();
 
 
                     //現在時刻取得
-                    string strTime = DateTime.Now.ToString();
-                    string format = "yyyy/MM/dd HH:mm:ss";
-                    DateTime starttime = DateTime.ParseExact(strTime, format, null);
+                    string strTime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                    //MessageBox.Show(strTime);
+                    //string format = "yyyy/MM/dd HH:mm:ss";
+                    DateTime starttime = Convert.ToDateTime(strTime);
+                    //DateTime starttime = DateTime.ParseExact(strTime, format, null);
 
 
                     //トラッキング対象の指定、実行
-                    String drun = AppDomain.CurrentDomain.BaseDirectory + "dcon.jar";
+                    String drun = basedir + "dcon.jar";
+                    System.Diagnostics.Process drunp = null;
                     if (File.Exists(drun))
                     {
-                        System.Diagnostics.Process.Start(drun);
+                        if (checkBox5.Checked)
+                        {
+                            drunp = System.Diagnostics.Process.Start(drun);
+                        }
                     }
                     else
                     {
@@ -313,13 +234,8 @@ namespace glc_cs
                     System.Diagnostics.Process.Start(textBox2.Text);
                     p.WaitForExit();
 
-                    System.Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                    System.Environment.CurrentDirectory = basedir;
 
-                    String dkill = AppDomain.CurrentDomain.BaseDirectory + "dkill.bat";
-                    if (File.Exists(dkill))
-                    {
-                        System.Diagnostics.Process.Start(dkill);
-                    }
 
                     if (checkBox2.Checked == true)
                     {
@@ -327,9 +243,36 @@ namespace glc_cs
                         this.notifyIcon1.Visible = false;
                     }
 
+                    //子プロセスの終了
+                    KillChildProcess(drunp);
+                    /* String dkill = basedir + "dkill.bat";
+                     if (File.Exists(dkill))
+                     {
+                         if (radioButton2.Checked)
+                         {
+                             if (
+                                 MessageBox.Show("[dkill.bat]を実行します。\n実行中の全てのjavaアプリケーションが強制終了されます。\n\n実行しますか？", appname, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK
+                                 )
+                             {
+                                 System.Diagnostics.Process.Start(dkill);
+                             }
+                             else
+                             {
+                                 MessageBox.Show("[dkill.bat]を手動で実行するか、[kill dcon]ボタンを押す、タスクマネージャで該当タスクを終了する、等の方法でDiscord連携を終了できます。", appname, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                             }
+                         }
+                         else
+                         {
+                             System.Diagnostics.Process.Start(dkill);
+                         }
+
+                     }*/
+
+
                     //終了時刻取得
-                    String time = p.ExitTime.ToString();
-                    DateTime endtime = DateTime.ParseExact(time, format, null);
+                    String time = p.ExitTime.ToString("yyyy/MM/dd HH:mm:ss");
+                    DateTime endtime = Convert.ToDateTime(time);
+                    //DateTime endtime = DateTime.ParseExact(time, format, null);
 
                     //起動時間計算
                     String temp = (endtime - starttime).ToString();
@@ -337,47 +280,21 @@ namespace glc_cs
 
                     //ini上書き
                     int selecteditem = listBox1.SelectedIndex + 1;
-                    String readini = defaultdir + "\\" + selecteditem + ".ini";
+                    String readini = gamedir + "\\" + selecteditem + ".ini";
 
                     if (File.Exists(readini))
                     {
                         //既存値の取得
-                        data = new StringBuilder(1024);
-                        GetPrivateProfileString(
-                            "game",
-                            "time",
-                            "0",
-                            data,
-                            1024,
-                            readini);
-                        timedata = Convert.ToInt32(data.ToString());
-
-                        data = new StringBuilder(1024);
-                        GetPrivateProfileString(
-                            "game",
-                            "start",
-                            "0",
-                            data,
-                            1024,
-                            readini);
-                        startdata = Convert.ToInt32(data.ToString());
+                        timedata = Convert.ToInt32(iniread(readini, "game", "time", "0"));
+                        startdata = Convert.ToInt32(iniread(readini, "game", "start", "0"));
 
                         //計算
                         timedata += anss;
-                        startdata += 1;
+                        startdata++;
 
                         //書き換え
-                        WritePrivateProfileString(
-                            "game",
-                            "time",
-                            timedata.ToString(),
-                            readini);
-
-                        WritePrivateProfileString(
-                            "game",
-                            "start",
-                            startdata.ToString(),
-                            readini);
+                        iniwrite(readini, "game", "time", timedata.ToString());
+                        iniwrite(readini, "game", "start", startdata.ToString());
                     }
                     else
                     {
@@ -401,16 +318,17 @@ namespace glc_cs
 
                     System.Diagnostics.Process.Start(textBox2.Text);
 
-                    System.Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                    System.Environment.CurrentDirectory = basedir;
                 }
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            String exeans = "", imgans = "";
+            String exeans = "", imgans = "", ratedata = "";
             openFileDialog1.Title = "追加する実行ファイルを選択";
             openFileDialog1.Filter = "実行ファイル (*.exe)|*.exe|すべてのファイル (*.*)|*.*";
+            openFileDialog1.FileName = "";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 exeans = openFileDialog1.FileName;
@@ -421,7 +339,8 @@ namespace glc_cs
             }
 
             openFileDialog1.Title = "実行ファイルの画像を選択";
-            openFileDialog1.Filter = "画像ファイル (*.png;*.jpg;*.bmp)|*.png;*.jpg;*.bmp|すべてのファイル (*.*)|*.*";
+            openFileDialog1.Filter = "画像ファイル (*.png;*.jpg;*.bmp;*.gif;*.ico)|*.png;*.jpg;*.bmp;*.gif;*.ico|すべてのファイル (*.*)|*.*";
+            openFileDialog1.FileName = System.IO.Path.GetFileNameWithoutExtension(exeans).ToString() + ".png";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 imgans = openFileDialog1.FileName;
@@ -435,11 +354,19 @@ namespace glc_cs
             string appname_ans = Interaction.InputBox(
                 "アプリ名を設定", appname, filename, -1, -1);
 
-            String cfilepass = defaultdir + "\\game.ini";
             String gfilepass = "";
 
+            DialogResult rate = MessageBox.Show("成人向け(R-18)ゲームですか？", appname, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (rate == DialogResult.Yes)
+            {
+                ratedata = "1";
+            }
+            else
+            {
+                ratedata = "0";
+            }
 
-            if (File.Exists(cfilepass))
+            if (File.Exists(gameini))
             {
 
                 if (checkBox3.Checked)
@@ -447,56 +374,45 @@ namespace glc_cs
                     fileSystemWatcher1.EnableRaisingEvents = false;
                 }
 
-                StringBuilder data = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    "list",
-                    "game",
-                    "0",
-                    data,
-                    1024,
-                    cfilepass);
-                int maxval = Convert.ToInt32(data.ToString()) + 1;
+                int newmaxval = gamemax + 1;
 
-                gfilepass = defaultdir + "\\" + maxval + ".ini";
+                gfilepass = gamedir + "\\" + newmaxval + ".ini";
 
-                if (!File.Exists(gfilepass))
+                if (!(File.Exists(gfilepass)))
                 {
-                    WritePrivateProfileString(
-                                "game",
-                                "name",
-                                appname_ans.ToString(),
-                                gfilepass);
-                    WritePrivateProfileString(
-                                "game",
-                                "imgpass",
-                                imgans.ToString(),
-                                gfilepass);
-                    WritePrivateProfileString(
-                                "game",
-                                "pass",
-                                exeans.ToString(),
-                                gfilepass);
-                    WritePrivateProfileString(
-                                "game",
-                                "time",
-                                "0",
-                                gfilepass);
-                    WritePrivateProfileString(
-                                "game",
-                                "start",
-                                "0",
-                                gfilepass);
-                    WritePrivateProfileString(
-                                "game",
-                                "stat",
-                                "",
-                                gfilepass);
-
-                    WritePrivateProfileString(
-                                "list",
-                                "game",
-                                maxval.ToString(),
-                                cfilepass);
+                    iniwrite(gfilepass, "game", "name", appname_ans);
+                    iniwrite(gfilepass, "game", "imgpass", imgans);
+                    iniwrite(gfilepass, "game", "pass", exeans);
+                    iniwrite(gfilepass, "game", "time", "0");
+                    iniwrite(gfilepass, "game", "start", "0");
+                    iniwrite(gfilepass, "game", "stat", "");
+                    iniwrite(gfilepass, "game", "rating", ratedata);
+                    iniwrite(gameini, "list", "game", newmaxval.ToString());
+                }
+                else
+                {
+                    String dup = iniread(gfilepass, "game", "name", "unknown");
+                    DialogResult dialogResult = MessageBox.Show("既にiniファイルが存在します！\n" + gfilepass + "\n[" + dup + "]\n上書きしますか？", appname, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        iniwrite(gfilepass, "game", "name", appname_ans);
+                        iniwrite(gfilepass, "game", "imgpass", imgans);
+                        iniwrite(gfilepass, "game", "pass", exeans);
+                        iniwrite(gfilepass, "game", "time", "0");
+                        iniwrite(gfilepass, "game", "start", "0");
+                        iniwrite(gfilepass, "game", "stat", "");
+                        iniwrite(gfilepass, "game", "rating", ratedata);
+                        iniwrite(gameini, "list", "game", newmaxval.ToString());
+                    }
+                    else if (dialogResult == DialogResult.No)
+                    {
+                        MessageBox.Show("新規のゲームを追加せずに処理を中断します。", appname, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("不明な結果です。\n実行を中断します。", appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    return;
                 }
 
                 if (checkBox3.Checked)
@@ -506,7 +422,8 @@ namespace glc_cs
             }
             else
             {
-                MessageBox.Show("something error!");
+                MessageBox.Show("ゲーム情報統括管理ファイルが見つかりません！", appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
             button8_Click(null, null);
@@ -515,127 +432,35 @@ namespace glc_cs
 
         private void button7_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show(appname + " Ver." + appver + " / Build " + appbuild + " Beta\n\n" + "現在の作業ディレクトリ：" + defaultdir + "\n\nAuthor: Ogura Deko (dekosoft)\nMail: support_dekosoft@outlook.jp\nWeb: https://sunkun.nippombashi.net\n\nCopyright (C) 2020 Ogura Deko and dekosoft All rights reserved.",
+            DialogResult result = MessageBox.Show(appname + " Ver." + appver + " / Build " + appbuild + " Beta\n\n" + "現在の作業ディレクトリ：" + gamedir + "\n\nAuthor: Ogura Deko (dekosoft)\nMail: support_dekosoft@outlook.jp\nWeb: https://sunkun.nippombashi.net\n\nCopyright (C) Ogura Deko and dekosoft All rights reserved.",
                                 appname,
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
         }
 
-
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-            int allgameint;
-            String loadfileini = defaultdir + "\\game.ini";
-
-            //全ゲーム数取得
-            if (File.Exists(loadfileini))
-            {
-                StringBuilder allgameintr = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    "list",
-                    "game",
-                    "0",
-                    allgameintr,
-                    Convert.ToUInt32(allgameintr.Capacity),
-                    loadfileini);
-                allgameint = Convert.ToInt32(allgameintr.ToString());
-
-                if (allgameint <= 0)
-                {
-                    return;
-                }
-            }
-            else
+            if (!(gamemax >= 1))
             {
                 return;
             }
 
-
             //ゲーム詳細取得
             int selecteditem = listBox1.SelectedIndex + 1;
-            String readini = defaultdir + "\\" + selecteditem + ".ini";
-            StringBuilder data;
-            String namedata = null, imgpassdata = null, passdata = null, stimedata = null, startdata = null, cmtdata = null;
+            String readini = gamedir + "\\" + selecteditem + ".ini";
+            String namedata = null, imgpassdata = null, passdata = null, stimedata = null, startdata = null, cmtdata = null, rating = null;
 
-            if (File.Exists(defaultdir + "\\game.ini"))
-            {
-                //ini読込開始
-                data = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    "list",
-                    "game",
-                    "0",
-                    data,
-                    1024,
-                    defaultdir + "\\game.ini");
-                String max = data.ToString();
-
-                toolStripStatusLabel1.Text = "[" + selecteditem + "/" + max + "]";
-            }
 
             if (File.Exists(readini))
             {
                 //ini読込開始
-                data = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    "game",
-                    "name",
-                    "",
-                    data,
-                    1024,
-                    readini);
-                namedata = data.ToString();
-
-                data = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    "game",
-                    "imgpass",
-                    "",
-                    data,
-                    1024,
-                    readini);
-                imgpassdata = data.ToString();
-
-                data = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    "game",
-                    "pass",
-                    "",
-                    data,
-                    1024,
-                    readini);
-                passdata = data.ToString();
-
-                data = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    "game",
-                    "time",
-                    "0",
-                    data,
-                    1024,
-                    readini);
-                stimedata = data.ToString();
-
-                data = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    "game",
-                    "start",
-                    "0",
-                    data,
-                    1024,
-                    readini);
-                startdata = data.ToString();
-
-                data = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    "game",
-                    "stat",
-                    "",
-                    data,
-                    1024,
-                    readini);
-                cmtdata = data.ToString();
+                namedata = iniread(readini, "game", "name", "");
+                imgpassdata = iniread(readini, "game", "imgpass", "");
+                passdata = iniread(readini, "game", "pass", "");
+                stimedata = iniread(readini, "game", "time", "0");
+                startdata = iniread(readini, "game", "start", "0");
+                cmtdata = iniread(readini, "game", "stat", "");
+                rating = iniread(readini, "game", "rating", "-1");
             }
             else
             {
@@ -655,9 +480,17 @@ namespace glc_cs
             textBox4.Text = timedata.ToString();
             textBox5.Text = startdata;
             textBox6.Text = cmtdata;
-
+            toolStripStatusLabel1.Text = "[" + selecteditem + "/" + gamemax + "]";
             toolStripProgressBar1.Value = listBox1.SelectedIndex + 1;
 
+            if (Convert.ToInt32(rating) == 0)
+            {
+                radioButton1.Checked = true;
+            }
+            else if (Convert.ToInt32(rating) == 1)
+            {
+                radioButton2.Checked = true;
+            }
 
             if (File.Exists(passdata))
             {
@@ -682,19 +515,10 @@ namespace glc_cs
 
         private void button8_Click(object sender, EventArgs e)
         {
-            int max;
-            if (File.Exists(defaultdir + "\\game.ini"))
+            if (File.Exists(gameini))
             {
                 //ini読込開始
-                StringBuilder data = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    "list",
-                    "game",
-                    "0",
-                    data,
-                    1024,
-                    defaultdir + "\\game.ini");
-                max = Convert.ToInt32(data.ToString());
+                gamemax = Convert.ToInt32(iniread(gameini, "list", "game", "0"));
             }
             else
             {
@@ -704,26 +528,26 @@ namespace glc_cs
             if (listBox1.Items.Count != 0)
             {
                 String selectedtext = listBox1.SelectedItem.ToString();
-                loaditem(defaultdir);
+                loaditem(gamedir);
                 if (listBox1.Items.Contains(selectedtext))
                 {
                     listBox1.SelectedIndex = listBox1.Items.IndexOf(selectedtext); ;
                 }
                 else
                 {
-                    loaditem(defaultdir);
+                    loaditem(gamedir);
                 }
             }
             else
             {
-                loaditem(defaultdir);
+                loaditem(gamedir);
             }
             return;
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "")
+            if (!(textBox1.Text.Equals("")))
             {
                 Clipboard.SetText(textBox1.Text);
             }
@@ -731,7 +555,7 @@ namespace glc_cs
 
         private void pictureBox4_Click(object sender, EventArgs e)
         {
-            if (textBox2.Text != "")
+            if (!(textBox2.Text.Equals("")))
             {
                 Clipboard.SetText(textBox2.Text);
             }
@@ -739,7 +563,7 @@ namespace glc_cs
 
         private void pictureBox6_Click(object sender, EventArgs e)
         {
-            if (textBox3.Text != "")
+            if (!(textBox3.Text.Equals("")))
             {
                 Clipboard.SetText(textBox3.Text);
             }
@@ -747,7 +571,7 @@ namespace glc_cs
 
         private void pictureBox9_Click(object sender, EventArgs e)
         {
-            if (textBox4.Text != "")
+            if (!(textBox4.Text.Equals("")))
             {
                 int total = Convert.ToInt32(textBox4.Text);
                 String hour = (total / 60).ToString();
@@ -761,12 +585,30 @@ namespace glc_cs
             }
         }
 
-        private void button16_Click(object sender, EventArgs e)
+        /* Version 0.71にて廃止
+         * private void button16_Click(object sender, EventArgs e)
         {
-            String dkill = AppDomain.CurrentDomain.BaseDirectory + "dkill.bat";
+            String dkill = basedir + "dkill.bat";
             if (File.Exists(dkill))
             {
-                System.Diagnostics.Process.Start(dkill);
+                if (radioButton2.Checked)
+                {
+                    if (
+                        MessageBox.Show("[dkill.bat]を実行します。\n実行中の全てのjavaアプリケーションが強制終了されます。\n\n実行しますか？", appname, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK
+                        )
+                    {
+                        System.Diagnostics.Process.Start(dkill);
+                    }
+                    else
+                    {
+                        MessageBox.Show("[kill dcon]ボタンを押す\n[dkill.bat]を手動で実行する\nタスクマネージャで該当タスクを終了する\n等の方法でDiscord連携を終了できます。", appname, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                else
+                {
+                    System.Diagnostics.Process.Start(dkill);
+                }
+
             }
             else
             {
@@ -774,13 +616,28 @@ namespace glc_cs
             }
             return;
         }
+        */
 
         private void fileSystemWatcher1_Changed(object sender, FileSystemEventArgs e)
         {
             pictureBox11.Visible = true;
             String selectedtext = listBox1.SelectedItem.ToString();
 
-            loaditem(defaultdir);
+            loaditem(gamedir);
+            if (listBox1.Items.Contains(selectedtext))
+            {
+                listBox1.SelectedIndex = listBox1.Items.IndexOf(selectedtext);
+            }
+            pictureBox11.Visible = false;
+            return;
+        }
+        private void fileSystemWatcher2_Changed(object sender, FileSystemEventArgs e)
+        {
+            pictureBox11.Visible = true;
+            String selectedtext = listBox1.SelectedItem.ToString();
+
+            updateconfig();
+            loaditem(gamedir);
             if (listBox1.Items.Contains(selectedtext))
             {
                 listBox1.SelectedIndex = listBox1.Items.IndexOf(selectedtext);
@@ -794,45 +651,34 @@ namespace glc_cs
             if (checkBox3.Checked)
             {
                 fileSystemWatcher1.EnableRaisingEvents = true;
+                fileSystemWatcher2.EnableRaisingEvents = true;
             }
             else
             {
                 fileSystemWatcher1.EnableRaisingEvents = false;
+                fileSystemWatcher2.EnableRaisingEvents = false;
             }
         }
 
-        private void iniedtchk(String inifilename, String sec, String key, String data)
+        private void iniedtchk(String ininame, String sec, String key, String data, String failedval)
         {
             pictureBox11.Visible = true;
+            fileSystemWatcher1.EnableRaisingEvents = false;
+            fileSystemWatcher2.EnableRaisingEvents = false;
 
-            String pass = defaultdir + "\\" + inifilename + ".ini";
-            if (File.Exists(pass))
+            if (File.Exists(ininame))
             {
-                //ini読込
-                StringBuilder rdata = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    sec,
-                    key,
-                    "0",
-                    rdata,
-                    1024,
-                    pass);
-                String rawdata = rdata.ToString();
+                String rawdata = iniread(ininame, sec, key, failedval);
 
                 //取得値とデータが違う場合
-                if (rawdata != data)
+                if (!(rawdata.Equals(data)))
                 {
-
                     if (checkBox3.Checked)
                     {
                         fileSystemWatcher1.EnableRaisingEvents = false;
                     }
 
-                    WritePrivateProfileString(
-                            sec,
-                            key,
-                            data.ToString(),
-                            pass);
+                    iniwrite(ininame, sec, key, data);
 
                     if (checkBox3.Checked)
                     {
@@ -842,28 +688,120 @@ namespace glc_cs
             }
             else
             {
-                MessageBox.Show("該当するファイルがありません。\n\nError: INI_file_not_found\nDebug:: iniedtchk > if > else\n" + pass, appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("該当するファイルがありません。\n\nError: INI_file_not_found\nDebug:: iniedtchk > if > else\n" + ininame, appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            if (checkBox3.Checked)
+            {
+                fileSystemWatcher1.EnableRaisingEvents = true;
+            }
+            fileSystemWatcher2.EnableRaisingEvents = true;
             pictureBox11.Visible = false;
+            return;
+        }
+
+        private string iniread(String filename, String sec, String key, String failedval)
+        {
+            String ans = "";
+
+            StringBuilder data = new StringBuilder(1024);
+            GetPrivateProfileString(
+                sec,
+                key,
+                failedval,
+                data,
+                1024,
+                filename);
+
+            ans = data.ToString();
+            return ans;
+        }
+
+        private void iniwrite(String filename, String sec, String key, String data)
+        {
+
+            WritePrivateProfileString(
+                            sec,
+                            key,
+                            data.ToString(),
+                            filename);
+
+            return;
+        }
+
+        private void updateconfig()
+        {
+            if (File.Exists(configini))
+            {
+                int ckv0 = Convert.ToInt32(iniread(configini, "checkbox", "track", "0"));
+                int ckv1 = Convert.ToInt32(iniread(configini, "checkbox", "winmini", "0"));
+                gamedir = iniread(configini, "default", "directory", basedir) + "Data";
+                gameini = gamedir + "\\game.ini";
+                String bgimg = iniread(configini, "imgd", "bgimg", "");
+                checkBox4.Checked = Convert.ToBoolean(Convert.ToInt32(iniread(configini, "checkbox", "sens", "0")));
+                checkBox5.Checked = Convert.ToBoolean(Convert.ToInt32(iniread(configini, "checkbox", "dconnect", "1")));
+                if (Convert.ToInt32(iniread(configini, "checkbox", "rate", "-1")) == 1)
+                {
+                    radioButton2.Checked = true;
+                }
+                else
+                {
+                    radioButton1.Checked = true;
+                }
+
+                if(Convert.ToInt32(iniread(configini, "connect", "byActive", "0")) == 1)
+                {
+                    bouyomi_configload();
+                }
+                //radioButton2.Checked = Convert.ToBoolean(Convert.ToInt32(iniread(configini, "checkbox", "attbat", "1")));
+
+                //profile read
+                //comboBox1.Items.Clear();
+                //comboBox1.Items.Add("[profile] default");
+                //comboBox1.SelectedIndex = 0;
+
+                //pfmax = Convert.ToInt32(iniread(configini, "profile", "max", "0"));
+
+                /*for (int i = 0; i < pfmax; i++)
+                {
+                    comboBox1.Items.Add("[profile] " + iniread(configini, "profile", "pf" + i, "unknown"));
+                }*/
+
+
+                if (File.Exists(bgimg))
+                {
+                    this.BackgroundImage = new Bitmap(bgimg);
+                    toolStripStatusLabel2.Text = "！背景画像が適用されました。環境によっては描画に時間がかかる場合があります。！";
+                }
+                else
+                {
+                    this.BackgroundImage = null;
+                    message();
+                }
+
+                checkBox1.Checked = Convert.ToBoolean(ckv0);
+                checkBox2.Checked = Convert.ToBoolean(ckv1);
+
+                fileSystemWatcher2.Path = basedir;
+            }
+            else
+            {
+                //ini存在しない場合
+                gamedir = basedir + "Data";
+
+                checkBox1.Checked = true;
+                checkBox2.Checked = true;
+            }
             return;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            String pass = defaultdir + "\\game.ini";
 
-            if (File.Exists(pass))
+            if (File.Exists(gameini))
             {
-                //ini読込
-                StringBuilder rdata = new StringBuilder(1024);
-                GetPrivateProfileString(
-                    "list",
-                    "game",
-                    "0",
-                    rdata,
-                    1024,
-                    pass);
-                int rawdata = Convert.ToInt32((rdata).ToString());
+
+                int rawdata = Convert.ToInt32(iniread(gameini, "list", "game", "0"));
 
                 if (rawdata >= 1)
                 {
@@ -880,19 +818,292 @@ namespace glc_cs
             }
             else
             {
-                MessageBox.Show("該当するファイルがありません。\n\nError: INI_file_not_found\nDebug:: iniedtchk > if > else\n" + pass, appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("該当するファイルがありません。\n\nError: INI_file_not_found\nDebug:: iniedtchk > if > else\n", appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void Application_ApplicationExit(object sender, EventArgs e)
         {
             Application.ApplicationExit -= new EventHandler(Application_ApplicationExit);
+            this.ShowInTaskbar = false;
+            this.Dispose();
             Close();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            //選択中のゲーム保管ファイルを削除
+            pictureBox11.Visible = true;
+            int delval = listBox1.SelectedIndex + 1;
+            String delname = textBox1.Text;
+            delini(delval, delname);
+
+            pictureBox11.Visible = false;
+            return;
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
+            String selectedtext = listBox1.SelectedItem.ToString();
 
+            //Discordカスタムステータス、各種チェックボックス、ラジオの保存
+            String pass = gamedir + "\\" + (listBox1.SelectedIndex + 1) + ".ini";
+            if (File.Exists(pass))
+            {
+                iniedtchk(pass, "game", "stat", (textBox6.Text), "");
+                iniedtchk(configini, "checkbox", "track", (Convert.ToInt32(checkBox1.Checked)).ToString(), "0");
+                iniedtchk(configini, "checkbox", "winmini", (Convert.ToInt32(checkBox2.Checked)).ToString(), "0");
+                iniedtchk(configini, "checkbox", "sens", (Convert.ToInt32(checkBox4.Checked)).ToString(), "0");
+                if (radioButton1.Checked)
+                {
+                    iniedtchk(configini, "checkbox", "rate", "0", "-1");
+                }
+                else
+                {
+                    iniedtchk(configini, "checkbox", "rate", "1", "-1");
+                }
+                loaditem(gamedir);
+
+                //更新前に選択していたゲームへ移動
+                if (listBox1.Items.Contains(selectedtext))
+                {
+                    listBox1.SelectedIndex = listBox1.Items.IndexOf(selectedtext);
+                }
+            }
+            else
+            {
+                //個別ini不存在
+                MessageBox.Show("ゲーム情報保管iniが存在しません。\n" + pass, appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return;
+        }
+
+        private void toolStripStatusLabel3_Click(object sender, EventArgs e)
+        {
+            //ini読込
+            String rawdata = gamedir + "\\" + ((listBox1.SelectedIndex + 1).ToString()) + ".ini";
+
+            if (File.Exists(rawdata))
+            {
+                System.Diagnostics.Process.Start(@gamedir + "\\" + (listBox1.SelectedIndex + 1) + ".ini");
+            }
+            else
+            {
+                MessageBox.Show("ゲーム情報保管iniがありません！\n" + rawdata, appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            int selected = listBox1.SelectedIndex;
+            if (selected >= 1)
+            {
+                selected++;
+                fileSystemWatcher1.EnableRaisingEvents = false;
+                int target = selected - 1;
+                String before = gamedir + "\\" + (selected.ToString()) + ".ini";
+                String temp = gamedir + "\\" + (target.ToString()) + "_.ini";
+                String after = gamedir + "\\" + (target.ToString()) + ".ini";
+                if (File.Exists(before) && File.Exists(after))
+                {
+                    File.Move(after, temp);
+                    File.Move(before, after);
+                    File.Move(temp, before);
+                }
+                else
+                {
+                    MessageBox.Show("移動先もしくは移動前のファイルが見つかりません。\n\n移動前：" + before + "\n移動先：" + after, appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                fileSystemWatcher1.EnableRaisingEvents = true;
+            }
+            else
+            {
+                MessageBox.Show("最上位です。\nこれ以上は上に移動できません。", appname, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            loaditem(gamedir);
+            listBox1.SelectedIndex = selected - 2;
+            return;
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            int selected = listBox1.SelectedIndex;
+            if (selected + 1 < gamemax)
+            {
+                selected++;
+                fileSystemWatcher1.EnableRaisingEvents = false;
+                int target = selected + 1;
+                String before = gamedir + "\\" + (selected.ToString()) + ".ini";
+                String temp = gamedir + "\\" + (target.ToString()) + "_.ini";
+                String after = gamedir + "\\" + (target.ToString()) + ".ini";
+                if (File.Exists(before) && File.Exists(after))
+                {
+                    File.Move(after, temp);
+                    File.Move(before, after);
+                    File.Move(temp, before);
+                }
+                else
+                {
+                    MessageBox.Show("移動先もしくは移動前のファイルが見つかりません。\nファイルに影響はありません。\n\n移動前：" + before + "\n移動先：" + after, appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    fileSystemWatcher1.EnableRaisingEvents = true;
+                    return;
+                }
+                fileSystemWatcher1.EnableRaisingEvents = true;
+            }
+            else
+            {
+                MessageBox.Show("最下位です。\nこれ以上は下に移動できません。", appname, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            loaditem(gamedir);
+            listBox1.SelectedIndex = selected--;
+            return;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            //設定
+            fileSystemWatcher1.EnableRaisingEvents = false;
+            fileSystemWatcher2.EnableRaisingEvents = false;
+            String before = iniread(configini, "default", "directory", "0");
+            form2.ShowDialog();
+            String after = iniread(configini, "default", "directory", "1");
+            if (before != after)
+            {
+                MessageBox.Show("既定の作業ディレクトリが変更されました。\nGame Launcherを再度起動してください。\n\nOKを押してGame Launcherを終了します。", appname, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Close();
+            }
+            fileSystemWatcher1.EnableRaisingEvents = true;
+            fileSystemWatcher2.EnableRaisingEvents = true;
+            updateconfig();
+            return;
+        }
+
+        private void message()
+        {
+            String ans = "";
+            int tmp;
+            System.Random r = new System.Random();
+            tmp = r.Next(1, 3);
+
+            switch (tmp)
+            {
+                case 1:
+                    ans = "＊背景画像を設定すると、画面の描画に時間がかかる場合があります。";
+                    break;
+
+                case 2:
+                    ans = "＊変更を保存するには「保存」か「起動」を押します。";
+                    break;
+
+                case 3:
+                    ans = "＊本ソフトウェアはベータ版です。エラーが発生した場合はご連絡ください。";
+                    break;
+            }
+            toolStripStatusLabel2.Text = ans;
+            return;
+        }
+
+        private void delini(int delfileval, String delfilename)
+        {
+            fileSystemWatcher2.EnableRaisingEvents = false;
+            fileSystemWatcher1.EnableRaisingEvents = false;
+
+            int nextval;
+            String nextfile;
+            int delval = delfileval;
+            String delfile = (gamedir + "\\" + delval + ".ini");
+            if (File.Exists(delfile))
+            {
+                //削除ファイル存在
+                DialogResult dialogResult = MessageBox.Show("選択中のゲームをランチャーの一覧から削除します。\n※この操作は元に戻せません。\n[" + delfilename + "]\n" + delfile + "\n削除しますか？", appname, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    File.Delete(delfile);
+                    nextval = delval + 1;
+                    nextfile = (gamedir + "\\" + nextval + ".ini");
+                    while (File.Exists(nextfile))
+                    {
+                        //削除ファイル以降にゲームが存在する場合に番号を下げる
+                        File.Move(nextfile, delfile);
+                        delfile = nextfile;
+                        nextval++;
+                        nextfile = (gamedir + "\\" + nextval + ".ini");
+                    }
+                    gamemax--;
+                    iniwrite(gameini, "list", "game", gamemax.ToString());
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    fileSystemWatcher2.EnableRaisingEvents = true;
+                    if (checkBox3.Checked)
+                    {
+                        fileSystemWatcher1.EnableRaisingEvents = true;
+                    }
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show("不明な結果です。\n実行を中断します。", appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                //削除ファイル不存在
+                MessageBox.Show("該当するiniファイルが存在しません。\n" + delfile, appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            loaditem(gamedir);
+            if (gamemax >= 2 && delfileval >= 2)
+            {
+                listBox1.SelectedIndex = delfileval - 2;
+            }
+            else if (gamemax == 1 && delfileval >= 1)
+            {
+                listBox1.SelectedIndex = 1;
+            }
+            else
+            {
+                listBox1.SelectedIndex = 0;
+            }
+
+            fileSystemWatcher2.EnableRaisingEvents = true;
+            if (checkBox3.Checked)
+            {
+                fileSystemWatcher1.EnableRaisingEvents = true;
+            }
+            return;
+        }
+
+        void KillChildProcess(System.Diagnostics.Process process)
+        {
+            if (process != null)
+            {
+                process.Kill();
+            }
+            return;
+        }
+
+        private void bouyomi_configload()
+        {
+            byHost = iniread(configini, "connect", "byHost", "127.0.0.1");
+            byPort = Convert.ToInt32(iniread(configini, "connect", "byPort", "50001"));
+
+            //接続テスト
+            try
+            {
+                tc = new TcpClient(byHost, byPort);
+                MessageBox.Show("棒読みちゃんと連携しました。", appname, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("エラー：棒読みちゃんの連携に失敗しました。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            finally
+            {
+                tc.Close();
+            }
+            return;
         }
     }
 }

@@ -2,11 +2,12 @@ C:\Users\fanta\Documents\App\glc_cs\glc_cs\bin\Release\glc_cs.exe.config
 C:\Users\fanta\Documents\App\glc_cs\glc_cs\bin\Release\glc_cs.exe
 C:\Users\fanta\Documents\App\glc_cs\glc_cs\bin\Release\glc_cs.pdb
 C:\Users\fanta\Documents\App\glc_cs\glc_cs\bin\Release\ja-JP\glc_cs.resources.dll
-C:\Users\fanta\Documents\App\glc_cs\glc_cs\obj\Release\glc_cs.csprojAssemblyReference.cache
 C:\Users\fanta\Documents\App\glc_cs\glc_cs\obj\Release\glc_cs.gl.resources
+C:\Users\fanta\Documents\App\glc_cs\glc_cs\obj\Release\glc_cs.Form2.resources
 C:\Users\fanta\Documents\App\glc_cs\glc_cs\obj\Release\glc_cs.Properties.Resources.resources
 C:\Users\fanta\Documents\App\glc_cs\glc_cs\obj\Release\glc_cs.gl.ja-JP.resources
 C:\Users\fanta\Documents\App\glc_cs\glc_cs\obj\Release\glc_cs.csproj.GenerateResource.cache
 C:\Users\fanta\Documents\App\glc_cs\glc_cs\obj\Release\ja-JP\glc_cs.resources.dll
 C:\Users\fanta\Documents\App\glc_cs\glc_cs\obj\Release\glc_cs.exe
 C:\Users\fanta\Documents\App\glc_cs\glc_cs\obj\Release\glc_cs.pdb
+C:\Users\fanta\Documents\App\glc_cs\glc_cs\obj\Release\glc_cs.csprojAssemblyReference.cache
