@@ -29,7 +29,7 @@ namespace glc_cs
         public String gamedir, basedir = AppDomain.CurrentDomain.BaseDirectory, gameini, configini = AppDomain.CurrentDomain.BaseDirectory + "config.ini";
         public String appname = "Game Launcher C# Edition";
         public String appver = "0.91";
-        public String appbuild = "11.20.12.02";
+        public String appbuild = "11.20.12.03";
         public int gamemax = 0, pfmax = 0;
         
         //棒読みちゃん関係
