@@ -12,6 +12,8 @@
 *.pfx
 *.cache
 *.pdb
+obj/
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
