@@ -10,3 +10,4 @@ C:\Users\fanta\Documents\App\glc_cs\glc_cs\obj\Debug\glc_cs.csproj.GenerateResou
 C:\Users\fanta\Documents\App\glc_cs\glc_cs\obj\Debug\ja-JP\glc_cs.resources.dll
 C:\Users\fanta\Documents\App\glc_cs\glc_cs\obj\Debug\glc_cs.exe
 C:\Users\fanta\Documents\App\glc_cs\glc_cs\obj\Debug\glc_cs.pdb
+C:\Users\fanta\Documents\App\glc_cs\glc_cs\obj\Debug\glc_cs.csprojAssemblyReference.cache

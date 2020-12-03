@@ -34,20 +34,37 @@ namespace glc_cs
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            checkBox1.Checked = Convert.ToBoolean(Convert.ToInt32(readini("checkbox", "dconnect", "1")));
-            if(Convert.ToInt32(readini("checkbox", "rate", "-1")) == 0){
+            //Discord設定読み込み
+            checkBox1.Checked = Convert.ToBoolean(Convert.ToInt32(readini("checkbox", "dconnect", "0")));
+            if (Convert.ToInt32(readini("checkbox", "rate", "-1")) == 0)
+            {
                 radioButton1.Checked = true;
-            }else if(Convert.ToInt32(readini("checkbox", "rate", "-1")) == 1){
+            }
+            else if (Convert.ToInt32(readini("checkbox", "rate", "-1")) == 1)
+            {
                 radioButton2.Checked = true;
             }
+            else
+            {
+                radioButton1.Checked = true;
+            }
 
-            //checkBox3.Checked = Convert.ToBoolean(Convert.ToInt32(readini("checkbox", "attbat", "1")));
+            //棒読みちゃん設定読み込み
+            int isbyActive = Convert.ToInt32(readini("connect", "byActive", "0"));
+            checkBox2.Checked = Convert.ToBoolean(isbyActive);
+            if (isbyActive == 1)
+            {
+                groupBox4.Enabled = true;
+            }
+            textBox4.Text = readini("connect", "byHost", "127.0.0.1");
+            textBox5.Text = readini("connect", "byPort", "50001");
+
         }
 
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //適用して閉じる
+            //discord設定適用
             writeini("checkbox", "dconnect", (Convert.ToInt32(checkBox1.Checked)).ToString());
             if (radioButton1.Checked)
             {
@@ -57,7 +74,11 @@ namespace glc_cs
             {
                 writeini("checkbox", "rate", "1");
             }
-            //writeini("checkbox", "attbat", (Convert.ToInt32(checkBox3.Checked)).ToString());
+
+            //棒読みちゃん設定適用
+            writeini("connect", "byActive", (Convert.ToInt32(checkBox2.Checked)).ToString());
+            writeini("connect", "byHost", textBox4.Text);
+            writeini("connect", "byPort", textBox5.Text);
             Hide();
         }
 
@@ -67,6 +88,10 @@ namespace glc_cs
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
                 String newworkdir = folderBrowserDialog1.SelectedPath;
+                if (!(newworkdir.EndsWith("\\")))
+                {
+                    newworkdir += "\\";
+                }
                 writeini("default", "directory", newworkdir);
             }
             return;
@@ -136,19 +161,18 @@ namespace glc_cs
 
         private void button3_Click(object sender, EventArgs e)
         {
-            bouyomi_connectchk();
-        }
-        private void bouyomi_connectchk()
-        {
+            String byHost = textBox4.Text;
+            int byPort = Convert.ToInt32(textBox5.Text);
 
-            //棒読みちゃん関係
-            String bysMsg = "連携しました。";
+            bouyomi_connectchk(byHost, byPort);
+        }
+
+        private void bouyomi_connectchk(string byHost, int byPort)
+        {
+            String bysMsg = "ゲームランチャーとの接続テストに成功しました。";
             byte byCode = 0; //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
             Int16 byVoice = 0, byVol = -1, bySpd = -1, byTone = -1, byCmd = 0x0001;
-            byte[] byMsg;
             TcpClient tc = null;
-            String byHost = readini("connect", "byHost", "127.0.0.1");
-            int byPort = Convert.ToInt32(readini("connect", "byPort", "50001"));
 
             byte[] bybMsg = Encoding.UTF8.GetBytes(bysMsg);
             Int32 byLength = bybMsg.Length;
@@ -157,11 +181,10 @@ namespace glc_cs
             try
             {
                 tc = new TcpClient(byHost, byPort);
-                MessageBox.Show("棒読みちゃんと連携しました。", appname, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception)
             {
-                MessageBox.Show("エラー：棒読みちゃんの連携に失敗しました。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             //メッセージ送信
@@ -179,9 +202,21 @@ namespace glc_cs
                     bw.Write(bybMsg); //文字列のbyte配列
                 }
             }
-            //切断
             tc.Close();
+            MessageBox.Show("棒読みちゃんとの接続テストに成功しました。", appname, MessageBoxButtons.OK, MessageBoxIcon.Information);
             return;
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox2.Checked)
+            {
+                groupBox4.Enabled = true;
+            }
+            else
+            {
+                groupBox4.Enabled = false;
+            }
         }
     }
 }
