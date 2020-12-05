@@ -26,12 +26,12 @@ namespace glc_cs
         string lpKeyName, string lpString,
         string lpFileName);
 
-        public String gamedir, basedir = AppDomain.CurrentDomain.BaseDirectory, gameini, configini = AppDomain.CurrentDomain.BaseDirectory + "config.ini";
+        public String gamedir, basedir = AppDomain.CurrentDomain.BaseDirectory + "\\", gameini, configini = AppDomain.CurrentDomain.BaseDirectory + "\\config.ini";
         public String appname = "Game Launcher C# Edition";
-        public String appver = "0.91";
-        public String appbuild = "11.20.12.03";
+        public String appver = "0.92";
+        public String appbuild = "12.20.12.05";
         public int gamemax = 0, pfmax = 0;
-        
+
         //棒読みちゃん関係
         public bool byActive = false;
         public String bysMsg = null;
@@ -705,8 +705,8 @@ namespace glc_cs
             if (checkBox3.Checked)
             {
                 fileSystemWatcher1.EnableRaisingEvents = true;
+                fileSystemWatcher2.EnableRaisingEvents = true;
             }
-            fileSystemWatcher2.EnableRaisingEvents = true;
             pictureBox11.Visible = false;
             return;
         }
@@ -730,7 +730,14 @@ namespace glc_cs
 
         private void iniwrite(String filename, String sec, String key, String data)
         {
-
+            if (!File.Exists(filename))
+            {
+                if (!File.Exists(System.IO.Path.GetDirectoryName(filename)))
+                {
+                    Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filename));
+                }
+                File.Create(filename).Close();
+            }
             WritePrivateProfileString(
                             sec,
                             key,
@@ -760,7 +767,7 @@ namespace glc_cs
                     radioButton1.Checked = true;
                 }
 
-                if(Convert.ToInt32(iniread(configini, "connect", "byActive", "0")) == 1)
+                if (Convert.ToInt32(iniread(configini, "connect", "byActive", "0")) == 1)
                 {
                     byActive = true;
                     bouyomi_configload();
@@ -789,10 +796,12 @@ namespace glc_cs
             else
             {
                 //ini存在しない場合
-                gamedir = basedir + "\\Data";
-
+                File.Create(configini).Close();
+                gamedir = basedir + "Data";
+                gameini = gamedir + "\\game.ini";
                 checkBox1.Checked = true;
                 checkBox2.Checked = true;
+                fileSystemWatcher2.Path = basedir;
             }
             return;
         }
@@ -827,7 +836,7 @@ namespace glc_cs
         private void Application_ApplicationExit(object sender, EventArgs e)
         {
             Application.ApplicationExit -= new EventHandler(Application_ApplicationExit);
-            bouyomiage("ゲームランチャーを終了しました。");
+            bouyomiage("ゲームランチャーを終了しました");
             this.ShowInTaskbar = false;
             this.Dispose();
             Close();
@@ -835,7 +844,7 @@ namespace glc_cs
 
         private void button5_Click(object sender, EventArgs e)
         {
-            if(listBox1.SelectedIndex == -1)
+            if (listBox1.SelectedIndex == -1)
             {
                 MessageBox.Show("ゲームリストが空です。", appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -852,7 +861,7 @@ namespace glc_cs
 
         private void button9_Click(object sender, EventArgs e)
         {
-            if(listBox1.SelectedIndex == -1)
+            if (listBox1.SelectedIndex == -1)
             {
                 MessageBox.Show("ゲームリストが空です。", appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -1090,11 +1099,14 @@ namespace glc_cs
 
         void KillChildProcess(System.Diagnostics.Process process)
         {
-            if (process != null)
+            try
             {
                 process.Kill();
             }
-            return;
+            catch (Exception)
+            {
+                MessageBox.Show("既にdcon.jarが終了しています。\n起動時間が正常に記録されない可能性があります。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void bouyomi_configload()
@@ -1107,7 +1119,7 @@ namespace glc_cs
 
         private void bouyomi_connectchk()
         {
-            String bysMsg = "ゲームランチャーと接続しました。";
+            String bysMsg = "ゲームランチャーと接続しました";
             byte byCode = 0; //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
             Int16 byVoice = 0, byVol = -1, bySpd = -1, byTone = -1, byCmd = 0x0001;
             TcpClient tc = null;
@@ -1115,46 +1127,29 @@ namespace glc_cs
             byte[] bybMsg = Encoding.UTF8.GetBytes(bysMsg);
             Int32 byLength = bybMsg.Length;
 
-            //接続テスト
-            try
+            if (Convert.ToInt32(iniread(configini, "connect", "byType", "0")) == 1)
             {
-                tc = new TcpClient(byHost, byPort);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            //メッセージ送信
-            using (NetworkStream ns = tc.GetStream())
-            {
-                using (BinaryWriter bw = new BinaryWriter(ns))
+                string url = "http://localhost:" + iniread(configini, "connect", "byPort", "50080") + "/talk";
+                System.Net.WebClient wc = new System.Net.WebClient();
+                //NameValueCollectionの作成
+                System.Collections.Specialized.NameValueCollection ps =
+                    new System.Collections.Specialized.NameValueCollection();
+                //送信するデータ（フィールド名と値の組み合わせ）を追加
+                ps.Add("text", bysMsg);
+                //データを送信し、また受信する
+                try
                 {
-                    bw.Write(byCmd); //コマンド（ 0:メッセージ読み上げ）
-                    bw.Write(bySpd);   //速度    （-1:棒読みちゃん画面上の設定）
-                    bw.Write(byTone);    //音程    （-1:棒読みちゃん画面上の設定）
-                    bw.Write(byVol);  //音量    （-1:棒読みちゃん画面上の設定）
-                    bw.Write(byVoice);   //声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
-                    bw.Write(byCode);    //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
-                    bw.Write(byLength);  //文字列のbyte配列の長さ
-                    bw.Write(bybMsg); //文字列のbyte配列
+                    wc.UploadValues(url, ps);
                 }
+                catch (Exception)
+                {
+                    MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                wc.Dispose();
             }
-            tc.Close();
-            return;
-        }
-
-        private void bouyomiage(String text)
-        {
-            if (byActive)
+            else
             {
-                byte byCode = 0; //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
-                Int16 byVoice = 0, byVol = -1, bySpd = -1, byTone = -1, byCmd = 0x0001;
-                TcpClient tc = null;
-
-                byte[] bybMsg = Encoding.UTF8.GetBytes(text);
-                Int32 byLength = bybMsg.Length;
-
                 //接続テスト
                 try
                 {
@@ -1162,6 +1157,7 @@ namespace glc_cs
                 }
                 catch (Exception)
                 {
+                    MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 //メッセージ送信
@@ -1180,8 +1176,73 @@ namespace glc_cs
                     }
                 }
                 tc.Close();
-                return;
             }
+            return;
+        }
+
+        private void bouyomiage(String text)
+        {
+            if (byActive)
+            {
+                byte byCode = 0; //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
+                Int16 byVoice = 0, byVol = -1, bySpd = -1, byTone = -1, byCmd = 0x0001;
+                TcpClient tc;
+
+                byte[] bybMsg = Encoding.UTF8.GetBytes(text);
+                Int32 byLength = bybMsg.Length;
+
+                if (Convert.ToInt32(iniread(configini, "connect", "byType", "0")) == 1)
+                {
+                    string url = "http://localhost:" + iniread(configini, "connect", "byPort", "50080") + "/talk";
+                    System.Net.WebClient wc = new System.Net.WebClient();
+                    //NameValueCollectionの作成
+                    System.Collections.Specialized.NameValueCollection ps =
+                        new System.Collections.Specialized.NameValueCollection();
+                    //送信するデータ（フィールド名と値の組み合わせ）を追加
+                    ps.Add("text", text);
+                    //データを送信し、また受信する
+                    try
+                    {
+                        wc.UploadValues(url, ps);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    wc.Dispose();
+                }
+                else
+                {
+                    //接続テスト
+                    try
+                    {
+                        tc = new TcpClient(byHost, byPort);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    //メッセージ送信
+                    using (NetworkStream ns = tc.GetStream())
+                    {
+                        using (BinaryWriter bw = new BinaryWriter(ns))
+                        {
+                            bw.Write(byCmd); //コマンド（ 0:メッセージ読み上げ）
+                            bw.Write(bySpd);   //速度    （-1:棒読みちゃん画面上の設定）
+                            bw.Write(byTone);    //音程    （-1:棒読みちゃん画面上の設定）
+                            bw.Write(byVol);  //音量    （-1:棒読みちゃん画面上の設定）
+                            bw.Write(byVoice);   //声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
+                            bw.Write(byCode);    //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
+                            bw.Write(byLength);  //文字列のbyte配列の長さ
+                            bw.Write(bybMsg); //文字列のbyte配列
+                        }
+                    }
+                    tc.Close();
+                }
+            }
+            return;
         }
     }
 }
