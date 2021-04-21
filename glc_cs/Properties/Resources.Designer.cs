@@ -83,6 +83,16 @@ namespace glc_cs.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
+        internal static System.Drawing.Bitmap exp {
+            get {
+                object obj = ResourceManager.GetObject("exp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
         internal static System.Drawing.Bitmap fn {
             get {
                 object obj = ResourceManager.GetObject("fn", resourceCulture);

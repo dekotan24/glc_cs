@@ -28,8 +28,8 @@ namespace glc_cs
 
         public String gamedir, basedir = AppDomain.CurrentDomain.BaseDirectory + "\\", gameini, configini = AppDomain.CurrentDomain.BaseDirectory + "\\config.ini";
         public String appname = "Game Launcher C# Edition";
-        public String appver = "0.92";
-        public String appbuild = "12.20.12.05";
+        public String appver = "0.93";
+        public String appbuild = "13.21.04.18";
         public int gamemax = 0, pfmax = 0;
 
         //棒読みちゃん関係
@@ -253,30 +253,10 @@ namespace glc_cs
                     }
 
                     //子プロセスの終了
-                    KillChildProcess(drunp);
-                    /* String dkill = basedir + "dkill.bat";
-                     if (File.Exists(dkill))
-                     {
-                         if (radioButton2.Checked)
-                         {
-                             if (
-                                 MessageBox.Show("[dkill.bat]を実行します。\n実行中の全てのjavaアプリケーションが強制終了されます。\n\n実行しますか？", appname, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK
-                                 )
-                             {
-                                 System.Diagnostics.Process.Start(dkill);
-                             }
-                             else
-                             {
-                                 MessageBox.Show("[dkill.bat]を手動で実行するか、[kill dcon]ボタンを押す、タスクマネージャで該当タスクを終了する、等の方法でDiscord連携を終了できます。", appname, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                             }
-                         }
-                         else
-                         {
-                             System.Diagnostics.Process.Start(dkill);
-                         }
-
-                     }*/
-
+                    if (checkBox5.Checked)
+                    {
+                        KillChildProcess(drunp);
+                    }
 
                     //終了時刻取得
                     String time = p.ExitTime.ToString("yyyy/MM/dd HH:mm:ss");
@@ -596,39 +576,6 @@ namespace glc_cs
             }
         }
 
-        /* Version 0.71にて廃止
-         * private void button16_Click(object sender, EventArgs e)
-        {
-            String dkill = basedir + "dkill.bat";
-            if (File.Exists(dkill))
-            {
-                if (radioButton2.Checked)
-                {
-                    if (
-                        MessageBox.Show("[dkill.bat]を実行します。\n実行中の全てのjavaアプリケーションが強制終了されます。\n\n実行しますか？", appname, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK
-                        )
-                    {
-                        System.Diagnostics.Process.Start(dkill);
-                    }
-                    else
-                    {
-                        MessageBox.Show("[kill dcon]ボタンを押す\n[dkill.bat]を手動で実行する\nタスクマネージャで該当タスクを終了する\n等の方法でDiscord連携を終了できます。", appname, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-                else
-                {
-                    System.Diagnostics.Process.Start(dkill);
-                }
-
-            }
-            else
-            {
-                MessageBox.Show("dkill.batが見つかりません。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            return;
-        }
-        */
-
         private void fileSystemWatcher1_Changed(object sender, FileSystemEventArgs e)
         {
             pictureBox11.Visible = true;
@@ -946,6 +893,30 @@ namespace glc_cs
             loaditem(gamedir);
             listBox1.SelectedIndex = selected - 2;
             return;
+        }
+
+        private void pictureBox13_Click(object sender, EventArgs e)
+        {
+            if (textBox2.Text != "")
+            {
+                String opendir = System.IO.Path.GetDirectoryName(textBox2.Text);
+                if (Directory.Exists(opendir))
+                {
+                    System.Diagnostics.Process.Start(opendir);
+                }
+            }
+        }
+
+        private void pictureBox14_Click(object sender, EventArgs e)
+        {
+            if (textBox2.Text != "")
+            {
+                String opendir = System.IO.Path.GetDirectoryName(textBox2.Text);
+                if (Directory.Exists(opendir))
+                {
+                    System.Diagnostics.Process.Start(opendir);
+                }
+            }
         }
 
         private void button10_Click(object sender, EventArgs e)

@@ -268,12 +268,14 @@ namespace glc_cs
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
             textBox4.Enabled = true;
+            textBox5.Text = "50001";
             byType = 0;
         }
 
         private void radioButton4_CheckedChanged(object sender, EventArgs e)
         {
             textBox4.Enabled = false;
+            textBox5.Text = "50080";
             byType = 1;
         }
     }

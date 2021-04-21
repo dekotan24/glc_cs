@@ -168,6 +168,8 @@
     <None Include="Resources\exe.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\exp.bmp" />
+    <None Include="Resources\exp.png" />
     <Content Include="Resources\favicon.ico" />
     <None Include="Resources\load.gif" />
     <None Include="Resources\memo.png" />
