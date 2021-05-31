@@ -1,4 +1,18 @@
-﻿using System;
+﻿/*
+ * 
+ * アプリケーション名：Game Launcher C# Edition
+ * ファイル名：Form2.cs
+ * 
+ * 作者：Ogura Deko
+ * メール：support_dekosoft@outlook.jp
+ * WEB：https://sunkun.nippombashi.net
+ * 
+ * バージョン履歴
+ * 管理番号A001 2021/05/31 Discord Connector選択機能追加
+ */
+
+
+using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -36,6 +50,9 @@ namespace glc_cs
 
         private void Form2_Load(object sender, EventArgs e)
         {
+            //バージョン取得
+            label10.Text = "Ver." + gl.appver + " Build " + gl.appbuild;
+
             //Discord設定読み込み
             checkBox1.Checked = Convert.ToBoolean(Convert.ToInt32(readini("checkbox", "dconnect", "0")));
             if (Convert.ToInt32(readini("checkbox", "rate", "-1")) == 0)
@@ -50,6 +67,25 @@ namespace glc_cs
             {
                 radioButton1.Checked = true;
             }
+// 管理番号A001 From
+            string dconpath = readini("connect", "dconpath", "-1");
+            if (File.Exists(dconpath))
+            {
+                //指定パスにdcon.jar存在する場合
+                textBox1.Text = dconpath;
+                label11.Text = "OK";
+            }
+            else if(File.Exists(AppDomain.CurrentDomain.BaseDirectory + "dcon.jar"))
+            {
+                //アプリケーションルートに存在する場合
+                textBox1.Text = AppDomain.CurrentDomain.BaseDirectory + "dcon.jar";
+                label11.Text = "OK";
+            }
+            else
+            {
+                label11.Text = "NG";
+            }
+// 管理番号A001 To
 
             //棒読みちゃん設定読み込み
             int isbyActive = Convert.ToInt32(readini("connect", "byActive", "0"));
@@ -84,6 +120,9 @@ namespace glc_cs
             {
                 writeini("checkbox", "rate", "1", 1, "");
             }
+// 管理番号A001 From
+            writeini("connect", "dconpath", textBox1.Text, 1, "");
+// 管理番号A001 To
 
             //棒読みちゃん設定適用
             writeini("connect", "byActive", (Convert.ToInt32(checkBox2.Checked)).ToString(), 1, "");
@@ -278,5 +317,24 @@ namespace glc_cs
             textBox5.Text = "50080";
             byType = 1;
         }
+
+// 管理番号A001 From
+        private void button1_Click(object sender, EventArgs e)
+        {
+            String newpath;
+
+            //dcon.jar選択
+            openFileDialog1.Title = "\"dcon.jar\"を選択";
+            openFileDialog1.Filter = "Discord Connector|dcon.jar";
+            openFileDialog1.FileName = "";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                newpath = openFileDialog1.FileName;
+                textBox1.Text = newpath;
+                label11.Text = "OK";
+            }
+            return;
+        }
+// 管理番号A001 To
     }
 }
