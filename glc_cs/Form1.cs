@@ -9,6 +9,7 @@
  * 
  * バージョン履歴
  * 管理番号A001 2021/05/31 テスト起動機能追加
+ * 管理番号A002 2021/06/01 テスト起動の修正
  */
  
 using Microsoft.VisualBasic;
@@ -41,8 +42,8 @@ namespace glc_cs
 
 		public String gamedir, basedir = AppDomain.CurrentDomain.BaseDirectory + "\\", gameini, configini = AppDomain.CurrentDomain.BaseDirectory + "\\config.ini";
 		public static String appname = "Game Launcher C# Edition";
-		public static String appver = "0.941";
-		public static String appbuild = "15.21.06.01";
+		public static String appver = "0.942";
+		public static String appbuild = "16.21.06.01";
 		public int gamemax = 0, pfmax = 0;
 		private string dconpath = "";
 
@@ -352,6 +353,12 @@ namespace glc_cs
 					//checkBox6.Checked
 					MessageBox.Show("テスト起動モードが有効です。\nこのモードでは起動時間、起動回数、DiscordRPCなどは実行されません。\n\n無効にするには、[テスト起動]チェックを外してください。", appname, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+// 管理番号A002 From
+					//作業ディレクトリ変更
+					String apppath = System.IO.Path.GetDirectoryName(textBox2.Text);
+					System.Environment.CurrentDirectory = apppath;
+// 管理番号A002 To
+
 					//起動中gifの可視化
 					pictureBox11.Visible = true;
 
@@ -364,6 +371,11 @@ namespace glc_cs
 
 					//ゲーム終了まで待機
 					p.WaitForExit();
+
+// 管理番号A002 From
+					//作業ディレクトリ復元
+					System.Environment.CurrentDirectory = basedir;
+// 管理番号A002 To
 
 					//起動中gifの非可視化
 					pictureBox11.Visible = false;
