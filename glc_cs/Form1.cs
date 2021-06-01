@@ -41,8 +41,8 @@ namespace glc_cs
 
 		public String gamedir, basedir = AppDomain.CurrentDomain.BaseDirectory + "\\", gameini, configini = AppDomain.CurrentDomain.BaseDirectory + "\\config.ini";
 		public static String appname = "Game Launcher C# Edition";
-		public static String appver = "0.94";
-		public static String appbuild = "14.21.05.31";
+		public static String appver = "0.941";
+		public static String appbuild = "15.21.06.01";
 		public int gamemax = 0, pfmax = 0;
 		private string dconpath = "";
 
