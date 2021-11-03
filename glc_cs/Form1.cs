@@ -42,8 +42,8 @@ namespace glc_cs
 
 		public String gamedir, basedir = AppDomain.CurrentDomain.BaseDirectory + "\\", gameini, configini = AppDomain.CurrentDomain.BaseDirectory + "\\config.ini";
 		public static String appname = "Game Launcher C# Edition";
-		public static String appver = "0.942";
-		public static String appbuild = "16.21.06.01";
+		public static String appver = "0.95";
+		public static String appbuild = "17.21.11.03";
 		public int gamemax = 0, pfmax = 0;
 		private string dconpath = "";
 
@@ -114,6 +114,7 @@ namespace glc_cs
 		public string loaditem(String gamedirname)
 		{
 			listBox1.Items.Clear();
+			listView1.Items.Clear();
 
 			//全ゲーム数取得
 			if (File.Exists(gameini))
@@ -142,6 +143,8 @@ namespace glc_cs
 			int count;
 			String readini;
 			String ans = "";
+			Image lvimg;
+			ListViewItem lvi = new ListViewItem();
 
 			toolStripProgressBar1.Minimum = 0;
 			toolStripProgressBar1.Maximum = gamemax;
@@ -154,6 +157,21 @@ namespace glc_cs
 				if (File.Exists(readini))
 				{
 					listBox1.Items.Add(iniread(readini, "game", "name", ""));
+
+					try
+					{
+						lvimg = System.Drawing.Image.FromFile(@iniread(readini, "game", "imgpass", ""));
+					}
+					catch
+					{
+						lvimg = glc_cs.Properties.Resources.exe;
+					}
+
+					imageList1.Images.Add(count.ToString(), lvimg);
+
+					lvi = new ListViewItem(iniread(readini, "game", "name", ""));
+					lvi.ImageIndex = (count - 1);
+					listView1.Items.Add(lvi);
 				}
 				else
 				{
@@ -516,6 +534,9 @@ namespace glc_cs
 			{
 				return;
 			}
+
+			//グリッドと同期
+			listView1.Items[listBox1.SelectedIndex].Selected = true;
 
 			//ゲーム詳細取得
 			int selecteditem = listBox1.SelectedIndex + 1;
@@ -1045,6 +1066,25 @@ namespace glc_cs
 			loaditem(gamedir);
 			listBox1.SelectedIndex = selected--;
 			return;
+		}
+
+		private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!(gamemax >= 1))
+			{
+				return;
+			}
+
+			if (listView1.SelectedItems.Count <= 0)
+			{
+				return;
+			}
+
+			//リストと同期
+			listBox1.SelectedIndex = Convert.ToInt32(listView1.SelectedItems[0].Index);
+
+			return;
+
 		}
 
 		private void button4_Click(object sender, EventArgs e)
