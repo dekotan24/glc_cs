@@ -86,8 +86,11 @@
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.trackBar1 = new System.Windows.Forms.TrackBar();
 			this.listView1 = new System.Windows.Forms.ListView();
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+			this.imageList2 = new System.Windows.Forms.ImageList(this.components);
+			this.imageList0 = new System.Windows.Forms.ImageList(this.components);
 			this.statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
@@ -108,6 +111,7 @@
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// listBox1
@@ -501,8 +505,10 @@
 			this.tabControl1.Controls.Add(this.tabPage1);
 			this.tabControl1.Controls.Add(this.tabPage2);
 			resources.ApplyResources(this.tabControl1, "tabControl1");
+			this.tabControl1.Multiline = true;
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
+			this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
 			// 
 			// tabPage1
 			// 
@@ -513,10 +519,20 @@
 			// 
 			// tabPage2
 			// 
+			this.tabPage2.Controls.Add(this.trackBar1);
 			this.tabPage2.Controls.Add(this.listView1);
 			resources.ApplyResources(this.tabPage2, "tabPage2");
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.UseVisualStyleBackColor = true;
+			// 
+			// trackBar1
+			// 
+			resources.ApplyResources(this.trackBar1, "trackBar1");
+			this.trackBar1.LargeChange = 1;
+			this.trackBar1.Maximum = 2;
+			this.trackBar1.Name = "trackBar1";
+			this.trackBar1.Value = 1;
+			this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
 			// 
 			// listView1
 			// 
@@ -530,9 +546,21 @@
 			// 
 			// imageList1
 			// 
-			this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+			this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth16Bit;
 			resources.ApplyResources(this.imageList1, "imageList1");
 			this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+			// 
+			// imageList2
+			// 
+			this.imageList2.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+			resources.ApplyResources(this.imageList2, "imageList2");
+			this.imageList2.TransparentColor = System.Drawing.Color.Transparent;
+			// 
+			// imageList0
+			// 
+			this.imageList0.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+			resources.ApplyResources(this.imageList0, "imageList0");
+			this.imageList0.TransparentColor = System.Drawing.Color.Transparent;
 			// 
 			// gl
 			// 
@@ -605,6 +633,7 @@
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			this.tabPage2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -669,6 +698,9 @@
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.ListView listView1;
 		private System.Windows.Forms.ImageList imageList1;
+		private System.Windows.Forms.TrackBar trackBar1;
+		private System.Windows.Forms.ImageList imageList2;
+		private System.Windows.Forms.ImageList imageList0;
 	}
 }
 

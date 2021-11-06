@@ -39,7 +39,6 @@ namespace glc_cs
         string lpKeyName, string lpString,
         string lpFileName);
 
-        String configini = AppDomain.CurrentDomain.BaseDirectory + "config.ini";
         string appname = "GLconfig";
         int byType;
 
@@ -156,7 +155,7 @@ namespace glc_cs
                                 sec,
                                 key,
                                 data,
-                                configini);
+                                gl.configini);
             }
             else
             {
@@ -183,7 +182,7 @@ namespace glc_cs
                 failedval,
                 data,
                 1024,
-                configini);
+                gl.configini);
 
             ans = data.ToString();
             return ans;

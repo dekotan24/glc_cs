@@ -11,7 +11,7 @@
  * 管理番号A001 2021/05/31 テスト起動機能追加
  * 管理番号A002 2021/06/01 テスト起動の修正
  */
- 
+
 using Microsoft.VisualBasic;
 using System;
 using System.Drawing;
@@ -40,10 +40,11 @@ namespace glc_cs
 		string lpKeyName, string lpString,
 		string lpFileName);
 
-		public String gamedir, basedir = AppDomain.CurrentDomain.BaseDirectory + "\\", gameini, configini = AppDomain.CurrentDomain.BaseDirectory + "\\config.ini";
+		public String gamedir, basedir = AppDomain.CurrentDomain.BaseDirectory + "\\", gameini;
+		public static string configini = AppDomain.CurrentDomain.BaseDirectory + "\\config.ini";
 		public static String appname = "Game Launcher C# Edition";
-		public static String appver = "0.95";
-		public static String appbuild = "17.21.11.03";
+		public static String appver = "0.951";
+		public static String appbuild = "18.21.11.04";
 		public int gamemax = 0, pfmax = 0;
 		private string dconpath = "";
 
@@ -115,6 +116,10 @@ namespace glc_cs
 		{
 			listBox1.Items.Clear();
 			listView1.Items.Clear();
+			imageList0.Images.Clear();
+			imageList1.Images.Clear();
+			imageList2.Images.Clear();
+			
 
 			//全ゲーム数取得
 			if (File.Exists(gameini))
@@ -151,6 +156,7 @@ namespace glc_cs
 
 			for (count = 1; count <= gamemax; count++)
 			{
+				toolStripProgressBar1.Value = count;
 				//読込iniファイル名更新
 				readini = gamedirname + "\\" + count + ".ini";
 
@@ -167,7 +173,9 @@ namespace glc_cs
 						lvimg = glc_cs.Properties.Resources.exe;
 					}
 
+					imageList0.Images.Add(count.ToString(), lvimg);
 					imageList1.Images.Add(count.ToString(), lvimg);
+					imageList2.Images.Add(count.ToString(), lvimg);
 
 					lvi = new ListViewItem(iniread(readini, "game", "name", ""));
 					lvi.ImageIndex = (count - 1);
@@ -193,10 +201,53 @@ namespace glc_cs
 			return ans;
 		}
 
+		/// <summary>
+		/// Start button
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void button1_Click(object sender, EventArgs e)
 		{
 			int startdata, timedata, ratinginfo;
-			button9_Click(null, null);
+
+			if (listBox1.SelectedIndex == -1)
+			{
+				MessageBox.Show("ゲームリストが空です。", appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+			String selectedtext = listBox1.SelectedItem.ToString();
+
+			//Discordカスタムステータス、各種チェックボックス、ラジオの保存
+			String pass = gamedir + "\\" + (listBox1.SelectedIndex + 1) + ".ini";
+			if (File.Exists(pass))
+			{
+				iniedtchk(pass, "game", "stat", (textBox6.Text), "");
+				iniedtchk(configini, "checkbox", "track", (Convert.ToInt32(checkBox1.Checked)).ToString(), "0");
+				iniedtchk(configini, "checkbox", "winmini", (Convert.ToInt32(checkBox2.Checked)).ToString(), "0");
+				iniedtchk(configini, "checkbox", "sens", (Convert.ToInt32(checkBox4.Checked)).ToString(), "0");
+				if (radioButton1.Checked)
+				{
+					iniedtchk(configini, "checkbox", "rate", "0", "-1");
+				}
+				else
+				{
+					iniedtchk(configini, "checkbox", "rate", "1", "-1");
+				}
+
+
+				//更新前に選択していたゲームへ移動
+				if (listBox1.Items.Contains(selectedtext))
+				{
+					listBox1.SelectedIndex = listBox1.Items.IndexOf(selectedtext);
+				}
+			}
+			else
+			{
+				//個別ini不存在
+				MessageBox.Show("ゲーム情報保管iniが存在しません。\n" + pass, appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+
+
 			if (File.Exists(textBox2.Text))
 			{
 				if (!checkBox6.Checked)
@@ -206,14 +257,14 @@ namespace glc_cs
 						iniedtchk(gamedir + "\\" + (listBox1.SelectedIndex + 1).ToString() + ".ini", "game", "stat", textBox6.Text, "");
 
 						//propertiesファイル書き込み
-// 管理番号A001 From
+						// 管理番号A001 From
 						dconCheck();
 						if (!File.Exists(dconpath))
 						{
 							MessageBox.Show("Discord Connectorが見つかりません。\n実行を中断します。", appname, MessageBoxButtons.OK, MessageBoxIcon.Error);
 							return;
 						}
-// 管理番号A001 To
+						// 管理番号A001 To
 						String propertiesfile = System.IO.Path.GetDirectoryName(dconpath) + "\\run.properties";
 						Encoding enc = Encoding.GetEncoding("Shift-JIS");
 						StreamWriter writer = new StreamWriter(propertiesfile, false, enc);
@@ -246,17 +297,13 @@ namespace glc_cs
 
 
 						//dconの確認／実行
-// 管理番号A001 From
 						//string drun = AppDomain.CurrentDomain.BaseDirectory + "dcon.jar";
 						dconCheck();
-// 管理番号A001 To
 						System.Diagnostics.Process drunp = null;
 						if (checkBox5.Checked)
 						{
-// 管理番号A001 From
 							//if(File.Exists(drun))
 							if (File.Exists(dconpath))
-// 管理番号A001 To
 							{
 								drunp = System.Diagnostics.Process.Start(dconpath); //dcon実行
 							}
@@ -272,6 +319,7 @@ namespace glc_cs
 						{
 							this.WindowState = FormWindowState.Minimized;
 							this.notifyIcon1.Visible = true;
+							//notifyIcon1.ShowBalloonTip(50, appname, textBox1.Text + "を実行中", ToolTipIcon.Info);
 						}
 
 						//既定ディレクトリの変更
@@ -315,7 +363,6 @@ namespace glc_cs
 						//終了時刻取得
 						String time = p.ExitTime.ToString("yyyy/MM/dd HH:mm:ss");
 						DateTime endtime = Convert.ToDateTime(time);
-						//DateTime endtime = DateTime.ParseExact(time, format, null);
 
 						//起動時間計算
 						String temp = (endtime - starttime).ToString();
@@ -371,14 +418,20 @@ namespace glc_cs
 					//checkBox6.Checked
 					MessageBox.Show("テスト起動モードが有効です。\nこのモードでは起動時間、起動回数、DiscordRPCなどは実行されません。\n\n無効にするには、[テスト起動]チェックを外してください。", appname, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-// 管理番号A002 From
 					//作業ディレクトリ変更
 					String apppath = System.IO.Path.GetDirectoryName(textBox2.Text);
 					System.Environment.CurrentDirectory = apppath;
-// 管理番号A002 To
 
 					//起動中gifの可視化
 					pictureBox11.Visible = true;
+
+					//ウィンドウ最小化
+					if (checkBox2.Checked == true)
+					{
+						this.WindowState = FormWindowState.Minimized;
+						this.notifyIcon1.Visible = true;
+						//notifyIcon1.ShowBalloonTip(50, appname, textBox1.Text + "を実行中", ToolTipIcon.Info);
+					}
 
 					//ゲーム実行
 					System.Diagnostics.Process p =
@@ -390,10 +443,14 @@ namespace glc_cs
 					//ゲーム終了まで待機
 					p.WaitForExit();
 
-// 管理番号A002 From
 					//作業ディレクトリ復元
 					System.Environment.CurrentDirectory = basedir;
-// 管理番号A002 To
+
+					if (checkBox2.Checked == true)
+					{
+						this.WindowState = FormWindowState.Normal;
+						this.notifyIcon1.Visible = false;
+					}
 
 					//起動中gifの非可視化
 					pictureBox11.Visible = false;
@@ -537,6 +594,7 @@ namespace glc_cs
 
 			//グリッドと同期
 			listView1.Items[listBox1.SelectedIndex].Selected = true;
+			listView1.EnsureVisible(listBox1.SelectedIndex);
 
 			//ゲーム詳細取得
 			int selecteditem = listBox1.SelectedIndex + 1;
@@ -624,7 +682,7 @@ namespace glc_cs
 				loaditem(gamedir);
 				if (listBox1.Items.Contains(selectedtext))
 				{
-					listBox1.SelectedIndex = listBox1.Items.IndexOf(selectedtext); ;
+					listBox1.SelectedIndex = listBox1.Items.IndexOf(selectedtext);
 				}
 				else
 				{
@@ -870,6 +928,10 @@ namespace glc_cs
 					int ans = r.Next(1, rawdata + 1);
 
 					listBox1.SelectedIndex = ans - 1;
+
+					//グリッドと同期
+					listView1.Items[listBox1.SelectedIndex].Selected = true;
+					listView1.EnsureVisible(listBox1.SelectedIndex);
 				}
 				else
 				{
@@ -933,6 +995,7 @@ namespace glc_cs
 				{
 					iniedtchk(configini, "checkbox", "rate", "1", "-1");
 				}
+
 				loaditem(gamedir);
 
 				//更新前に選択していたゲームへ移動
@@ -1085,6 +1148,23 @@ namespace glc_cs
 
 			return;
 
+		}
+
+		private void trackBar1_Scroll(object sender, EventArgs e)
+		{
+			switch (trackBar1.Value)
+			{
+				case 0:
+
+					listView1.LargeImageList = imageList0;
+					break;
+				case 1:
+					listView1.LargeImageList = imageList1;
+					break;
+				case 2:
+					listView1.LargeImageList = imageList2;
+					break;
+			}
 		}
 
 		private void button4_Click(object sender, EventArgs e)
@@ -1247,7 +1327,11 @@ namespace glc_cs
 				}
 				catch (Exception)
 				{
-					MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					DialogResult dr = MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。\n\n今回のみ接続しないようにしますか？", appname, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+					if (dr == DialogResult.Yes)
+					{
+						byActive = false;
+					}
 					return;
 				}
 				wc.Dispose();
@@ -1261,7 +1345,11 @@ namespace glc_cs
 				}
 				catch (Exception)
 				{
-					MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					DialogResult dr = MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。\n\n今回のみ接続しないようにしますか？", appname, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+					if (dr == DialogResult.Yes)
+					{
+						byActive = false;
+					}
 					return;
 				}
 				//メッセージ送信
@@ -1311,7 +1399,11 @@ namespace glc_cs
 					}
 					catch (Exception)
 					{
-						MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						DialogResult dr = MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。\n\n今回のみ接続しないようにしますか？", appname, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+						if (dr == DialogResult.Yes)
+						{
+							byActive = false;
+						}
 						return;
 					}
 					wc.Dispose();
@@ -1325,7 +1417,8 @@ namespace glc_cs
 					}
 					catch (Exception)
 					{
-						MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						DialogResult dr = MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。\n\n今回のみ接続しないようにしますか？", appname, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+						byActive = false;
 						return;
 					}
 					//メッセージ送信
@@ -1358,7 +1451,9 @@ namespace glc_cs
 				{
 					//アプリケーションルートに存在する場合
 					dconpath = AppDomain.CurrentDomain.BaseDirectory + "dcon.jar";
-				}else{
+				}
+				else
+				{
 					dconpath = "-1";
 				}
 			}
