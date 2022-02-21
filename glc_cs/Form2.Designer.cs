@@ -70,8 +70,22 @@
 			this.checkBox5 = new System.Windows.Forms.CheckBox();
 			this.checkBox3 = new System.Windows.Forms.CheckBox();
 			this.tabPage4 = new System.Windows.Forms.TabPage();
-			this.button4 = new System.Windows.Forms.Button();
+			this.groupBox10 = new System.Windows.Forms.GroupBox();
+			this.button6 = new System.Windows.Forms.Button();
+			this.textBox7 = new System.Windows.Forms.TextBox();
+			this.label18 = new System.Windows.Forms.Label();
+			this.textBox6 = new System.Windows.Forms.TextBox();
+			this.label17 = new System.Windows.Forms.Label();
+			this.label16 = new System.Windows.Forms.Label();
+			this.textBox3 = new System.Windows.Forms.TextBox();
+			this.button5 = new System.Windows.Forms.Button();
 			this.label9 = new System.Windows.Forms.Label();
+			this.textBox2 = new System.Windows.Forms.TextBox();
+			this.button4 = new System.Windows.Forms.Button();
+			this.groupBox9 = new System.Windows.Forms.GroupBox();
+			this.label12 = new System.Windows.Forms.Label();
+			this.radioButton9 = new System.Windows.Forms.RadioButton();
+			this.radioButton8 = new System.Windows.Forms.RadioButton();
 			this.tabPage5 = new System.Windows.Forms.TabPage();
 			this.label10 = new System.Windows.Forms.Label();
 			this.linkLabel3 = new System.Windows.Forms.LinkLabel();
@@ -103,6 +117,8 @@
 			this.tabPage6.SuspendLayout();
 			this.groupBox7.SuspendLayout();
 			this.tabPage4.SuspendLayout();
+			this.groupBox10.SuspendLayout();
+			this.groupBox9.SuspendLayout();
 			this.tabPage5.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -481,6 +497,7 @@
 			this.groupBox7.Controls.Add(this.checkBox6);
 			this.groupBox7.Controls.Add(this.checkBox5);
 			this.groupBox7.Controls.Add(this.checkBox3);
+			this.groupBox7.Enabled = false;
 			this.groupBox7.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox7.Location = new System.Drawing.Point(6, 6);
 			this.groupBox7.Name = "groupBox7";
@@ -541,34 +558,183 @@
 			// 
 			// tabPage4
 			// 
-			this.tabPage4.Controls.Add(this.button4);
-			this.tabPage4.Controls.Add(this.label9);
+			this.tabPage4.BackColor = System.Drawing.Color.DarkGray;
+			this.tabPage4.Controls.Add(this.groupBox10);
+			this.tabPage4.Controls.Add(this.groupBox9);
 			this.tabPage4.Location = new System.Drawing.Point(4, 22);
 			this.tabPage4.Name = "tabPage4";
 			this.tabPage4.Size = new System.Drawing.Size(481, 209);
 			this.tabPage4.TabIndex = 2;
 			this.tabPage4.Text = "ディレクトリ関連";
-			this.tabPage4.UseVisualStyleBackColor = true;
+			// 
+			// groupBox10
+			// 
+			this.groupBox10.Controls.Add(this.button6);
+			this.groupBox10.Controls.Add(this.textBox7);
+			this.groupBox10.Controls.Add(this.label18);
+			this.groupBox10.Controls.Add(this.textBox6);
+			this.groupBox10.Controls.Add(this.label17);
+			this.groupBox10.Controls.Add(this.label16);
+			this.groupBox10.Controls.Add(this.textBox3);
+			this.groupBox10.Controls.Add(this.button5);
+			this.groupBox10.Controls.Add(this.label9);
+			this.groupBox10.Controls.Add(this.textBox2);
+			this.groupBox10.Controls.Add(this.button4);
+			this.groupBox10.Enabled = false;
+			this.groupBox10.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox10.Location = new System.Drawing.Point(6, 83);
+			this.groupBox10.Name = "groupBox10";
+			this.groupBox10.Size = new System.Drawing.Size(467, 123);
+			this.groupBox10.TabIndex = 3;
+			this.groupBox10.TabStop = false;
+			this.groupBox10.Text = "作業ディレクトリ／ファイル";
+			// 
+			// button6
+			// 
+			this.button6.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.button6.Location = new System.Drawing.Point(397, 89);
+			this.button6.Name = "button6";
+			this.button6.Size = new System.Drawing.Size(64, 23);
+			this.button6.TabIndex = 11;
+			this.button6.Text = "接続テスト";
+			this.button6.UseVisualStyleBackColor = true;
+			// 
+			// textBox7
+			// 
+			this.textBox7.Location = new System.Drawing.Point(228, 86);
+			this.textBox7.Name = "textBox7";
+			this.textBox7.Size = new System.Drawing.Size(163, 23);
+			this.textBox7.TabIndex = 10;
+			this.textBox7.UseSystemPasswordChar = true;
+			// 
+			// label18
+			// 
+			this.label18.AutoSize = true;
+			this.label18.Location = new System.Drawing.Point(182, 89);
+			this.label18.Name = "label18";
+			this.label18.Size = new System.Drawing.Size(40, 16);
+			this.label18.TabIndex = 9;
+			this.label18.Text = "Pass";
+			// 
+			// textBox6
+			// 
+			this.textBox6.Location = new System.Drawing.Point(48, 86);
+			this.textBox6.Name = "textBox6";
+			this.textBox6.Size = new System.Drawing.Size(117, 23);
+			this.textBox6.TabIndex = 8;
+			// 
+			// label17
+			// 
+			this.label17.AutoSize = true;
+			this.label17.Location = new System.Drawing.Point(3, 89);
+			this.label17.Name = "label17";
+			this.label17.Size = new System.Drawing.Size(39, 16);
+			this.label17.TabIndex = 7;
+			this.label17.Text = "User";
+			// 
+			// label16
+			// 
+			this.label16.AutoSize = true;
+			this.label16.Location = new System.Drawing.Point(6, 54);
+			this.label16.Name = "label16";
+			this.label16.Size = new System.Drawing.Size(28, 16);
+			this.label16.TabIndex = 6;
+			this.label16.Text = "DB";
+			// 
+			// textBox3
+			// 
+			this.textBox3.Location = new System.Drawing.Point(48, 51);
+			this.textBox3.Name = "textBox3";
+			this.textBox3.Size = new System.Drawing.Size(343, 23);
+			this.textBox3.TabIndex = 5;
+			// 
+			// button5
+			// 
+			this.button5.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.button5.Location = new System.Drawing.Point(397, 51);
+			this.button5.Name = "button5";
+			this.button5.Size = new System.Drawing.Size(64, 23);
+			this.button5.TabIndex = 4;
+			this.button5.Text = "変更";
+			this.button5.UseVisualStyleBackColor = true;
+			this.button5.Click += new System.EventHandler(this.button5_Click);
+			// 
+			// label9
+			// 
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(6, 25);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(26, 16);
+			this.label9.TabIndex = 3;
+			this.label9.Text = "INI";
+			// 
+			// textBox2
+			// 
+			this.textBox2.Location = new System.Drawing.Point(48, 22);
+			this.textBox2.Name = "textBox2";
+			this.textBox2.Size = new System.Drawing.Size(343, 23);
+			this.textBox2.TabIndex = 2;
 			// 
 			// button4
 			// 
-			this.button4.Location = new System.Drawing.Point(116, 17);
+			this.button4.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.button4.Location = new System.Drawing.Point(397, 22);
 			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(75, 23);
+			this.button4.Size = new System.Drawing.Size(64, 23);
 			this.button4.TabIndex = 1;
 			this.button4.Text = "変更";
 			this.button4.UseVisualStyleBackColor = true;
 			this.button4.Click += new System.EventHandler(this.button4_Click);
 			// 
-			// label9
+			// groupBox9
 			// 
-			this.label9.AutoSize = true;
-			this.label9.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label9.Location = new System.Drawing.Point(5, 18);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(105, 16);
-			this.label9.TabIndex = 0;
-			this.label9.Text = "作業ディレクトリ";
+			this.groupBox9.Controls.Add(this.label12);
+			this.groupBox9.Controls.Add(this.radioButton9);
+			this.groupBox9.Controls.Add(this.radioButton8);
+			this.groupBox9.Enabled = false;
+			this.groupBox9.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox9.Location = new System.Drawing.Point(6, 6);
+			this.groupBox9.Name = "groupBox9";
+			this.groupBox9.Size = new System.Drawing.Size(467, 71);
+			this.groupBox9.TabIndex = 2;
+			this.groupBox9.TabStop = false;
+			this.groupBox9.Text = "ゲームリスト管理方法";
+			// 
+			// label12
+			// 
+			this.label12.AutoSize = true;
+			this.label12.BackColor = System.Drawing.Color.Transparent;
+			this.label12.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label12.Location = new System.Drawing.Point(10, 45);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(438, 15);
+			this.label12.TabIndex = 2;
+			this.label12.Text = "※読込方法を変更すると、現在使用しているリストとは別環境になります。";
+			// 
+			// radioButton9
+			// 
+			this.radioButton9.AutoSize = true;
+			this.radioButton9.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.radioButton9.Location = new System.Drawing.Point(242, 22);
+			this.radioButton9.Name = "radioButton9";
+			this.radioButton9.Size = new System.Drawing.Size(170, 20);
+			this.radioButton9.TabIndex = 1;
+			this.radioButton9.TabStop = true;
+			this.radioButton9.Text = "Accdbファイル（新しい）";
+			this.radioButton9.UseVisualStyleBackColor = true;
+			// 
+			// radioButton8
+			// 
+			this.radioButton8.AutoSize = true;
+			this.radioButton8.Checked = true;
+			this.radioButton8.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.radioButton8.Location = new System.Drawing.Point(41, 22);
+			this.radioButton8.Name = "radioButton8";
+			this.radioButton8.Size = new System.Drawing.Size(137, 20);
+			this.radioButton8.TabIndex = 0;
+			this.radioButton8.TabStop = true;
+			this.radioButton8.Text = "INIファイル（従来）";
+			this.radioButton8.UseVisualStyleBackColor = true;
 			// 
 			// tabPage5
 			// 
@@ -760,7 +926,10 @@
 			this.groupBox7.ResumeLayout(false);
 			this.groupBox7.PerformLayout();
 			this.tabPage4.ResumeLayout(false);
-			this.tabPage4.PerformLayout();
+			this.groupBox10.ResumeLayout(false);
+			this.groupBox10.PerformLayout();
+			this.groupBox9.ResumeLayout(false);
+			this.groupBox9.PerformLayout();
 			this.tabPage5.ResumeLayout(false);
 			this.tabPage5.PerformLayout();
 			this.ResumeLayout(false);
@@ -788,7 +957,6 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton radioButton2;
@@ -829,5 +997,20 @@
 		private System.Windows.Forms.RadioButton radioButton7;
 		private System.Windows.Forms.RadioButton radioButton6;
 		private System.Windows.Forms.RadioButton radioButton5;
+		private System.Windows.Forms.GroupBox groupBox9;
+		private System.Windows.Forms.RadioButton radioButton9;
+		private System.Windows.Forms.RadioButton radioButton8;
+		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.GroupBox groupBox10;
+		private System.Windows.Forms.Button button6;
+		private System.Windows.Forms.TextBox textBox7;
+		private System.Windows.Forms.Label label18;
+		private System.Windows.Forms.TextBox textBox6;
+		private System.Windows.Forms.Label label17;
+		private System.Windows.Forms.Label label16;
+		private System.Windows.Forms.TextBox textBox3;
+		private System.Windows.Forms.Button button5;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.TextBox textBox2;
 	}
 }

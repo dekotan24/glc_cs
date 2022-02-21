@@ -93,9 +93,9 @@ namespace glc_cs.Properties {
         /// <summary>
         ///   (アイコン) に類似した型 System.Drawing.Icon のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Icon favicon {
+        internal static System.Drawing.Icon favicon1 {
             get {
-                object obj = ResourceManager.GetObject("favicon", resourceCulture);
+                object obj = ResourceManager.GetObject("favicon1", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
@@ -106,6 +106,16 @@ namespace glc_cs.Properties {
         internal static System.Drawing.Bitmap fn {
             get {
                 object obj = ResourceManager.GetObject("fn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap icon {
+            get {
+                object obj = ResourceManager.GetObject("icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

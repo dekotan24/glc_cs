@@ -91,6 +91,7 @@
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.imageList2 = new System.Windows.Forms.ImageList(this.components);
 			this.imageList0 = new System.Windows.Forms.ImageList(this.components);
+			this.button11 = new System.Windows.Forms.Button();
 			this.statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
@@ -562,10 +563,19 @@
 			resources.ApplyResources(this.imageList0, "imageList0");
 			this.imageList0.TransparentColor = System.Drawing.Color.Transparent;
 			// 
+			// button11
+			// 
+			resources.ApplyResources(this.button11, "button11");
+			this.button11.Name = "button11";
+			this.toolTip1.SetToolTip(this.button11, resources.GetString("button11.ToolTip"));
+			this.button11.UseVisualStyleBackColor = true;
+			this.button11.Click += new System.EventHandler(this.button11_Click);
+			// 
 			// gl
 			// 
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.button11);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.checkBox6);
 			this.Controls.Add(this.checkBox3);
@@ -701,6 +711,7 @@
 		private System.Windows.Forms.TrackBar trackBar1;
 		private System.Windows.Forms.ImageList imageList2;
 		private System.Windows.Forms.ImageList imageList0;
+		private System.Windows.Forms.Button button11;
 	}
 }
 
