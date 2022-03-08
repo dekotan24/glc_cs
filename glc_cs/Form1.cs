@@ -20,7 +20,6 @@ namespace glc_cs
 
 		// 外部ソースを宣言
 		General.Var gv = new General.Var();
-		General.Fun gf = new General.Fun();
 
 
 		public gl()
@@ -34,19 +33,17 @@ namespace glc_cs
 			Application.DoEvents();
 			this.Opacity = 0;
 			this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-			this.SuspendLayout();
 
 			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
 			pictureBox11.Visible = true;
 
-			updateconfig();
+			updateComponent();
 
 			String item = LoadItem(gv.GameDir);
 			tabControl1.SelectedIndex = 1;
 			tabControl1.SelectedIndex = 0;
 
 			pictureBox11.Visible = false;
-			this.ResumeLayout();
 			this.Refresh();
 			this.Show();
 			form3.Close();
@@ -59,13 +56,12 @@ namespace glc_cs
 
 				if (!(File.Exists(gv.GameIni)))
 				{
-					gf.IniWrite(gv.GameIni, "list", "game", "0");
+					gv.IniWrite(gv.GameIni, "list", "game", "0");
 				}
-
 
 				//itemがnoneの場合：ゲームが登録されていない場合
 				MessageBox.Show("Game Launcherをご利用頂きありがとうございます。\n\"追加\"ボタンを押して、ゲームを追加しましょう！",
-								General.Var.AppName,
+								gv.AppName,
 								MessageBoxButtons.OK,
 								MessageBoxIcon.Information);
 			}
@@ -91,9 +87,9 @@ namespace glc_cs
 		/// <summary>
 		/// ゲームリストの読み込み
 		/// </summary>
-		/// <param name="GameDirname">iniファイルが格納されているフォルダ</param>
+		/// <param name="gameDirname">iniファイルが格納されているフォルダ</param>
 		/// <returns>異常なら"_none_game_data"を返します。正常に処理した場合は空欄が返されます。</returns>
-		public string LoadItem(String GameDirname)
+		public string LoadItem(String gameDirname)
 		{
 			listBox1.Items.Clear();
 			listView1.Items.Clear();
@@ -105,7 +101,7 @@ namespace glc_cs
 			//全ゲーム数取得
 			if (File.Exists(gv.GameIni))
 			{
-				gv.GameMax = Convert.ToInt32(gf.IniRead(gv.GameIni, "list", "game", "0"));
+				gv.GameMax = Convert.ToInt32(gv.IniRead(gv.GameIni, "list", "game", "0"));
 				button8.Enabled = true;
 				button9.Enabled = true;
 				button2.Enabled = true;
@@ -126,7 +122,6 @@ namespace glc_cs
 				button8.Enabled = false;
 			}
 
-			this.SuspendLayout();
 
 			int count;
 			String readini;
@@ -141,26 +136,26 @@ namespace glc_cs
 			{
 				toolStripProgressBar1.Value = count;
 				//読込iniファイル名更新
-				readini = GameDirname + "\\" + count + ".ini";
+				readini = gameDirname + "\\" + count + ".ini";
 
 				if (File.Exists(readini))
 				{
-					listBox1.Items.Add(gf.IniRead(readini, "game", "name", ""));
+					listBox1.Items.Add(gv.IniRead(readini, "game", "name", ""));
 
 					try
 					{
-						lvimg = System.Drawing.Image.FromFile(gf.IniRead(readini, "game", "imgpass", ""));
+						lvimg = Image.FromFile(gv.IniRead(readini, "game", "imgpass", ""));
 					}
 					catch
 					{
-						lvimg = glc_cs.Properties.Resources.exe;
+						lvimg = Properties.Resources.exe;
 					}
 
 					imageList0.Images.Add(count.ToString(), lvimg);
 					imageList1.Images.Add(count.ToString(), lvimg);
 					imageList2.Images.Add(count.ToString(), lvimg);
 
-					lvi = new ListViewItem(gf.IniRead(readini, "game", "name", ""));
+					lvi = new ListViewItem(gv.IniRead(readini, "game", "name", ""));
 					lvi.ImageIndex = (count - 1);
 					listView1.Items.Add(lvi);
 				}
@@ -168,7 +163,7 @@ namespace glc_cs
 				{
 					//個別ini存在しない場合
 					MessageBox.Show("iniファイル読み込み中にエラー。\nファイルが存在しません。\n\n処理を中断します。\n予期せぬ不具合の発生につながる場合があります。\n直ちに終了することをお勧めしますが、このまま実行することもできます。\n\nError: ini_read_error_nofile\nDebug:: gl > LoadItem > for > if > else",
-									General.Var.AppName,
+									gv.AppName,
 									MessageBoxButtons.OK,
 									MessageBoxIcon.Error);
 					this.ResumeLayout();
@@ -182,7 +177,6 @@ namespace glc_cs
 				listBox1.SelectedIndex = 0;
 			}
 
-			this.ResumeLayout();
 			Application.DoEvents();
 			return ans;
 		}
@@ -198,7 +192,7 @@ namespace glc_cs
 
 			if (listBox1.SelectedIndex == -1)
 			{
-				MessageBox.Show("ゲームリストが空です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("ゲームリストが空です。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 			String selectedtext = listBox1.SelectedItem.ToString();
@@ -230,7 +224,7 @@ namespace glc_cs
 			else
 			{
 				//個別ini不存在
-				MessageBox.Show("ゲーム情報保管iniが存在しません。\n" + pass, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("ゲーム情報保管iniが存在しません。\n" + pass, gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 
 
@@ -249,7 +243,7 @@ namespace glc_cs
 
 						//dconの確認／実行
 						//string drun = AppDomain.CurrentDomain.gv.BaseDirectory + "dcon.jar";
-						gf.GLConfigLoad();
+						gv.GLConfigLoad();
 						System.Diagnostics.Process drunp = null;
 						if (checkBox5.Checked)
 						{
@@ -286,7 +280,7 @@ namespace glc_cs
 							}
 							else
 							{
-								MessageBox.Show("Discord Connectorが見つかりません。\n実行を中断します。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+								MessageBox.Show("Discord Connectorが見つかりません。\n実行を中断します。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 								return;
 							}
 						}
@@ -296,7 +290,7 @@ namespace glc_cs
 						{
 							this.WindowState = FormWindowState.Minimized;
 							this.notifyIcon1.Visible = true;
-							//notifyIcon1.ShowBalloonTip(50, General.Var.AppName, textBox1.Text + "を実行中", ToolTipIcon.Info);
+							//notifyIcon1.ShowBalloonTip(50, gv.AppName, textBox1.Text + "を実行中", ToolTipIcon.Info);
 						}
 
 						//既定ディレクトリの変更
@@ -317,7 +311,7 @@ namespace glc_cs
 						System.Diagnostics.Process.Start(textBox2.Text);
 
 						//棒読み上げ
-						gf.Bouyomiage(textBox1.Text + "を、トラッキングありで起動しました。");
+						gv.Bouyomiage(textBox1.Text + "を、トラッキングありで起動しました。");
 
 						//ゲーム終了まで待機
 						p.WaitForExit();
@@ -345,7 +339,7 @@ namespace glc_cs
 						String temp = (endtime - starttime).ToString();
 						int anss = Convert.ToInt32(TimeSpan.Parse(temp).TotalSeconds);
 
-						gf.Bouyomiage("ゲームを終了しました。起動時間は、約" + anss + "秒です。");
+						gv.Bouyomiage("ゲームを終了しました。起動時間は、約" + anss + "秒です。");
 						//ini上書き
 						int selecteditem = listBox1.SelectedIndex + 1;
 						String readini = gv.GameDir + "\\" + selecteditem + ".ini";
@@ -353,22 +347,22 @@ namespace glc_cs
 						if (File.Exists(readini))
 						{
 							//既存値の取得
-							timedata = Convert.ToInt32(gf.IniRead(readini, "game", "time", "0"));
-							startdata = Convert.ToInt32(gf.IniRead(readini, "game", "start", "0"));
+							timedata = Convert.ToInt32(gv.IniRead(readini, "game", "time", "0"));
+							startdata = Convert.ToInt32(gv.IniRead(readini, "game", "start", "0"));
 
 							//計算
 							timedata += anss;
 							startdata++;
 
 							//書き換え
-							gf.IniWrite(readini, "game", "time", timedata.ToString());
-							gf.IniWrite(readini, "game", "start", startdata.ToString());
+							gv.IniWrite(readini, "game", "time", timedata.ToString());
+							gv.IniWrite(readini, "game", "start", startdata.ToString());
 						}
 						else
 						{
 							//個別ini存在しない場合
 							MessageBox.Show("iniファイル読み込み中にエラー。\nファイルが存在しません。\n\n処理を中断します。\n予期せぬ不具合の発生につながる場合があります。\n直ちに終了することをお勧めしますが、このまま実行することもできます。\n\nError: ini_read_error_nofile\nDebug:: gl > button1_Click > if > if > else",
-											General.Var.AppName,
+											gv.AppName,
 											MessageBoxButtons.OK,
 											MessageBoxIcon.Error);
 						}
@@ -384,7 +378,7 @@ namespace glc_cs
 						String apppath = System.IO.Path.GetDirectoryName(textBox2.Text);
 						System.Environment.CurrentDirectory = apppath;
 
-						gf.Bouyomiage(textBox1.Text + "を、トラッキングなしで起動しました。");
+						gv.Bouyomiage(textBox1.Text + "を、トラッキングなしで起動しました。");
 						System.Diagnostics.Process.Start(textBox2.Text);
 
 						System.Environment.CurrentDirectory = gv.BaseDir;
@@ -393,7 +387,7 @@ namespace glc_cs
 				else
 				{
 					//checkBox6.Checked
-					MessageBox.Show("テスト起動モードが有効です。\nこのモードでは起動時間、起動回数、DiscordRPCなどは実行されません。\n\n無効にするには、[テスト起動]チェックを外してください。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show("テスト起動モードが有効です。\nこのモードでは起動時間、起動回数、DiscordRPCなどは実行されません。\n\n無効にするには、[テスト起動]チェックを外してください。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 					//作業ディレクトリ変更
 					String apppath = System.IO.Path.GetDirectoryName(textBox2.Text);
@@ -407,7 +401,7 @@ namespace glc_cs
 					{
 						this.WindowState = FormWindowState.Minimized;
 						this.notifyIcon1.Visible = true;
-						//notifyIcon1.ShowBalloonTip(50, General.Var.AppName, textBox1.Text + "を実行中", ToolTipIcon.Info);
+						//notifyIcon1.ShowBalloonTip(50, gv.AppName, textBox1.Text + "を実行中", ToolTipIcon.Info);
 					}
 
 					//ゲーム実行
@@ -415,7 +409,7 @@ namespace glc_cs
 					System.Diagnostics.Process.Start(textBox2.Text);
 
 					//棒読み上げ
-					gf.Bouyomiage(textBox1.Text + "を、テストモードで起動しました。");
+					gv.Bouyomiage(textBox1.Text + "を、テストモードで起動しました。");
 
 					//ゲーム終了まで待機
 					p.WaitForExit();
@@ -433,20 +427,25 @@ namespace glc_cs
 					pictureBox11.Visible = false;
 
 					//終了検出後
-					DialogResult dr = MessageBox.Show("実行終了を検出しました。\nゲームが正しく終了しましたか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+					DialogResult dr = MessageBox.Show("実行終了を検出しました。\nゲームが正しく終了しましたか？", gv.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 					if (dr == DialogResult.Yes)
 					{
-						MessageBox.Show("正常にトラッキングできています。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+						MessageBox.Show("正常にトラッキングできています。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 					}
 					else
 					{
-						MessageBox.Show("トラッキングに失敗しています。\n\n以下をご確認ください。\n\n・ランチャーを指定していませんか？\n・GLを管理者権限で起動してみてください。\n・実行パスを英数字のみにしてみてください。\n\nそれでも解決しない場合は、トラッキングできません。ご了承ください。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						MessageBox.Show("トラッキングに失敗しています。\n\n以下をご確認ください。\n\n・ランチャーを指定していませんか？\n・GLを管理者権限で起動してみてください。\n・実行パスを英数字のみにしてみてください。\n\nそれでも解決しない場合は、トラッキングできません。ご了承ください。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 					}
 
 				}
 			}
 		}
 
+		/// <summary>
+		/// 追加ボタン
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void button3_Click(object sender, EventArgs e)
 		{
 			String exeans = "", imgans = "", ratedata = "";
@@ -476,11 +475,11 @@ namespace glc_cs
 
 			String filename = System.IO.Path.GetFileNameWithoutExtension(exeans);
 			string appname_ans = Interaction.InputBox(
-				"アプリ名を設定", General.Var.AppName, filename, -1, -1);
+				"アプリ名を設定", gv.AppName, filename, -1, -1);
 
 			String gfilepass = "";
 
-			DialogResult rate = MessageBox.Show("成人向け(R-18)ゲームですか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+			DialogResult rate = MessageBox.Show("成人向け(R-18)ゲームですか？", gv.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 			if (rate == DialogResult.Yes)
 			{
 				ratedata = "1";
@@ -504,37 +503,37 @@ namespace glc_cs
 
 				if (!(File.Exists(gfilepass)))
 				{
-					gf.IniWrite(gfilepass, "game", "name", appname_ans);
-					gf.IniWrite(gfilepass, "game", "imgpass", imgans);
-					gf.IniWrite(gfilepass, "game", "pass", exeans);
-					gf.IniWrite(gfilepass, "game", "time", "0");
-					gf.IniWrite(gfilepass, "game", "start", "0");
-					gf.IniWrite(gfilepass, "game", "stat", "");
-					gf.IniWrite(gfilepass, "game", "rating", ratedata);
-					gf.IniWrite(gv.GameIni, "list", "game", newmaxval.ToString());
+					gv.IniWrite(gfilepass, "game", "name", appname_ans);
+					gv.IniWrite(gfilepass, "game", "imgpass", imgans);
+					gv.IniWrite(gfilepass, "game", "pass", exeans);
+					gv.IniWrite(gfilepass, "game", "time", "0");
+					gv.IniWrite(gfilepass, "game", "start", "0");
+					gv.IniWrite(gfilepass, "game", "stat", "");
+					gv.IniWrite(gfilepass, "game", "rating", ratedata);
+					gv.IniWrite(gv.GameIni, "list", "game", newmaxval.ToString());
 				}
 				else
 				{
-					String dup = gf.IniRead(gfilepass, "game", "name", "unknown");
-					DialogResult dialogResult = MessageBox.Show("既にiniファイルが存在します！\n" + gfilepass + "\n[" + dup + "]\n上書きしますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+					String dup = gv.IniRead(gfilepass, "game", "name", "unknown");
+					DialogResult dialogResult = MessageBox.Show("既にiniファイルが存在します！\n" + gfilepass + "\n[" + dup + "]\n上書きしますか？", gv.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 					if (dialogResult == DialogResult.Yes)
 					{
-						gf.IniWrite(gfilepass, "game", "name", appname_ans);
-						gf.IniWrite(gfilepass, "game", "imgpass", imgans);
-						gf.IniWrite(gfilepass, "game", "pass", exeans);
-						gf.IniWrite(gfilepass, "game", "time", "0");
-						gf.IniWrite(gfilepass, "game", "start", "0");
-						gf.IniWrite(gfilepass, "game", "stat", "");
-						gf.IniWrite(gfilepass, "game", "rating", ratedata);
-						gf.IniWrite(gv.GameIni, "list", "game", newmaxval.ToString());
+						gv.IniWrite(gfilepass, "game", "name", appname_ans);
+						gv.IniWrite(gfilepass, "game", "imgpass", imgans);
+						gv.IniWrite(gfilepass, "game", "pass", exeans);
+						gv.IniWrite(gfilepass, "game", "time", "0");
+						gv.IniWrite(gfilepass, "game", "start", "0");
+						gv.IniWrite(gfilepass, "game", "stat", "");
+						gv.IniWrite(gfilepass, "game", "rating", ratedata);
+						gv.IniWrite(gv.GameIni, "list", "game", newmaxval.ToString());
 					}
 					else if (dialogResult == DialogResult.No)
 					{
-						MessageBox.Show("新規のゲームを追加せずに処理を中断します。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+						MessageBox.Show("新規のゲームを追加せずに処理を中断します。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 					}
 					else
 					{
-						MessageBox.Show("不明な結果です。\n実行を中断します。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+						MessageBox.Show("不明な結果です。\n実行を中断します。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 					}
 					return;
 				}
@@ -546,7 +545,7 @@ namespace glc_cs
 			}
 			else
 			{
-				MessageBox.Show("ゲーム情報統括管理ファイルが見つかりません！", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("ゲーム情報統括管理ファイルが見つかりません！", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 
@@ -556,8 +555,8 @@ namespace glc_cs
 
 		private void button7_Click(object sender, EventArgs e)
 		{
-			DialogResult result = MessageBox.Show(General.Var.AppName + " Ver." + gv.AppVer + " / Build " + gv.AppBuild + " Beta\n\n" + "現在の作業ディレクトリ：" + gv.GameDir + "\n\nAuthor: Ogura Deko (dekosoft)\nMail: support_dekosoft@outlook.jp\nWeb: https://sunkun.nippombashi.net\n\nCopyright (C) Ogura Deko and dekosoft All rights reserved.",
-								General.Var.AppName,
+			DialogResult result = MessageBox.Show(gv.AppName + " Ver." + gv.AppVer + " / Build " + gv.AppBuild + " Beta\n\n" + "現在の作業ディレクトリ：" + gv.GameDir + "\n\nAuthor: Ogura Deko (dekosoft)\nMail: support_dekosoft@outlook.jp\nWeb: https://sunkun.nippombashi.net\n\nCopyright (C) Ogura Deko and dekosoft All rights reserved.",
+								gv.AppName,
 								MessageBoxButtons.OK,
 								MessageBoxIcon.Information);
 			about.ShowDialog(this);
@@ -583,19 +582,19 @@ namespace glc_cs
 			if (File.Exists(readini))
 			{
 				//ini読込開始
-				namedata = gf.IniRead(readini, "game", "name", "");
-				imgpassdata = gf.IniRead(readini, "game", "imgpass", "");
-				passdata = gf.IniRead(readini, "game", "pass", "");
-				stimedata = gf.IniRead(readini, "game", "time", "0");
-				startdata = gf.IniRead(readini, "game", "start", "0");
-				cmtdata = gf.IniRead(readini, "game", "stat", "");
-				rating = gf.IniRead(readini, "game", "rating", "-1");
+				namedata = gv.IniRead(readini, "game", "name", "");
+				imgpassdata = gv.IniRead(readini, "game", "imgpass", "");
+				passdata = gv.IniRead(readini, "game", "pass", "");
+				stimedata = gv.IniRead(readini, "game", "time", "0");
+				startdata = gv.IniRead(readini, "game", "start", "0");
+				cmtdata = gv.IniRead(readini, "game", "stat", "");
+				rating = gv.IniRead(readini, "game", "rating", "-1");
 			}
 			else
 			{
 				//個別ini存在しない場合
 				MessageBox.Show("iniファイル読み込み中にエラー。\nファイルが存在しません。\n\n処理を中断します。\n予期せぬ不具合の発生につながる場合があります。\n直ちに終了することをお勧めしますが、このまま実行することもできます。\n\nError: ini_read_error_nofile\nDebug:: gl > listBox1_SelectedIndexChanged > if > else",
-								General.Var.AppName,
+								gv.AppName,
 								MessageBoxButtons.OK,
 								MessageBoxIcon.Error);
 			}
@@ -647,7 +646,7 @@ namespace glc_cs
 			if (File.Exists(gv.GameIni))
 			{
 				//ini読込開始
-				gv.GameMax = Convert.ToInt32(gf.IniRead(gv.GameIni, "list", "game", "0"));
+				gv.GameMax = Convert.ToInt32(gv.IniRead(gv.GameIni, "list", "game", "0"));
 			}
 			else
 			{
@@ -708,7 +707,7 @@ namespace glc_cs
 
 				DialogResult result = MessageBox.Show(textBox1.Text +
 										"\nおおよその起動時間：" + hour + "時間 " + min + "分",
-										General.Var.AppName,
+										gv.AppName,
 										MessageBoxButtons.OK,
 										MessageBoxIcon.Information);
 			}
@@ -732,7 +731,7 @@ namespace glc_cs
 			pictureBox11.Visible = true;
 			String selectedtext = listBox1.SelectedItem.ToString();
 
-			updateconfig();
+			updateComponent();
 			LoadItem(gv.GameDir);
 			if (listBox1.Items.Contains(selectedtext))
 			{
@@ -764,7 +763,7 @@ namespace glc_cs
 
 			if (File.Exists(ininame))
 			{
-				String rawdata = gf.IniRead(ininame, sec, key, failedval);
+				String rawdata = gv.IniRead(ininame, sec, key, failedval);
 
 				//取得値とデータが違う場合
 				if (!(rawdata.Equals(data)))
@@ -774,7 +773,7 @@ namespace glc_cs
 						fileSystemWatcher1.EnableRaisingEvents = false;
 					}
 
-					gf.IniWrite(ininame, sec, key, data);
+					gv.IniWrite(ininame, sec, key, data);
 
 					if (checkBox3.Checked)
 					{
@@ -784,7 +783,7 @@ namespace glc_cs
 			}
 			else
 			{
-				MessageBox.Show("該当するファイルがありません。\n\nError: INI_file_not_found\nDebug:: iniedtchk > if > else\n" + ininame, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("該当するファイルがありません。\n\nError: INI_file_not_found\nDebug:: iniedtchk > if > else\n" + ininame, gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 
 			if (checkBox3.Checked)
@@ -796,19 +795,23 @@ namespace glc_cs
 			return;
 		}
 
-
-		private void updateconfig()
+		/// <summary>
+		/// コンフィグファイルのロードと画面反映を行います
+		/// </summary>
+		private void updateComponent()
 		{
-			if (File.Exists((gv.ConfigIni)))
+			gv.GLConfigLoad();
+
+			if (File.Exists(gv.ConfigIni))
 			{
-				int ckv0 = Convert.ToInt32(gf.IniRead(gv.ConfigIni, "checkbox", "track", "0"));
-				int ckv1 = Convert.ToInt32(gf.IniRead(gv.ConfigIni, "checkbox", "winmini", "0"));
-				gv.GameDir = gf.IniRead(gv.ConfigIni, "default", "directory", gv.BaseDir) + "Data";
-				gv.GameIni = gv.GameDir + "\\game.ini";
-				String bgimg = gf.IniRead(gv.ConfigIni, "imgd", "bgimg", "");
-				checkBox4.Checked = Convert.ToBoolean(Convert.ToInt32(gf.IniRead(gv.ConfigIni, "checkbox", "sens", "0")));
-				checkBox5.Checked = Convert.ToBoolean(Convert.ToInt32(gf.IniRead(gv.ConfigIni, "checkbox", "dconnect", "1")));
-				if (Convert.ToInt32(gf.IniRead(gv.ConfigIni, "checkbox", "rate", "-1")) == 1)
+				int ckv0 = Convert.ToInt32(gv.IniRead(gv.ConfigIni, "checkbox", "track", "0"));
+				int ckv1 = Convert.ToInt32(gv.IniRead(gv.ConfigIni, "checkbox", "winmini", "0"));
+
+				String bgimg = gv.BgImg;
+				checkBox4.Checked = Convert.ToBoolean(Convert.ToInt32(gv.IniRead(gv.ConfigIni, "checkbox", "sens", "0")));
+				checkBox5.Checked = gv.Dconnect;
+				
+				if (gv.Rate == 1)
 				{
 					radioButton2.Checked = true;
 				}
@@ -817,7 +820,7 @@ namespace glc_cs
 					radioButton1.Checked = true;
 				}
 
-				if (Convert.ToInt32(gf.IniRead(gv.ConfigIni, "connect", "ByActive", "0")) == 1)
+				if (Convert.ToInt32(gv.IniRead(gv.ConfigIni, "connect", "ByActive", "0")) == 1)
 				{
 					gv.ByActive = true;
 					bouyomi_configload();
@@ -862,7 +865,7 @@ namespace glc_cs
 			if (File.Exists(gv.GameIni))
 			{
 
-				int rawdata = Convert.ToInt32(gf.IniRead(gv.GameIni, "list", "game", "0"));
+				int rawdata = Convert.ToInt32(gv.IniRead(gv.GameIni, "list", "game", "0"));
 
 				if (rawdata >= 1)
 				{
@@ -878,19 +881,19 @@ namespace glc_cs
 				}
 				else
 				{
-					MessageBox.Show("登録ゲーム数が少ないため、ランダム選択できません！", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show("登録ゲーム数が少ないため、ランダム選択できません！", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 			else
 			{
-				MessageBox.Show("該当するファイルがありません。\n\nError: INI_file_not_found\nDebug:: iniedtchk > if > else\n", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("該当するファイルがありません。\n\nError: INI_file_not_found\nDebug:: iniedtchk > if > else\n", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
 		private void Application_ApplicationExit(object sender, EventArgs e)
 		{
 			Application.ApplicationExit -= new EventHandler(Application_ApplicationExit);
-			gf.Bouyomiage("ゲームランチャーを終了しました");
+			gv.Bouyomiage("ゲームランチャーを終了しました");
 			this.ShowInTaskbar = false;
 			this.Dispose();
 			Close();
@@ -900,7 +903,7 @@ namespace glc_cs
 		{
 			if (listBox1.SelectedIndex == -1)
 			{
-				MessageBox.Show("ゲームリストが空です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("ゲームリストが空です。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 			//選択中のゲーム保管ファイルを削除
@@ -917,7 +920,7 @@ namespace glc_cs
 		{
 			if (listBox1.SelectedIndex == -1)
 			{
-				MessageBox.Show("ゲームリストが空です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("ゲームリストが空です。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 			String selectedtext = listBox1.SelectedItem.ToString();
@@ -950,7 +953,7 @@ namespace glc_cs
 			else
 			{
 				//個別ini不存在
-				MessageBox.Show("ゲーム情報保管iniが存在しません。\n" + pass, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("ゲーム情報保管iniが存在しません。\n" + pass, gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			return;
 		}
@@ -966,7 +969,7 @@ namespace glc_cs
 			}
 			else
 			{
-				MessageBox.Show("ゲーム情報保管iniがありません！\n" + rawdata, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("ゲーム情報保管iniがありません！\n" + rawdata, gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
@@ -989,13 +992,13 @@ namespace glc_cs
 				}
 				else
 				{
-					MessageBox.Show("移動先もしくは移動前のファイルが見つかりません。\n\n移動前：" + before + "\n移動先：" + after, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show("移動先もしくは移動前のファイルが見つかりません。\n\n移動前：" + before + "\n移動先：" + after, gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 				fileSystemWatcher1.EnableRaisingEvents = true;
 			}
 			else
 			{
-				MessageBox.Show("最上位です。\nこれ以上は上に移動できません。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show("最上位です。\nこれ以上は上に移動できません。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return;
 			}
 			LoadItem(gv.GameDir);
@@ -1058,7 +1061,7 @@ namespace glc_cs
 				}
 				else
 				{
-					MessageBox.Show("移動先もしくは移動前のファイルが見つかりません。\nファイルに影響はありません。\n\n移動前：" + before + "\n移動先：" + after, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show("移動先もしくは移動前のファイルが見つかりません。\nファイルに影響はありません。\n\n移動前：" + before + "\n移動先：" + after, gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 					fileSystemWatcher1.EnableRaisingEvents = true;
 					return;
 				}
@@ -1066,7 +1069,7 @@ namespace glc_cs
 			}
 			else
 			{
-				MessageBox.Show("最下位です。\nこれ以上は下に移動できません。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				MessageBox.Show("最下位です。\nこれ以上は下に移動できません。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				return;
 			}
 			LoadItem(gv.GameDir);
@@ -1115,17 +1118,18 @@ namespace glc_cs
 			//設定
 			fileSystemWatcher1.EnableRaisingEvents = false;
 			fileSystemWatcher2.EnableRaisingEvents = false;
-			String before = gf.IniRead(gv.ConfigIni, "default", "directory", "0");
+			String before = gv.IniRead(gv.ConfigIni, "default", "directory", "0");
 			form2.ShowDialog();
-			String after = gf.IniRead(gv.ConfigIni, "default", "directory", "0");
+			String after = gv.IniRead(gv.ConfigIni, "default", "directory", "0");
 			if (before != after)
 			{
-				MessageBox.Show("既定の作業ディレクトリが変更されました。\nGame Launcherを再度起動してください。\n\nOKを押してGame Launcherを終了します。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("既定の作業ディレクトリが変更されました。\nGame Launcherを再度起動してください。\n\nOKを押してGame Launcherを終了します。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				Close();
 			}
 			fileSystemWatcher1.EnableRaisingEvents = true;
 			fileSystemWatcher2.EnableRaisingEvents = true;
-			updateconfig();
+
+			updateComponent();
 			return;
 		}
 
@@ -1166,7 +1170,7 @@ namespace glc_cs
 			if (File.Exists(delfile))
 			{
 				//削除ファイル存在
-				DialogResult dialogResult = MessageBox.Show("選択中のゲームをランチャーの一覧から削除します。\n※この操作は元に戻せません。\n[" + delfilename + "]\n" + delfile + "\n削除しますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+				DialogResult dialogResult = MessageBox.Show("選択中のゲームをランチャーの一覧から削除します。\n※この操作は元に戻せません。\n[" + delfilename + "]\n" + delfile + "\n削除しますか？", gv.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 				if (dialogResult == DialogResult.Yes)
 				{
 					File.Delete(delfile);
@@ -1181,7 +1185,7 @@ namespace glc_cs
 						nextfile = (gv.GameDir + "\\" + nextval + ".ini");
 					}
 					gv.GameMax--;
-					gf.IniWrite(gv.GameIni, "list", "game", gv.GameMax.ToString());
+					gv.IniWrite(gv.GameIni, "list", "game", gv.GameMax.ToString());
 				}
 				else if (dialogResult == DialogResult.No)
 				{
@@ -1194,13 +1198,13 @@ namespace glc_cs
 				}
 				else
 				{
-					MessageBox.Show("不明な結果です。\n実行を中断します。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show("不明な結果です。\n実行を中断します。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 			else
 			{
 				//削除ファイル不存在
-				MessageBox.Show("該当するiniファイルが存在しません。\n" + delfile, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("該当するiniファイルが存在しません。\n" + delfile, gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			LoadItem(gv.GameDir);
 			if (gv.GameMax >= 2 && delfileval >= 2)
@@ -1232,15 +1236,15 @@ namespace glc_cs
 			}
 			catch (Exception)
 			{
-				MessageBox.Show("既にdcon.jarが終了しています。\n起動時間が正常に記録されない可能性があります。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("既にdcon.jarが終了しています。\n起動時間が正常に記録されない可能性があります。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 		}
 
 		private void bouyomi_configload()
 		{
-			gv.ByHost = gf.IniRead(gv.ConfigIni, "connect", "gv.ByHost", "127.0.0.1");
-			gv.ByPort = Convert.ToInt32(gf.IniRead(gv.ConfigIni, "connect", "gv.ByPort", "50001"));
-			gf.Bouyomi_Connectchk(gf.ByHost, gf.ByPort, gf.ByType, false);
+			gv.ByHost = gv.IniRead(gv.ConfigIni, "connect", "gv.ByHost", "127.0.0.1");
+			gv.ByPort = Convert.ToInt32(gv.IniRead(gv.ConfigIni, "connect", "gv.ByPort", "50001"));
+			gv.Bouyomi_Connectchk(gv.ByHost, gv.ByPort, gv.ByType, false);
 			return;
 		}
 
@@ -1251,22 +1255,22 @@ namespace glc_cs
 		/// <param name="moduleName">関数名</param>
 		/// <param name="errorMsg">エラーメッセージ</param>
 		/// <param name="dialogType">0：OK、4：Yes/No、5：再試行、キャンセル</param>
-		public static DialogResult resolveError(string moduleName, string errorMsg, int dialogType, bool forceClose = true)
+		public DialogResult resolveError(string moduleName, string errorMsg, int dialogType, bool forceClose = true)
 		{
 			DialogResult dr = new DialogResult();
 			switch (dialogType)
 			{
 				case 0:
 				default:
-					dr = MessageBox.Show("エラーが発生しました。 [" + moduleName + "]\n\n" + errorMsg, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					dr = MessageBox.Show("エラーが発生しました。 [" + moduleName + "]\n\n" + errorMsg, gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 					break;
 
 				case 4:
-					dr = MessageBox.Show("エラーが発生しました。 [" + moduleName + "]\n\n" + errorMsg, General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+					dr = MessageBox.Show("エラーが発生しました。 [" + moduleName + "]\n\n" + errorMsg, gv.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Error);
 					break;
 
 				case 5:
-					dr = MessageBox.Show("エラーが発生しました。 [" + moduleName + "]\n\n" + errorMsg, General.Var.AppName, MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+					dr = MessageBox.Show("エラーが発生しました。 [" + moduleName + "]\n\n" + errorMsg, gv.AppName, MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
 					break;
 			}
 
@@ -1289,7 +1293,40 @@ namespace glc_cs
 			GC.Collect();
 			long afterMemory = Environment.WorkingSet;
 			long diffMemory = beforeMemory - afterMemory;
-			MessageBox.Show("メモリを解放しました。\n" + beforeMemory + "byte -> " + afterMemory + "byte (" + diffMemory + "byte)", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show("メモリを解放しました。\n" + beforeMemory + "byte -> " + afterMemory + "byte (" + diffMemory + "byte)", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+		}
+
+		private void button12_Click(object sender, EventArgs e)
+		{
+			if (gv.GridMax)
+			{
+				// 現在最大表示の場合、最小表示にする
+				tabControl1.Width = 345;
+				listBox1.Width = 330;
+				listView1.Width = 330;
+				trackBar1.Width = 330;
+				button12.Text = ">";
+				gv.GridMax = false;
+			}
+			else
+			{
+				// 最小表示の場合、最大表示にする
+				tabControl1.Width = 840;
+				listBox1.Width = 825;
+				listView1.Width = 825;
+				trackBar1.Width = 825;
+				button12.Text = "<";
+				gv.GridMax = true;
+			}
+		}
+
+		private void pictureBox1_Click(object sender, EventArgs e)
+		{
+			if (File.Exists(pictureBox1.ImageLocation))
+			{
+				Form4 form4 = new Form4(pictureBox1.ImageLocation);
+				form4.ShowDialog();
+			}
 		}
 	}
 }

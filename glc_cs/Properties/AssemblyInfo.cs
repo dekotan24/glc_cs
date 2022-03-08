@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // これらの属性値を変更します。
 
 [assembly: AssemblyTitle("Game Launcher C# Edition")]
-[assembly: AssemblyDescription("Game Launcherでゲームを管理しましょう")]
+[assembly: AssemblyDescription("Game Launcherでゲームを管理")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("dekosoft")]
 [assembly: AssemblyProduct("Game Launcher C# Edition")]
@@ -34,6 +34,6 @@ using System.Runtime.InteropServices;
 // すべての値を指定するか、次を使用してビルド番号とリビジョン番号を既定に設定できます
 // 既定値にすることができます:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.96.0.0")]
-[assembly: AssemblyFileVersion("19.22.02.21")]
+[assembly: AssemblyVersion("0.96.2.0")]
+[assembly: AssemblyFileVersion("21.22.03.08")]
 [assembly: NeutralResourcesLanguage("ja-JP")]

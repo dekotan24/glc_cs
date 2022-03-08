@@ -36,22 +36,22 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーション名
 			/// </summary>
-			protected static string appname = "Game Launcher C# Edition";
+			protected static readonly string appname = "Game Launcher C# Edition";
 
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static string appver = "0.96";
+			protected static readonly string appver = "0.962";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static string appbuild = "19.22.02.21";
+			protected static readonly string appbuild = "21.22.03.08";
 
 			/// <summary>
 			/// ゲームディレクトリ(作業ディレクトリ)
 			/// </summary>
-			protected string gamedir;
+			protected string gamedir = string.Empty;
 
 			/// <summary>
 			/// アプリケーションディレクトリ(ランチャー実行パス)
@@ -79,9 +79,14 @@ namespace glc_cs
 			protected int gamemax = 0;
 
 			/// <summary>
+			/// 背景画像パス
+			/// </summary>
+			protected string bgimg = null;
+
+			/// <summary>
 			/// DiscordConnectorパス
 			/// </summary>
-			protected string dconpath = "";
+			protected string dconpath = string.Empty;
 
 			//棒読みちゃん関係
 			/// <summary>
@@ -153,12 +158,17 @@ namespace glc_cs
 			/// <summary>
 			/// Discord Connector 有効フラグ
 			/// </summary>
-			protected bool dconnect;
+			protected bool dconnect = false;
 
 			/// <summary>
 			/// Discord Connector レーティング設定
 			/// </summary>
-			protected Int32 rate;
+			protected Int32 rate = 0;
+
+			/// <summary>
+			/// グリッドサイズ最大化フラグ
+			/// </summary>
+			protected bool gridMax = false;
 
 
 
@@ -166,7 +176,7 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーション名を返却します
 			/// </summary>
-			public static string AppName
+			public string AppName
 			{
 				get { return appname; }
 			}
@@ -240,6 +250,15 @@ namespace glc_cs
 			}
 
 			/// <summary>
+			/// ゲームの最大数を設定/返却します
+			/// </summary>
+			public string BgImg
+			{
+				get { return bgimg; }
+				set { bgimg = value; }
+			}
+
+			/// <summary>
 			/// Discord Connectorのパスを設定/返却します
 			/// </summary>
 			public string DconPath
@@ -266,6 +285,9 @@ namespace glc_cs
 				set { bysMsg = value; }
 			}
 
+			/// <summary>
+			/// 棒読みちゃんとの接続方法（TCP/HTTP）
+			/// </summary>
 			public int ByType
 			{
 				get { return byType; }
@@ -374,7 +396,7 @@ namespace glc_cs
 			}
 
 			/// <summary>
-			/// 棒読みちゃん接続時に、ゲーム実行／終了のフラグを設定/出力します
+			/// 棒読みちゃん接続時に、ゲーム実行／終了時の読み上げのフラグを設定/返却します
 			/// </summary>
 			public bool ByRoS
 			{
@@ -391,6 +413,9 @@ namespace glc_cs
 				get { return tc = new TcpClient(ByHost, ByPort); }
 			}
 
+			/// <summary>
+			/// Discord Connectorの有効フラグです。
+			/// </summary>
 			public bool Dconnect
 			{
 				get { return dconnect; }
@@ -402,20 +427,61 @@ namespace glc_cs
 				get { return rate; }
 				set { rate = value; }
 			}
-		}
+			public bool GridMax
+			{
+				get { return gridMax; }
+				set { gridMax = value; }
+			}
 
-		public partial class Fun : Var
-		{
 			public void GLConfigLoad()
 			{
-				// Discord設定読み込み
-				Dconnect = Convert.ToBoolean(Convert.ToInt32(ReadIni("checkbox", "dconnect", "0")));
-
-				Rate = Convert.ToInt32(ReadIni("checkbox", "rate", "-1"));
-
-				DconPath = ReadIni("connect", "dconpath", "-1");
-				if (!File.Exists(DconPath))
+				if (File.Exists(ConfigIni))
 				{
+					// config.ini 存在する場合
+					GameDir = IniRead(ConfigIni, "default", "directory", BaseDir) + "Data";
+					GameIni = GameDir + "\\game.ini";
+					GameDb = IniRead(ConfigIni, "default", "database", string.Empty);
+					DconPath = ReadIni("connect", "dconpath", "-1");
+
+					GameMax = Convert.ToInt32(IniRead(GameIni, "list", "game", "0"));
+
+					// dcon.jar のチェック
+					if (!File.Exists(DconPath))
+					{
+						if (File.Exists(BaseDir + "dcon.jar"))
+						{
+							DconPath = (BaseDir + "dcon.jar");
+						}
+						else
+						{
+							DconPath = string.Empty;
+						}
+					}
+
+					//棒読みちゃん設定読み込み
+					ByActive = Convert.ToBoolean(Convert.ToInt32(ReadIni("connect", "byActive", "0")));
+					ByType = Convert.ToInt32(ReadIni("connect", "byType", "0"));
+					ByHost = ReadIni("connect", "byHost", "127.0.0.1");
+					ByPort = Convert.ToInt32(ReadIni("connect", "byPort", "50001"));
+					ByCErr = ReadIni("connect", "byCErr", "Q");
+					ByRoW = Convert.ToBoolean(Convert.ToInt32(ReadIni("connect", "byRoW", "0")));
+					ByRoS = Convert.ToBoolean(Convert.ToInt32(ReadIni("connect", "byRoS", "0")));
+
+					// 総合
+					BgImg = ReadIni("imgd", "bgimg", null);
+
+					// dcon設定
+					Dconnect = Convert.ToBoolean(Convert.ToInt32(ReadIni("checkbox", "dconnect", "0")));
+					Rate = Convert.ToInt32(ReadIni("checkbox", "rate", "0"));
+				}
+				else
+				{
+					// config.ini 存在しない場合
+					GameDir = BaseDir + "Data";
+					GameIni = GameDir + "\\game.ini";
+					GameDb = string.Empty;
+
+					// dcon.jar のチェック
 					if (File.Exists(BaseDir + "dcon.jar"))
 					{
 						DconPath = (BaseDir + "dcon.jar");
@@ -424,36 +490,61 @@ namespace glc_cs
 					{
 						DconPath = string.Empty;
 					}
+
+					//棒読みちゃん設定読み込み
+					ByActive = false;
+					ByType = 0;
+					ByHost = "127.0.0.1";
+					ByPort = 50001;
+					ByCErr = "Q";
+					ByRoW = false;
+					ByRoS = false;
+
+					// 総合
+					BgImg = null;
+
+					// dcon設定
+					Dconnect = false;
+					Rate = 0;
 				}
-
-				//棒読みちゃん設定読み込み
-				ByActive = Convert.ToBoolean(Convert.ToInt32(ReadIni("connect", "byActive", "0")));
-				ByType = Convert.ToInt32(ReadIni("connect", "byType", "0"));
-				ByHost = ReadIni("connect", "byHost", "127.0.0.1");
-				ByPort = Convert.ToInt32(ReadIni("connect", "byPort", "50001"));
-				ByCErr = ReadIni("connect", "byCErr", "Q");
-				ByRoW = Convert.ToBoolean(Convert.ToInt32(ReadIni("connect", "byRoW", "0")));
-				ByRoS = Convert.ToBoolean(Convert.ToInt32(ReadIni("connect", "byRoS", "0")));
-
+				return;
 			}
 
 			public string IniRead(String filename, String sec, String key, String failedval)
 			{
 				String ans = "";
-
 				StringBuilder data = new StringBuilder(1024);
-				GetPrivateProfileString(
-					sec,
-					key,
-					failedval,
-					data,
-					1024,
-					filename);
+				try
+				{
+					GetPrivateProfileString(
+						sec,
+						key,
+						failedval,
+						data,
+						1024,
+						filename);
+				}
+				catch (Exception ex)
+				{
+					StringBuilder sb = new StringBuilder();
+					sb.Append("ファイルパス：").Append(filename);
+					sb.Append("セクション：").Append(sec);
+					sb.Append("キー：").Append(key);
+					sb.Append("値：").Append(data);
 
+					WriteErrorLog(ex.Message, "IniRead", sb.ToString());
+				}
 				ans = data.ToString();
 				return ans;
 			}
 
+			/// <summary>
+			/// 指定されたINIに値を書き込みます
+			/// </summary>
+			/// <param name="filename">INIパス</param>
+			/// <param name="sec">セクション名</param>
+			/// <param name="key">キー値</param>
+			/// <param name="data">値</param>
 			public void IniWrite(String filename, String sec, String key, String data)
 			{
 				try
@@ -476,12 +567,25 @@ namespace glc_cs
 				catch (Exception ex)
 				{
 					StringBuilder sb = new StringBuilder();
-					gl.resolveError("IniWrite", ex.Message.ToString(), 0);
+					sb.Append("ファイルパス：").Append(filename);
+					sb.Append("セクション：").Append(sec);
+					sb.Append("キー：").Append(key);
+					sb.Append("値：").Append(data);
+
+					WriteErrorLog(ex.Message, "IniWrite", sb.ToString());
 				}
 				return;
 			}
 
-			public void WriteIni(String sec, String key, String data, int isconfig, String opt)
+			/// <summary>
+			/// Config.ini及び、ゲームデータ管理INIに値を書き込みます
+			/// </summary>
+			/// <param name="sec">セクション名</param>
+			/// <param name="key">キー値</param>
+			/// <param name="data">値</param>
+			/// <param name="isconfig">config.iniが対象か（既定値：1）</param>
+			/// <param name="opt">ゲームデータ管理INIのパス</param>
+			public void WriteIni(String sec, String key, String data, int isconfig = 1, String opt = "")
 			{
 				if (isconfig == 1)
 				{
@@ -551,7 +655,7 @@ namespace glc_cs
 						}
 						catch (Exception)
 						{
-							DialogResult dr = MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。\n\n今回のみ接続しないようにしますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+							DialogResult dr = MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。\n\n今回のみ接続しないようにしますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 							if (dr == DialogResult.Yes)
 							{
 								ByActive = false;
@@ -570,7 +674,7 @@ namespace glc_cs
 						}
 						catch (Exception)
 						{
-							DialogResult dr = MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。\n\n今回のみ接続しないようにしますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+							DialogResult dr = MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。\n\n今回のみ接続しないようにしますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 							if (dr == DialogResult.Yes)
 							{
 								ByActive = false;
@@ -660,7 +764,9 @@ namespace glc_cs
 							MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 						}
 						return;
-					}finally{
+					}
+					finally
+					{
 						if (tc != null)
 						{
 							tc.Close();
@@ -674,6 +780,125 @@ namespace glc_cs
 				}
 			}
 
+			/// <summary>
+			/// ゲーム管理INIの文字列を置換します
+			/// </summary>
+			/// <param name="beforeName">置換前文字列</param>
+			/// <param name="afterName">置換後文字列</param>
+			/// <param name="errMsg">エラーメッセージ</param>
+			/// <returns>成功すればtrue、エラー発生時はfalse</returns>
+			public bool EditAllFilePath(string beforeName, string afterName, bool editFlg1, bool editFlg2, out int sucCount, out string errMsg)
+			{
+				errMsg = string.Empty;
+				sucCount = -1;
+
+				// Config最新化
+				GLConfigLoad();
+
+				// 置換文字数チェック
+				if (beforeName.Length < 2 || afterName.Length < 2)
+				{
+					errMsg = "置換文字列の文字数が不正です";
+					return false;
+				}
+
+				// 置換処理
+				if (!(GameMax >= 1))
+				{
+					errMsg = "登録されているゲーム数が少なすぎます";
+					return false;
+				}
+
+				sucCount = 0;
+
+				//ゲーム詳細取得
+				try
+				{
+					for (int i = 1; i <= GameMax; i++)
+					{
+						String readini = GameDir + "\\" + i + ".ini";
+						String imgpassdata = null, passdata = null;
+						String imgPathData = null, exePathData = null;
+						bool wasChanged = false;
+
+						if (File.Exists(readini))
+						{
+							//ini読込開始
+							imgpassdata = IniRead(readini, "game", "imgpass", "");
+							passdata = IniRead(readini, "game", "pass", "");
+
+							// 実行ファイル
+							if (editFlg1)
+							{
+								exePathData = passdata.Replace(beforeName, afterName);
+								if (!passdata.Equals(exePathData))
+								{
+									IniWrite(readini, "game", "pass", exePathData);
+									wasChanged = true;
+								}
+							}
+
+							// 画像ファイル
+							if (editFlg2)
+							{
+								imgPathData = imgpassdata.Replace(beforeName, afterName);
+								if (!imgpassdata.Equals(imgPathData))
+								{
+									IniWrite(readini, "game", "imgpass", imgPathData);
+									wasChanged = true;
+								}
+							}
+
+							if (wasChanged)
+							{
+								sucCount++;
+							}
+						}
+						else
+						{
+							//個別ini存在しない場合
+							DialogResult dr = MessageBox.Show("iniファイル読み込み中にエラー。 [button7_Click]\nファイルが存在しません。\n\n処理を続行しますか？\n\n次のファイルの値は更新されていない可能性があります：\n" + readini,
+											AppName,
+											MessageBoxButtons.YesNo,
+											MessageBoxIcon.Error);
+							if (dr == DialogResult.No)
+							{
+								errMsg = "ユーザにより中断されました";
+								return false;
+							}
+						}
+
+					}
+				}
+				catch (Exception ex)
+				{
+					// 予期せぬエラー
+					MessageBox.Show("予期せぬエラーが発生しました。 [button7_Click]\nファイルの値は正常に更新されていない可能性があります。\n\n" + ex.Message,
+									AppName,
+									MessageBoxButtons.OK,
+									MessageBoxIcon.Error);
+
+					WriteErrorLog(ex.Message, "IniRead", string.Empty);
+					return false;
+				}
+				return true;
+			}
+
+			/// <summary>
+			/// エラーログを書き込みます
+			/// </summary>
+			/// <param name="errorMsg">エラーメッセージ</param>
+			/// <param name="moduleName">モジュール名</param>
+			/// <param name="addInfo">追加情報</param>
+			public void WriteErrorLog(string errorMsg, string moduleName, string addInfo)
+			{
+				StringBuilder sb = new StringBuilder();
+				sb.Append("[ERROR] [").Append(DateTime.Now).Append("] ");
+				sb.Append("(").Append(moduleName).Append(") ");
+				sb.AppendLine(addInfo);
+				File.AppendAllText(BaseDir + "error.log", sb.ToString());
+				return;
+			}
 		}
 	}
 

@@ -32,6 +32,9 @@
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+			this.button7 = new System.Windows.Forms.Button();
+			this.textBox8 = new System.Windows.Forms.TextBox();
+			this.textBox9 = new System.Windows.Forms.TextBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -62,20 +65,8 @@
 			this.groupBox5 = new System.Windows.Forms.GroupBox();
 			this.checkBox10 = new System.Windows.Forms.CheckBox();
 			this.checkBox4 = new System.Windows.Forms.CheckBox();
-			this.tabPage6 = new System.Windows.Forms.TabPage();
-			this.groupBox7 = new System.Windows.Forms.GroupBox();
-			this.checkBox8 = new System.Windows.Forms.CheckBox();
-			this.checkBox7 = new System.Windows.Forms.CheckBox();
-			this.checkBox6 = new System.Windows.Forms.CheckBox();
-			this.checkBox5 = new System.Windows.Forms.CheckBox();
-			this.checkBox3 = new System.Windows.Forms.CheckBox();
 			this.tabPage4 = new System.Windows.Forms.TabPage();
 			this.groupBox10 = new System.Windows.Forms.GroupBox();
-			this.button6 = new System.Windows.Forms.Button();
-			this.textBox7 = new System.Windows.Forms.TextBox();
-			this.label18 = new System.Windows.Forms.Label();
-			this.textBox6 = new System.Windows.Forms.TextBox();
-			this.label17 = new System.Windows.Forms.Label();
 			this.label16 = new System.Windows.Forms.Label();
 			this.textBox3 = new System.Windows.Forms.TextBox();
 			this.button5 = new System.Windows.Forms.Button();
@@ -86,6 +77,14 @@
 			this.label12 = new System.Windows.Forms.Label();
 			this.radioButton9 = new System.Windows.Forms.RadioButton();
 			this.radioButton8 = new System.Windows.Forms.RadioButton();
+			this.tabPage6 = new System.Windows.Forms.TabPage();
+			this.groupBox7 = new System.Windows.Forms.GroupBox();
+			this.label17 = new System.Windows.Forms.Label();
+			this.label21 = new System.Windows.Forms.Label();
+			this.checkBox5 = new System.Windows.Forms.CheckBox();
+			this.checkBox3 = new System.Windows.Forms.CheckBox();
+			this.label20 = new System.Windows.Forms.Label();
+			this.label19 = new System.Windows.Forms.Label();
 			this.tabPage5 = new System.Windows.Forms.TabPage();
 			this.label10 = new System.Windows.Forms.Label();
 			this.linkLabel3 = new System.Windows.Forms.LinkLabel();
@@ -103,6 +102,10 @@
 			this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
 			this.label15 = new System.Windows.Forms.Label();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+			this.tabPage7 = new System.Windows.Forms.TabPage();
+			this.groupBox11 = new System.Windows.Forms.GroupBox();
+			this.button6 = new System.Windows.Forms.Button();
+			this.textBox6 = new System.Windows.Forms.TextBox();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
@@ -114,12 +117,14 @@
 			this.tabPage3.SuspendLayout();
 			this.groupBox8.SuspendLayout();
 			this.groupBox5.SuspendLayout();
-			this.tabPage6.SuspendLayout();
-			this.groupBox7.SuspendLayout();
 			this.tabPage4.SuspendLayout();
 			this.groupBox10.SuspendLayout();
 			this.groupBox9.SuspendLayout();
+			this.tabPage6.SuspendLayout();
+			this.groupBox7.SuspendLayout();
 			this.tabPage5.SuspendLayout();
+			this.tabPage7.SuspendLayout();
+			this.groupBox11.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox1
@@ -143,14 +148,43 @@
 			this.checkBox1.Text = "Discordに実行中のゲームを表示";
 			this.toolTip1.SetToolTip(this.checkBox1, "「ゲームをトラッキング」が有効の場合のみ動作します");
 			this.checkBox1.UseVisualStyleBackColor = true;
+			this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+			// 
+			// button7
+			// 
+			this.button7.Location = new System.Drawing.Point(341, 45);
+			this.button7.Name = "button7";
+			this.button7.Size = new System.Drawing.Size(103, 23);
+			this.button7.TabIndex = 0;
+			this.button7.Text = "一括変更";
+			this.toolTip1.SetToolTip(this.button7, "ゲーム管理iniのすべてのパスを置換します。");
+			this.button7.UseVisualStyleBackColor = true;
+			this.button7.Click += new System.EventHandler(this.button7_Click);
+			// 
+			// textBox8
+			// 
+			this.textBox8.Location = new System.Drawing.Point(6, 47);
+			this.textBox8.Name = "textBox8";
+			this.textBox8.Size = new System.Drawing.Size(142, 19);
+			this.textBox8.TabIndex = 1;
+			this.toolTip1.SetToolTip(this.textBox8, "変更前のキーワード");
+			// 
+			// textBox9
+			// 
+			this.textBox9.Location = new System.Drawing.Point(174, 47);
+			this.textBox9.Name = "textBox9";
+			this.textBox9.Size = new System.Drawing.Size(141, 19);
+			this.textBox9.TabIndex = 2;
+			this.toolTip1.SetToolTip(this.textBox9, "変更後のキーワード");
 			// 
 			// tabControl1
 			// 
+			this.tabControl1.Controls.Add(this.tabPage7);
 			this.tabControl1.Controls.Add(this.tabPage1);
 			this.tabControl1.Controls.Add(this.tabPage2);
 			this.tabControl1.Controls.Add(this.tabPage3);
-			this.tabControl1.Controls.Add(this.tabPage6);
 			this.tabControl1.Controls.Add(this.tabPage4);
+			this.tabControl1.Controls.Add(this.tabPage6);
 			this.tabControl1.Controls.Add(this.tabPage5);
 			this.tabControl1.Location = new System.Drawing.Point(-1, 3);
 			this.tabControl1.Name = "tabControl1";
@@ -480,85 +514,9 @@
 			this.checkBox4.Text = "ランチャー起動時／終了時";
 			this.checkBox4.UseVisualStyleBackColor = true;
 			// 
-			// tabPage6
-			// 
-			this.tabPage6.BackColor = System.Drawing.SystemColors.ControlDark;
-			this.tabPage6.Controls.Add(this.groupBox7);
-			this.tabPage6.Location = new System.Drawing.Point(4, 22);
-			this.tabPage6.Name = "tabPage6";
-			this.tabPage6.Size = new System.Drawing.Size(481, 209);
-			this.tabPage6.TabIndex = 5;
-			this.tabPage6.Text = "タスクトレイ通知";
-			// 
-			// groupBox7
-			// 
-			this.groupBox7.Controls.Add(this.checkBox8);
-			this.groupBox7.Controls.Add(this.checkBox7);
-			this.groupBox7.Controls.Add(this.checkBox6);
-			this.groupBox7.Controls.Add(this.checkBox5);
-			this.groupBox7.Controls.Add(this.checkBox3);
-			this.groupBox7.Enabled = false;
-			this.groupBox7.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.groupBox7.Location = new System.Drawing.Point(6, 6);
-			this.groupBox7.Name = "groupBox7";
-			this.groupBox7.Size = new System.Drawing.Size(470, 200);
-			this.groupBox7.TabIndex = 2;
-			this.groupBox7.TabStop = false;
-			this.groupBox7.Text = "通知のタイミング";
-			// 
-			// checkBox8
-			// 
-			this.checkBox8.AutoSize = true;
-			this.checkBox8.Location = new System.Drawing.Point(6, 126);
-			this.checkBox8.Name = "checkBox8";
-			this.checkBox8.Size = new System.Drawing.Size(178, 20);
-			this.checkBox8.TabIndex = 4;
-			this.checkBox8.Text = "ゲーム起動時（最小化）";
-			this.checkBox8.UseVisualStyleBackColor = true;
-			// 
-			// checkBox7
-			// 
-			this.checkBox7.AutoSize = true;
-			this.checkBox7.Location = new System.Drawing.Point(6, 100);
-			this.checkBox7.Name = "checkBox7";
-			this.checkBox7.Size = new System.Drawing.Size(257, 20);
-			this.checkBox7.TabIndex = 3;
-			this.checkBox7.Text = "ゲーム起動時（トラッキング、最小化）";
-			this.checkBox7.UseVisualStyleBackColor = true;
-			// 
-			// checkBox6
-			// 
-			this.checkBox6.AutoSize = true;
-			this.checkBox6.Location = new System.Drawing.Point(6, 74);
-			this.checkBox6.Name = "checkBox6";
-			this.checkBox6.Size = new System.Drawing.Size(333, 20);
-			this.checkBox6.TabIndex = 2;
-			this.checkBox6.Text = "棒読みちゃんと接続できなかった時（設定時のみ）";
-			this.checkBox6.UseVisualStyleBackColor = true;
-			// 
-			// checkBox5
-			// 
-			this.checkBox5.AutoSize = true;
-			this.checkBox5.Location = new System.Drawing.Point(6, 48);
-			this.checkBox5.Name = "checkBox5";
-			this.checkBox5.Size = new System.Drawing.Size(262, 20);
-			this.checkBox5.TabIndex = 1;
-			this.checkBox5.Text = "dconが見当たらない時（設定時のみ）";
-			this.checkBox5.UseVisualStyleBackColor = true;
-			// 
-			// checkBox3
-			// 
-			this.checkBox3.AutoSize = true;
-			this.checkBox3.Location = new System.Drawing.Point(6, 22);
-			this.checkBox3.Name = "checkBox3";
-			this.checkBox3.Size = new System.Drawing.Size(145, 20);
-			this.checkBox3.TabIndex = 0;
-			this.checkBox3.Text = "Welcomeメッセージ";
-			this.checkBox3.UseVisualStyleBackColor = true;
-			// 
 			// tabPage4
 			// 
-			this.tabPage4.BackColor = System.Drawing.Color.DarkGray;
+			this.tabPage4.BackColor = System.Drawing.Color.Transparent;
 			this.tabPage4.Controls.Add(this.groupBox10);
 			this.tabPage4.Controls.Add(this.groupBox9);
 			this.tabPage4.Location = new System.Drawing.Point(4, 22);
@@ -569,73 +527,25 @@
 			// 
 			// groupBox10
 			// 
-			this.groupBox10.Controls.Add(this.button6);
-			this.groupBox10.Controls.Add(this.textBox7);
-			this.groupBox10.Controls.Add(this.label18);
-			this.groupBox10.Controls.Add(this.textBox6);
-			this.groupBox10.Controls.Add(this.label17);
 			this.groupBox10.Controls.Add(this.label16);
 			this.groupBox10.Controls.Add(this.textBox3);
 			this.groupBox10.Controls.Add(this.button5);
 			this.groupBox10.Controls.Add(this.label9);
 			this.groupBox10.Controls.Add(this.textBox2);
 			this.groupBox10.Controls.Add(this.button4);
-			this.groupBox10.Enabled = false;
 			this.groupBox10.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.groupBox10.Location = new System.Drawing.Point(6, 83);
+			this.groupBox10.Location = new System.Drawing.Point(6, 98);
 			this.groupBox10.Name = "groupBox10";
-			this.groupBox10.Size = new System.Drawing.Size(467, 123);
+			this.groupBox10.Size = new System.Drawing.Size(467, 108);
 			this.groupBox10.TabIndex = 3;
 			this.groupBox10.TabStop = false;
 			this.groupBox10.Text = "作業ディレクトリ／ファイル";
 			// 
-			// button6
-			// 
-			this.button6.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.button6.Location = new System.Drawing.Point(397, 89);
-			this.button6.Name = "button6";
-			this.button6.Size = new System.Drawing.Size(64, 23);
-			this.button6.TabIndex = 11;
-			this.button6.Text = "接続テスト";
-			this.button6.UseVisualStyleBackColor = true;
-			// 
-			// textBox7
-			// 
-			this.textBox7.Location = new System.Drawing.Point(228, 86);
-			this.textBox7.Name = "textBox7";
-			this.textBox7.Size = new System.Drawing.Size(163, 23);
-			this.textBox7.TabIndex = 10;
-			this.textBox7.UseSystemPasswordChar = true;
-			// 
-			// label18
-			// 
-			this.label18.AutoSize = true;
-			this.label18.Location = new System.Drawing.Point(182, 89);
-			this.label18.Name = "label18";
-			this.label18.Size = new System.Drawing.Size(40, 16);
-			this.label18.TabIndex = 9;
-			this.label18.Text = "Pass";
-			// 
-			// textBox6
-			// 
-			this.textBox6.Location = new System.Drawing.Point(48, 86);
-			this.textBox6.Name = "textBox6";
-			this.textBox6.Size = new System.Drawing.Size(117, 23);
-			this.textBox6.TabIndex = 8;
-			// 
-			// label17
-			// 
-			this.label17.AutoSize = true;
-			this.label17.Location = new System.Drawing.Point(3, 89);
-			this.label17.Name = "label17";
-			this.label17.Size = new System.Drawing.Size(39, 16);
-			this.label17.TabIndex = 7;
-			this.label17.Text = "User";
-			// 
 			// label16
 			// 
 			this.label16.AutoSize = true;
-			this.label16.Location = new System.Drawing.Point(6, 54);
+			this.label16.Enabled = false;
+			this.label16.Location = new System.Drawing.Point(6, 69);
 			this.label16.Name = "label16";
 			this.label16.Size = new System.Drawing.Size(28, 16);
 			this.label16.TabIndex = 6;
@@ -643,15 +553,17 @@
 			// 
 			// textBox3
 			// 
-			this.textBox3.Location = new System.Drawing.Point(48, 51);
+			this.textBox3.Enabled = false;
+			this.textBox3.Location = new System.Drawing.Point(48, 66);
 			this.textBox3.Name = "textBox3";
 			this.textBox3.Size = new System.Drawing.Size(343, 23);
 			this.textBox3.TabIndex = 5;
 			// 
 			// button5
 			// 
+			this.button5.Enabled = false;
 			this.button5.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.button5.Location = new System.Drawing.Point(397, 51);
+			this.button5.Location = new System.Drawing.Point(397, 66);
 			this.button5.Name = "button5";
 			this.button5.Size = new System.Drawing.Size(64, 23);
 			this.button5.TabIndex = 4;
@@ -662,7 +574,7 @@
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(6, 25);
+			this.label9.Location = new System.Drawing.Point(6, 30);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(26, 16);
 			this.label9.TabIndex = 3;
@@ -670,7 +582,7 @@
 			// 
 			// textBox2
 			// 
-			this.textBox2.Location = new System.Drawing.Point(48, 22);
+			this.textBox2.Location = new System.Drawing.Point(48, 27);
 			this.textBox2.Name = "textBox2";
 			this.textBox2.Size = new System.Drawing.Size(343, 23);
 			this.textBox2.TabIndex = 2;
@@ -678,7 +590,7 @@
 			// button4
 			// 
 			this.button4.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.button4.Location = new System.Drawing.Point(397, 22);
+			this.button4.Location = new System.Drawing.Point(397, 27);
 			this.button4.Name = "button4";
 			this.button4.Size = new System.Drawing.Size(64, 23);
 			this.button4.TabIndex = 1;
@@ -695,7 +607,7 @@
 			this.groupBox9.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox9.Location = new System.Drawing.Point(6, 6);
 			this.groupBox9.Name = "groupBox9";
-			this.groupBox9.Size = new System.Drawing.Size(467, 71);
+			this.groupBox9.Size = new System.Drawing.Size(467, 86);
 			this.groupBox9.TabIndex = 2;
 			this.groupBox9.TabStop = false;
 			this.groupBox9.Text = "ゲームリスト管理方法";
@@ -705,7 +617,7 @@
 			this.label12.AutoSize = true;
 			this.label12.BackColor = System.Drawing.Color.Transparent;
 			this.label12.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label12.Location = new System.Drawing.Point(10, 45);
+			this.label12.Location = new System.Drawing.Point(10, 55);
 			this.label12.Name = "label12";
 			this.label12.Size = new System.Drawing.Size(438, 15);
 			this.label12.TabIndex = 2;
@@ -715,7 +627,7 @@
 			// 
 			this.radioButton9.AutoSize = true;
 			this.radioButton9.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.radioButton9.Location = new System.Drawing.Point(242, 22);
+			this.radioButton9.Location = new System.Drawing.Point(242, 25);
 			this.radioButton9.Name = "radioButton9";
 			this.radioButton9.Size = new System.Drawing.Size(170, 20);
 			this.radioButton9.TabIndex = 1;
@@ -728,13 +640,97 @@
 			this.radioButton8.AutoSize = true;
 			this.radioButton8.Checked = true;
 			this.radioButton8.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.radioButton8.Location = new System.Drawing.Point(41, 22);
+			this.radioButton8.Location = new System.Drawing.Point(41, 25);
 			this.radioButton8.Name = "radioButton8";
 			this.radioButton8.Size = new System.Drawing.Size(137, 20);
 			this.radioButton8.TabIndex = 0;
 			this.radioButton8.TabStop = true;
 			this.radioButton8.Text = "INIファイル（従来）";
 			this.radioButton8.UseVisualStyleBackColor = true;
+			// 
+			// tabPage6
+			// 
+			this.tabPage6.Controls.Add(this.groupBox7);
+			this.tabPage6.Location = new System.Drawing.Point(4, 22);
+			this.tabPage6.Name = "tabPage6";
+			this.tabPage6.Size = new System.Drawing.Size(481, 209);
+			this.tabPage6.TabIndex = 5;
+			this.tabPage6.Text = "ツール";
+			this.tabPage6.UseVisualStyleBackColor = true;
+			// 
+			// groupBox7
+			// 
+			this.groupBox7.Controls.Add(this.label17);
+			this.groupBox7.Controls.Add(this.label21);
+			this.groupBox7.Controls.Add(this.checkBox5);
+			this.groupBox7.Controls.Add(this.checkBox3);
+			this.groupBox7.Controls.Add(this.label20);
+			this.groupBox7.Controls.Add(this.label19);
+			this.groupBox7.Controls.Add(this.textBox9);
+			this.groupBox7.Controls.Add(this.textBox8);
+			this.groupBox7.Controls.Add(this.button7);
+			this.groupBox7.Location = new System.Drawing.Point(6, 6);
+			this.groupBox7.Name = "groupBox7";
+			this.groupBox7.Size = new System.Drawing.Size(470, 106);
+			this.groupBox7.TabIndex = 0;
+			this.groupBox7.TabStop = false;
+			this.groupBox7.Text = "ゲームパス更新";
+			// 
+			// label17
+			// 
+			this.label17.AutoSize = true;
+			this.label17.Location = new System.Drawing.Point(303, 81);
+			this.label17.Name = "label17";
+			this.label17.Size = new System.Drawing.Size(161, 12);
+			this.label17.TabIndex = 8;
+			this.label17.Text = "※大文字小文字が区別されます";
+			// 
+			// label21
+			// 
+			this.label21.AutoSize = true;
+			this.label21.Location = new System.Drawing.Point(321, 19);
+			this.label21.Name = "label21";
+			this.label21.Size = new System.Drawing.Size(23, 12);
+			this.label21.TabIndex = 7;
+			this.label21.Text = "の、";
+			// 
+			// checkBox5
+			// 
+			this.checkBox5.AutoSize = true;
+			this.checkBox5.Location = new System.Drawing.Point(174, 18);
+			this.checkBox5.Name = "checkBox5";
+			this.checkBox5.Size = new System.Drawing.Size(131, 16);
+			this.checkBox5.TabIndex = 6;
+			this.checkBox5.Text = "ゲーム画像ファイルパス";
+			this.checkBox5.UseVisualStyleBackColor = true;
+			// 
+			// checkBox3
+			// 
+			this.checkBox3.AutoSize = true;
+			this.checkBox3.Location = new System.Drawing.Point(13, 18);
+			this.checkBox3.Name = "checkBox3";
+			this.checkBox3.Size = new System.Drawing.Size(131, 16);
+			this.checkBox3.TabIndex = 5;
+			this.checkBox3.Text = "ゲーム実行ファイルパス";
+			this.checkBox3.UseVisualStyleBackColor = true;
+			// 
+			// label20
+			// 
+			this.label20.AutoSize = true;
+			this.label20.Location = new System.Drawing.Point(321, 50);
+			this.label20.Name = "label20";
+			this.label20.Size = new System.Drawing.Size(14, 12);
+			this.label20.TabIndex = 4;
+			this.label20.Text = "に";
+			// 
+			// label19
+			// 
+			this.label19.AutoSize = true;
+			this.label19.Location = new System.Drawing.Point(154, 50);
+			this.label19.Name = "label19";
+			this.label19.Size = new System.Drawing.Size(14, 12);
+			this.label19.TabIndex = 3;
+			this.label19.Text = "を";
 			// 
 			// tabPage5
 			// 
@@ -889,6 +885,45 @@
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
 			// 
+			// tabPage7
+			// 
+			this.tabPage7.Controls.Add(this.groupBox11);
+			this.tabPage7.Location = new System.Drawing.Point(4, 22);
+			this.tabPage7.Name = "tabPage7";
+			this.tabPage7.Size = new System.Drawing.Size(481, 209);
+			this.tabPage7.TabIndex = 6;
+			this.tabPage7.Text = "全般";
+			this.tabPage7.UseVisualStyleBackColor = true;
+			// 
+			// groupBox11
+			// 
+			this.groupBox11.Controls.Add(this.button6);
+			this.groupBox11.Controls.Add(this.textBox6);
+			this.groupBox11.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox11.Location = new System.Drawing.Point(6, 6);
+			this.groupBox11.Name = "groupBox11";
+			this.groupBox11.Size = new System.Drawing.Size(469, 59);
+			this.groupBox11.TabIndex = 3;
+			this.groupBox11.TabStop = false;
+			this.groupBox11.Text = "背景画像";
+			// 
+			// button6
+			// 
+			this.button6.Location = new System.Drawing.Point(440, 22);
+			this.button6.Name = "button6";
+			this.button6.Size = new System.Drawing.Size(23, 23);
+			this.button6.TabIndex = 1;
+			this.button6.Text = "..";
+			this.button6.UseVisualStyleBackColor = true;
+			this.button6.Click += new System.EventHandler(this.button6_Click);
+			// 
+			// textBox6
+			// 
+			this.textBox6.Location = new System.Drawing.Point(6, 22);
+			this.textBox6.Name = "textBox6";
+			this.textBox6.Size = new System.Drawing.Size(428, 23);
+			this.textBox6.TabIndex = 0;
+			// 
 			// Form2
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -922,16 +957,19 @@
 			this.groupBox8.PerformLayout();
 			this.groupBox5.ResumeLayout(false);
 			this.groupBox5.PerformLayout();
-			this.tabPage6.ResumeLayout(false);
-			this.groupBox7.ResumeLayout(false);
-			this.groupBox7.PerformLayout();
 			this.tabPage4.ResumeLayout(false);
 			this.groupBox10.ResumeLayout(false);
 			this.groupBox10.PerformLayout();
 			this.groupBox9.ResumeLayout(false);
 			this.groupBox9.PerformLayout();
+			this.tabPage6.ResumeLayout(false);
+			this.groupBox7.ResumeLayout(false);
+			this.groupBox7.PerformLayout();
 			this.tabPage5.ResumeLayout(false);
 			this.tabPage5.PerformLayout();
+			this.tabPage7.ResumeLayout(false);
+			this.groupBox11.ResumeLayout(false);
+			this.groupBox11.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -985,15 +1023,8 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.TabPage tabPage6;
-		private System.Windows.Forms.GroupBox groupBox7;
-		private System.Windows.Forms.CheckBox checkBox6;
-		private System.Windows.Forms.CheckBox checkBox5;
-		private System.Windows.Forms.CheckBox checkBox3;
 		private System.Windows.Forms.GroupBox groupBox8;
 		private System.Windows.Forms.CheckBox checkBox10;
-		private System.Windows.Forms.CheckBox checkBox8;
-		private System.Windows.Forms.CheckBox checkBox7;
 		private System.Windows.Forms.RadioButton radioButton7;
 		private System.Windows.Forms.RadioButton radioButton6;
 		private System.Windows.Forms.RadioButton radioButton5;
@@ -1002,15 +1033,25 @@
 		private System.Windows.Forms.RadioButton radioButton8;
 		private System.Windows.Forms.Label label12;
 		private System.Windows.Forms.GroupBox groupBox10;
-		private System.Windows.Forms.Button button6;
-		private System.Windows.Forms.TextBox textBox7;
-		private System.Windows.Forms.Label label18;
-		private System.Windows.Forms.TextBox textBox6;
-		private System.Windows.Forms.Label label17;
 		private System.Windows.Forms.Label label16;
 		private System.Windows.Forms.TextBox textBox3;
 		private System.Windows.Forms.Button button5;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.TextBox textBox2;
+		private System.Windows.Forms.TabPage tabPage6;
+		private System.Windows.Forms.GroupBox groupBox7;
+		private System.Windows.Forms.Button button7;
+		private System.Windows.Forms.Label label20;
+		private System.Windows.Forms.Label label19;
+		private System.Windows.Forms.TextBox textBox9;
+		private System.Windows.Forms.TextBox textBox8;
+		private System.Windows.Forms.Label label21;
+		private System.Windows.Forms.CheckBox checkBox5;
+		private System.Windows.Forms.CheckBox checkBox3;
+		private System.Windows.Forms.Label label17;
+		private System.Windows.Forms.TabPage tabPage7;
+		private System.Windows.Forms.GroupBox groupBox11;
+		private System.Windows.Forms.Button button6;
+		private System.Windows.Forms.TextBox textBox6;
 	}
 }

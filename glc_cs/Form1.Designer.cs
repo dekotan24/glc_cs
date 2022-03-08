@@ -69,6 +69,8 @@
 			this.pictureBox5 = new System.Windows.Forms.PictureBox();
 			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.checkBox6 = new System.Windows.Forms.CheckBox();
+			this.button11 = new System.Windows.Forms.Button();
+			this.button12 = new System.Windows.Forms.Button();
 			this.fileSystemWatcher2 = new System.IO.FileSystemWatcher();
 			this.button6 = new System.Windows.Forms.Button();
 			this.button10 = new System.Windows.Forms.Button();
@@ -91,7 +93,6 @@
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.imageList2 = new System.Windows.Forms.ImageList(this.components);
 			this.imageList0 = new System.Windows.Forms.ImageList(this.components);
-			this.button11 = new System.Windows.Forms.Button();
 			this.statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
@@ -391,6 +392,22 @@
 			this.checkBox6.UseVisualStyleBackColor = false;
 			this.checkBox6.CheckedChanged += new System.EventHandler(this.checkBox6_CheckedChanged);
 			// 
+			// button11
+			// 
+			resources.ApplyResources(this.button11, "button11");
+			this.button11.Name = "button11";
+			this.toolTip1.SetToolTip(this.button11, resources.GetString("button11.ToolTip"));
+			this.button11.UseVisualStyleBackColor = true;
+			this.button11.Click += new System.EventHandler(this.button11_Click);
+			// 
+			// button12
+			// 
+			resources.ApplyResources(this.button12, "button12");
+			this.button12.Name = "button12";
+			this.toolTip1.SetToolTip(this.button12, resources.GetString("button12.ToolTip"));
+			this.button12.UseVisualStyleBackColor = true;
+			this.button12.Click += new System.EventHandler(this.button12_Click);
+			// 
 			// fileSystemWatcher2
 			// 
 			this.fileSystemWatcher2.EnableRaisingEvents = true;
@@ -498,8 +515,10 @@
 			// 
 			this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
 			resources.ApplyResources(this.pictureBox1, "pictureBox1");
+			this.pictureBox1.InitialImage = global::glc_cs.Properties.Resources.load;
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.TabStop = false;
+			this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
 			// 
 			// tabControl1
 			// 
@@ -563,19 +582,11 @@
 			resources.ApplyResources(this.imageList0, "imageList0");
 			this.imageList0.TransparentColor = System.Drawing.Color.Transparent;
 			// 
-			// button11
-			// 
-			resources.ApplyResources(this.button11, "button11");
-			this.button11.Name = "button11";
-			this.toolTip1.SetToolTip(this.button11, resources.GetString("button11.ToolTip"));
-			this.button11.UseVisualStyleBackColor = true;
-			this.button11.Click += new System.EventHandler(this.button11_Click);
-			// 
 			// gl
 			// 
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.button11);
+			this.Controls.Add(this.button12);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.checkBox6);
 			this.Controls.Add(this.checkBox3);
@@ -616,6 +627,7 @@
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.pictureBox1);
 			this.Controls.Add(this.label1);
+			this.Controls.Add(this.button11);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -712,6 +724,7 @@
 		private System.Windows.Forms.ImageList imageList2;
 		private System.Windows.Forms.ImageList imageList0;
 		private System.Windows.Forms.Button button11;
+		private System.Windows.Forms.Button button12;
 	}
 }
 
