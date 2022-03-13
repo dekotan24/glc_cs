@@ -91,8 +91,15 @@
 			this.trackBar1 = new System.Windows.Forms.TrackBar();
 			this.listView1 = new System.Windows.Forms.ListView();
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+			this.tabPage3 = new System.Windows.Forms.TabPage();
+			this.button13 = new System.Windows.Forms.Button();
+			this.textBox7 = new System.Windows.Forms.TextBox();
+			this.listBox2 = new System.Windows.Forms.ListBox();
 			this.imageList2 = new System.Windows.Forms.ImageList(this.components);
 			this.imageList0 = new System.Windows.Forms.ImageList(this.components);
+			this.textBox8 = new System.Windows.Forms.TextBox();
+			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
 			this.statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
@@ -114,6 +121,9 @@
 			this.tabPage1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+			this.tabPage3.SuspendLayout();
+			this.flowLayoutPanel1.SuspendLayout();
+			this.flowLayoutPanel2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// listBox1
@@ -279,8 +289,6 @@
 			// 
 			resources.ApplyResources(this.checkBox3, "checkBox3");
 			this.checkBox3.BackColor = System.Drawing.Color.Transparent;
-			this.checkBox3.Checked = true;
-			this.checkBox3.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.checkBox3.Name = "checkBox3";
 			this.toolTip1.SetToolTip(this.checkBox3, resources.GetString("checkBox3.ToolTip"));
 			this.checkBox3.UseVisualStyleBackColor = false;
@@ -524,8 +532,8 @@
 			// 
 			this.tabControl1.Controls.Add(this.tabPage1);
 			this.tabControl1.Controls.Add(this.tabPage2);
+			this.tabControl1.Controls.Add(this.tabPage3);
 			resources.ApplyResources(this.tabControl1, "tabControl1");
-			this.tabControl1.Multiline = true;
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
 			this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
@@ -570,6 +578,35 @@
 			resources.ApplyResources(this.imageList1, "imageList1");
 			this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
 			// 
+			// tabPage3
+			// 
+			this.tabPage3.Controls.Add(this.textBox8);
+			this.tabPage3.Controls.Add(this.button13);
+			this.tabPage3.Controls.Add(this.textBox7);
+			this.tabPage3.Controls.Add(this.listBox2);
+			resources.ApplyResources(this.tabPage3, "tabPage3");
+			this.tabPage3.Name = "tabPage3";
+			this.tabPage3.UseVisualStyleBackColor = true;
+			// 
+			// button13
+			// 
+			resources.ApplyResources(this.button13, "button13");
+			this.button13.Name = "button13";
+			this.button13.UseVisualStyleBackColor = true;
+			this.button13.Click += new System.EventHandler(this.button13_Click);
+			// 
+			// textBox7
+			// 
+			resources.ApplyResources(this.textBox7, "textBox7");
+			this.textBox7.Name = "textBox7";
+			// 
+			// listBox2
+			// 
+			this.listBox2.FormattingEnabled = true;
+			resources.ApplyResources(this.listBox2, "listBox2");
+			this.listBox2.Name = "listBox2";
+			this.listBox2.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged);
+			// 
 			// imageList2
 			// 
 			this.imageList2.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
@@ -582,33 +619,52 @@
 			resources.ApplyResources(this.imageList0, "imageList0");
 			this.imageList0.TransparentColor = System.Drawing.Color.Transparent;
 			// 
+			// textBox8
+			// 
+			resources.ApplyResources(this.textBox8, "textBox8");
+			this.textBox8.Name = "textBox8";
+			this.textBox8.ReadOnly = true;
+			// 
+			// flowLayoutPanel1
+			// 
+			this.flowLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
+			this.flowLayoutPanel1.Controls.Add(this.button3);
+			this.flowLayoutPanel1.Controls.Add(this.button8);
+			this.flowLayoutPanel1.Controls.Add(this.button9);
+			this.flowLayoutPanel1.Controls.Add(this.button11);
+			this.flowLayoutPanel1.Controls.Add(this.button7);
+			this.flowLayoutPanel1.Controls.Add(this.button4);
+			resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
+			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+			// 
+			// flowLayoutPanel2
+			// 
+			this.flowLayoutPanel2.BackColor = System.Drawing.Color.Transparent;
+			this.flowLayoutPanel2.Controls.Add(this.checkBox1);
+			this.flowLayoutPanel2.Controls.Add(this.checkBox2);
+			this.flowLayoutPanel2.Controls.Add(this.checkBox4);
+			this.flowLayoutPanel2.Controls.Add(this.checkBox3);
+			this.flowLayoutPanel2.Controls.Add(this.checkBox6);
+			resources.ApplyResources(this.flowLayoutPanel2, "flowLayoutPanel2");
+			this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+			// 
 			// gl
 			// 
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.button12);
 			this.Controls.Add(this.tabControl1);
-			this.Controls.Add(this.checkBox6);
-			this.Controls.Add(this.checkBox3);
-			this.Controls.Add(this.checkBox1);
-			this.Controls.Add(this.checkBox4);
-			this.Controls.Add(this.checkBox2);
 			this.Controls.Add(this.pictureBox14);
 			this.Controls.Add(this.pictureBox13);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.button10);
 			this.Controls.Add(this.button6);
-			this.Controls.Add(this.button4);
-			this.Controls.Add(this.button9);
 			this.Controls.Add(this.pictureBox11);
 			this.Controls.Add(this.button5);
-			this.Controls.Add(this.button3);
 			this.Controls.Add(this.pictureBox10);
 			this.Controls.Add(this.textBox6);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.statusStrip1);
-			this.Controls.Add(this.button8);
-			this.Controls.Add(this.button7);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.textBox5);
 			this.Controls.Add(this.pictureBox8);
@@ -627,7 +683,8 @@
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.pictureBox1);
 			this.Controls.Add(this.label1);
-			this.Controls.Add(this.button11);
+			this.Controls.Add(this.flowLayoutPanel1);
+			this.Controls.Add(this.flowLayoutPanel2);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -656,6 +713,11 @@
 			this.tabPage1.ResumeLayout(false);
 			this.tabPage2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+			this.tabPage3.ResumeLayout(false);
+			this.tabPage3.PerformLayout();
+			this.flowLayoutPanel1.ResumeLayout(false);
+			this.flowLayoutPanel2.ResumeLayout(false);
+			this.flowLayoutPanel2.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -725,6 +787,13 @@
 		private System.Windows.Forms.ImageList imageList0;
 		private System.Windows.Forms.Button button11;
 		private System.Windows.Forms.Button button12;
+		private System.Windows.Forms.TabPage tabPage3;
+		private System.Windows.Forms.ListBox listBox2;
+		private System.Windows.Forms.Button button13;
+		private System.Windows.Forms.TextBox textBox7;
+		private System.Windows.Forms.TextBox textBox8;
+		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
 	}
 }
 

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -41,12 +43,12 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static readonly string appver = "0.962";
+			protected static readonly string appver = "0.97";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appbuild = "21.22.03.08";
+			protected static readonly string appbuild = "22.22.03.13";
 
 			/// <summary>
 			/// ゲームディレクトリ(作業ディレクトリ)
@@ -79,6 +81,11 @@ namespace glc_cs
 			protected int gamemax = 0;
 
 			/// <summary>
+			/// 選択中のゲームID（データベース接続時）
+			/// </summary>
+			protected string currentGameDBVal = "-1";
+
+			/// <summary>
 			/// 背景画像パス
 			/// </summary>
 			protected string bgimg = null;
@@ -87,6 +94,37 @@ namespace glc_cs
 			/// DiscordConnectorパス
 			/// </summary>
 			protected string dconpath = string.Empty;
+
+			// データ保存方法関係
+			/// <summary>
+			/// データ保存方法
+			/// </summary>
+			protected string saveType = string.Empty;
+
+			/// <summary>
+			/// データベースのURL
+			/// </summary>
+			protected string dbUrl = string.Empty;
+
+			/// <summary>
+			/// データベース名
+			/// </summary>
+			protected string dbName = string.Empty;
+
+			/// <summary>
+			/// テーブル名
+			/// </summary>
+			protected string dbTable = string.Empty;
+
+			/// <summary>
+			/// データベース接続ユーザ名
+			/// </summary>
+			protected string dbUser = string.Empty;
+
+			/// <summary>
+			/// データベース接続パスワード
+			/// </summary>
+			protected string dbPass = string.Empty;
 
 			//棒読みちゃん関係
 			/// <summary>
@@ -170,6 +208,7 @@ namespace glc_cs
 			/// </summary>
 			protected bool gridMax = false;
 
+			protected DataTable dt;
 
 
 
@@ -250,6 +289,15 @@ namespace glc_cs
 			}
 
 			/// <summary>
+			/// 現在選択しているゲームのIDを設定/返却します。データベース接続時のみ使用します。
+			/// </summary>
+			public string CurrentGameDbVal
+			{
+				get { return currentGameDBVal; }
+				set { currentGameDBVal = value; }
+			}
+
+			/// <summary>
 			/// ゲームの最大数を設定/返却します
 			/// </summary>
 			public string BgImg
@@ -265,6 +313,62 @@ namespace glc_cs
 			{
 				get { return dconpath; }
 				set { dconpath = value; }
+			}
+
+			/// <summary>
+			/// ゲーム保存方法
+			/// </summary>
+			public string SaveType
+			{
+				get { return saveType; }
+				set { saveType = value; }
+			}
+
+			public string DbUrl
+			{
+				get { return dbUrl; }
+				set { dbUrl = value; }
+			}
+
+			public string DbName
+			{
+				get { return dbName; }
+				set { dbName = value; }
+			}
+
+			public string DbTable
+			{
+				get { return dbTable; }
+				set { dbTable = value; }
+			}
+
+			public string DbUser
+			{
+				get { return dbUser; }
+				set { dbUser = value; }
+			}
+
+			public string DbPass
+			{
+				get { return dbPass; }
+				set { dbPass = value; }
+			}
+
+			public SqlConnection SqlCon
+			{
+				get
+				{
+					return new SqlConnection(
+						new SqlConnectionStringBuilder()
+						{
+							IntegratedSecurity = false,
+							//InitialCatalog = dbName,
+							DataSource = DbUrl,
+							UserID = DbUser,
+							Password = DbPass
+						}.ToString()
+					);
+				}
 			}
 
 			/// <summary>
@@ -433,7 +537,14 @@ namespace glc_cs
 				set { gridMax = value; }
 			}
 
-			public void GLConfigLoad()
+			public DataTable Dt
+			{
+				get { return dt; }
+				set { dt = value; }
+			}
+
+
+			public bool GLConfigLoad()
 			{
 				if (File.Exists(ConfigIni))
 				{
@@ -443,7 +554,48 @@ namespace glc_cs
 					GameDb = IniRead(ConfigIni, "default", "database", string.Empty);
 					DconPath = ReadIni("connect", "dconpath", "-1");
 
-					GameMax = Convert.ToInt32(IniRead(GameIni, "list", "game", "0"));
+					SaveType = ReadIni("general", "save", "I");
+					DbUrl = ReadIni("connect", "DBURL", string.Empty);
+					DbName = ReadIni("connect", "DBName", string.Empty);
+					DbTable = ReadIni("connect", "DBTable", string.Empty);
+					DbUser = ReadIni("connect", "DBUser", string.Empty);
+					DbPass = ReadIni("connect", "DBPass", string.Empty);
+
+					if (SaveType == "I")
+					{
+						// ini
+						GameMax = Convert.ToInt32(IniRead(GameIni, "list", "game", "0"));
+					}
+					else
+					{
+						// database
+						SqlConnection cn = SqlCon;
+						SqlCommand cm = new SqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"SELECT count(*) FROM " + DbName + "." + DbTable
+						};
+						cm.Connection = cn;
+
+						try
+						{
+							cn.Open();
+							GameMax = Convert.ToInt32(cm.ExecuteScalar().ToString());
+						}
+						catch (Exception ex)
+						{
+							WriteErrorLog(ex.Message, "GLConfigLoad", cm.CommandText);
+							GameMax = 0;
+						}
+						finally
+						{
+							if (cn.State == ConnectionState.Open)
+							{
+								cn.Close();
+							}
+						}
+					}
 
 					// dcon.jar のチェック
 					if (!File.Exists(DconPath))
@@ -468,7 +620,7 @@ namespace glc_cs
 					ByRoS = Convert.ToBoolean(Convert.ToInt32(ReadIni("connect", "byRoS", "0")));
 
 					// 総合
-					BgImg = ReadIni("imgd", "bgimg", null);
+					BgImg = ReadIni("imgd", "bgimg", string.Empty);
 
 					// dcon設定
 					Dconnect = Convert.ToBoolean(Convert.ToInt32(ReadIni("checkbox", "dconnect", "0")));
@@ -476,6 +628,9 @@ namespace glc_cs
 				}
 				else
 				{
+					// ゲーム保存方法をiniに設定
+					SaveType = "I";
+
 					// config.ini 存在しない場合
 					GameDir = BaseDir + "Data";
 					GameIni = GameDir + "\\game.ini";
@@ -507,7 +662,8 @@ namespace glc_cs
 					Dconnect = false;
 					Rate = 0;
 				}
-				return;
+
+				return true;
 			}
 
 			public string IniRead(String filename, String sec, String key, String failedval)
@@ -793,7 +949,11 @@ namespace glc_cs
 				sucCount = -1;
 
 				// Config最新化
-				GLConfigLoad();
+				if (GLConfigLoad() == false)
+				{
+					errMsg = "Configロード中にエラー";
+					return false;
+				}
 
 				// 置換文字数チェック
 				if (beforeName.Length < 2 || afterName.Length < 2)
@@ -895,6 +1055,7 @@ namespace glc_cs
 				StringBuilder sb = new StringBuilder();
 				sb.Append("[ERROR] [").Append(DateTime.Now).Append("] ");
 				sb.Append("(").Append(moduleName).Append(") ");
+				sb.Append(errorMsg).Append(" > ");
 				sb.AppendLine(addInfo);
 				File.AppendAllText(BaseDir + "error.log", sb.ToString());
 				return;
