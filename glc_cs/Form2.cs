@@ -136,6 +136,7 @@ namespace glc_cs
 				textBox10.Enabled = false;
 				button5.Enabled = false;
 
+				groupBox7.Enabled = true;
 				groupBox12.Enabled = false;
 			}
 			else
@@ -159,6 +160,7 @@ namespace glc_cs
 				textBox10.Enabled = true;
 				button5.Enabled = true;
 
+				groupBox7.Enabled = false;
 				groupBox12.Enabled = true;
 			}
 
@@ -185,6 +187,34 @@ namespace glc_cs
 
 		private void button2_Click(object sender, EventArgs e)
 		{
+			bool canExit = true;
+			if (radioButton9.Checked)
+			{
+				if (textBox3.Text.Trim().Length <= 0)
+				{
+					canExit = false;
+				}
+				else if (textBox11.Text.Trim().Length <= 0)
+				{
+					canExit = false;
+				}
+				else if (textBox12.Text.Trim().Length <= 0)
+				{
+					canExit = false;
+				}
+				else if (textBox7.Text.Trim().Length <= 0)
+				{
+					canExit = false;
+				}
+				if (!canExit)
+				{
+					MessageBox.Show("データの保存方法をデータベースにした場合、\n[URL]、[DB]、[Table]、[User]は必須です。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					return;
+				}
+			}
+
+			MyBase64str base64 = new MyBase64str();
+
 			// 全般
 			gv.WriteIni("imgd", "bgimg", textBox6.Text.Trim());
 
@@ -194,7 +224,7 @@ namespace glc_cs
 			gv.WriteIni("connect", "DBName", textBox11.Text.Trim());
 			gv.WriteIni("connect", "DBTable", textBox12.Text.Trim());
 			gv.WriteIni("connect", "DBUser", textBox7.Text.Trim());
-			gv.WriteIni("connect", "DBPass", textBox10.Text.Trim());
+			gv.WriteIni("connect", "DBPass", base64.Encode(textBox10.Text.Trim()));
 
 			//discord設定適用
 			gv.WriteIni("checkbox", "dconnect", (Convert.ToInt32(checkBox1.Checked)).ToString());
@@ -347,6 +377,12 @@ namespace glc_cs
 				return;
 			}
 
+			gv.DbUrl = textBox3.Text.Trim();
+			gv.DbName = textBox11.Text.Trim();
+			gv.DbTable = textBox12.Text.Trim();
+			gv.DbUser = textBox7.Text.Trim();
+			gv.DbPass = textBox10.Text.Trim();
+
 			SqlConnection cn = gv.SqlCon;
 			SqlCommand cm;
 			cm = new SqlCommand()
@@ -390,6 +426,8 @@ namespace glc_cs
 				cm2.ExecuteNonQuery();
 				textBox11.Text = "dekosoft_gl";
 				textBox12.Text = "dbo.gl_item1";
+				gv.DbName = textBox11.Text.Trim();
+				gv.DbTable = textBox12.Text.Trim();
 				label15.Text = "テーブル作成が完了しました。";
 			}
 			catch (Exception ex)
@@ -513,6 +551,7 @@ namespace glc_cs
 			textBox10.Enabled = false;
 			button5.Enabled = false;
 
+			groupBox7.Enabled = true;
 			groupBox12.Enabled = false;
 		}
 
@@ -537,6 +576,7 @@ namespace glc_cs
 			textBox10.Enabled = true;
 			button5.Enabled = true;
 
+			groupBox7.Enabled = false;
 			groupBox12.Enabled = true;
 		}
 
@@ -558,6 +598,13 @@ namespace glc_cs
 			{
 				return;
 			}
+
+
+			gv.DbUrl = textBox3.Text.Trim();
+			gv.DbName = textBox11.Text.Trim();
+			gv.DbTable = textBox12.Text.Trim();
+			gv.DbUser = textBox7.Text.Trim();
+			gv.DbPass = textBox10.Text.Trim();
 
 			bool deleteAllRecodes = checkBox6.Checked;
 			bool forceCommit = checkBox7.Checked;
@@ -614,7 +661,6 @@ namespace glc_cs
 			// エラー発生時に処理を中断する
 			try
 			{
-				label15.Text = "変換処理実行中です。しばらくお待ちください。";
 				Refresh();
 				Application.DoEvents();
 				string gameName = string.Empty, gamePath = string.Empty, imgPath = string.Empty, runTime = "0", runCount = "0", dconText = string.Empty, rateFlg = "0";

@@ -43,12 +43,12 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static readonly string appver = "0.97";
+			protected static readonly string appver = "0.971";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appbuild = "22.22.03.13";
+			protected static readonly string appbuild = "23.22.03.15";
 
 			/// <summary>
 			/// ゲームディレクトリ(作業ディレクトリ)
@@ -546,6 +546,8 @@ namespace glc_cs
 
 			public bool GLConfigLoad()
 			{
+				MyBase64str base64 = new MyBase64str();
+
 				if (File.Exists(ConfigIni))
 				{
 					// config.ini 存在する場合
@@ -559,7 +561,14 @@ namespace glc_cs
 					DbName = ReadIni("connect", "DBName", string.Empty);
 					DbTable = ReadIni("connect", "DBTable", string.Empty);
 					DbUser = ReadIni("connect", "DBUser", string.Empty);
-					DbPass = ReadIni("connect", "DBPass", string.Empty);
+					try
+					{
+						DbPass = base64.Decode(ReadIni("connect", "DBPass", string.Empty));
+					}
+					catch (Exception ex)
+					{
+						DbPass = string.Empty;
+					}
 
 					if (SaveType == "I")
 					{
@@ -955,6 +964,13 @@ namespace glc_cs
 					return false;
 				}
 
+				// INI管理モードでない場合は拒否する
+				if (saveType != "I")
+				{
+					errMsg = "データベースモードでは使用できません\nランチャーを再起動してから再度お試し下さい。";
+					return false;
+				}
+
 				// 置換文字数チェック
 				if (beforeName.Length < 2 || afterName.Length < 2)
 				{
@@ -1044,6 +1060,7 @@ namespace glc_cs
 				return true;
 			}
 
+
 			/// <summary>
 			/// エラーログを書き込みます
 			/// </summary>
@@ -1060,6 +1077,21 @@ namespace glc_cs
 				File.AppendAllText(BaseDir + "error.log", sb.ToString());
 				return;
 			}
+		}
+	}
+
+	public class MyBase64str
+	{
+		private Encoding enc = Encoding.UTF8;
+
+		public string Encode(string str)
+		{
+			return Convert.ToBase64String(enc.GetBytes(str));
+		}
+
+		public string Decode(string str)
+		{
+			return enc.GetString(Convert.FromBase64String(str));
 		}
 	}
 

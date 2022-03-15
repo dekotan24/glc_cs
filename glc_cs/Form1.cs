@@ -523,7 +523,7 @@ namespace glc_cs
 							{
 								CommandType = CommandType.Text,
 								CommandTimeout = 30,
-								CommandText = @"UPDATE " + gv.DbName + "." + gv.DbTable + " SET UPTIME = CAST(CAST(UPTIME AS INT) + " + anss + " AS NVARCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS INT) + 1 AS NVARCHAR), DCON_TEXT = '" + textBox6.Text.Trim() + "', AGE_FLG = '" + (radioButton1.Checked ? "0" : "1") + "' "
+								CommandText = @"UPDATE " + gv.DbName + "." + gv.DbTable + " SET UPTIME = CAST(CAST(UPTIME AS INT) + " + anss + " AS NVARCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS INT) + 1 AS NVARCHAR), DCON_TEXT = '" + textBox6.Text.Trim() + "', AGE_FLG = '" + (radioButton1.Checked ? "0" : "1") + "', LAST_RUN = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' "
 											+ " WHERE ID = '" + gv.CurrentGameDbVal + "'"
 							};
 							cm.Connection = cn;
@@ -537,7 +537,7 @@ namespace glc_cs
 							catch (Exception ex)
 							{
 								gv.WriteErrorLog(ex.Message, "button1_Click", cm.CommandText);
-								resolveError("button1_Click", ex.Message, 0, false);
+								resolveError("button1_Click", ex.Message + "\n\nエラーログに記載されているSQL文を手動で実行すると更新できます。", 0, false);
 							}
 							finally
 							{
@@ -1217,6 +1217,9 @@ namespace glc_cs
 				checkBox1.Checked = true;
 				checkBox2.Checked = true;
 				fileSystemWatcher2.Path = gv.BaseDir;
+				tabControl1.TabPages.Remove(tabPage3);
+				checkBox1.Checked = true;
+				checkBox2.Checked = true;
 			}
 			return;
 		}
