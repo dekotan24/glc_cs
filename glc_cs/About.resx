@@ -117,16 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="textBoxDescription.Text" xml:space="preserve">
-    <value>Game Launcherは、ゲームの一元管理 及び、
-ゲームの起動時間・回数の記録を目的に開発されました。
-
-ゲームを登録する場合は、ランチャーではなくゲーム本体を登録してください。
-
-本ソフトウェアは、ゲームを子プロセスとして起動し、その状態を追跡します。
-そのため、起動したゲームに不審な挙動があった場合、本ソフトウェアもまとめて
-駆除される場合があります。
-例外設定等を行うと、安心かもしれません。
-（※もちろん十分に安全性を確認してから行うこと！）</value>
-  </data>
 </root>

@@ -92,12 +92,12 @@
 			this.listView1 = new System.Windows.Forms.ListView();
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.tabPage3 = new System.Windows.Forms.TabPage();
+			this.textBox8 = new System.Windows.Forms.TextBox();
 			this.button13 = new System.Windows.Forms.Button();
 			this.textBox7 = new System.Windows.Forms.TextBox();
 			this.listBox2 = new System.Windows.Forms.ListBox();
 			this.imageList2 = new System.Windows.Forms.ImageList(this.components);
 			this.imageList0 = new System.Windows.Forms.ImageList(this.components);
-			this.textBox8 = new System.Windows.Forms.TextBox();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
 			this.statusStrip1.SuspendLayout();
@@ -588,6 +588,12 @@
 			this.tabPage3.Name = "tabPage3";
 			this.tabPage3.UseVisualStyleBackColor = true;
 			// 
+			// textBox8
+			// 
+			resources.ApplyResources(this.textBox8, "textBox8");
+			this.textBox8.Name = "textBox8";
+			this.textBox8.ReadOnly = true;
+			// 
 			// button13
 			// 
 			resources.ApplyResources(this.button13, "button13");
@@ -618,12 +624,6 @@
 			this.imageList0.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
 			resources.ApplyResources(this.imageList0, "imageList0");
 			this.imageList0.TransparentColor = System.Drawing.Color.Transparent;
-			// 
-			// textBox8
-			// 
-			resources.ApplyResources(this.textBox8, "textBox8");
-			this.textBox8.Name = "textBox8";
-			this.textBox8.ReadOnly = true;
 			// 
 			// flowLayoutPanel1
 			// 
@@ -685,6 +685,7 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.flowLayoutPanel1);
 			this.Controls.Add(this.flowLayoutPanel2);
+			this.DoubleBuffered = true;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;

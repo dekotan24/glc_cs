@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Runtime.InteropServices;
+using System.Data;
+using System.Data.SqlClient;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
-using System.IO;
-using System.Collections;
-using System.Data.SqlClient;
-using System.Data;
 
 namespace glc_cs
 {
@@ -118,50 +114,12 @@ namespace glc_cs
 			if (gv.SaveType == "I")
 			{
 				radioButton8.Checked = true;
-				// ini control enable
-				label9.Enabled = true;
-				textBox2.Enabled = true;
-				button4.Enabled = true;
-
-				// database control disable
-				label16.Enabled = false;
-				textBox3.Enabled = false;
-				label23.Enabled = false;
-				textBox11.Enabled = false;
-				label24.Enabled = false;
-				textBox12.Enabled = false;
-				label18.Enabled = false;
-				textBox7.Enabled = false;
-				label22.Enabled = false;
-				textBox10.Enabled = false;
-				button5.Enabled = false;
-
-				groupBox7.Enabled = true;
-				groupBox12.Enabled = false;
+				setDirectoryControl(true);
 			}
 			else
 			{
 				radioButton9.Checked = true;
-				// ini control diasble
-				label9.Enabled = false;
-				textBox2.Enabled = false;
-				button4.Enabled = false;
-
-				// database control enable
-				label16.Enabled = true;
-				textBox3.Enabled = true;
-				label23.Enabled = true;
-				textBox11.Enabled = true;
-				label24.Enabled = true;
-				textBox12.Enabled = true;
-				label18.Enabled = true;
-				textBox7.Enabled = true;
-				label22.Enabled = true;
-				textBox10.Enabled = true;
-				button5.Enabled = true;
-
-				groupBox7.Enabled = false;
-				groupBox12.Enabled = true;
+				setDirectoryControl(false);
 			}
 
 			textBox3.Text = gv.DbUrl;
@@ -169,6 +127,8 @@ namespace glc_cs
 			textBox12.Text = gv.DbTable;
 			textBox7.Text = gv.DbUser;
 			textBox10.Text = gv.DbPass;
+
+			checkBox8.Checked = gv.OfflineSave;
 
 			// 作業ディレクトリ反映
 			if (gv.GameDir.EndsWith("\\Data\\"))
@@ -206,6 +166,8 @@ namespace glc_cs
 				{
 					canExit = false;
 				}
+
+				// 保存可否判定
 				if (!canExit)
 				{
 					MessageBox.Show("データの保存方法をデータベースにした場合、\n[URL]、[DB]、[Table]、[User]は必須です。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -220,6 +182,7 @@ namespace glc_cs
 
 			// 保存方法
 			gv.WriteIni("general", "save", radioButton9.Checked ? "D" : "I");
+			gv.WriteIni("general", "OfflineSave", checkBox8.Checked ? "1" : "0");
 			gv.WriteIni("connect", "DBURL", textBox3.Text.Trim());
 			gv.WriteIni("connect", "DBName", textBox11.Text.Trim());
 			gv.WriteIni("connect", "DBTable", textBox12.Text.Trim());
@@ -244,6 +207,25 @@ namespace glc_cs
 			gv.WriteIni("connect", "byPort", textBox5.Text);
 			gv.WriteIni("connect", "byHost", textBox4.Text);
 
+			// データベースをローカルにINIで保存する
+			if (checkBox8.Checked)
+			{
+				if (radioButton9.Checked)
+				{
+					string localPath = gv.BaseDir + (gv.BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\";
+					if (!gv.downloadDbDataToLocal(localPath))
+					{
+						// ローカル保存に失敗
+						gv.WriteIni("general", "OfflineSave", "0");
+						MessageBox.Show("オフライン保存に失敗しました。\nオフライン機能は無効になります。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+					else
+					{
+						// オフラインINIのフラグ変更
+						gv.IniWrite((localPath + "game.ini"), "list", "dbupdate", "0");
+					}
+				}
+			}
 			Hide();
 		}
 
@@ -276,13 +258,13 @@ namespace glc_cs
 		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			this.linkLabel1.LinkVisited = true;
-			System.Diagnostics.Process.Start("https://angel.nippombashi.net");
+			System.Diagnostics.Process.Start("https://fanet.work");
 		}
 
 		private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			this.linkLabel2.LinkVisited = true;
-			System.Diagnostics.Process.Start("mailto:support_dekosoft@outlook.jp");
+			Clipboard.SetText("support_dekosoft@outlook.jp");
 		}
 		private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
@@ -532,52 +514,14 @@ namespace glc_cs
 
 		private void radioButton8_CheckedChanged(object sender, EventArgs e)
 		{
-			// ini
-			// ini control enable
-			label9.Enabled = true;
-			textBox2.Enabled = true;
-			button4.Enabled = true;
-
-			// database control disable
-			label16.Enabled = false;
-			textBox3.Enabled = false;
-			label23.Enabled = false;
-			textBox11.Enabled = false;
-			label24.Enabled = false;
-			textBox12.Enabled = false;
-			label18.Enabled = false;
-			textBox7.Enabled = false;
-			label22.Enabled = false;
-			textBox10.Enabled = false;
-			button5.Enabled = false;
-
-			groupBox7.Enabled = true;
-			groupBox12.Enabled = false;
+			// iniMode
+			setDirectoryControl(true);
 		}
 
 		private void radioButton9_CheckedChanged(object sender, EventArgs e)
 		{
-			// database
-			// ini control diasble
-			label9.Enabled = false;
-			textBox2.Enabled = false;
-			button4.Enabled = false;
-
-			// database control enable
-			label16.Enabled = true;
-			textBox3.Enabled = true;
-			label23.Enabled = true;
-			textBox11.Enabled = true;
-			label24.Enabled = true;
-			textBox12.Enabled = true;
-			label18.Enabled = true;
-			textBox7.Enabled = true;
-			label22.Enabled = true;
-			textBox10.Enabled = true;
-			button5.Enabled = true;
-
-			groupBox7.Enabled = false;
-			groupBox12.Enabled = true;
+			// databaseMode
+			setDirectoryControl(false);
 		}
 
 		/// <summary>
@@ -599,7 +543,6 @@ namespace glc_cs
 				return;
 			}
 
-
 			gv.DbUrl = textBox3.Text.Trim();
 			gv.DbName = textBox11.Text.Trim();
 			gv.DbTable = textBox12.Text.Trim();
@@ -615,125 +558,19 @@ namespace glc_cs
 			}
 
 			// ini全件数取得
+			string backupPath = gv.BaseDir + (gv.BaseDir.EndsWith("\\") ? "" : "\\") + "DbBackup\\";
 			int tmpMaxGameCount = 0;
-			if (File.Exists(gv.GameIni))
+
+			int returnVal = gv.InsertIni2Db(gv.GameDir, backupPath, out tmpMaxGameCount, out sCount, out fCount);
+
+			if (returnVal == 0)
 			{
-				tmpMaxGameCount = Convert.ToInt32(gv.IniRead(gv.GameIni, "list", "game", "0"));
+				MessageBox.Show("変換処理が完了しました。(全: " + tmpMaxGameCount + "件 / 成功: " + sCount + "件 / 失敗: " + fCount + "件)", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
-
-			// テーブル削除の場合
-			if (deleteAllRecodes)
+			else
 			{
-				SqlConnection cn = gv.SqlCon;
-				SqlCommand cm = new SqlCommand()
-				{
-					CommandType = CommandType.Text,
-					CommandTimeout = 100,
-					CommandText = @"TRUNCATE TABLE " + gv.DbName + "." + gv.DbTable
-				};
-				cm.Connection = cn;
-
-				try
-				{
-					cn.Open();
-					cm.ExecuteNonQuery();
-				}
-				catch (Exception ex)
-				{
-					gv.WriteErrorLog(ex.Message, "Form2.button3_Click", cm.CommandText);
-					MessageBox.Show("テーブル削除処理中にエラーが発生しました。\n詳しくはエラーログを参照して下さい。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-					return;
-				}
-				finally
-				{
-					if (cn.State == ConnectionState.Open)
-					{
-						cn.Close();
-					}
-				}
+				MessageBox.Show("エラーが発生しました。\n詳細はエラーログをご覧下さい。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
-
-			// コピー準備
-			SqlConnection cn2 = gv.SqlCon;
-			SqlCommand cm2 = null;
-			SqlTransaction tran = null;
-
-			// エラー発生時に処理を中断する
-			try
-			{
-				Refresh();
-				Application.DoEvents();
-				string gameName = string.Empty, gamePath = string.Empty, imgPath = string.Empty, runTime = "0", runCount = "0", dconText = string.Empty, rateFlg = "0";
-
-				cn2.Open();
-				tran = cn2.BeginTransaction();
-
-				for (int i = 1; i <= tmpMaxGameCount; i++)
-				{
-					// ini情報取得
-					string readini = gv.GameDir + "\\" + i + ".ini";
-
-					if (File.Exists(readini))
-					{
-						gameName = gv.IniRead(readini, "game", "name", "").Replace("'", "''");
-						imgPath = gv.IniRead(readini, "game", "imgpass", "").Replace("'", "''");
-						gamePath = gv.IniRead(readini, "game", "pass", "").Replace("'", "''");
-						runTime = gv.IniRead(readini, "game", "time", "0");
-						runCount = gv.IniRead(readini, "game", "start", "0");
-						dconText = gv.IniRead(readini, "game", "stat", "");
-						rateFlg = gv.IniRead(readini, "game", "rating", gv.Rate.ToString());
-						sCount++;
-					}
-					else
-					{
-						fCount++;
-						gv.WriteErrorLog("ファイルが存在しません。", "Form2.button9_Click", readini);
-						continue;
-					}
-
-					// コマンド作成
-					cm2 = new SqlCommand()
-					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"INSERT INTO " + gv.DbName + "." + gv.DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG ) VALUES ( '" + gameName + "', '" + gamePath + "', '" + imgPath + "', '" + runTime + "', '" + runCount + "','" + dconText + "', '" + rateFlg + "' )"
-					};
-					cm2.Connection = cn2;
-					cm2.Transaction = tran;
-					cm2.ExecuteNonQuery();
-				}
-				tran.Commit();
-			}
-			catch (Exception ex)
-			{
-				gv.WriteErrorLog(ex.Message, "Form2.button_3_Click", cm2.CommandText);
-				MessageBox.Show("変換処理中にエラーが発生しました。\n詳しくはエラーログを参照して下さい。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-				if (forceCommit)
-				{
-					tran.Commit();
-				}
-				else
-				{
-					tran.Rollback();
-				}
-
-				if (cn2.State == ConnectionState.Open)
-				{
-					cn2.Close();
-				}
-				System.Media.SystemSounds.Beep.Play();
-				return;
-
-			}
-			finally
-			{
-				if (cn2.State == ConnectionState.Open)
-				{
-					cn2.Close();
-				}
-			}
-			MessageBox.Show("変換処理が完了しました。(全: " + tmpMaxGameCount + "件 / 成功: " + sCount + "件 / 失敗: " + fCount + "件)", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 		private void checkBox6_CheckedChanged(object sender, EventArgs e)
@@ -742,6 +579,35 @@ namespace glc_cs
 			{
 				MessageBox.Show("※※※　警告　※※※\n\nこのチェックを入れた状態で取り込みを開始すると、\n既にデータベースに取り込まれているゲームデータが\n消失します。\n\nクリーンな状態でINIファイルのデータを取り込みたい\n場合に便利な機能です。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
+		}
+
+		/// <summary>
+		/// ディレクトリ関連タブのコントロールをセットします。
+		/// </summary>
+		/// <param name="controlVal">iniモード</param>
+		private void setDirectoryControl(bool controlVal)
+		{
+			// ini controlVal
+			label9.Enabled = controlVal;
+			textBox2.Enabled = controlVal;
+			button4.Enabled = controlVal;
+
+			// database controlVal
+			label16.Enabled = !controlVal;
+			textBox3.Enabled = !controlVal;
+			label23.Enabled = !controlVal;
+			textBox11.Enabled = !controlVal;
+			label24.Enabled = !controlVal;
+			textBox12.Enabled = !controlVal;
+			label18.Enabled = !controlVal;
+			textBox7.Enabled = !controlVal;
+			label22.Enabled = !controlVal;
+			textBox10.Enabled = !controlVal;
+			button5.Enabled = !controlVal;
+			checkBox8.Enabled = !controlVal;
+
+			groupBox7.Enabled = controlVal;
+			groupBox12.Enabled = !controlVal;
 		}
 	}
 }

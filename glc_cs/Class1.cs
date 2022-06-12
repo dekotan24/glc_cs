@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace glc_cs
@@ -43,12 +41,12 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static readonly string appver = "0.971";
+			protected static readonly string appver = "0.99";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appbuild = "23.22.03.15";
+			protected static readonly string appbuild = "24.22.06.13";
 
 			/// <summary>
 			/// ゲームディレクトリ(作業ディレクトリ)
@@ -100,6 +98,11 @@ namespace glc_cs
 			/// データ保存方法
 			/// </summary>
 			protected string saveType = string.Empty;
+
+			/// <summary>
+			/// オフラインセーブフラグ
+			/// </summary>
+			protected bool offlineSave = false;
 
 			/// <summary>
 			/// データベースのURL
@@ -254,7 +257,7 @@ namespace glc_cs
 			}
 
 			/// <summary>
-			/// ゲーム情報が格納されているiniのディレクトリを設定/返却します
+			/// ゲーム統括管理iniのパスを設定/返却します
 			/// </summary>
 			public string GameIni
 			{
@@ -322,6 +325,15 @@ namespace glc_cs
 			{
 				get { return saveType; }
 				set { saveType = value; }
+			}
+
+			/// <summary>
+			/// オフラインセーブフラグ
+			/// </summary>
+			public bool OfflineSave
+			{
+				get { return offlineSave; }
+				set { offlineSave = value; }
 			}
 
 			public string DbUrl
@@ -548,6 +560,11 @@ namespace glc_cs
 			{
 				MyBase64str base64 = new MyBase64str();
 
+				if (SaveType == "T")
+				{
+					return true;
+				}
+
 				if (File.Exists(ConfigIni))
 				{
 					// config.ini 存在する場合
@@ -557,6 +574,7 @@ namespace glc_cs
 					DconPath = ReadIni("connect", "dconpath", "-1");
 
 					SaveType = ReadIni("general", "save", "I");
+					OfflineSave = Convert.ToBoolean(Convert.ToInt32(ReadIni("general", "OfflineSave", "0")));
 					DbUrl = ReadIni("connect", "DBURL", string.Empty);
 					DbName = ReadIni("connect", "DBName", string.Empty);
 					DbTable = ReadIni("connect", "DBTable", string.Empty);
@@ -727,7 +745,6 @@ namespace glc_cs
 									key,
 									data.ToString(),
 									filename);
-
 				}
 				catch (Exception ex)
 				{
@@ -743,7 +760,7 @@ namespace glc_cs
 			}
 
 			/// <summary>
-			/// Config.ini及び、ゲームデータ管理INIに値を書き込みます
+			/// Config.ini及び、opt+ゲームデータ管理INIに値を書き込みます。opt+データ管理INIへは、存在しない場合に書き込みます。
 			/// </summary>
 			/// <param name="sec">セクション名</param>
 			/// <param name="key">キー値</param>
@@ -1077,6 +1094,332 @@ namespace glc_cs
 				File.AppendAllText(BaseDir + "error.log", sb.ToString());
 				return;
 			}
+
+
+			/// <summary>
+			/// データベースを指定されたフォルダにINIで保存します
+			/// </summary>
+			/// <param name="targetWorkDir">保存先フォルダ</param>
+			/// <returns></returns>
+			public bool downloadDbDataToLocal(string targetWorkDir)
+			{
+				string localGameIni = targetWorkDir + "game.ini";
+				bool isSuc = false;
+
+				try
+				{
+					// ローカルに保存されているか確認
+					if (File.Exists(localGameIni))
+					{
+						// ローカルファイルが存在する場合、削除する
+						Directory.Delete(targetWorkDir, true);
+					}
+
+					// 保存用フォルダ作成
+					Directory.CreateDirectory(targetWorkDir);
+				}
+				catch (Exception ex)
+				{
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "Path: " + targetWorkDir + " / INI: " + localGameIni);
+				}
+				// Configの最新化
+				GLConfigLoad();
+
+				// データ取得
+				DataTable dt = new DataTable();
+
+				SqlConnection cn = SqlCon;
+
+				try
+				{
+					// 読み込み処理
+					cn.Open();
+
+					//全ゲーム数取得
+					SqlCommand cm = new SqlCommand()
+					{
+						CommandType = CommandType.Text,
+						CommandTimeout = 30,
+						CommandText = @"SELECT count(*) FROM " + DbName + "." + DbTable
+					};
+					cm.Connection = cn;
+
+					int sqlAns = Convert.ToInt32(cm.ExecuteScalar().ToString());
+
+					if (sqlAns > 0)
+					{
+						IniWrite(localGameIni, "list", "game", sqlAns.ToString());
+					}
+					else
+					{
+						//ゲームが1つもない場合
+						return false;
+					}
+
+					// DBから全ゲームデータを取り出す
+					SqlCommand cm2 = new SqlCommand()
+					{
+						CommandType = CommandType.Text,
+						CommandTimeout = 60,
+						CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN "
+									+ " FROM " + DbName + "." + DbTable
+					};
+					cm2.Connection = cn;
+
+					using (var reader = cm2.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							// 1件ずつローカルINIに書く
+							if (Convert.ToInt32(reader["ID"].ToString()) > 0)
+							{
+								string saveLocalIniPath = targetWorkDir + reader["ID"].ToString() + ".ini";
+								IniWrite(saveLocalIniPath, "game", "name", reader["GAME_NAME"].ToString());
+								IniWrite(saveLocalIniPath, "game", "imgpass", reader["IMG_PATH"].ToString());
+								IniWrite(saveLocalIniPath, "game", "pass", reader["GAME_PATH"].ToString());
+								IniWrite(saveLocalIniPath, "game", "time", (string.IsNullOrEmpty(reader["UPTIME"].ToString()) ? "0" : reader["UPTIME"].ToString()));
+								IniWrite(saveLocalIniPath, "game", "start", (string.IsNullOrEmpty(reader["RUN_COUNT"].ToString()) ? "0" : reader["RUN_COUNT"].ToString()));
+								IniWrite(saveLocalIniPath, "game", "stat", reader["DCON_TEXT"].ToString());
+								IniWrite(saveLocalIniPath, "game", "rating", (string.IsNullOrEmpty(reader["AGE_FLG"].ToString()) ? Rate.ToString() : reader["AGE_FLG"].ToString()));
+								IniWrite(saveLocalIniPath, "game", "temp1", reader["TEMP1"].ToString());
+								IniWrite(saveLocalIniPath, "game", "lastrun", reader["LAST_RUN"].ToString());
+							}
+						}
+						isSuc = true;
+					}
+				}
+				catch (Exception ex)
+				{
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cn.ConnectionString);
+				}
+				finally
+				{
+					if (cn.State == ConnectionState.Open)
+					{
+						cn.Close();
+					}
+				}
+				return isSuc;
+			}
+
+
+			/// <summary>
+			/// INIファイルをDBにINSERTします
+			/// </summary>
+			/// <param name="workDir">INSERTするINIディレクトリ</param>
+			/// <param name="backupDir">バックアップINIディレクトリ</param>
+			/// <param name="sCount">INSERT成功件数</param>
+			/// <param name="fCount">INSERT失敗件数</param>
+			/// <returns>1:バックアップ作成エラー 2:INSERT失敗 3:Catchエラー 4:復元エラー</returns>
+			public int InsertIni2Db(string workDir, string backupDir, out int tmpMaxGameCount, out int sCount, out int fCount)
+			{
+				// 変数宣言
+				SqlConnection cn1 = SqlCon;
+				SqlCommand cm1; // TRUNCATE用
+				SqlCommand cm2; // INSERT用
+				SqlTransaction tran1 = null;
+
+				string localGameIni = workDir + "game.ini";
+				tmpMaxGameCount = 0;
+				int ans = 0;
+				sCount = 0;
+				fCount = 0;
+				bool continueAdd = true;
+				string gameName = string.Empty, gamePath = string.Empty, imgPath = string.Empty, runTime = "0", runCount = "0", dconText = string.Empty, rateFlg = "0", temp1 = string.Empty, lastRun = string.Empty;
+
+				// ini全件数取得
+				if (File.Exists(localGameIni))
+				{
+					tmpMaxGameCount = Convert.ToInt32(IniRead(localGameIni, "list", "game", "0"));
+				}
+
+				// データベースをバックアップ
+				if (!downloadDbDataToLocal(backupDir))
+				{
+					continueAdd = false;
+					ans = 1;
+				}
+
+				// データベースのバックアップに成功した場合
+				if (continueAdd)
+				{
+					// TRUNCATE文作成
+					cm1 = new SqlCommand()
+					{
+						CommandType = CommandType.Text,
+						CommandTimeout = 30,
+						CommandText = @"TRUNCATE TABLE " + DbName + "." + DbTable
+					};
+					cm1.Connection = cn1;
+
+					cm2 = new SqlCommand();
+
+					try
+					{
+						cn1.Open();
+
+						// TRUNCATE実行
+						cm1.ExecuteNonQuery();
+
+						// TRANSACTION開始
+						tran1 = cn1.BeginTransaction();
+
+						// INSERTデータ取得
+						for (int i = 1; i <= tmpMaxGameCount; i++)
+						{
+							// ini情報取得
+							string readini = workDir + "\\" + i + ".ini";
+
+							if (File.Exists(readini))
+							{
+								gameName = IniRead(readini, "game", "name", "").Replace("'", "''");
+								imgPath = IniRead(readini, "game", "imgpass", "").Replace("'", "''");
+								gamePath = IniRead(readini, "game", "pass", "").Replace("'", "''");
+								runTime = IniRead(readini, "game", "time", "0");
+								runCount = IniRead(readini, "game", "start", "0");
+								dconText = IniRead(readini, "game", "stat", "");
+								rateFlg = IniRead(readini, "game", "rating", Rate.ToString());
+								temp1 = IniRead(readini, "game", "temp1", "");
+								lastRun = IniRead(readini, "game", "lastrun", "");
+								sCount++;
+							}
+							else
+							{
+								fCount++;
+								WriteErrorLog("ファイルが存在しません。該当ファイルのINSERT処理をスキップします。", MethodBase.GetCurrentMethod().Name, readini);
+								continue;
+							}
+
+							// INSERTコマンド作成
+							cm2 = new SqlCommand()
+							{
+								CommandType = CommandType.Text,
+								CommandTimeout = 30,
+								CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN ) VALUES ( '" + gameName + "', '" + gamePath + "', '" + imgPath + "', '" + runTime + "', '" + runCount + "','" + dconText + "', '" + rateFlg + "', '" + temp1 + "', '" + lastRun + "' )"
+							};
+							cm2.Connection = cn1;
+							cm2.Transaction = tran1;
+
+							// INSERT文実行
+							cm2.ExecuteNonQuery();
+						}
+
+						if (fCount > 0)
+						{
+							// 登録失敗のものがある場合はロールバック
+							tran1.Rollback();
+							WriteErrorLog("INSERT処理をスキップしたファイルがあるためロールバックしました。", MethodBase.GetCurrentMethod().Name, "スキップ：" + fCount + "件");
+							ans = 2;
+						}
+						else
+						{
+							// 問題なければコミット
+							tran1.Commit();
+							// オフラインINIのフラグ変更
+							IniWrite(localGameIni, "list", "dbupdate", "0");
+						}
+					}
+					catch (Exception ex)
+					{
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "cm1：" + cm1 != null ? cm1.CommandText : string.Empty + "cm2：" + cm2 != null ? cm2.CommandText : string.Empty);
+						ans = 3;
+						tran1.Rollback();
+						if (!Ini2DbErrorRollback(backupDir))
+						{
+							ans = 4;
+						}
+					}
+					finally
+					{
+						if (cn1.State == ConnectionState.Open)
+						{
+							cn1.Close();
+						}
+					}
+				}
+				return ans;
+			}
+
+
+			/// <summary>
+			/// データベース操作時にエラーが発生した場合、バックアップディレクトリの値を登録し直します
+			/// </summary>
+			/// <param name="backupDir">バックアップINIのディレクトリ</param>
+			/// <returns>正常にロールバックできた場合:true</returns>
+			public bool Ini2DbErrorRollback(string backupDir)
+			{
+				// 変数宣言
+				SqlConnection cn1 = SqlCon;
+				SqlCommand cm1 = new SqlCommand();
+
+				string localGameIni = backupDir + "game.ini";
+				int tmpMaxGameCount = 0;
+				bool ans = true;
+				string gameName = string.Empty, gamePath = string.Empty, imgPath = string.Empty, runTime = "0", runCount = "0", dconText = string.Empty, rateFlg = "0", temp1 = string.Empty, lastRun = string.Empty;
+
+				// ini全件数取得
+				if (File.Exists(localGameIni))
+				{
+					tmpMaxGameCount = Convert.ToInt32(IniRead(localGameIni, "list", "game", "0"));
+				}
+
+				try
+				{
+					cn1.Open();
+
+					// INSERTデータ取得
+					for (int i = 1; i <= tmpMaxGameCount; i++)
+					{
+						// ini情報取得
+						string readini = backupDir + "\\" + i + ".ini";
+
+						if (File.Exists(readini))
+						{
+							gameName = IniRead(readini, "game", "name", "").Replace("'", "''");
+							imgPath = IniRead(readini, "game", "imgpass", "").Replace("'", "''");
+							gamePath = IniRead(readini, "game", "pass", "").Replace("'", "''");
+							runTime = IniRead(readini, "game", "time", "0");
+							runCount = IniRead(readini, "game", "start", "0");
+							dconText = IniRead(readini, "game", "stat", "");
+							rateFlg = IniRead(readini, "game", "rating", Rate.ToString());
+							temp1 = IniRead(readini, "game", "temp1", "");
+							lastRun = IniRead(readini, "game", "lastrun", "");
+						}
+						else
+						{
+							ans = false;
+							WriteErrorLog("ファイルが存在しません。該当ファイルのINSERT処理をスキップします。", MethodBase.GetCurrentMethod().Name, readini);
+							continue;
+						}
+
+						// INSERTコマンド作成
+						cm1 = new SqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN ) VALUES ( '" + gameName + "', '" + gamePath + "', '" + imgPath + "', '" + runTime + "', '" + runCount + "','" + dconText + "', '" + rateFlg + "', '" + temp1 + "', '" + lastRun + "' )"
+						};
+						cm1.Connection = cn1;
+
+						// INSERT文実行
+						cm1.ExecuteNonQuery();
+					}
+				}
+				catch (Exception ex)
+				{
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "cm1：" + cm1 != null ? cm1.CommandText : string.Empty);
+					ans = false;
+				}
+				finally
+				{
+					if (cn1.State == ConnectionState.Open)
+					{
+						cn1.Close();
+					}
+				}
+				return ans;
+			}
+
 		}
 	}
 

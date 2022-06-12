@@ -35,6 +35,7 @@
 			this.button7 = new System.Windows.Forms.Button();
 			this.textBox8 = new System.Windows.Forms.TextBox();
 			this.textBox9 = new System.Windows.Forms.TextBox();
+			this.checkBox7 = new System.Windows.Forms.CheckBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage7 = new System.Windows.Forms.TabPage();
 			this.groupBox11 = new System.Windows.Forms.GroupBox();
@@ -86,10 +87,15 @@
 			this.textBox2 = new System.Windows.Forms.TextBox();
 			this.button4 = new System.Windows.Forms.Button();
 			this.groupBox9 = new System.Windows.Forms.GroupBox();
+			this.checkBox8 = new System.Windows.Forms.CheckBox();
 			this.label12 = new System.Windows.Forms.Label();
 			this.radioButton9 = new System.Windows.Forms.RadioButton();
 			this.radioButton8 = new System.Windows.Forms.RadioButton();
 			this.tabPage6 = new System.Windows.Forms.TabPage();
+			this.groupBox12 = new System.Windows.Forms.GroupBox();
+			this.label25 = new System.Windows.Forms.Label();
+			this.button9 = new System.Windows.Forms.Button();
+			this.checkBox6 = new System.Windows.Forms.CheckBox();
 			this.groupBox7 = new System.Windows.Forms.GroupBox();
 			this.label17 = new System.Windows.Forms.Label();
 			this.label21 = new System.Windows.Forms.Label();
@@ -114,11 +120,6 @@
 			this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
 			this.label15 = new System.Windows.Forms.Label();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-			this.groupBox12 = new System.Windows.Forms.GroupBox();
-			this.checkBox6 = new System.Windows.Forms.CheckBox();
-			this.button9 = new System.Windows.Forms.Button();
-			this.checkBox7 = new System.Windows.Forms.CheckBox();
-			this.label25 = new System.Windows.Forms.Label();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage7.SuspendLayout();
@@ -136,9 +137,9 @@
 			this.groupBox10.SuspendLayout();
 			this.groupBox9.SuspendLayout();
 			this.tabPage6.SuspendLayout();
+			this.groupBox12.SuspendLayout();
 			this.groupBox7.SuspendLayout();
 			this.tabPage5.SuspendLayout();
-			this.groupBox12.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox1
@@ -190,6 +191,17 @@
 			this.textBox9.Size = new System.Drawing.Size(141, 19);
 			this.textBox9.TabIndex = 2;
 			this.toolTip1.SetToolTip(this.textBox9, "変更後のキーワード");
+			// 
+			// checkBox7
+			// 
+			this.checkBox7.AutoSize = true;
+			this.checkBox7.Location = new System.Drawing.Point(13, 49);
+			this.checkBox7.Name = "checkBox7";
+			this.checkBox7.Size = new System.Drawing.Size(210, 16);
+			this.checkBox7.TabIndex = 2;
+			this.checkBox7.Text = "エラー発生時点までの処理をコミットする";
+			this.toolTip1.SetToolTip(this.checkBox7, "取込処理中にエラーが発生した場合、エラー発生直前までに取り込んだデータをコミットします");
+			this.checkBox7.UseVisualStyleBackColor = true;
 			// 
 			// tabControl1
 			// 
@@ -731,6 +743,7 @@
 			// 
 			// groupBox9
 			// 
+			this.groupBox9.Controls.Add(this.checkBox8);
 			this.groupBox9.Controls.Add(this.label12);
 			this.groupBox9.Controls.Add(this.radioButton9);
 			this.groupBox9.Controls.Add(this.radioButton8);
@@ -741,6 +754,17 @@
 			this.groupBox9.TabIndex = 2;
 			this.groupBox9.TabStop = false;
 			this.groupBox9.Text = "ゲームリスト管理方法";
+			// 
+			// checkBox8
+			// 
+			this.checkBox8.AutoSize = true;
+			this.checkBox8.Font = new System.Drawing.Font("MS UI Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.checkBox8.Location = new System.Drawing.Point(352, 29);
+			this.checkBox8.Name = "checkBox8";
+			this.checkBox8.Size = new System.Drawing.Size(109, 17);
+			this.checkBox8.TabIndex = 3;
+			this.checkBox8.Text = "オフラインに保存";
+			this.checkBox8.UseVisualStyleBackColor = true;
 			// 
 			// label12
 			// 
@@ -757,7 +781,7 @@
 			// 
 			this.radioButton9.AutoSize = true;
 			this.radioButton9.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.radioButton9.Location = new System.Drawing.Point(242, 25);
+			this.radioButton9.Location = new System.Drawing.Point(199, 25);
 			this.radioButton9.Name = "radioButton9";
 			this.radioButton9.Size = new System.Drawing.Size(149, 20);
 			this.radioButton9.TabIndex = 1;
@@ -771,7 +795,7 @@
 			this.radioButton8.AutoSize = true;
 			this.radioButton8.Checked = true;
 			this.radioButton8.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.radioButton8.Location = new System.Drawing.Point(41, 25);
+			this.radioButton8.Location = new System.Drawing.Point(34, 26);
 			this.radioButton8.Name = "radioButton8";
 			this.radioButton8.Size = new System.Drawing.Size(137, 20);
 			this.radioButton8.TabIndex = 0;
@@ -790,6 +814,50 @@
 			this.tabPage6.TabIndex = 5;
 			this.tabPage6.Text = "ツール";
 			this.tabPage6.UseVisualStyleBackColor = true;
+			// 
+			// groupBox12
+			// 
+			this.groupBox12.Controls.Add(this.label25);
+			this.groupBox12.Controls.Add(this.checkBox7);
+			this.groupBox12.Controls.Add(this.button9);
+			this.groupBox12.Controls.Add(this.checkBox6);
+			this.groupBox12.Location = new System.Drawing.Point(6, 102);
+			this.groupBox12.Name = "groupBox12";
+			this.groupBox12.Size = new System.Drawing.Size(470, 104);
+			this.groupBox12.TabIndex = 1;
+			this.groupBox12.TabStop = false;
+			this.groupBox12.Text = "INI→DB取込";
+			// 
+			// label25
+			// 
+			this.label25.AutoSize = true;
+			this.label25.Location = new System.Drawing.Point(18, 79);
+			this.label25.Name = "label25";
+			this.label25.Size = new System.Drawing.Size(432, 12);
+			this.label25.TabIndex = 3;
+			this.label25.Text = "ゲーム管理方法が [データベース] で、DB接続の各情報が入力されている場合に使用可能";
+			// 
+			// button9
+			// 
+			this.button9.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.button9.Location = new System.Drawing.Point(264, 18);
+			this.button9.Name = "button9";
+			this.button9.Size = new System.Drawing.Size(200, 47);
+			this.button9.TabIndex = 1;
+			this.button9.Text = "INIファイルのデータをDBに取込";
+			this.button9.UseVisualStyleBackColor = true;
+			this.button9.Click += new System.EventHandler(this.button9_Click);
+			// 
+			// checkBox6
+			// 
+			this.checkBox6.AutoSize = true;
+			this.checkBox6.Location = new System.Drawing.Point(13, 25);
+			this.checkBox6.Name = "checkBox6";
+			this.checkBox6.Size = new System.Drawing.Size(235, 16);
+			this.checkBox6.TabIndex = 0;
+			this.checkBox6.Text = "テーブルのすべてのレコードを削除する（推奨）";
+			this.checkBox6.UseVisualStyleBackColor = true;
+			this.checkBox6.CheckedChanged += new System.EventHandler(this.checkBox6_CheckedChanged);
 			// 
 			// groupBox7
 			// 
@@ -941,6 +1009,7 @@
 			this.linkLabel2.TabIndex = 5;
 			this.linkLabel2.TabStop = true;
 			this.linkLabel2.Text = "support_dekosoft@outlook.jp";
+			this.toolTip1.SetToolTip(this.linkLabel2, "メールアドレスをコピーします");
 			this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
 			// 
 			// linkLabel1
@@ -948,10 +1017,10 @@
 			this.linkLabel1.AutoSize = true;
 			this.linkLabel1.Location = new System.Drawing.Point(117, 107);
 			this.linkLabel1.Name = "linkLabel1";
-			this.linkLabel1.Size = new System.Drawing.Size(155, 12);
+			this.linkLabel1.Size = new System.Drawing.Size(97, 12);
 			this.linkLabel1.TabIndex = 4;
 			this.linkLabel1.TabStop = true;
-			this.linkLabel1.Text = "https://angel.nippombashi.net";
+			this.linkLabel1.Text = "https://fanet.work";
 			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
 			// 
 			// label5
@@ -1009,68 +1078,13 @@
 			this.label15.AutoSize = true;
 			this.label15.Location = new System.Drawing.Point(20, 249);
 			this.label15.Name = "label15";
-			this.label15.Size = new System.Drawing.Size(271, 12);
+			this.label15.Size = new System.Drawing.Size(154, 12);
 			this.label15.TabIndex = 4;
-			this.label15.Text = "グレーで操作できなくなっているところは現在工事中です。";
+			this.label15.Text = "一部工事中の機能があります。";
 			// 
 			// openFileDialog1
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
-			// 
-			// groupBox12
-			// 
-			this.groupBox12.Controls.Add(this.label25);
-			this.groupBox12.Controls.Add(this.checkBox7);
-			this.groupBox12.Controls.Add(this.button9);
-			this.groupBox12.Controls.Add(this.checkBox6);
-			this.groupBox12.Location = new System.Drawing.Point(6, 102);
-			this.groupBox12.Name = "groupBox12";
-			this.groupBox12.Size = new System.Drawing.Size(470, 104);
-			this.groupBox12.TabIndex = 1;
-			this.groupBox12.TabStop = false;
-			this.groupBox12.Text = "INI→DB取込";
-			// 
-			// checkBox6
-			// 
-			this.checkBox6.AutoSize = true;
-			this.checkBox6.Location = new System.Drawing.Point(13, 25);
-			this.checkBox6.Name = "checkBox6";
-			this.checkBox6.Size = new System.Drawing.Size(235, 16);
-			this.checkBox6.TabIndex = 0;
-			this.checkBox6.Text = "テーブルのすべてのレコードを削除する（推奨）";
-			this.checkBox6.UseVisualStyleBackColor = true;
-			this.checkBox6.CheckedChanged += new System.EventHandler(this.checkBox6_CheckedChanged);
-			// 
-			// button9
-			// 
-			this.button9.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.button9.Location = new System.Drawing.Point(264, 18);
-			this.button9.Name = "button9";
-			this.button9.Size = new System.Drawing.Size(200, 47);
-			this.button9.TabIndex = 1;
-			this.button9.Text = "INIファイルのデータをDBに取込";
-			this.button9.UseVisualStyleBackColor = true;
-			this.button9.Click += new System.EventHandler(this.button9_Click);
-			// 
-			// checkBox7
-			// 
-			this.checkBox7.AutoSize = true;
-			this.checkBox7.Location = new System.Drawing.Point(13, 49);
-			this.checkBox7.Name = "checkBox7";
-			this.checkBox7.Size = new System.Drawing.Size(210, 16);
-			this.checkBox7.TabIndex = 2;
-			this.checkBox7.Text = "エラー発生時点までの処理をコミットする";
-			this.toolTip1.SetToolTip(this.checkBox7, "取込処理中にエラーが発生した場合、エラー発生直前までに取り込んだデータをコミットします");
-			this.checkBox7.UseVisualStyleBackColor = true;
-			// 
-			// label25
-			// 
-			this.label25.AutoSize = true;
-			this.label25.Location = new System.Drawing.Point(18, 79);
-			this.label25.Name = "label25";
-			this.label25.Size = new System.Drawing.Size(432, 12);
-			this.label25.TabIndex = 3;
-			this.label25.Text = "ゲーム管理方法が [データベース] で、DB接続の各情報が入力されている場合に使用可能";
 			// 
 			// Form2
 			// 
@@ -1114,12 +1128,12 @@
 			this.groupBox9.ResumeLayout(false);
 			this.groupBox9.PerformLayout();
 			this.tabPage6.ResumeLayout(false);
+			this.groupBox12.ResumeLayout(false);
+			this.groupBox12.PerformLayout();
 			this.groupBox7.ResumeLayout(false);
 			this.groupBox7.PerformLayout();
 			this.tabPage5.ResumeLayout(false);
 			this.tabPage5.PerformLayout();
-			this.groupBox12.ResumeLayout(false);
-			this.groupBox12.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -1216,5 +1230,6 @@
 		private System.Windows.Forms.CheckBox checkBox6;
 		private System.Windows.Forms.Label label25;
 		private System.Windows.Forms.CheckBox checkBox7;
+		private System.Windows.Forms.CheckBox checkBox8;
 	}
 }
