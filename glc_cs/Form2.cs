@@ -2,6 +2,8 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
@@ -10,9 +12,6 @@ namespace glc_cs
 {
 	public partial class Form2 : Form
 	{
-		// 変数ファイル宣言
-		General.Var gv = new General.Var();
-
 		public Form2()
 		{
 			InitializeComponent();
@@ -20,19 +19,20 @@ namespace glc_cs
 
 		private void Form2_Load(object sender, EventArgs e)
 		{
-			if (gv.GLConfigLoad() == false)
+			if (General.Var.GLConfigLoad() == false)
 			{
 				label15.Text = "Configロード中にエラー。詳しくはエラーログを参照して下さい。";
 			}
 
 			//バージョン取得
-			label10.Text = "Ver." + gv.AppVer + " Build " + gv.AppBuild;
+			label10.Text = "Ver." + General.Var.AppVer + " Build " + General.Var.AppBuild;
 
 			// 背景画像
-			textBox6.Text = gv.BgImg;
+			textBox6.Text = General.Var.BgImg;
 
 			//Discord設定読み込み
-			bool dconActive = gv.Dconnect;
+			bool dconActive = General.Var.Dconnect;
+			textBox13.Text = General.Var.DconAppID;
 
 			// Discord連携有効フラグ
 			checkBox1.Checked = dconActive;
@@ -41,15 +41,17 @@ namespace glc_cs
 			{
 				groupBox2.Enabled = true;
 				groupBox6.Enabled = true;
+				groupBox13.Enabled = true;
 			}
 			else
 			{
 				groupBox2.Enabled = false;
 				groupBox6.Enabled = false;
+				groupBox13.Enabled = false;
 			}
 
 			// レート設定
-			if (gv.Rate == 1)
+			if (General.Var.Rate == 1)
 			{
 				radioButton2.Checked = true;
 			}
@@ -59,7 +61,7 @@ namespace glc_cs
 			}
 
 			// Discord Connectorパス取得
-			string dconpath = gv.DconPath;
+			string dconpath = General.Var.DconPath;
 
 			if (File.Exists(dconpath))
 			{
@@ -74,7 +76,7 @@ namespace glc_cs
 			}
 
 			//棒読みちゃん設定読み込み
-			bool isbyActive = gv.ByActive;
+			bool isbyActive = General.Var.ByActive;
 			checkBox2.Checked = isbyActive;
 			if (isbyActive)
 			{
@@ -82,7 +84,7 @@ namespace glc_cs
 				groupBox5.Enabled = true;
 			}
 
-			if (gv.ByType == 1)
+			if (General.Var.ByType == 1)
 			{
 				radioButton4.Checked = true;
 			}
@@ -90,28 +92,14 @@ namespace glc_cs
 			{
 				radioButton3.Checked = true;
 			}
-			textBox4.Text = gv.ByHost;
-			textBox5.Text = gv.ByPort.ToString();
+			textBox4.Text = General.Var.ByHost;
+			textBox5.Text = General.Var.ByPort.ToString();
 
-			switch (gv.ByCErr)
-			{
-				case "A":
-					radioButton5.Checked = true;
-					break;
-				case "D":
-					radioButton6.Checked = true;
-					break;
-				case "Q":
-				default:
-					radioButton7.Checked = true;
-					break;
-			}
-
-			checkBox4.Checked = gv.ByRoS;
-			checkBox10.Checked = gv.ByRoW;
+			checkBox4.Checked = General.Var.ByRoS;
+			checkBox10.Checked = General.Var.ByRoW;
 
 			// 保存方法
-			if (gv.SaveType == "I")
+			if (General.Var.SaveType == "I")
 			{
 				radioButton8.Checked = true;
 				setDirectoryControl(true);
@@ -122,31 +110,47 @@ namespace glc_cs
 				setDirectoryControl(false);
 			}
 
-			textBox3.Text = gv.DbUrl;
-			textBox11.Text = gv.DbName;
-			textBox12.Text = gv.DbTable;
-			textBox7.Text = gv.DbUser;
-			textBox10.Text = gv.DbPass;
+			textBox3.Text = General.Var.DbUrl;
+			textBox11.Text = General.Var.DbName;
+			textBox12.Text = General.Var.DbTable;
+			textBox7.Text = General.Var.DbUser;
+			textBox10.Text = General.Var.DbPass;
 
-			checkBox8.Checked = gv.OfflineSave;
+			checkBox8.Checked = General.Var.OfflineSave;
 
 			// 作業ディレクトリ反映
-			if (gv.GameDir.EndsWith("\\Data\\"))
+			if (General.Var.SaveType != "T")
 			{
-				textBox2.Text = gv.GameDir.Substring(0, gv.GameDir.Length - 5);
-			}
-			else if (gv.GameDir.EndsWith("\\Data"))
-			{
-				textBox2.Text = gv.GameDir.Substring(0, gv.GameDir.Length - 4);
+				if (General.Var.GameDir.EndsWith("\\Data\\"))
+				{
+					textBox2.Text = General.Var.GameDir.Substring(0, General.Var.GameDir.Length - 5);
+				}
+				else if (General.Var.GameDir.EndsWith("\\Data"))
+				{
+					textBox2.Text = General.Var.GameDir.Substring(0, General.Var.GameDir.Length - 4);
+				}
+				else
+				{
+					textBox2.Text = General.Var.GameDir;
+				}
 			}
 			else
 			{
-				textBox2.Text = gv.GameDir;
+				string tmpRawGameDir = General.Var.ReadIni("default", "directory", General.Var.BaseDir.EndsWith("\\") ? General.Var.BaseDir : General.Var.BaseDir + "\\");
+				if (tmpRawGameDir.EndsWith("\\Data\\"))
+				{
+					textBox2.Text = tmpRawGameDir.Substring(0, General.Var.GameDir.Length - 5);
+				}
+				else
+				{
+					textBox2.Text = tmpRawGameDir;
+				}
 			}
 		}
 
 		private void button2_Click(object sender, EventArgs e)
 		{
+			string offlineSaveTypeOld = General.Var.ReadIni("general", "OfflineSave", checkBox8.Checked ? "1" : "0");
 			bool canExit = true;
 			if (radioButton9.Checked)
 			{
@@ -170,7 +174,7 @@ namespace glc_cs
 				// 保存可否判定
 				if (!canExit)
 				{
-					MessageBox.Show("データの保存方法をデータベースにした場合、\n[URL]、[DB]、[Table]、[User]は必須です。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show("データの保存方法をデータベースにした場合、\n[URL]、[DB]、[Table]、[User]は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 					return;
 				}
 			}
@@ -178,55 +182,63 @@ namespace glc_cs
 			MyBase64str base64 = new MyBase64str();
 
 			// 全般
-			gv.WriteIni("imgd", "bgimg", textBox6.Text.Trim());
+			General.Var.WriteIni("imgd", "bgimg", textBox6.Text.Trim());
 
 			// 保存方法
-			gv.WriteIni("general", "save", radioButton9.Checked ? "D" : "I");
-			gv.WriteIni("general", "OfflineSave", checkBox8.Checked ? "1" : "0");
-			gv.WriteIni("connect", "DBURL", textBox3.Text.Trim());
-			gv.WriteIni("connect", "DBName", textBox11.Text.Trim());
-			gv.WriteIni("connect", "DBTable", textBox12.Text.Trim());
-			gv.WriteIni("connect", "DBUser", textBox7.Text.Trim());
-			gv.WriteIni("connect", "DBPass", base64.Encode(textBox10.Text.Trim()));
+			General.Var.WriteIni("general", "save", radioButton9.Checked ? "D" : "I");
+			General.Var.WriteIni("general", "OfflineSave", checkBox8.Checked ? "1" : "0");
+			General.Var.WriteIni("connect", "DBURL", textBox3.Text.Trim());
+			General.Var.WriteIni("connect", "DbName", textBox11.Text.Trim());
+			General.Var.WriteIni("connect", "DbTable", textBox12.Text.Trim());
+			General.Var.WriteIni("connect", "DBUser", textBox7.Text.Trim());
+			General.Var.WriteIni("connect", "DBPass", base64.Encode(textBox10.Text.Trim()));
 
 			//discord設定適用
-			gv.WriteIni("checkbox", "dconnect", (Convert.ToInt32(checkBox1.Checked)).ToString());
+			General.Var.WriteIni("checkbox", "dconnect", (Convert.ToInt32(checkBox1.Checked)).ToString());
 			if (radioButton1.Checked)
 			{
-				gv.WriteIni("checkbox", "rate", "0");
+				General.Var.WriteIni("checkbox", "rate", "0");
 			}
 			else if (radioButton2.Checked)
 			{
-				gv.WriteIni("checkbox", "rate", "1");
+				General.Var.WriteIni("checkbox", "rate", "1");
 			}
-			gv.WriteIni("connect", "dconpath", textBox1.Text);
+			General.Var.WriteIni("connect", "dconpath", textBox1.Text);
+			General.Var.WriteIni("connect", "dconappid", textBox13.Text);
 
 			//棒読みちゃん設定適用
-			gv.WriteIni("connect", "byActive", (Convert.ToInt32(checkBox2.Checked)).ToString());
-			gv.WriteIni("connect", "byType", gv.ByType.ToString());
-			gv.WriteIni("connect", "byPort", textBox5.Text);
-			gv.WriteIni("connect", "byHost", textBox4.Text);
+			General.Var.WriteIni("connect", "byActive", (Convert.ToInt32(checkBox2.Checked)).ToString());
+			General.Var.WriteIni("connect", "byType", General.Var.ByType.ToString());
+			General.Var.WriteIni("connect", "byPort", textBox5.Text);
+			General.Var.WriteIni("connect", "byHost", textBox4.Text);
 
 			// データベースをローカルにINIで保存する
 			if (checkBox8.Checked)
 			{
 				if (radioButton9.Checked)
 				{
-					string localPath = gv.BaseDir + (gv.BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\";
-					if (!gv.downloadDbDataToLocal(localPath))
+					string localPath = General.Var.BaseDir + (General.Var.BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\";
+					if (!General.Var.downloadDbDataToLocal(localPath))
 					{
 						// ローカル保存に失敗
-						gv.WriteIni("general", "OfflineSave", "0");
-						MessageBox.Show("オフライン保存に失敗しました。\nオフライン機能は無効になります。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+						if (offlineSaveTypeOld == "0")
+						{
+							General.Var.WriteIni("general", "OfflineSave", "0");
+							MessageBox.Show("オフライン保存に失敗しました。\nオフライン機能は無効になります。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+						}
+						else
+						{
+							MessageBox.Show("最新版のDB情報の取得に失敗しました。\n既にダウンロードされているものを使用します。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						}
 					}
 					else
 					{
 						// オフラインINIのフラグ変更
-						gv.IniWrite((localPath + "game.ini"), "list", "dbupdate", "0");
+						General.Var.IniWrite((localPath + "game.ini"), "list", "dbupdate", "0");
 					}
 				}
 			}
-			Hide();
+			Close();
 		}
 
 		private void button4_Click(object sender, EventArgs e)
@@ -240,16 +252,16 @@ namespace glc_cs
 				{
 					newworkdir += "\\";
 				}
-				gv.WriteIni("default", "directory", newworkdir);
+				General.Var.WriteIni("default", "directory", newworkdir);
 
 				// 作業ディレクトリに管理iniがない場合は0で初期化
 				if (!File.Exists(newworkdir + "\\Data\\game.ini"))
 				{
-					gv.WriteIni("list", "game", "0", 0, newworkdir);
+					General.Var.WriteIni("list", "game", "0", 0, newworkdir);
 				}
 
 				// textbox反映
-				gv.GameDir = gv.ReadIni("default", "directory", gv.BaseDir);
+				General.Var.GameDir = General.Var.ReadIni("default", "directory", General.Var.BaseDir);
 				textBox2.Text = newworkdir;
 			}
 			return;
@@ -275,7 +287,7 @@ namespace glc_cs
 		private void button8_Click(object sender, EventArgs e)
 		{
 			textBox4.Text = "127.0.0.1";
-			if (gv.ByType == 0)
+			if (General.Var.ByType == 0)
 			{
 				textBox5.Text = "50001";
 			}
@@ -287,10 +299,10 @@ namespace glc_cs
 
 		private void button3_Click(object sender, EventArgs e)
 		{
-			gv.ByHost = textBox4.Text;
-			gv.ByPort = Convert.ToInt32(textBox5.Text);
+			General.Var.ByHost = textBox4.Text;
+			General.Var.ByPort = Convert.ToInt32(textBox5.Text);
 
-			gv.Bouyomi_Connectchk(gv.ByHost, gv.ByPort, gv.ByType);
+			General.Var.Bouyomi_Connectchk(General.Var.ByHost, General.Var.ByPort, General.Var.ByType);
 		}
 
 
@@ -312,14 +324,14 @@ namespace glc_cs
 		{
 			textBox4.Enabled = true;
 			textBox5.Text = "50001";
-			gv.ByType = 0;
+			General.Var.ByType = 0;
 		}
 
 		private void radioButton4_CheckedChanged(object sender, EventArgs e)
 		{
 			textBox4.Enabled = false;
 			textBox5.Text = "50080";
-			gv.ByType = 1;
+			General.Var.ByType = 1;
 		}
 
 		/// <summary>
@@ -359,14 +371,16 @@ namespace glc_cs
 				return;
 			}
 
-			gv.DbUrl = textBox3.Text.Trim();
-			gv.DbName = textBox11.Text.Trim();
-			gv.DbTable = textBox12.Text.Trim();
-			gv.DbUser = textBox7.Text.Trim();
-			gv.DbPass = textBox10.Text.Trim();
+			General.Var.DbUrl = textBox3.Text.Trim();
+			General.Var.DbName = textBox11.Text.Trim();
+			General.Var.DbTable = textBox12.Text.Trim();
+			General.Var.DbUser = textBox7.Text.Trim();
+			General.Var.DbPass = textBox10.Text.Trim();
 
-			SqlConnection cn = gv.SqlCon;
+			SqlConnection cn = General.Var.SqlCon;
 			SqlCommand cm;
+			SqlTransaction tr = null;
+
 			cm = new SqlCommand()
 			{
 				CommandType = CommandType.Text,
@@ -374,14 +388,6 @@ namespace glc_cs
 				CommandText = @"CREATE DATABASE [dekosoft_gl]"
 			};
 			cm.Connection = cn;
-
-			SqlCommand cm2 = new SqlCommand()
-			{
-				CommandType = CommandType.Text,
-				CommandTimeout = 30,
-				CommandText = @"CREATE TABLE [dekosoft_gl].[dbo].[gl_item1] ( [ID] INT IDENTITY(1,1) NOT NULL, [GAME_NAME] NVARCHAR(255), [GAME_PATH] NVARCHAR(MAX), [IMG_PATH] NVARCHAR(MAX), [UPTIME] NVARCHAR(255), [RUN_COUNT] NVARCHAR(99), [DCON_TEXT] NVARCHAR(50), [AGE_FLG] NVARCHAR(1), [TEMP1] NVARCHAR(255) NULL, [LAST_RUN] DATETIME NULL )"
-			};
-			cm2.Connection = cn;
 
 			// データベース作成
 			try
@@ -391,7 +397,8 @@ namespace glc_cs
 			}
 			catch (Exception ex)
 			{
-				gv.WriteErrorLog(ex.Message, "button5_Click", cm.CommandText);
+				cn.Close();
+				General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
 				label15.Text = "データベース作成中にエラーが発生しました。エラーログをご覧下さい";
 			}
 			finally
@@ -401,20 +408,40 @@ namespace glc_cs
 					cn.Close();
 				}
 			}
+
+
 			// テーブル作成
+			SqlCommand cm2 = new SqlCommand()
+			{
+				CommandType = CommandType.Text,
+				CommandTimeout = 30,
+				CommandText = @"CREATE TABLE [dekosoft_gl].[dbo].[gl_item1] ( [ID] INT IDENTITY(1,1) NOT NULL, [GAME_NAME] NVARCHAR(255), [GAME_PATH] NVARCHAR(MAX), [IMG_PATH] NVARCHAR(MAX), [UPTIME] NVARCHAR(255), [RUN_COUNT] NVARCHAR(99), [DCON_TEXT] NVARCHAR(50), [AGE_FLG] NVARCHAR(1), [TEMP1] NVARCHAR(255) NULL, [LAST_RUN] DATETIME NULL )"
+			};
+			cm2.Connection = cn;
+
 			try
 			{
 				cn.Open();
+				tr = cn.BeginTransaction();
+				cm2.Transaction = tr;
+
 				cm2.ExecuteNonQuery();
+				tr.Commit();
+
 				textBox11.Text = "dekosoft_gl";
 				textBox12.Text = "dbo.gl_item1";
-				gv.DbName = textBox11.Text.Trim();
-				gv.DbTable = textBox12.Text.Trim();
+				General.Var.DbName = textBox11.Text.Trim();
+				General.Var.DbTable = textBox12.Text.Trim();
+
 				label15.Text = "テーブル作成が完了しました。";
 			}
 			catch (Exception ex)
 			{
-				gv.WriteErrorLog(ex.Message, "button5_Click", cm2.CommandText);
+				if (tr != null)
+				{
+					tr.Rollback();
+				}
+				General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm2.CommandText);
 				label15.Text = "テーブル作成中にエラーが発生しました。エラーログをご覧下さい";
 			}
 			finally
@@ -439,11 +466,13 @@ namespace glc_cs
 			{
 				groupBox2.Enabled = true;
 				groupBox6.Enabled = true;
+				groupBox13.Enabled = true;
 			}
 			else
 			{
 				groupBox2.Enabled = false;
 				groupBox6.Enabled = false;
+				groupBox13.Enabled = false;
 			}
 		}
 
@@ -472,18 +501,18 @@ namespace glc_cs
 			{
 				string beforeText = textBox8.Text.Trim();
 				string afterText = textBox9.Text.Trim();
-				dr = MessageBox.Show("現在ロードされている作業ディレクトリ\n" + gv.GameDir + "\nにある全てのINIファイルの\n" + sb.ToString() + "について、\n【" + beforeText + "】→【" + afterText + "】\nへ一括置換します。\n\n実行後は取り消せません。実行しますか？", gv.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+				dr = MessageBox.Show("現在ロードされている作業ディレクトリ\n" + General.Var.GameDir + "\nにある全てのINIファイルの\n" + sb.ToString() + "について、\n【" + beforeText + "】→【" + afterText + "】\nへ一括置換します。\n\n実行後は取り消せません。実行しますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 				if (dr == DialogResult.No)
 				{
 					return;
 				}
-				if (gv.EditAllFilePath(textBox8.Text.Trim(), textBox9.Text.Trim(), checkBox3.Checked, checkBox5.Checked, out sucCount, out errMsg))
+				if (General.Var.EditAllFilePath(textBox8.Text.Trim(), textBox9.Text.Trim(), checkBox3.Checked, checkBox5.Checked, out sucCount, out errMsg))
 				{
-					MessageBox.Show("成功しました。\n\n処理件数：" + sucCount, gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show("成功しました。\n\n処理件数：" + sucCount, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 				else
 				{
-					MessageBox.Show("処理中にエラーが発生しました。\n処理を中断します。\n\n" + errMsg, gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show("処理中にエラーが発生しました。\n処理を中断します。\n\n" + errMsg, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 
@@ -543,33 +572,33 @@ namespace glc_cs
 				return;
 			}
 
-			gv.DbUrl = textBox3.Text.Trim();
-			gv.DbName = textBox11.Text.Trim();
-			gv.DbTable = textBox12.Text.Trim();
-			gv.DbUser = textBox7.Text.Trim();
-			gv.DbPass = textBox10.Text.Trim();
+			General.Var.DbUrl = textBox3.Text.Trim();
+			General.Var.DbName = textBox11.Text.Trim();
+			General.Var.DbTable = textBox12.Text.Trim();
+			General.Var.DbUser = textBox7.Text.Trim();
+			General.Var.DbPass = textBox10.Text.Trim();
 
 			bool deleteAllRecodes = checkBox6.Checked;
 			bool forceCommit = checkBox7.Checked;
 
-			if (MessageBox.Show("現在ロードしている作業ディレクトリ\n[" + gv.GameDir + "] の全てのゲームデータをDB\n[" + gv.DbUrl + " " + gv.DbName + "." + gv.DbTable + "] \nへ取り込みます。\n\n続行しますか？", gv.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+			if (MessageBox.Show("現在ロードしている作業ディレクトリ\n[" + General.Var.GameDir + "] の全てのゲームデータをDB\n[" + General.Var.DbUrl + " " + General.Var.DbName + "." + General.Var.DbTable + "] \nへ取り込みます。\n\n続行しますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
 			{
 				return;
 			}
 
 			// ini全件数取得
-			string backupPath = gv.BaseDir + (gv.BaseDir.EndsWith("\\") ? "" : "\\") + "DbBackup\\";
+			string backupPath = General.Var.BaseDir + (General.Var.BaseDir.EndsWith("\\") ? "" : "\\") + "DbBackup\\";
 			int tmpMaxGameCount = 0;
 
-			int returnVal = gv.InsertIni2Db(gv.GameDir, backupPath, out tmpMaxGameCount, out sCount, out fCount);
+			int returnVal = General.Var.InsertIni2Db(General.Var.GameDir, backupPath, out tmpMaxGameCount, out sCount, out fCount);
 
 			if (returnVal == 0)
 			{
-				MessageBox.Show("変換処理が完了しました。(全: " + tmpMaxGameCount + "件 / 成功: " + sCount + "件 / 失敗: " + fCount + "件)", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("変換処理が完了しました。(全: " + tmpMaxGameCount + "件 / 成功: " + sCount + "件 / 失敗: " + fCount + "件)", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 			else
 			{
-				MessageBox.Show("エラーが発生しました。\n詳細はエラーログをご覧下さい。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("エラーが発生しました。\n詳細はエラーログをご覧下さい。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
@@ -577,7 +606,7 @@ namespace glc_cs
 		{
 			if (checkBox6.Checked)
 			{
-				MessageBox.Show("※※※　警告　※※※\n\nこのチェックを入れた状態で取り込みを開始すると、\n既にデータベースに取り込まれているゲームデータが\n消失します。\n\nクリーンな状態でINIファイルのデータを取り込みたい\n場合に便利な機能です。", gv.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("※※※　警告　※※※\n\nこのチェックを入れた状態で取り込みを開始すると、\n既にデータベースに取り込まれているゲームデータが\n消失します。\n\nクリーンな状態でINIファイルのデータを取り込みたい\n場合に便利な機能です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 		}
 
@@ -608,6 +637,116 @@ namespace glc_cs
 
 			groupBox7.Enabled = controlVal;
 			groupBox12.Enabled = !controlVal;
+			groupBox8.Enabled = !controlVal;
+		}
+
+		private void button10_Click(object sender, EventArgs e)
+		{
+			// 修正
+			SqlConnection cn = General.Var.SqlCon;
+			SqlCommand cm;
+			SqlCommand cm2;
+			SqlTransaction tr = null;
+			int totalRepairRows = 0;
+
+			cm = new SqlCommand()
+			{
+				CommandType = CommandType.Text,
+				CommandTimeout = 30,
+				CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET UPTIME = N'" + Int32.MaxValue + "' WHERE CAST(UPTIME AS BIGINT) > " + Int32.MaxValue
+			};
+			cm.Connection = cn;
+
+
+			cm2 = new SqlCommand()
+			{
+				CommandType = CommandType.Text,
+				CommandTimeout = 30,
+				CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET RUN_COUNT = N'" + Int32.MaxValue + "' WHERE CAST(RUN_COUNT AS BIGINT) > " + Int32.MaxValue
+			};
+			cm2.Connection = cn;
+
+			try
+			{
+				cn.Open();
+				tr = cn.BeginTransaction();
+				cm.Transaction = tr;
+				cm2.Transaction = tr;
+
+				totalRepairRows = cm.ExecuteNonQuery();
+				totalRepairRows += cm2.ExecuteNonQuery();
+				tr.Commit();
+				label15.Text = "テーブルの修復が完了しました（" + totalRepairRows + "件）";
+			}
+			catch (Exception ex)
+			{
+				if (tr != null)
+				{
+					tr.Rollback();
+				}
+				General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
+				label15.Text = "テーブル修復中にエラーが発生しました。エラーログをご覧下さい";
+			}
+			finally
+			{
+				if (cn.State == ConnectionState.Open)
+				{
+					cn.Close();
+				}
+			}
+
+			return;
+		}
+
+		/// <summary>
+		/// Discord RPC Application IDテキスト初期化
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void button11_Click(object sender, EventArgs e)
+		{
+			textBox13.Text = string.Empty;
+		}
+
+		/// <summary>
+		/// アップデートチェックボタン
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void updchkButton_Click(object sender, EventArgs e)
+		{
+			updchkButton.Text = "Checking..";
+			updchkButton.Enabled = false;
+			WebClient wc = new WebClient();
+			try
+			{
+				wc.Encoding = Encoding.UTF8;
+				string text = wc.DownloadString("https://raw.githubusercontent.com/dekotan24/glc_cs/master/version");
+				MessageBox.Show(text, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				if (General.Var.AppVer != text.Trim())
+				{
+					updchkButton.Text = "Update Available";
+					updchkButton.Enabled = true;
+					System.Diagnostics.Process.Start("https://github.com/dekotan24/glc_cs/releases");
+				}
+				else
+				{
+					updchkButton.Text = "Latest!";
+					updchkButton.Enabled = true;
+				}
+			}
+			catch (Exception ex)
+			{
+				General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, string.Empty);
+				label15.Text = "アップデートチェック中にエラーが発生しました。エラーログをご覧下さい";
+				updchkButton.Text = "Check Update";
+				updchkButton.Enabled = true;
+			}
+		}
+
+		private void getDconButton_Click(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start("https://mega.nz/folder/slACCBiB#RYGUVYRgC3AIg84drWjR9w");
 		}
 	}
 }

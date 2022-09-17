@@ -41,184 +41,182 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static readonly string appver = "0.99";
+			protected static readonly string appver = "1.00";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appbuild = "24.22.06.13";
+			protected static readonly string appbuild = "25.22.09.17";
 
 			/// <summary>
 			/// ゲームディレクトリ(作業ディレクトリ)
 			/// </summary>
-			protected string gamedir = string.Empty;
+			protected static string gamedir = string.Empty;
 
 			/// <summary>
 			/// アプリケーションディレクトリ(ランチャー実行パス)
 			/// </summary>
-			protected string basedir = AppDomain.CurrentDomain.BaseDirectory;
+			protected static string basedir = AppDomain.CurrentDomain.BaseDirectory;
 
 			/// <summary>
 			/// ゲーム情報保管iniパス
 			/// </summary>
-			protected string gameini;
+			protected static string gameini;
 
 			/// <summary>
 			/// ゲーム情報保管dbパス
 			/// </summary>
-			protected string gamedb;
+			protected static string gamedb;
 
 			/// <summary>
 			/// アプリケーション設定パス(config.ini)
 			/// </summary>
-			protected string configini = AppDomain.CurrentDomain.BaseDirectory + "config.ini";
+			protected static string configini = AppDomain.CurrentDomain.BaseDirectory + "config.ini";
 
 			/// <summary>
 			/// ゲーム総数
 			/// </summary>
-			protected int gamemax = 0;
+			protected static int gamemax = 0;
 
 			/// <summary>
 			/// 選択中のゲームID（データベース接続時）
 			/// </summary>
-			protected string currentGameDBVal = "-1";
+			protected static string currentGameDBVal = "-1";
 
 			/// <summary>
 			/// 背景画像パス
 			/// </summary>
-			protected string bgimg = null;
+			protected static string bgimg = null;
 
 			/// <summary>
 			/// DiscordConnectorパス
 			/// </summary>
-			protected string dconpath = string.Empty;
+			protected static string dconpath = string.Empty;
+
+			/// <summary>
+			/// Discord connector Application ID
+			/// </summary>
+			protected static string dconAppID = string.Empty;
+
 
 			// データ保存方法関係
 			/// <summary>
 			/// データ保存方法
 			/// </summary>
-			protected string saveType = string.Empty;
+			protected static string saveType = string.Empty;
 
 			/// <summary>
 			/// オフラインセーブフラグ
 			/// </summary>
-			protected bool offlineSave = false;
+			protected static bool offlineSave = false;
 
 			/// <summary>
 			/// データベースのURL
 			/// </summary>
-			protected string dbUrl = string.Empty;
+			protected static string dbUrl = string.Empty;
 
 			/// <summary>
 			/// データベース名
 			/// </summary>
-			protected string dbName = string.Empty;
+			protected static string dbName = string.Empty;
 
 			/// <summary>
 			/// テーブル名
 			/// </summary>
-			protected string dbTable = string.Empty;
+			protected static string dbTable = string.Empty;
 
 			/// <summary>
 			/// データベース接続ユーザ名
 			/// </summary>
-			protected string dbUser = string.Empty;
+			protected static string dbUser = string.Empty;
 
 			/// <summary>
 			/// データベース接続パスワード
 			/// </summary>
-			protected string dbPass = string.Empty;
+			protected static string dbPass = string.Empty;
 
 			//棒読みちゃん関係
 			/// <summary>
 			/// 棒読みちゃん 有効フラグ
 			/// </summary>
-			protected bool byActive = false;
+			protected static bool byActive = false;
 
 			/// <summary>
 			/// 棒読みちゃん 読み上げメッセージ
 			/// </summary>
-			protected string bysMsg = "Game Launcherと接続しました。";
+			protected static string bysMsg = "Game Launcherと接続しました。";
 
 			/// <summary>
 			/// 棒読みちゃん タイプ
 			/// </summary>
-			protected int byType = 0;
+			protected static int byType = 0;
 
 			/// <summary>
 			/// 棒読みちゃん 文字エンコーディング
 			/// </summary>
-			protected byte byCode = 0; //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
+			protected static byte byCode = 0; //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
 
 			/// <summary>
 			/// 棒読みちゃん 詳細設定群
 			/// </summary>
-			protected Int16 byVoice = 0, byVol = -1, bySpd = -1, byTone = -1, byCmd = 0x0001;
+			protected static Int16 byVoice = 0, byVol = -1, bySpd = -1, byTone = -1, byCmd = 0x0001;
 
 			/// <summary>
 			/// 棒読みちゃん 読み上げ文字数
 			/// </summary>
-			protected Int32 byLength = 0;
+			protected static Int32 byLength = 0;
 
 			/// <summary>
 			/// 棒読みちゃん 読み上げメッセージのbyte配列
 			/// </summary>
-			protected byte[] bybMsg;
+			protected static byte[] bybMsg;
 
 			/// <summary>
 			/// 棒読みちゃん 接続ホスト名
 			/// </summary>
-			protected string byHost = "127.0.0.1";
+			protected static string byHost = "127.0.0.1";
 
 			/// <summary>
 			/// 棒読みちゃん 接続ポート番号
 			/// </summary>
-			protected int byPort = 50001;
+			protected static int byPort = 50001;
 
 			/// <summary>
 			/// 棒読みちゃん TCP接続用
 			/// </summary>
-			protected TcpClient tc = null;
-
-			/// <summary>
-			/// 棒読みちゃん 接続できない場合
-			/// A:常に有効 D:一時的に無効 Q:問い合わせる
-			/// </summary>
-			protected string byCErr = "Q";
+			protected static TcpClient tc = null;
 
 			/// <summary>
 			/// 棒読みちゃん ランチャー起動時に読み上げ
 			/// </summary>
-			protected bool byRoW = false;
+			protected static bool byRoW = false;
 
 			/// <summary>
 			/// 棒読みちゃん ゲーム起動時に読み上げ
 			/// </summary>
-			protected bool byRoS = false;
+			protected static bool byRoS = false;
 
 			/// <summary>
 			/// Discord Connector 有効フラグ
 			/// </summary>
-			protected bool dconnect = false;
+			protected static bool dconnect = false;
 
 			/// <summary>
 			/// Discord Connector レーティング設定
 			/// </summary>
-			protected Int32 rate = 0;
+			protected static Int32 rate = 0;
 
 			/// <summary>
 			/// グリッドサイズ最大化フラグ
 			/// </summary>
-			protected bool gridMax = false;
-
-			protected DataTable dt;
+			protected static bool gridMax = false;
 
 
 
 			/// <summary>
 			/// アプリケーション名を返却します
 			/// </summary>
-			public string AppName
+			public static string AppName
 			{
 				get { return appname; }
 			}
@@ -226,7 +224,7 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションのバージョンを返却します
 			/// </summary>
-			public string AppVer
+			public static string AppVer
 			{
 				get { return appver; }
 			}
@@ -234,7 +232,7 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションのビルド番号を返却します
 			/// </summary>
-			public string AppBuild
+			public static string AppBuild
 			{
 				get { return appbuild; }
 			}
@@ -242,7 +240,7 @@ namespace glc_cs
 			/// <summary>
 			/// ゲームの作業ディレクトリを設定/返却します
 			/// </summary>
-			public string GameDir
+			public static string GameDir
 			{
 				get { return gamedir; }
 				set { gamedir = value; }
@@ -251,7 +249,7 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションの作業ディレクトリを返却します
 			/// </summary>
-			public string BaseDir
+			public static string BaseDir
 			{
 				get { return basedir; }
 			}
@@ -259,7 +257,7 @@ namespace glc_cs
 			/// <summary>
 			/// ゲーム統括管理iniのパスを設定/返却します
 			/// </summary>
-			public string GameIni
+			public static string GameIni
 			{
 				get { return gameini; }
 				set { gameini = value; }
@@ -268,7 +266,7 @@ namespace glc_cs
 			/// <summary>
 			/// ゲーム情報が格納されているDBのパスを設定/返却します
 			/// </summary>
-			public string GameDb
+			public static string GameDb
 			{
 				get { return gamedb; }
 				set { gamedb = value; }
@@ -277,7 +275,7 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーション設定が格納されているiniファイルのパスを返却します
 			/// </summary>
-			public string ConfigIni
+			public static string ConfigIni
 			{
 				get { return configini; }
 			}
@@ -285,7 +283,7 @@ namespace glc_cs
 			/// <summary>
 			/// ゲームの最大数を設定/返却します
 			/// </summary>
-			public int GameMax
+			public static int GameMax
 			{
 				get { return gamemax; }
 				set { gamemax = value; }
@@ -294,7 +292,7 @@ namespace glc_cs
 			/// <summary>
 			/// 現在選択しているゲームのIDを設定/返却します。データベース接続時のみ使用します。
 			/// </summary>
-			public string CurrentGameDbVal
+			public static string CurrentGameDbVal
 			{
 				get { return currentGameDBVal; }
 				set { currentGameDBVal = value; }
@@ -303,7 +301,7 @@ namespace glc_cs
 			/// <summary>
 			/// ゲームの最大数を設定/返却します
 			/// </summary>
-			public string BgImg
+			public static string BgImg
 			{
 				get { return bgimg; }
 				set { bgimg = value; }
@@ -312,16 +310,25 @@ namespace glc_cs
 			/// <summary>
 			/// Discord Connectorのパスを設定/返却します
 			/// </summary>
-			public string DconPath
+			public static string DconPath
 			{
 				get { return dconpath; }
 				set { dconpath = value; }
 			}
 
 			/// <summary>
+			/// Discord ConnectorのアプリケーションIDを設定/返却します
+			/// </summary>
+			public static string DconAppID
+			{
+				get { return dconAppID; }
+				set { dconAppID = value; }
+			}
+
+			/// <summary>
 			/// ゲーム保存方法
 			/// </summary>
-			public string SaveType
+			public static string SaveType
 			{
 				get { return saveType; }
 				set { saveType = value; }
@@ -330,43 +337,43 @@ namespace glc_cs
 			/// <summary>
 			/// オフラインセーブフラグ
 			/// </summary>
-			public bool OfflineSave
+			public static bool OfflineSave
 			{
 				get { return offlineSave; }
 				set { offlineSave = value; }
 			}
 
-			public string DbUrl
+			public static string DbUrl
 			{
 				get { return dbUrl; }
 				set { dbUrl = value; }
 			}
 
-			public string DbName
+			public static string DbName
 			{
 				get { return dbName; }
 				set { dbName = value; }
 			}
 
-			public string DbTable
+			public static string DbTable
 			{
 				get { return dbTable; }
 				set { dbTable = value; }
 			}
 
-			public string DbUser
+			public static string DbUser
 			{
 				get { return dbUser; }
 				set { dbUser = value; }
 			}
 
-			public string DbPass
+			public static string DbPass
 			{
 				get { return dbPass; }
 				set { dbPass = value; }
 			}
 
-			public SqlConnection SqlCon
+			public static SqlConnection SqlCon
 			{
 				get
 				{
@@ -386,7 +393,7 @@ namespace glc_cs
 			/// <summary>
 			/// 棒読みちゃんの有効フラグを設定/返却します
 			/// </summary>
-			public bool ByActive
+			public static bool ByActive
 			{
 				get { return byActive; }
 				set { byActive = value; }
@@ -395,7 +402,7 @@ namespace glc_cs
 			/// <summary>
 			/// 棒読みちゃんの読み上げメッセージを設定/返却します
 			/// </summary>
-			public string BysMsg
+			public static string BysMsg
 			{
 				get { return bysMsg; }
 				set { bysMsg = value; }
@@ -404,7 +411,7 @@ namespace glc_cs
 			/// <summary>
 			/// 棒読みちゃんとの接続方法（TCP/HTTP）
 			/// </summary>
-			public int ByType
+			public static int ByType
 			{
 				get { return byType; }
 				set { byType = value; }
@@ -413,7 +420,7 @@ namespace glc_cs
 			/// <summary>
 			/// 棒読みちゃんの読み上げメッセージの文字エンコーディング値を返却します
 			/// </summary>
-			public byte ByCode
+			public static byte ByCode
 			{
 				get { return byCode; }
 			}
@@ -421,7 +428,7 @@ namespace glc_cs
 			/// <summary>
 			/// 棒読みちゃんのボイス設定を返却します
 			/// </summary>
-			public Int16 ByVoice
+			public static Int16 ByVoice
 			{
 				get { return byVoice; }
 			}
@@ -429,7 +436,7 @@ namespace glc_cs
 			/// <summary>
 			/// 棒読みちゃんの音量設定を返却します
 			/// </summary>
-			public Int16 ByVol
+			public static Int16 ByVol
 			{
 				get { return byVol; }
 			}
@@ -437,7 +444,7 @@ namespace glc_cs
 			/// <summary>
 			/// 棒読みちゃんの読み上げ速度を返却します
 			/// </summary>
-			public Int16 BySpd
+			public static Int16 BySpd
 			{
 				get { return bySpd; }
 			}
@@ -445,7 +452,7 @@ namespace glc_cs
 			/// <summary>
 			/// 棒読みちゃんの読み上げトーンを返却します
 			/// </summary>
-			public Int16 ByTone
+			public static Int16 ByTone
 			{
 				get { return byTone; }
 			}
@@ -453,7 +460,7 @@ namespace glc_cs
 			/// <summary>
 			/// 棒読みちゃんの読み上げコマンドを返却します
 			/// </summary>
-			public Int16 ByCmd
+			public static Int16 ByCmd
 			{
 				get { return byCmd; }
 			}
@@ -461,7 +468,7 @@ namespace glc_cs
 			/// <summary>
 			/// 棒読みちゃんの読み上げメッセージの長さを返却します
 			/// </summary>
-			public Int32 ByLength
+			public static Int32 ByLength
 			{
 				get { return byLength = BybMsg.Length; }
 				set { byLength = value; }
@@ -470,7 +477,7 @@ namespace glc_cs
 			/// <summary>
 			/// 棒読みちゃんの読み上げメッセージを読み上げ可能なbyte配列に変換して返却します
 			/// </summary>
-			public byte[] BybMsg
+			public static byte[] BybMsg
 			{
 				get { return bybMsg = Encoding.UTF8.GetBytes(BysMsg); }
 			}
@@ -478,7 +485,7 @@ namespace glc_cs
 			/// <summary>
 			/// 棒読みちゃんのホスト名を設定/返却します
 			/// </summary>
-			public string ByHost
+			public static string ByHost
 			{
 				get { return byHost; }
 				set { byHost = value; }
@@ -487,25 +494,16 @@ namespace glc_cs
 			/// <summary>
 			/// 棒読みちゃんのポート番号を設定/返却します
 			/// </summary>
-			public int ByPort
+			public static int ByPort
 			{
 				get { return byPort; }
 				set { byPort = value; }
 			}
 
 			/// <summary>
-			/// 棒読みちゃんの接続に失敗した場合にダイアログを表示するかを設定/返却します
-			/// </summary>
-			public string ByCErr
-			{
-				get { return byCErr; }
-				set { byCErr = value; }
-			}
-
-			/// <summary>
 			/// 棒読みちゃん接続時に、ランチャー起動時の読み上げフラグを設定/返却します
 			/// </summary>
-			public bool ByRoW
+			public static bool ByRoW
 			{
 				get { return byRoW; }
 				set { byRoW = value; }
@@ -514,7 +512,7 @@ namespace glc_cs
 			/// <summary>
 			/// 棒読みちゃん接続時に、ゲーム実行／終了時の読み上げのフラグを設定/返却します
 			/// </summary>
-			public bool ByRoS
+			public static bool ByRoS
 			{
 				get { return byRoS; }
 				set { byRoS = value; }
@@ -524,7 +522,7 @@ namespace glc_cs
 			/// 棒読みちゃんとのTCP接続を構築し、その値を返却します。
 			/// 受け手側でTcpClientに代入して使用します。
 			/// </summary>
-			public TcpClient TC
+			public static TcpClient TC
 			{
 				get { return tc = new TcpClient(ByHost, ByPort); }
 			}
@@ -532,31 +530,25 @@ namespace glc_cs
 			/// <summary>
 			/// Discord Connectorの有効フラグです。
 			/// </summary>
-			public bool Dconnect
+			public static bool Dconnect
 			{
 				get { return dconnect; }
 				set { dconnect = Convert.ToBoolean(value); }
 			}
 
-			public Int32 Rate
+			public static Int32 Rate
 			{
 				get { return rate; }
 				set { rate = value; }
 			}
-			public bool GridMax
+			public static bool GridMax
 			{
 				get { return gridMax; }
 				set { gridMax = value; }
 			}
 
-			public DataTable Dt
-			{
-				get { return dt; }
-				set { dt = value; }
-			}
 
-
-			public bool GLConfigLoad()
+			public static bool GLConfigLoad()
 			{
 				MyBase64str base64 = new MyBase64str();
 
@@ -583,7 +575,7 @@ namespace glc_cs
 					{
 						DbPass = base64.Decode(ReadIni("connect", "DBPass", string.Empty));
 					}
-					catch (Exception ex)
+					catch
 					{
 						DbPass = string.Empty;
 					}
@@ -642,7 +634,6 @@ namespace glc_cs
 					ByType = Convert.ToInt32(ReadIni("connect", "byType", "0"));
 					ByHost = ReadIni("connect", "byHost", "127.0.0.1");
 					ByPort = Convert.ToInt32(ReadIni("connect", "byPort", "50001"));
-					ByCErr = ReadIni("connect", "byCErr", "Q");
 					ByRoW = Convert.ToBoolean(Convert.ToInt32(ReadIni("connect", "byRoW", "0")));
 					ByRoS = Convert.ToBoolean(Convert.ToInt32(ReadIni("connect", "byRoS", "0")));
 
@@ -651,6 +642,7 @@ namespace glc_cs
 
 					// dcon設定
 					Dconnect = Convert.ToBoolean(Convert.ToInt32(ReadIni("checkbox", "dconnect", "0")));
+					DconAppID = ReadIni("connect", "dconappid", string.Empty);
 					Rate = Convert.ToInt32(ReadIni("checkbox", "rate", "0"));
 				}
 				else
@@ -678,7 +670,6 @@ namespace glc_cs
 					ByType = 0;
 					ByHost = "127.0.0.1";
 					ByPort = 50001;
-					ByCErr = "Q";
 					ByRoW = false;
 					ByRoS = false;
 
@@ -693,7 +684,7 @@ namespace glc_cs
 				return true;
 			}
 
-			public string IniRead(String filename, String sec, String key, String failedval)
+			public static string IniRead(String filename, String sec, String key, String failedval)
 			{
 				String ans = "";
 				StringBuilder data = new StringBuilder(1024);
@@ -728,7 +719,7 @@ namespace glc_cs
 			/// <param name="sec">セクション名</param>
 			/// <param name="key">キー値</param>
 			/// <param name="data">値</param>
-			public void IniWrite(String filename, String sec, String key, String data)
+			public static void IniWrite(String filename, String sec, String key, String data)
 			{
 				try
 				{
@@ -767,7 +758,7 @@ namespace glc_cs
 			/// <param name="data">値</param>
 			/// <param name="isconfig">config.iniが対象か（既定値：1）</param>
 			/// <param name="opt">ゲームデータ管理INIのパス</param>
-			public void WriteIni(String sec, String key, String data, int isconfig = 1, String opt = "")
+			public static void WriteIni(String sec, String key, String data, int isconfig = 1, String opt = "")
 			{
 				if (isconfig == 1)
 				{
@@ -798,7 +789,7 @@ namespace glc_cs
 			/// <param name="key">キー</param>
 			/// <param name="failedval">読み込みに失敗した場合の値</param>
 			/// <returns>キーの値もしくは失敗時の値</returns>
-			public string ReadIni(String sec, String key, String failedval)
+			public static string ReadIni(String sec, String key, String failedval)
 			{
 				String ans = "";
 
@@ -815,7 +806,7 @@ namespace glc_cs
 				return ans;
 			}
 
-			public void Bouyomiage(String text)
+			public static void Bouyomiage(String text)
 			{
 				if (ByActive)
 				{
@@ -868,14 +859,14 @@ namespace glc_cs
 						{
 							using (BinaryWriter bw = new BinaryWriter(ns))
 							{
-								bw.Write(ByCmd); //コマンド（ 0:メッセージ読み上げ）
-								bw.Write(BySpd);   //速度    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByTone);    //音程    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByVol);  //音量    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByVoice);   //声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
-								bw.Write(ByCode);    //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
-								bw.Write(ByLength);  //文字列のbyte配列の長さ
-								bw.Write(BybMsg); //文字列のbyte配列
+								bw.Write(ByCmd);    //コマンド（ 0:メッセージ読み上げ）
+								bw.Write(BySpd);    //速度    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByTone);   //音程    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByVol);    //音量    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByVoice);  //声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
+								bw.Write(ByCode);   //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
+								bw.Write(ByLength); //文字列のbyte配列の長さ
+								bw.Write(BybMsg);   //文字列のbyte配列
 							}
 						}
 						tc.Close();
@@ -884,7 +875,7 @@ namespace glc_cs
 				return;
 			}
 
-			public void Bouyomi_Connectchk(string byHost, int byPort, int byType, bool showDialog = true)
+			public static void Bouyomi_Connectchk(string byHost, int byPort, int byType, bool showDialog = true)
 			{
 				BysMsg = "ゲームランチャーとの接続テストに成功しました。";
 
@@ -928,14 +919,14 @@ namespace glc_cs
 						{
 							using (BinaryWriter bw = new BinaryWriter(ns))
 							{
-								bw.Write(ByCmd); //コマンド（ 0:メッセージ読み上げ）
-								bw.Write(BySpd);   //速度    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByTone);    //音程    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByVol);  //音量    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByVoice);   //声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
-								bw.Write(ByCode);    //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
-								bw.Write(ByLength);  //文字列のbyte配列の長さ
-								bw.Write(BybMsg); //文字列のbyte配列
+								bw.Write(ByCmd);    //コマンド（ 0:メッセージ読み上げ）
+								bw.Write(BySpd);    //速度    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByTone);   //音程    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByVol);    //音量    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByVoice);  //声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
+								bw.Write(ByCode);   //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
+								bw.Write(ByLength); //文字列のbyte配列の長さ
+								bw.Write(BybMsg);   //文字列のbyte配列
 							}
 						}
 					}
@@ -969,7 +960,7 @@ namespace glc_cs
 			/// <param name="afterName">置換後文字列</param>
 			/// <param name="errMsg">エラーメッセージ</param>
 			/// <returns>成功すればtrue、エラー発生時はfalse</returns>
-			public bool EditAllFilePath(string beforeName, string afterName, bool editFlg1, bool editFlg2, out int sucCount, out string errMsg)
+			public static bool EditAllFilePath(string beforeName, string afterName, bool editFlg1, bool editFlg2, out int sucCount, out string errMsg)
 			{
 				errMsg = string.Empty;
 				sucCount = -1;
@@ -1077,14 +1068,13 @@ namespace glc_cs
 				return true;
 			}
 
-
 			/// <summary>
 			/// エラーログを書き込みます
 			/// </summary>
 			/// <param name="errorMsg">エラーメッセージ</param>
 			/// <param name="moduleName">モジュール名</param>
 			/// <param name="addInfo">追加情報</param>
-			public void WriteErrorLog(string errorMsg, string moduleName, string addInfo)
+			public static void WriteErrorLog(string errorMsg, string moduleName, string addInfo)
 			{
 				StringBuilder sb = new StringBuilder();
 				sb.Append("[ERROR] [").Append(DateTime.Now).Append("] ");
@@ -1095,24 +1085,40 @@ namespace glc_cs
 				return;
 			}
 
-
 			/// <summary>
-			/// データベースを指定されたフォルダにINIで保存します
+			/// データベース内のレコードを指定されたフォルダにINIで保存します
 			/// </summary>
 			/// <param name="targetWorkDir">保存先フォルダ</param>
-			/// <returns></returns>
-			public bool downloadDbDataToLocal(string targetWorkDir)
+			/// <returns>False：エラー</returns>
+			public static bool downloadDbDataToLocal(string targetWorkDir)
 			{
 				string localGameIni = targetWorkDir + "game.ini";
 				bool isSuc = false;
 
 				try
 				{
+					// 退避ディレクトリがある場合、削除する
+					if (Directory.Exists(basedir + "_temp_db_bak"))
+					{
+						Directory.Delete(basedir + "_temp_db_bak", true);
+					}
+
 					// ローカルに保存されているか確認
 					if (File.Exists(localGameIni))
 					{
-						// ローカルファイルが存在する場合、削除する
-						Directory.Delete(targetWorkDir, true);
+						// ローカルファイルが存在する場合、退避する
+						Directory.Move(targetWorkDir, basedir + "_temp_db_bak");
+					}
+
+					// ローカルDBフォルダがまだ残っている場合、退避する
+					if (Directory.Exists(targetWorkDir))
+					{
+						if (Directory.Exists(basedir + "_temp_db_bak"))
+						{
+							// 退避ディレクトリがある場合、削除する
+							Directory.Delete(basedir + "_temp_db_bak", true);
+						}
+						Directory.Move(targetWorkDir, basedir + "_temp_db_bak");
 					}
 
 					// 保存用フォルダ作成
@@ -1121,6 +1127,7 @@ namespace glc_cs
 				catch (Exception ex)
 				{
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "Path: " + targetWorkDir + " / INI: " + localGameIni);
+					return false;
 				}
 				// Configの最新化
 				GLConfigLoad();
@@ -1187,10 +1194,21 @@ namespace glc_cs
 						}
 						isSuc = true;
 					}
+					// 最後に、ローカルデータを削除する
+					Directory.Delete(basedir + "_temp_db_bak", true);
 				}
 				catch (Exception ex)
 				{
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cn.ConnectionString);
+					if (Directory.Exists(basedir + "_temp_db_bak"))
+					{
+						if (Directory.Exists(targetWorkDir))
+						{
+							// バックアップフォルダがある場合、作業フォルダを削除しバックアップを復元
+							Directory.Delete(targetWorkDir, true);
+							Directory.Move(basedir + "_temp_db_bak", targetWorkDir);
+						}
+					}
 				}
 				finally
 				{
@@ -1202,7 +1220,6 @@ namespace glc_cs
 				return isSuc;
 			}
 
-
 			/// <summary>
 			/// INIファイルをDBにINSERTします
 			/// </summary>
@@ -1211,7 +1228,7 @@ namespace glc_cs
 			/// <param name="sCount">INSERT成功件数</param>
 			/// <param name="fCount">INSERT失敗件数</param>
 			/// <returns>1:バックアップ作成エラー 2:INSERT失敗 3:Catchエラー 4:復元エラー</returns>
-			public int InsertIni2Db(string workDir, string backupDir, out int tmpMaxGameCount, out int sCount, out int fCount)
+			public static int InsertIni2Db(string workDir, string backupDir, out int tmpMaxGameCount, out int sCount, out int fCount)
 			{
 				// 変数宣言
 				SqlConnection cn1 = SqlCon;
@@ -1317,6 +1334,7 @@ namespace glc_cs
 							tran1.Commit();
 							// オフラインINIのフラグ変更
 							IniWrite(localGameIni, "list", "dbupdate", "0");
+							Directory.Delete(backupDir, true);
 						}
 					}
 					catch (Exception ex)
@@ -1340,13 +1358,12 @@ namespace glc_cs
 				return ans;
 			}
 
-
 			/// <summary>
 			/// データベース操作時にエラーが発生した場合、バックアップディレクトリの値を登録し直します
 			/// </summary>
 			/// <param name="backupDir">バックアップINIのディレクトリ</param>
 			/// <returns>正常にロールバックできた場合:true</returns>
-			public bool Ini2DbErrorRollback(string backupDir)
+			public static bool Ini2DbErrorRollback(string backupDir)
 			{
 				// 変数宣言
 				SqlConnection cn1 = SqlCon;
