@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
@@ -18,6 +17,11 @@ namespace glc_cs
 			InitializeComponent();
 		}
 
+		/// <summary>
+		/// コンフィグ画面ロード
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void Form2_Load(object sender, EventArgs e)
 		{
 			if (General.Var.GLConfigLoad() == false)
@@ -29,14 +33,17 @@ namespace glc_cs
 			label10.Text = "Ver." + General.Var.AppVer + " Build " + General.Var.AppBuild;
 
 			// 背景画像
-			textBox6.Text = General.Var.BgImg;
+			backgroundImageText.Text = General.Var.BgImg;
+
+			// グリッド
+			gridDisableCheck.Checked = !General.Var.GridEnable;
 
 			//Discord設定読み込み
 			bool dconActive = General.Var.Dconnect;
-			textBox13.Text = General.Var.DconAppID;
+			dconAppIDText.Text = General.Var.DconAppID;
 
 			// Discord連携有効フラグ
-			checkBox1.Checked = dconActive;
+			dconEnableCheck.Checked = dconActive;
 			// 機能アクティブ
 			if (dconActive)
 			{
@@ -54,11 +61,11 @@ namespace glc_cs
 			// レート設定
 			if (General.Var.Rate == 1)
 			{
-				radioButton2.Checked = true;
+				dconRatingRadio2.Checked = true;
 			}
 			else
 			{
-				radioButton1.Checked = true;
+				dconRatingRadio1.Checked = true;
 			}
 
 			// Discord Connectorパス取得
@@ -67,18 +74,18 @@ namespace glc_cs
 			if (File.Exists(dconpath))
 			{
 				//指定パスにdcon.jar存在する場合
-				textBox1.Text = dconpath;
+				dconText.Text = dconpath;
 				label11.Text = "OK";
 			}
 			else
 			{
-				textBox1.Text = string.Empty;
+				dconText.Text = string.Empty;
 				label11.Text = "NG";
 			}
 
 			//棒読みちゃん設定読み込み
 			bool isbyActive = General.Var.ByActive;
-			checkBox2.Checked = isbyActive;
+			bouyomiEnableCheck.Checked = isbyActive;
 			if (isbyActive)
 			{
 				groupBox4.Enabled = true;
@@ -170,11 +177,16 @@ namespace glc_cs
 			}
 		}
 
+		/// <summary>
+		/// 保存ボタン
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void button2_Click(object sender, EventArgs e)
 		{
 			string offlineSaveTypeOld = General.Var.ReadIni("general", "OfflineSave", checkBox8.Checked ? "1" : "0");
 			bool canExit = true;
-			if (radioButton9.Checked)
+			if (radioButton9.Checked || radioButton5.Checked)
 			{
 				if (urlText.Text.Trim().Length <= 0)
 				{
@@ -208,7 +220,8 @@ namespace glc_cs
 			MyBase64str base64 = new MyBase64str();
 
 			// 全般
-			General.Var.WriteIni("imgd", "bgimg", textBox6.Text.Trim());
+			General.Var.WriteIni("imgd", "bgimg", backgroundImageText.Text.Trim());
+			General.Var.WriteIni("disable", "grid", gridDisableCheck.Checked ? "1" : "0");
 
 			// 保存方法
 			General.Var.WriteIni("general", "save", radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I");
@@ -221,20 +234,20 @@ namespace glc_cs
 			General.Var.WriteIni("connect", "DBPass", base64.Encode(pwText.Text.Trim()));
 
 			//discord設定適用
-			General.Var.WriteIni("checkbox", "dconnect", (Convert.ToInt32(checkBox1.Checked)).ToString());
-			if (radioButton1.Checked)
+			General.Var.WriteIni("checkbox", "dconnect", (Convert.ToInt32(dconEnableCheck.Checked)).ToString());
+			if (dconRatingRadio1.Checked)
 			{
 				General.Var.WriteIni("checkbox", "rate", "0");
 			}
-			else if (radioButton2.Checked)
+			else if (dconRatingRadio2.Checked)
 			{
 				General.Var.WriteIni("checkbox", "rate", "1");
 			}
-			General.Var.WriteIni("connect", "dconpath", textBox1.Text);
-			General.Var.WriteIni("connect", "dconappid", textBox13.Text);
+			General.Var.WriteIni("connect", "dconpath", dconText.Text);
+			General.Var.WriteIni("connect", "dconappid", dconAppIDText.Text);
 
 			//棒読みちゃん設定適用
-			General.Var.WriteIni("connect", "byActive", (Convert.ToInt32(checkBox2.Checked)).ToString());
+			General.Var.WriteIni("connect", "byActive", (Convert.ToInt32(bouyomiEnableCheck.Checked)).ToString());
 			General.Var.WriteIni("connect", "byType", General.Var.ByType.ToString());
 			General.Var.WriteIni("connect", "byPort", textBox5.Text);
 			General.Var.WriteIni("connect", "byHost", textBox4.Text);
@@ -303,7 +316,7 @@ namespace glc_cs
 		private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			this.linkLabel2.LinkVisited = true;
-			Clipboard.SetText("support_dekosoft@outlook.jp");
+			Clipboard.SetText("support@fanet.work");
 		}
 		private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
@@ -335,7 +348,7 @@ namespace glc_cs
 
 		private void checkBox2_CheckedChanged(object sender, EventArgs e)
 		{
-			if (checkBox2.Checked)
+			if (bouyomiEnableCheck.Checked)
 			{
 				groupBox4.Enabled = true;
 				groupBox5.Enabled = true;
@@ -377,7 +390,7 @@ namespace glc_cs
 			if (openFileDialog1.ShowDialog() == DialogResult.OK)
 			{
 				newpath = openFileDialog1.FileName;
-				textBox1.Text = newpath;
+				dconText.Text = newpath;
 				label11.Text = "OK";
 			}
 			return;
@@ -554,7 +567,7 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void checkBox1_CheckedChanged(object sender, EventArgs e)
 		{
-			if (checkBox1.Checked)
+			if (dconEnableCheck.Checked)
 			{
 				groupBox2.Enabled = true;
 				groupBox6.Enabled = true;
@@ -628,7 +641,7 @@ namespace glc_cs
 			if (openFileDialog1.ShowDialog() == DialogResult.OK)
 			{
 				newpath = openFileDialog1.FileName;
-				textBox6.Text = newpath;
+				backgroundImageText.Text = newpath;
 			}
 			return;
 		}
@@ -862,7 +875,7 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void button11_Click(object sender, EventArgs e)
 		{
-			textBox13.Text = string.Empty;
+			dconAppIDText.Text = string.Empty;
 		}
 
 		/// <summary>
@@ -901,9 +914,24 @@ namespace glc_cs
 			}
 		}
 
+		/// <summary>
+		/// dconダウンロードボタン
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void getDconButton_Click(object sender, EventArgs e)
 		{
 			System.Diagnostics.Process.Start("https://mega.nz/folder/slACCBiB#RYGUVYRgC3AIg84drWjR9w");
+		}
+
+		/// <summary>
+		/// アプリケーションロゴクリック
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void pictureBox1_Click(object sender, EventArgs e)
+		{
+			return;
 		}
 	}
 }

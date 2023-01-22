@@ -42,12 +42,12 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static readonly string appver = "1.01";
+			protected static readonly string appver = "1.02";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appbuild = "26.22.11.30";
+			protected static readonly string appbuild = "27.23.01.22";
 
 			/// <summary>
 			/// ゲームディレクトリ(作業ディレクトリ)
@@ -88,6 +88,11 @@ namespace glc_cs
 			/// 背景画像パス
 			/// </summary>
 			protected static string bgimg = null;
+
+			/// <summary>
+			/// グリッドロード有無
+			/// </summary>
+			protected static bool gridEnable = true;
 
 			/// <summary>
 			/// DiscordConnectorパス
@@ -311,6 +316,12 @@ namespace glc_cs
 			{
 				get { return bgimg; }
 				set { bgimg = value; }
+			}
+
+			public static bool GridEnable
+			{
+				get { return gridEnable; }
+				set { gridEnable = value; }
 			}
 
 			/// <summary>
@@ -699,6 +710,7 @@ namespace glc_cs
 
 					// 総合
 					BgImg = ReadIni("imgd", "bgimg", string.Empty);
+					GridEnable = !Convert.ToBoolean(Convert.ToInt32(ReadIni("disable", "grid", "0")));
 
 					// dcon設定
 					Dconnect = Convert.ToBoolean(Convert.ToInt32(ReadIni("checkbox", "dconnect", "0")));

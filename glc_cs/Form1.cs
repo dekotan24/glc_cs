@@ -43,6 +43,11 @@ namespace glc_cs
 			tabControl1.SelectedIndex = 1;
 			tabControl1.SelectedIndex = 0;
 
+			if (!General.Var.GridEnable)
+			{
+				tabControl1.Controls.Remove(tabPage2);
+			}
+
 			// 検索タブ
 			searchTargetDropDown.SelectedIndex = 0;
 			orderDropDown.SelectedIndex = 0;
@@ -149,22 +154,25 @@ namespace glc_cs
 				{
 					gameList.Items.Add(General.Var.IniRead(readini, "game", "name", ""));
 
-					try
+					if (General.Var.GridEnable)
 					{
-						lvimg = Image.FromFile(General.Var.IniRead(readini, "game", "imgpass", ""));
-					}
-					catch
-					{
-						lvimg = Properties.Resources.exe;
-					}
+						try
+						{
+							lvimg = Image.FromFile(General.Var.IniRead(readini, "game", "imgpass", ""));
+						}
+						catch
+						{
+							lvimg = Properties.Resources.exe;
+						}
 
-					imageList0.Images.Add(count.ToString(), lvimg);
-					imageList1.Images.Add(count.ToString(), lvimg);
-					imageList2.Images.Add(count.ToString(), lvimg);
+						imageList0.Images.Add(count.ToString(), lvimg);
+						imageList1.Images.Add(count.ToString(), lvimg);
+						imageList2.Images.Add(count.ToString(), lvimg);
 
-					lvi = new ListViewItem(General.Var.IniRead(readini, "game", "name", ""));
-					lvi.ImageIndex = (count - 1);
-					gameImgList.Items.Add(lvi);
+						lvi = new ListViewItem(General.Var.IniRead(readini, "game", "name", ""));
+						lvi.ImageIndex = (count - 1);
+						gameImgList.Items.Add(lvi);
+					}
 				}
 				else
 				{
@@ -269,22 +277,25 @@ namespace glc_cs
 					{
 						gameList.Items.Add(reader["GAME_NAME"].ToString());
 
-						try
+						if (General.Var.GridEnable)
 						{
-							lvimg = Image.FromFile(reader["IMG_PATH"].ToString());
-						}
-						catch
-						{
-							lvimg = Properties.Resources.exe;
-						}
+							try
+							{
+								lvimg = Image.FromFile(reader["IMG_PATH"].ToString());
+							}
+							catch
+							{
+								lvimg = Properties.Resources.exe;
+							}
 
-						imageList0.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
-						imageList1.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
-						imageList2.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList0.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList1.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList2.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
 
-						lvi = new ListViewItem(reader["GAME_NAME"].ToString());
-						lvi.ImageIndex = (Convert.ToInt32(reader["ROW_CNT"]) - 1);
-						gameImgList.Items.Add(lvi);
+							lvi = new ListViewItem(reader["GAME_NAME"].ToString());
+							lvi.ImageIndex = (Convert.ToInt32(reader["ROW_CNT"]) - 1);
+							gameImgList.Items.Add(lvi);
+						}
 					}
 				}
 
@@ -480,22 +491,25 @@ namespace glc_cs
 					{
 						gameList.Items.Add(reader["GAME_NAME"].ToString());
 
-						try
+						if (General.Var.GridEnable)
 						{
-							lvimg = Image.FromFile(reader["IMG_PATH"].ToString());
-						}
-						catch
-						{
-							lvimg = Properties.Resources.exe;
-						}
+							try
+							{
+								lvimg = Image.FromFile(reader["IMG_PATH"].ToString());
+							}
+							catch
+							{
+								lvimg = Properties.Resources.exe;
+							}
 
-						imageList0.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
-						imageList1.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
-						imageList2.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList0.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList1.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList2.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
 
-						lvi = new ListViewItem(reader["GAME_NAME"].ToString());
-						lvi.ImageIndex = (Convert.ToInt32(reader["ROW_CNT"]) - 1);
-						gameImgList.Items.Add(lvi);
+							lvi = new ListViewItem(reader["GAME_NAME"].ToString());
+							lvi.ImageIndex = (Convert.ToInt32(reader["ROW_CNT"]) - 1);
+							gameImgList.Items.Add(lvi);
+						}
 					}
 				}
 
@@ -1188,7 +1202,7 @@ namespace glc_cs
 
 		private void button7_Click(object sender, EventArgs e)
 		{
-			DialogResult result = MessageBox.Show(General.Var.AppName + " Ver." + General.Var.AppVer + " / Build " + General.Var.AppBuild + "\n\n" + "現在の作業ディレクトリ [Mode：" + (General.Var.SaveType == "I" ? "ローカルINI" : General.Var.SaveType == "D" ? "SQL Server" : General.Var.SaveType == "M" ? "MySQL" : "オフラインINI") + "] ：" + ((General.Var.SaveType == "D" || General.Var.SaveType == "M") ? General.Var.DbUrl + ":" + General.Var.DbPort + " ▶ " + General.Var.DbName + "." + General.Var.DbTable : General.Var.GameDir) + "\n\nAuthor: Ogura Deko (dekosoft)\nMail: support_dekosoft@outlook.jp\nWeb: https://fanet.work\n\nCopyright (C) Ogura Deko and dekosoft Program rights reserved.",
+			DialogResult result = MessageBox.Show(General.Var.AppName + " Ver." + General.Var.AppVer + " / Build " + General.Var.AppBuild + "\n\n" + "現在の作業ディレクトリ [" + (General.Var.SaveType == "I" ? "ローカルINI" : General.Var.SaveType == "D" ? "SQL Server" : General.Var.SaveType == "M" ? "MySQL" : "オフラインINI") + "]：\n" + ((General.Var.SaveType == "D" || General.Var.SaveType == "M") ? General.Var.DbUrl + ":" + General.Var.DbPort + " ▶ " + General.Var.DbName + "." + General.Var.DbTable : General.Var.GameDir) + "\n\nAuthor: Ogura Deko (dekosoft)\nMail: support@fanet.work\nWeb: https://fanet.work\n\nCopyright (C) Ogura Deko and dekosoft Program rights reserved.",
 								General.Var.AppName,
 								MessageBoxButtons.OK,
 								MessageBoxIcon.Information);
@@ -1201,9 +1215,12 @@ namespace glc_cs
 				return;
 			}
 
-			// グリッドと同期
-			gameImgList.Items[gameList.SelectedIndex].Selected = true;
-			gameImgList.EnsureVisible(gameList.SelectedIndex);
+			if (General.Var.GridEnable)
+			{
+				// グリッドと同期
+				gameImgList.Items[gameList.SelectedIndex].Selected = true;
+				gameImgList.EnsureVisible(gameList.SelectedIndex);
+			}
 
 			// ゲーム詳細取得
 			int selecteditem = gameList.SelectedIndex + 1;
@@ -1725,9 +1742,12 @@ namespace glc_cs
 
 				gameList.SelectedIndex = ans - 1;
 
-				//グリッドと同期
-				gameImgList.Items[gameList.SelectedIndex].Selected = true;
-				gameImgList.EnsureVisible(gameList.SelectedIndex);
+				if (General.Var.GridEnable)
+				{
+					//グリッドと同期
+					gameImgList.Items[gameList.SelectedIndex].Selected = true;
+					gameImgList.EnsureVisible(gameList.SelectedIndex);
+				}
 			}
 			else
 			{
@@ -2051,11 +2071,13 @@ namespace glc_cs
 			fileSystemWatcher2.EnableRaisingEvents = false;
 			String beforeWorkDir = General.Var.BaseDir;
 			String beforeSaveType = General.Var.ReadIni("general", "save", "I");
+			String beforeGridEnabled = General.Var.ReadIni("disable", "grid", "0");
 			form2.StartPosition = FormStartPosition.CenterParent;
 			form2.ShowDialog(this);
 			updateComponent();
 			String afterWorkDir = General.Var.BaseDir;
 			String aftereSaveType = General.Var.ReadIni("general", "save", "I");
+			String afterGridEnabled = General.Var.ReadIni("disable", "grid", "0");
 			if (beforeWorkDir != afterWorkDir)
 			{
 				MessageBox.Show("既定の作業ディレクトリが変更されました。\nGame Launcherを再起動してください。\n\nOKを押してGame Launcherを終了します。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -2064,6 +2086,11 @@ namespace glc_cs
 			else if (beforeSaveType != aftereSaveType)
 			{
 				MessageBox.Show("データの保存方法が変更されました。\nGame Launcherを再起動してください。\n\nOKを押してGame Launcherを終了します。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				Close();
+			}
+			else if (beforeGridEnabled != afterGridEnabled)
+			{
+				MessageBox.Show("UIに関する設定が変更されました。\nGame Launcherを再起動してください。\n\nOKを押してGame Launcherを終了します。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				Close();
 			}
 
@@ -2901,9 +2928,17 @@ namespace glc_cs
 			// rowCountをリスト値に変換
 			rowCount--;
 
-			// 他のグリッドと同期
-			gameImgList.Items[rowCount].Selected = true;
-			gameImgList.EnsureVisible(rowCount);
+			if (General.Var.GridEnable)
+			{
+				// 他のグリッドと同期
+				gameImgList.Items[rowCount].Selected = true;
+				gameImgList.EnsureVisible(rowCount);
+			}
+			else
+			{
+				// リストと同期
+				gameList.SelectedIndex = rowCount;
+			}
 
 			return;
 		}
