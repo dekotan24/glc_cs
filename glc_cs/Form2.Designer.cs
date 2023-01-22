@@ -365,7 +365,7 @@
 			this.label27.Size = new System.Drawing.Size(434, 45);
 			this.label27.TabIndex = 2;
 			this.label27.Text = "Discord RPCを実行する際のApplication IDを任意の値に変更できます。\r\nランチャー画面の [Discord RPC イメージID] がイメー" +
-    "ジキーになります。\r\n初期値はブランクです。理解できた方のみご利用ください。";
+	"ジキーになります。\r\n初期値はブランクです。理解できた方のみご利用ください。";
 			// 
 			// dconAppIDClearButton
 			// 
