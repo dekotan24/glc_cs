@@ -1,6 +1,6 @@
 ﻿namespace glc_cs
 {
-	partial class Form2
+	partial class Config
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Config));
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.getDconButton = new System.Windows.Forms.Button();
 			this.dconEnableCheck = new System.Windows.Forms.CheckBox();
@@ -43,6 +43,9 @@
 			this.portText = new System.Windows.Forms.TextBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage7 = new System.Windows.Forms.TabPage();
+			this.groupBox14 = new System.Windows.Forms.GroupBox();
+			this.gridDisableCheck = new System.Windows.Forms.CheckBox();
+			this.label30 = new System.Windows.Forms.Label();
 			this.groupBox11 = new System.Windows.Forms.GroupBox();
 			this.label26 = new System.Windows.Forms.Label();
 			this.backgroundImageSearchButton = new System.Windows.Forms.Button();
@@ -113,6 +116,7 @@
 			this.label20 = new System.Windows.Forms.Label();
 			this.label19 = new System.Windows.Forms.Label();
 			this.TabPage3 = new System.Windows.Forms.TabPage();
+			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.updchkButton = new System.Windows.Forms.Button();
 			this.label10 = new System.Windows.Forms.Label();
 			this.linkLabel3 = new System.Windows.Forms.LinkLabel();
@@ -129,13 +133,10 @@
 			this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.label15 = new System.Windows.Forms.Label();
-			this.groupBox14 = new System.Windows.Forms.GroupBox();
-			this.label30 = new System.Windows.Forms.Label();
-			this.gridDisableCheck = new System.Windows.Forms.CheckBox();
-			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage7.SuspendLayout();
+			this.groupBox14.SuspendLayout();
 			this.groupBox11.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.groupBox13.SuspendLayout();
@@ -153,7 +154,6 @@
 			this.groupBox12.SuspendLayout();
 			this.groupBox7.SuspendLayout();
 			this.TabPage3.SuspendLayout();
-			this.groupBox14.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -290,6 +290,38 @@
 			this.tabPage7.Text = "全般";
 			this.tabPage7.UseVisualStyleBackColor = true;
 			// 
+			// groupBox14
+			// 
+			this.groupBox14.Controls.Add(this.gridDisableCheck);
+			this.groupBox14.Controls.Add(this.label30);
+			this.groupBox14.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox14.Location = new System.Drawing.Point(6, 87);
+			this.groupBox14.Name = "groupBox14";
+			this.groupBox14.Size = new System.Drawing.Size(469, 75);
+			this.groupBox14.TabIndex = 4;
+			this.groupBox14.TabStop = false;
+			this.groupBox14.Text = "ゲームリスト";
+			// 
+			// gridDisableCheck
+			// 
+			this.gridDisableCheck.AutoSize = true;
+			this.gridDisableCheck.Location = new System.Drawing.Point(25, 25);
+			this.gridDisableCheck.Name = "gridDisableCheck";
+			this.gridDisableCheck.Size = new System.Drawing.Size(128, 20);
+			this.gridDisableCheck.TabIndex = 3;
+			this.gridDisableCheck.Text = "グリッドを無効化";
+			this.gridDisableCheck.UseVisualStyleBackColor = true;
+			// 
+			// label30
+			// 
+			this.label30.AutoSize = true;
+			this.label30.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label30.Location = new System.Drawing.Point(12, 51);
+			this.label30.Name = "label30";
+			this.label30.Size = new System.Drawing.Size(446, 15);
+			this.label30.TabIndex = 2;
+			this.label30.Text = "※ロード時間／消費メモリが改善する場合があります。再起動が必要です。";
+			// 
 			// groupBox11
 			// 
 			this.groupBox11.Controls.Add(this.label26);
@@ -365,7 +397,7 @@
 			this.label27.Size = new System.Drawing.Size(434, 45);
 			this.label27.TabIndex = 2;
 			this.label27.Text = "Discord RPCを実行する際のApplication IDを任意の値に変更できます。\r\nランチャー画面の [Discord RPC イメージID] がイメー" +
-	"ジキーになります。\r\n初期値はブランクです。理解できた方のみご利用ください。";
+    "ジキーになります。\r\n初期値はブランクです。理解できた方のみご利用ください。";
 			// 
 			// dconAppIDClearButton
 			// 
@@ -680,11 +712,12 @@
 			// 
 			this.label28.AutoSize = true;
 			this.label28.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label28.Location = new System.Drawing.Point(3, 168);
+			this.label28.Location = new System.Drawing.Point(2, 158);
 			this.label28.Name = "label28";
-			this.label28.Size = new System.Drawing.Size(464, 30);
+			this.label28.Size = new System.Drawing.Size(464, 45);
 			this.label28.TabIndex = 16;
-			this.label28.Text = "DB/Table自動作成を行う場合、URL、Port、User、Passを入力してください。\r\nMySQLを使用する場合、上記に加えてDBも入力してください。";
+			this.label28.Text = "DB/Table自動作成を行う場合、URL、Port、User、Passを入力してください。\r\nMySQLを使用する場合、上記に加えてDBも入力してください。\r\n" +
+    "対象のDBへのフルアクセス権（GRANT ALL PRIVILEGES）が必要です。";
 			// 
 			// button5
 			// 
@@ -701,7 +734,7 @@
 			// 
 			this.label24.AutoSize = true;
 			this.label24.Enabled = false;
-			this.label24.Location = new System.Drawing.Point(189, 101);
+			this.label24.Location = new System.Drawing.Point(192, 101);
 			this.label24.Name = "label24";
 			this.label24.Size = new System.Drawing.Size(43, 16);
 			this.label24.TabIndex = 14;
@@ -737,7 +770,7 @@
 			// 
 			this.label22.AutoSize = true;
 			this.label22.Enabled = false;
-			this.label22.Location = new System.Drawing.Point(189, 130);
+			this.label22.Location = new System.Drawing.Point(193, 130);
 			this.label22.Name = "label22";
 			this.label22.Size = new System.Drawing.Size(39, 16);
 			this.label22.TabIndex = 10;
@@ -1064,6 +1097,18 @@
 			this.TabPage3.Text = "バージョン情報";
 			this.TabPage3.UseVisualStyleBackColor = true;
 			// 
+			// pictureBox1
+			// 
+			this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.pictureBox1.Image = global::glc_cs.Properties.Resources.icon;
+			this.pictureBox1.Location = new System.Drawing.Point(13, 11);
+			this.pictureBox1.Name = "pictureBox1";
+			this.pictureBox1.Size = new System.Drawing.Size(100, 100);
+			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pictureBox1.TabIndex = 12;
+			this.pictureBox1.TabStop = false;
+			this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+			// 
 			// updchkButton
 			// 
 			this.updchkButton.Location = new System.Drawing.Point(368, 73);
@@ -1195,51 +1240,7 @@
 			this.label15.TabIndex = 4;
 			this.label15.Text = ":)";
 			// 
-			// groupBox14
-			// 
-			this.groupBox14.Controls.Add(this.gridDisableCheck);
-			this.groupBox14.Controls.Add(this.label30);
-			this.groupBox14.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.groupBox14.Location = new System.Drawing.Point(6, 87);
-			this.groupBox14.Name = "groupBox14";
-			this.groupBox14.Size = new System.Drawing.Size(469, 75);
-			this.groupBox14.TabIndex = 4;
-			this.groupBox14.TabStop = false;
-			this.groupBox14.Text = "ゲームリスト";
-			// 
-			// label30
-			// 
-			this.label30.AutoSize = true;
-			this.label30.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label30.Location = new System.Drawing.Point(12, 51);
-			this.label30.Name = "label30";
-			this.label30.Size = new System.Drawing.Size(446, 15);
-			this.label30.TabIndex = 2;
-			this.label30.Text = "※ロード時間／消費メモリが改善する場合があります。再起動が必要です。";
-			// 
-			// gridDisableCheck
-			// 
-			this.gridDisableCheck.AutoSize = true;
-			this.gridDisableCheck.Location = new System.Drawing.Point(25, 25);
-			this.gridDisableCheck.Name = "gridDisableCheck";
-			this.gridDisableCheck.Size = new System.Drawing.Size(128, 20);
-			this.gridDisableCheck.TabIndex = 3;
-			this.gridDisableCheck.Text = "グリッドを無効化";
-			this.gridDisableCheck.UseVisualStyleBackColor = true;
-			// 
-			// pictureBox1
-			// 
-			this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pictureBox1.Image = global::glc_cs.Properties.Resources.icon;
-			this.pictureBox1.Location = new System.Drawing.Point(13, 11);
-			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(100, 100);
-			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.pictureBox1.TabIndex = 12;
-			this.pictureBox1.TabStop = false;
-			this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-			// 
-			// Form2
+			// Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -1251,7 +1252,7 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "Form2";
+			this.Name = "Config";
 			this.ShowIcon = false;
 			this.Text = "GLconfig";
 			this.Load += new System.EventHandler(this.Form2_Load);
@@ -1259,6 +1260,8 @@
 			this.groupBox1.PerformLayout();
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage7.ResumeLayout(false);
+			this.groupBox14.ResumeLayout(false);
+			this.groupBox14.PerformLayout();
 			this.groupBox11.ResumeLayout(false);
 			this.groupBox11.PerformLayout();
 			this.tabPage1.ResumeLayout(false);
@@ -1288,8 +1291,6 @@
 			this.groupBox7.PerformLayout();
 			this.TabPage3.ResumeLayout(false);
 			this.TabPage3.PerformLayout();
-			this.groupBox14.ResumeLayout(false);
-			this.groupBox14.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

@@ -8,14 +8,21 @@ using System.Windows.Forms;
 
 namespace glc_cs
 {
-	public partial class Form5 : Form
+	public partial class Editor : Form
 	{
 		SqlConnection con = new SqlConnection();
 		MySqlConnection con2 = new MySqlConnection();
 		string genSaveType = string.Empty;
 		string iniPath = string.Empty;
 
-		public Form5(string saveType, string selectedListCount, SqlConnection cn, SqlCommand cm)
+		/// <summary>
+		/// MSSQL用
+		/// </summary>
+		/// <param name="saveType">ゲームデータ保存方法</param>
+		/// <param name="selectedListCount">選択中のリストアイテムID</param>
+		/// <param name="cn">SQLコネクション</param>
+		/// <param name="cm">SQLコマンド</param>
+		public Editor(string saveType, string selectedListCount, SqlConnection cn, SqlCommand cm)
 		{
 			InitializeComponent();
 			// 数値ボックス最大値設定
@@ -50,7 +57,14 @@ namespace glc_cs
 			}
 		}
 
-		public Form5(string saveType, string selectedListCount, MySqlConnection cn, MySqlCommand cm)
+		/// <summary>
+		/// MySQL用
+		/// </summary>
+		/// <param name="saveType">ゲームデータ保存方法</param>
+		/// <param name="selectedListCount">選択中のリストアイテムID</param>
+		/// <param name="cn">SQLコネクション</param>
+		/// <param name="cm">SQLコマンド</param>
+		public Editor(string saveType, string selectedListCount, MySqlConnection cn, MySqlCommand cm)
 		{
 			InitializeComponent();
 			// 数値ボックス最大値設定
@@ -104,7 +118,7 @@ namespace glc_cs
 					runTimeText.Value = Convert.ToInt32(reader["UPTIME"]);
 					startCountText.Value = Convert.ToInt32(reader["RUN_COUNT"]);
 					dconText.Text = reader["DCON_TEXT"].ToString();
-					dconImgText.Text = reader["TEMP1"].ToString();
+					dconImgText.Text = reader["DCON_IMG"].ToString();
 					rateCheck.Checked = reader["AGE_FLG"].ToString() == "1" ? true : false;
 					if (File.Exists(imgPathText.Text))
 					{
@@ -148,7 +162,7 @@ namespace glc_cs
 					runTimeText.Value = Convert.ToInt32(reader["UPTIME"]);
 					startCountText.Value = Convert.ToInt32(reader["RUN_COUNT"]);
 					dconText.Text = reader["DCON_TEXT"].ToString();
-					dconImgText.Text = reader["TEMP1"].ToString();
+					dconImgText.Text = reader["DCON_IMG"].ToString();
 					rateCheck.Checked = reader["AGE_FLG"].ToString() == "1" ? true : false;
 					if (File.Exists(imgPathText.Text))
 					{
@@ -190,7 +204,7 @@ namespace glc_cs
 					runTimeText.Value = Convert.ToInt32(General.Var.IniRead(iniPath, "game", "time", "0"));
 					startCountText.Value = Convert.ToInt32(General.Var.IniRead(iniPath, "game", "start", string.Empty));
 					dconText.Text = General.Var.IniRead(iniPath, "game", "stat", string.Empty);
-					dconImgText.Text = General.Var.IniRead(iniPath, "game", "temp1", string.Empty);
+					dconImgText.Text = General.Var.IniRead(iniPath, "game", "dcon_img", string.Empty);
 					rateCheck.Checked = Convert.ToBoolean(Convert.ToInt32(General.Var.IniRead(iniPath, "game", "rating", General.Var.Rate.ToString())));
 					if (File.Exists(imgPathText.Text))
 					{
@@ -208,7 +222,6 @@ namespace glc_cs
 				General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, string.Empty);
 			}
 		}
-
 
 		private void CancelButton_Click(object sender, EventArgs e)
 		{
@@ -238,7 +251,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET GAME_NAME = N'" + titleText.Text.Trim() + "', GAME_PATH = N'" + exePathText.Text.Trim() + "', IMG_PATH = N'" + imgPathText.Text.Trim() + "', UPTIME = N'" + runTimeText.Value + "', RUN_COUNT = N'" + startCountText.Value + "', DCON_TEXT = N'" + dconText.Text.Trim() + "', AGE_FLG = N'" + (rateCheck.Checked ? "1" : "0") + "', TEMP1 = N'" + dconImgText.Text.Trim() + "' "
+					CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET GAME_NAME = N'" + titleText.Text.Trim() + "', GAME_PATH = N'" + exePathText.Text.Trim() + "', IMG_PATH = N'" + imgPathText.Text.Trim() + "', UPTIME = N'" + runTimeText.Value + "', RUN_COUNT = N'" + startCountText.Value + "', DCON_TEXT = N'" + dconText.Text.Trim() + "', AGE_FLG = N'" + (rateCheck.Checked ? "1" : "0") + "', DCON_IMG = N'" + dconImgText.Text.Trim() + "' "
 									+ "WHERE ID = " + label9.Text.Trim()
 				};
 
@@ -299,7 +312,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"UPDATE " + General.Var.DbTable + " SET GAME_NAME = N'" + titleText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', GAME_PATH = N'" + exePathText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', IMG_PATH = N'" + imgPathText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', UPTIME = N'" + runTimeText.Value + "', RUN_COUNT = N'" + startCountText.Value + "', DCON_TEXT = N'" + dconText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', AGE_FLG = N'" + (rateCheck.Checked ? "1" : "0") + "', TEMP1 = N'" + dconImgText.Text.Trim() + "' "
+					CommandText = @"UPDATE " + General.Var.DbTable + " SET GAME_NAME = N'" + titleText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', GAME_PATH = N'" + exePathText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', IMG_PATH = N'" + imgPathText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', UPTIME = N'" + runTimeText.Value + "', RUN_COUNT = N'" + startCountText.Value + "', DCON_TEXT = N'" + dconText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', AGE_FLG = N'" + (rateCheck.Checked ? "1" : "0") + "', DCON_IMG = N'" + dconImgText.Text.Trim() + "' "
 									+ "WHERE ID = " + label9.Text.Trim()
 				};
 
@@ -356,7 +369,7 @@ namespace glc_cs
 				General.Var.IniWrite(iniPath, "game", "time", runTimeTmp.ToString());
 				General.Var.IniWrite(iniPath, "game", "start", startTimeTmp.ToString());
 				General.Var.IniWrite(iniPath, "game", "stat", dconText.Text.Trim());
-				General.Var.IniWrite(iniPath, "game", "temp1", dconImgText.Text.Trim());
+				General.Var.IniWrite(iniPath, "game", "dcon_img", dconImgText.Text.Trim());
 				General.Var.IniWrite(iniPath, "game", "rating", (rateCheck.Checked ? "1" : "0"));
 			}
 

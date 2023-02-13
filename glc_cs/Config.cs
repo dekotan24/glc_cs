@@ -6,13 +6,14 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace glc_cs
 {
-	public partial class Form2 : Form
+	public partial class Config : Form
 	{
-		public Form2()
+		public Config()
 		{
 			InitializeComponent();
 		}
@@ -511,7 +512,6 @@ namespace glc_cs
 			else
 			{
 				MySqlConnection cn = General.Var.SqlCon2;
-				MySqlCommand cm;
 				MySqlTransaction tr = null;
 
 				// テーブル作成
@@ -929,9 +929,28 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void pictureBox1_Click(object sender, EventArgs e)
+		private async void pictureBox1_Click(object sender, EventArgs e)
 		{
-			return;
+			Random r1 = new System.Random();
+			int rand = r1.Next(0, 5);
+			switch (rand)
+			{
+				case 0:
+					System.Media.SystemSounds.Beep.Play();
+					break;
+				case 1:
+					System.Media.SystemSounds.Asterisk.Play();
+					break;
+				case 2:
+					System.Media.SystemSounds.Exclamation.Play();
+					break;
+				case 3:
+					System.Media.SystemSounds.Hand.Play();
+					break;
+				case 4:
+					System.Media.SystemSounds.Question.Play();
+					break;
+			}
 		}
 	}
 }

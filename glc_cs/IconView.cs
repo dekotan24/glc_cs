@@ -3,9 +3,9 @@ using System.Windows.Forms;
 
 namespace glc_cs
 {
-	public partial class Form4 : Form
+	public partial class IconView : Form
 	{
-		public Form4(string imgPath)
+		public IconView(string imgPath)
 		{
 			InitializeComponent();
 			pictureBox1.ImageLocation = imgPath;

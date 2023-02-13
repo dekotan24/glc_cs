@@ -14,9 +14,9 @@ namespace glc_cs
 	public partial class gl : Form
 	{
 		// 設定フォーム宣言
-		Form2 form2 = new Form2();
-		Form3 form3 = new Form3();
-		Form4 form4 = new Form4(null);
+		Config ConfigForm = new Config();
+		Splash SplashForm = new Splash();
+		IconView IconViewForm = new IconView(null);
 
 		public gl()
 		{
@@ -26,23 +26,32 @@ namespace glc_cs
 		private void gl_Load(object sender, EventArgs e)
 		{
 			// スプラッシュ画面表示
-			form3.Show();
+			SplashForm.Show();
 			Application.DoEvents();
-			this.Opacity = 0;
+
+			// スタイル設定
 			this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 			this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+			this.SetStyle(ControlStyles.UserPaint, true);
 
-			// 初期設定
+			// 終了処理設定
 			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
+
 			// 実行ボタンカバーを表示
 			pictureBox11.Visible = true;
 
+			// 設定ファイル読込
 			updateComponent();
 
+			// アップデートチェック
+			checkDBUpdate();
+
+			// アイテム読込
 			string item = General.Var.SaveType == "I" ? LoadItem(General.Var.GameDir) : General.Var.SaveType == "D" ? LoadItem2(General.Var.SqlCon, true) : LoadItem3(General.Var.SqlCon2, true);
 			tabControl1.SelectedIndex = 1;
 			tabControl1.SelectedIndex = 0;
 
+			// グリッド削除処理
 			if (!General.Var.GridEnable)
 			{
 				tabControl1.Controls.Remove(tabPage2);
@@ -52,14 +61,15 @@ namespace glc_cs
 			searchTargetDropDown.SelectedIndex = 0;
 			orderDropDown.SelectedIndex = 0;
 
-			// 実行ボタンカバーを非表示
+			// 実行ボタン読込中画像を非表示
 			pictureBox11.Visible = false;
+
+			// メインフォーム表示
 			this.Show();
 			this.Refresh();
-			form3.Close();
-			form3.Dispose();
+			SplashForm.Close();
+			SplashForm.Dispose();
 			Application.DoEvents();
-			this.Opacity = 1;
 
 			if (item == "_none_game_data" || item == "0")
 			{
@@ -650,7 +660,7 @@ namespace glc_cs
 				if (File.Exists(path))
 				{
 					iniedtchk(path, "game", "stat", (dconText.Text.Trim()), string.Empty);
-					iniedtchk(path, "game", "temp1", (dconImgText.Text.Trim()), string.Empty);
+					iniedtchk(path, "game", "dcon_img", (dconImgText.Text.Trim()), string.Empty);
 					if (normalRadio.Checked)
 					{
 						iniedtchk(path, "game", "rating", "0", "0");
@@ -682,7 +692,7 @@ namespace glc_cs
 						if (General.Var.SaveType == "I" || General.Var.SaveType == "T")
 						{
 							iniedtchk(General.Var.GameDir + "\\" + (gameList.SelectedIndex + 1).ToString() + ".ini", "game", "stat", dconText.Text, string.Empty);
-							iniedtchk(General.Var.GameDir + "\\" + (gameList.SelectedIndex + 1).ToString() + ".ini", "game", "temp1", dconImgText.Text, string.Empty);
+							iniedtchk(General.Var.GameDir + "\\" + (gameList.SelectedIndex + 1).ToString() + ".ini", "game", "dcon_img", dconImgText.Text, string.Empty);
 						}
 
 						// 現在時刻取得
@@ -789,6 +799,19 @@ namespace glc_cs
 							General.Var.Bouyomiage("ゲームを終了しました。起動時間は、約" + anss + "秒です。");
 						}
 
+						if (anss < 15)
+						{
+							// 15秒以内に終了した場合、確認を行う
+							DialogResult dr = MessageBox.Show("起動時間が短いようです。\n今回：" + anss + "秒 ｜ しきい値：15秒\n\n今回の起動を無効にしますか？\n※起動時間、起動回数を更新しません", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+							if (dr == DialogResult.Yes)
+							{
+								// 時間更新を行わずに終了
+								pictureBox11.Visible = false;
+								startButton.Enabled = true;
+								return;
+							}
+						}
+
 						if (General.Var.SaveType == "I" || General.Var.SaveType == "T")
 						{
 							// ini
@@ -840,7 +863,7 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET UPTIME = CAST(CAST(UPTIME AS BIGINT) + " + anss + " AS NVARCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS INT) + 1 AS NVARCHAR), DCON_TEXT = '" + dconText.Text.Trim() + "', TEMP1 = '" + dconImgText.Text.Trim() + "', AGE_FLG = '" + (normalRadio.Checked ? "0" : "1") + "', LAST_RUN = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' "
+									CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET UPTIME = CAST(CAST(UPTIME AS BIGINT) + " + anss + " AS NVARCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS INT) + 1 AS NVARCHAR), DCON_TEXT = '" + dconText.Text.Trim() + "', DCON_IMG = '" + dconImgText.Text.Trim() + "', AGE_FLG = '" + (normalRadio.Checked ? "0" : "1") + "', LAST_RUN = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' "
 												+ " WHERE ID = '" + General.Var.CurrentGameDbVal + "'"
 								};
 								cm.Connection = cn;
@@ -882,7 +905,7 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"UPDATE " + General.Var.DbTable + " SET UPTIME = CAST(CAST(UPTIME AS SIGNED) + " + anss + " AS NCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS SIGNED) + 1 AS NCHAR), DCON_TEXT = '" + dconText.Text.Trim() + "', TEMP1 = '" + dconImgText.Text.Trim() + "', AGE_FLG = '" + (normalRadio.Checked ? "0" : "1") + "', LAST_RUN = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' "
+									CommandText = @"UPDATE " + General.Var.DbTable + " SET UPTIME = CAST(CAST(UPTIME AS SIGNED) + " + anss + " AS NCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS SIGNED) + 1 AS NCHAR), DCON_TEXT = '" + dconText.Text.Trim() + "', DCON_IMG = '" + dconImgText.Text.Trim() + "', AGE_FLG = '" + (normalRadio.Checked ? "0" : "1") + "', LAST_RUN = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' "
 												+ " WHERE ID = '" + General.Var.CurrentGameDbVal + "'"
 								};
 								cm.Connection = cn;
@@ -1077,7 +1100,7 @@ namespace glc_cs
 						General.Var.IniWrite(gfilepass, "game", "time", "0");
 						General.Var.IniWrite(gfilepass, "game", "start", "0");
 						General.Var.IniWrite(gfilepass, "game", "stat", string.Empty);
-						General.Var.IniWrite(gfilepass, "game", "temp1", string.Empty);
+						General.Var.IniWrite(gfilepass, "game", "dcon_img", string.Empty);
 						General.Var.IniWrite(gfilepass, "game", "rating", ratedata);
 						General.Var.IniWrite(General.Var.GameIni, "list", "game", newmaxval.ToString());
 
@@ -1099,7 +1122,7 @@ namespace glc_cs
 							General.Var.IniWrite(gfilepass, "game", "time", "0");
 							General.Var.IniWrite(gfilepass, "game", "start", "0");
 							General.Var.IniWrite(gfilepass, "game", "stat", string.Empty);
-							General.Var.IniWrite(gfilepass, "game", "temp1", string.Empty);
+							General.Var.IniWrite(gfilepass, "game", "dcon_img", string.Empty);
 							General.Var.IniWrite(gfilepass, "game", "rating", ratedata);
 							General.Var.IniWrite(General.Var.GameIni, "list", "game", newmaxval.ToString());
 
@@ -1225,7 +1248,7 @@ namespace glc_cs
 			// ゲーム詳細取得
 			int selecteditem = gameList.SelectedIndex + 1;
 			String readini = General.Var.GameDir + "\\" + selecteditem + ".ini";
-			String id = null, namedata = null, imgpassdata = null, passdata = null, stimedata = null, startdata = null, cmtdata = null, temp1data = null, rating = null;
+			String id = null, namedata = null, imgpassdata = null, passdata = null, stimedata = null, startdata = null, cmtdata = null, dcon_imgdata = null, rating = null, status = null;
 
 			if (General.Var.SaveType == "I" || General.Var.SaveType == "T")
 			{
@@ -1239,8 +1262,9 @@ namespace glc_cs
 					stimedata = General.Var.IniRead(readini, "game", "time", "0");
 					startdata = General.Var.IniRead(readini, "game", "start", "0");
 					cmtdata = General.Var.IniRead(readini, "game", "stat", string.Empty);
-					temp1data = General.Var.IniRead(readini, "game", "temp1", string.Empty);
+					dcon_imgdata = General.Var.IniRead(readini, "game", "dcon_img", string.Empty);
 					rating = General.Var.IniRead(readini, "game", "rating", General.Var.Rate.ToString());
+					status = General.Var.IniRead(readini, "game", "status", string.Empty);
 				}
 				else
 				{
@@ -1254,7 +1278,7 @@ namespace glc_cs
 			else
 			{
 				// database
-
+				// MSSQL
 				if (General.Var.SaveType == "D")
 				{
 					SqlConnection cn = General.Var.SqlCon;
@@ -1266,7 +1290,7 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 30,
-							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, TEMP1, AGE_FLG "
+							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG, STATUS "
 											+ "FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROWCNT FROM " + General.Var.DbName + "." + General.Var.DbTable + ") AS T "
 											+ "WHERE ROWCNT = " + selecteditem
 											+ " ORDER BY ID ASC"
@@ -1278,7 +1302,7 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 30,
-							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, TEMP1, AGE_FLG "
+							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG, STATUS "
 											+ "FROM " + General.Var.DbName + "." + General.Var.DbTable
 											+ " ORDER BY ID ASC"
 						};
@@ -1299,8 +1323,9 @@ namespace glc_cs
 							stimedata = reader["UPTIME"].ToString();
 							startdata = reader["RUN_COUNT"].ToString();
 							cmtdata = reader["DCON_TEXT"].ToString();
-							temp1data = reader["TEMP1"].ToString();
+							dcon_imgdata = reader["DCON_IMG"].ToString();
 							rating = reader["AGE_FLG"].ToString();
+							status = reader["STATUS"].ToString();
 						}
 
 					}
@@ -1328,7 +1353,7 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 30,
-							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, TEMP1, AGE_FLG "
+							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG, STATUS "
 											+ "FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROWCNT FROM " + General.Var.DbTable + ") AS T "
 											+ "WHERE ROWCNT = " + selecteditem
 											+ " ORDER BY ID ASC"
@@ -1340,7 +1365,7 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 30,
-							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, TEMP1, AGE_FLG "
+							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG, STATUS "
 											+ "FROM " + General.Var.DbTable
 											+ " ORDER BY ID ASC"
 						};
@@ -1361,8 +1386,9 @@ namespace glc_cs
 							stimedata = reader["UPTIME"].ToString();
 							startdata = reader["RUN_COUNT"].ToString();
 							cmtdata = reader["DCON_TEXT"].ToString();
-							temp1data = reader["TEMP1"].ToString();
+							dcon_imgdata = reader["DCON_IMG"].ToString();
 							rating = reader["AGE_FLG"].ToString();
+							status = reader["STATUS"].ToString();
 						}
 
 					}
@@ -1383,14 +1409,15 @@ namespace glc_cs
 
 			int timedata = Convert.ToInt32(stimedata) / 60;
 
-			label1.Text = namedata;
+			titleLabel.Text = namedata;
 			nameText.Text = namedata;
 			exePathText.Text = passdata;
 			imgPathText.Text = imgpassdata;
 			runTimeText.Text = timedata.ToString();
 			startTimeText.Text = startdata;
 			dconText.Text = cmtdata;
-			dconImgText.Text = temp1data;
+			dconImgText.Text = dcon_imgdata;
+			statusCombo.SelectedItem = status;
 			General.Var.CurrentGameDbVal = id;
 			toolStripStatusLabel1.Text = "[" + selecteditem + "/" + General.Var.GameMax + "]";
 			toolStripProgressBar1.Value = gameList.SelectedIndex + 1;
@@ -1705,7 +1732,6 @@ namespace glc_cs
 					downButton.Visible = false;
 					reloadCheck.Checked = false;
 					reloadCheck.Visible = false;
-					// editButton.Visible = false;
 					toolStripStatusLabel3.Visible = false;
 				}
 				else
@@ -1728,6 +1754,42 @@ namespace glc_cs
 				minCheck.Checked = true;
 			}
 			return;
+		}
+
+		/// <summary>
+		/// DBアップデートチェック用のSQL作成
+		/// </summary>
+		private void checkDBUpdate()
+		{
+			DialogResult dr = new DialogResult();
+			if (General.Var.SaveType == "D")
+			{
+				// MSSQL
+				DBUpdate DBUpdateForm = new DBUpdate(General.Var.SaveType, General.Var.SqlCon);
+				DBUpdateForm.StartPosition = FormStartPosition.WindowsDefaultLocation;
+				dr = DBUpdateForm.ShowDialog(this);
+			}
+			else if (General.Var.SaveType == "M")
+			{
+				// MySQL
+				DBUpdate DBUpdateForm = new DBUpdate(General.Var.SaveType, General.Var.SqlCon2);
+				DBUpdateForm.StartPosition = FormStartPosition.WindowsDefaultLocation;
+				dr = DBUpdateForm.ShowDialog(this);
+			}
+			else
+			{
+				// INI
+				DBUpdate DBUpdateForm = new DBUpdate(General.Var.SaveType);
+				DBUpdateForm.StartPosition = FormStartPosition.WindowsDefaultLocation;
+				dr = DBUpdateForm.ShowDialog(this);
+			}
+
+			// チェック結果別処理
+			// Cancel:必須アップデートしない（終了）、No:任意アップデートしない、OK:アップデート完了、Ignore:アップデートなし
+			if (dr == DialogResult.Cancel)
+			{
+				Application_ApplicationExit(null, null);
+			}
 		}
 
 		private void button2_Click(object sender, EventArgs e)
@@ -1812,13 +1874,13 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT T.ID, T.GAME_NAME, T.GAME_PATH, T.IMG_PATH, T.UPTIME, T.RUN_COUNT, T.DCON_TEXT, T.TEMP1, T.AGE_FLG, T.ROW_CNT "
+					CommandText = @"SELECT T.ID, T.GAME_NAME, T.GAME_PATH, T.IMG_PATH, T.UPTIME, T.RUN_COUNT, T.DCON_TEXT, T.DCON_IMG, T.AGE_FLG, T.ROW_CNT "
 									+ "FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROW_CNT FROM " + General.Var.DbName + "." + General.Var.DbTable + ") AS T "
 									+ "WHERE T.ROW_CNT = " + selectedListCount
 				};
 				cm.Connection = cn;
 
-				Form5 form5 = new Form5(General.Var.SaveType, selectedListCount, cn, cm);
+				Editor form5 = new Editor(General.Var.SaveType, selectedListCount, cn, cm);
 				form5.StartPosition = FormStartPosition.CenterParent;
 				form5.ShowDialog(this);
 				listBox1_SelectedIndexChanged(null, null);
@@ -1833,13 +1895,13 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT T.ID, T.GAME_NAME, T.GAME_PATH, T.IMG_PATH, T.UPTIME, T.RUN_COUNT, T.DCON_TEXT, T.TEMP1, T.AGE_FLG, T.ROW_CNT "
+					CommandText = @"SELECT T.ID, T.GAME_NAME, T.GAME_PATH, T.IMG_PATH, T.UPTIME, T.RUN_COUNT, T.DCON_TEXT, T.DCON_IMG, T.AGE_FLG, T.ROW_CNT "
 									+ "FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROW_CNT FROM " + General.Var.DbTable + ") AS T "
 									+ "WHERE T.ROW_CNT = " + selectedListCount
 				};
 				cm.Connection = cn;
 
-				Form5 form5 = new Form5(General.Var.SaveType, selectedListCount, cn, cm);
+				Editor form5 = new Editor(General.Var.SaveType, selectedListCount, cn, cm);
 				form5.StartPosition = FormStartPosition.CenterParent;
 				form5.ShowDialog(this);
 				listBox1_SelectedIndexChanged(null, null);
@@ -1850,9 +1912,85 @@ namespace glc_cs
 			String path = General.Var.GameDir + "\\" + (gameList.SelectedIndex + 1) + ".ini";
 			if (File.Exists(path))
 			{
-				Form5 form5 = new Form5(General.Var.SaveType, selectedListCount, new SqlConnection(), new SqlCommand());
+				Editor form5 = new Editor(General.Var.SaveType, selectedListCount, new SqlConnection(), new SqlCommand());
 				form5.StartPosition = FormStartPosition.CenterParent;
 				form5.ShowDialog(this);
+				listBox1_SelectedIndexChanged(null, null);
+			}
+			else
+			{
+				// 個別ini不存在
+				resolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報保管iniが存在しません。\n" + path, 0, false);
+			}
+
+			return;
+		}
+
+		/// <summary>
+		/// メモボタン
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void memoButton_Click(object sender, EventArgs e)
+		{
+			String selectedListCount = (gameList.SelectedIndex + 1).ToString();
+
+			if (gameList.SelectedIndex == -1)
+			{
+				MessageBox.Show("ゲームリストが空です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+
+			if (General.Var.SaveType == "D")
+			{
+				SqlConnection cn = General.Var.SqlCon;
+				SqlCommand cm;
+
+				cm = new SqlCommand()
+				{
+					CommandType = CommandType.Text,
+					CommandTimeout = 30,
+					CommandText = @"SELECT T.ID, T.GAME_NAME, T.IMG_PATH, T.MEMO, T.AGE_FLG, T.ROW_CNT "
+									+ "FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROW_CNT FROM " + General.Var.DbName + "." + General.Var.DbTable + ") AS T "
+									+ "WHERE T.ROW_CNT = " + selectedListCount
+				};
+				cm.Connection = cn;
+
+				Memo memoForm = new Memo(General.Var.SaveType, selectedListCount, cn, cm);
+				memoForm.StartPosition = FormStartPosition.CenterParent;
+				memoForm.ShowDialog(this);
+				listBox1_SelectedIndexChanged(null, null);
+				return;
+			}
+			else if (General.Var.SaveType == "M")
+			{
+				MySqlConnection cn = General.Var.SqlCon2;
+				MySqlCommand cm;
+
+				cm = new MySqlCommand()
+				{
+					CommandType = CommandType.Text,
+					CommandTimeout = 30,
+					CommandText = @"SELECT T.ID, T.GAME_NAME, T.IMG_PATH, T.MEMO, T.AGE_FLG, T.ROW_CNT "
+									+ "FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROW_CNT FROM " + General.Var.DbTable + ") AS T "
+									+ "WHERE T.ROW_CNT = " + selectedListCount
+				};
+				cm.Connection = cn;
+
+				Memo memoForm = new Memo(General.Var.SaveType, selectedListCount, cn, cm);
+				memoForm.StartPosition = FormStartPosition.CenterParent;
+				memoForm.ShowDialog(this);
+				listBox1_SelectedIndexChanged(null, null);
+				return;
+			}
+
+			// INIの場合
+			String path = General.Var.GameDir + "\\" + (gameList.SelectedIndex + 1) + ".ini";
+			if (File.Exists(path))
+			{
+				Memo memoForm = new Memo(General.Var.SaveType, selectedListCount, new SqlConnection(), new SqlCommand());
+				memoForm.StartPosition = FormStartPosition.CenterParent;
+				memoForm.ShowDialog(this);
 				listBox1_SelectedIndexChanged(null, null);
 			}
 			else
@@ -2072,8 +2210,8 @@ namespace glc_cs
 			String beforeWorkDir = General.Var.BaseDir;
 			String beforeSaveType = General.Var.ReadIni("general", "save", "I");
 			String beforeGridEnabled = General.Var.ReadIni("disable", "grid", "0");
-			form2.StartPosition = FormStartPosition.CenterParent;
-			form2.ShowDialog(this);
+			ConfigForm.StartPosition = FormStartPosition.CenterParent;
+			ConfigForm.ShowDialog(this);
 			updateComponent();
 			String afterWorkDir = General.Var.BaseDir;
 			String aftereSaveType = General.Var.ReadIni("general", "save", "I");
@@ -2226,7 +2364,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, TEMP1, AGE_FLG "
+					CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG "
 									+ "FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROWCNT FROM " + General.Var.DbName + "." + General.Var.DbTable + ") AS T "
 									+ "WHERE ROWCNT = " + delItemVal
 				};
@@ -2313,7 +2451,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, TEMP1, AGE_FLG "
+					CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG "
 									+ "FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROWCNT FROM " + General.Var.DbTable + ") AS T "
 									+ "WHERE ROWCNT = " + delItemVal
 				};
@@ -2473,7 +2611,8 @@ namespace glc_cs
 				General.Var.downloadDbDataToLocal(localPath);
 			}
 
-			Application.Exit();
+			Application.DoEvents();
+			Environment.Exit(0);
 		}
 
 		private void button11_Click(object sender, EventArgs e)
@@ -2535,20 +2674,34 @@ namespace glc_cs
 		{
 			if (File.Exists(gameIcon.ImageLocation))
 			{
-				Form4 form4 = new Form4(gameIcon.ImageLocation);
-				form4.StartPosition = FormStartPosition.CenterParent;
-				form4.ShowDialog(this);
+				IconView IconViewForm = new IconView(gameIcon.ImageLocation);
+				IconViewForm.StartPosition = FormStartPosition.CenterParent;
+				IconViewForm.ShowDialog(this);
 			}
 		}
 
 		/// <summary>
-		/// 検索ボタン
+		/// 検索ボタン クリックイベント
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void button13_Click(object sender, EventArgs e)
 		{
 			searchExec(false);
+		}
+
+		/// <summary>
+		/// 検索テキスト KeyPressイベント（検索）
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void searchText_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			//Enter押下で検索を実行
+			if (e.KeyChar == (char)Keys.Enter)
+			{
+				button13_Click(sender, e);
+			}
 		}
 
 		/// <summary>
@@ -2588,6 +2741,10 @@ namespace glc_cs
 				case 4:
 					// 画像パス
 					searchOption = "IMG_PATH";
+					break;
+				case 5:
+					// メモ
+					searchOption = "MEMO";
 					break;
 			}
 
@@ -2633,7 +2790,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, TEMP1, AGE_FLG FROM " + General.Var.DbName + "." + General.Var.DbTable
+						CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG, MEMO FROM " + General.Var.DbName + "." + General.Var.DbTable
 										+ (searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE '%" + searchName + "%'")
 										+ " ORDER BY " + searchOption + ((reSearch ? lastOrderDrop.SelectedIndex : orderDropDown.SelectedIndex) == 0 ? " ASC" : " DESC")
 					};
@@ -2695,7 +2852,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, TEMP1, AGE_FLG FROM " + General.Var.DbTable
+						CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG, MEMO FROM " + General.Var.DbTable
 										+ (searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE '%" + searchName + "%'")
 										+ " ORDER BY " + searchOption + ((reSearch ? lastOrderDrop.SelectedIndex : orderDropDown.SelectedIndex) == 0 ? " ASC" : " DESC")
 					};
@@ -2729,7 +2886,7 @@ namespace glc_cs
 		}
 
 		/// <summary>
-		/// 検索リストボックス
+		/// 検索リストボックス 選択アイテム変更イベント
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -2770,6 +2927,10 @@ namespace glc_cs
 					// 画像パス
 					searchOption = "IMG_PATH";
 					break;
+				case 5:
+					// メモ
+					searchOption = "MEMO";
+					break;
 			}
 
 			//ゲーム詳細取得
@@ -2799,7 +2960,7 @@ namespace glc_cs
 						 + General.Var.DbName + "." + General.Var.DbTable + " AS MAIN "
 						 + "	LEFT OUTER JOIN ( "
 						 + "		SELECT "
-						 + "			[T].[ID], [T].[GAME_PATH], [T].[IMG_PATH], [T].[DCON_TEXT], [T].[TEMP1], [T].[UPTIME], [T].[RUN_COUNT], [T].[AGE_FLG], [T].[LAST_RUN], ROW_NUMBER() over (ORDER BY [T].[ID]) AS [ROW1], [T2].[ROW2] "
+						 + "			[T].[ID], [T].[GAME_PATH], [T].[IMG_PATH], [T].[DCON_TEXT], [T].[DCON_IMG], [T].[UPTIME], [T].[RUN_COUNT], [T].[AGE_FLG], [T].[LAST_RUN], [T].[MEMO], [T].[STATUS] ROW_NUMBER() over (ORDER BY [T].[ID]) AS [ROW1], [T2].[ROW2] "
 						 + "		FROM "
 						 + General.Var.DbName + "." + General.Var.DbTable + " AS [T] "
 						 + "		LEFT OUTER JOIN ( "
@@ -2868,7 +3029,7 @@ namespace glc_cs
 						 + General.Var.DbTable + " AS MAIN "
 						 + "	LEFT OUTER JOIN ( "
 						 + "		SELECT "
-						 + "			T.ID, T.GAME_PATH, T.IMG_PATH, T.DCON_TEXT, T.TEMP1, T.UPTIME, T.RUN_COUNT, T.AGE_FLG, T.LAST_RUN, ROW_NUMBER() over (ORDER BY T.ID) AS ROW1, T2.ROW2 "
+						 + "			T.ID, T.GAME_PATH, T.IMG_PATH, T.DCON_TEXT, T.DCON_IMG, T.UPTIME, T.RUN_COUNT, T.AGE_FLG, T.LAST_RUN, T.MEMO, T.STATUS, ROW_NUMBER() over (ORDER BY T.ID) AS ROW1, T2.ROW2 "
 						 + "		FROM "
 						 + General.Var.DbTable + " AS T "
 						 + "		LEFT OUTER JOIN ( "
@@ -2944,7 +3105,7 @@ namespace glc_cs
 		}
 
 		/// <summary>
-		/// 検索条件ドロップダウン変更時
+		/// 検索条件ドロップダウン 変更イベント
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -2972,6 +3133,118 @@ namespace glc_cs
 					// 画像パス
 					searchText.Enabled = true;
 					break;
+				case 5:
+					// メモ
+					searchText.Enabled = true;
+					break;
+			}
+		}
+
+		/// <summary>
+		/// ステータスコンボボックス チェンジイベント
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void statusCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			// アイテムがない場合はリターン
+			if (gameList.Items.Count == 0 || !statusCombo.Focused)
+			{
+				return;
+			}
+
+			// database
+			// MSSQL
+			if (General.Var.SaveType == "D")
+			{
+				// SQL文構築
+				SqlConnection cn = General.Var.SqlCon;
+				SqlTransaction tr = null;
+				SqlCommand cm = new SqlCommand
+				{
+					CommandType = CommandType.Text,
+					CommandTimeout = 30,
+					CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET STATUS = '" + statusCombo.SelectedItem.ToString() + "'"
+								+ " WHERE ID = '" + General.Var.CurrentGameDbVal + "'"
+				};
+				cm.Connection = cn;
+
+				// SQL実行
+				try
+				{
+					cn.Open();
+					tr = cn.BeginTransaction();
+
+					cm.Transaction = tr;
+					cm.ExecuteNonQuery();
+
+					tr.Commit();
+				}
+				catch (Exception ex)
+				{
+					if (tr != null)
+					{
+						tr.Rollback();
+					}
+					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
+					resolveError(MethodBase.GetCurrentMethod().Name, ex.Message + "\n\nエラーログに記載されているSQL文を手動で実行すると更新できます。", 0, false);
+				}
+				finally
+				{
+					if (cn.State == ConnectionState.Open)
+					{
+						cn.Close();
+					}
+				}
+			}
+			// MySQL
+			else if (General.Var.SaveType == "M")
+			{
+				// SQL文構築
+				MySqlConnection cn = General.Var.SqlCon2;
+				MySqlTransaction tr = null;
+				MySqlCommand cm = new MySqlCommand
+				{
+					CommandType = CommandType.Text,
+					CommandTimeout = 30,
+					CommandText = @"UPDATE " + General.Var.DbTable + " SET STATUS = '" + statusCombo.SelectedItem.ToString() + "'"
+								+ " WHERE ID = '" + General.Var.CurrentGameDbVal + "'"
+				};
+				cm.Connection = cn;
+
+				// SQL実行
+				try
+				{
+					cn.Open();
+					tr = cn.BeginTransaction();
+
+					cm.Transaction = tr;
+					cm.ExecuteNonQuery();
+
+					tr.Commit();
+				}
+				catch (Exception ex)
+				{
+					if (tr != null)
+					{
+						tr.Rollback();
+					}
+					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
+					resolveError(MethodBase.GetCurrentMethod().Name, ex.Message + "\n\nエラーログに記載されているSQL文を手動で実行すると更新できます。", 0, false);
+				}
+				finally
+				{
+					if (cn.State == ConnectionState.Open)
+					{
+						cn.Close();
+					}
+				}
+			}
+			// INI
+			else
+			{
+				String readini = General.Var.GameDir + "\\" + (gameList.SelectedIndex + 1) + ".ini";
+				General.Var.IniWrite(readini, "game", "status", statusCombo.SelectedItem.ToString());
 			}
 		}
 	}

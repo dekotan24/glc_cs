@@ -1,6 +1,6 @@
 ﻿namespace glc_cs
 {
-	partial class Form5
+	partial class Editor
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form5));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Editor));
 			this.label1 = new System.Windows.Forms.Label();
 			this.titleText = new System.Windows.Forms.TextBox();
 			this.exePathText = new System.Windows.Forms.TextBox();

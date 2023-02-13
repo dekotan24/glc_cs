@@ -32,7 +32,7 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(gl));
 			this.gameList = new System.Windows.Forms.ListBox();
 			this.trackCheck = new System.Windows.Forms.CheckBox();
-			this.label1 = new System.Windows.Forms.Label();
+			this.titleLabel = new System.Windows.Forms.Label();
 			this.startButton = new System.Windows.Forms.Button();
 			this.randomButton = new System.Windows.Forms.Button();
 			this.nameText = new System.Windows.Forms.TextBox();
@@ -72,6 +72,12 @@
 			this.cleanButton = new System.Windows.Forms.Button();
 			this.ocButton = new System.Windows.Forms.Button();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.pictureBox14 = new System.Windows.Forms.PictureBox();
+			this.pictureBox13 = new System.Windows.Forms.PictureBox();
+			this.pictureBox6 = new System.Windows.Forms.PictureBox();
+			this.pictureBox4 = new System.Windows.Forms.PictureBox();
+			this.pictureBox3 = new System.Windows.Forms.PictureBox();
+			this.searchingText = new System.Windows.Forms.TextBox();
 			this.fileSystemWatcher2 = new System.IO.FileSystemWatcher();
 			this.upButton = new System.Windows.Forms.Button();
 			this.downButton = new System.Windows.Forms.Button();
@@ -79,12 +85,7 @@
 			this.ratedRadio = new System.Windows.Forms.RadioButton();
 			this.normalRadio = new System.Windows.Forms.RadioButton();
 			this.useDconCheck = new System.Windows.Forms.CheckBox();
-			this.pictureBox14 = new System.Windows.Forms.PictureBox();
-			this.pictureBox13 = new System.Windows.Forms.PictureBox();
 			this.pictureBox11 = new System.Windows.Forms.PictureBox();
-			this.pictureBox6 = new System.Windows.Forms.PictureBox();
-			this.pictureBox4 = new System.Windows.Forms.PictureBox();
-			this.pictureBox3 = new System.Windows.Forms.PictureBox();
 			this.gameIcon = new System.Windows.Forms.PictureBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -97,7 +98,6 @@
 			this.lastSearchOption = new System.Windows.Forms.ComboBox();
 			this.orderDropDown = new System.Windows.Forms.ComboBox();
 			this.searchTargetDropDown = new System.Windows.Forms.ComboBox();
-			this.searchingText = new System.Windows.Forms.TextBox();
 			this.searchButton = new System.Windows.Forms.Button();
 			this.searchText = new System.Windows.Forms.TextBox();
 			this.searchResultList = new System.Windows.Forms.ListBox();
@@ -106,6 +106,8 @@
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
 			this.dconImgText = new System.Windows.Forms.TextBox();
+			this.memoButton = new System.Windows.Forms.Button();
+			this.statusCombo = new System.Windows.Forms.ComboBox();
 			this.statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
@@ -115,14 +117,14 @@
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher2)).BeginInit();
-			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher2)).BeginInit();
+			this.groupBox1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.gameIcon)).BeginInit();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
@@ -137,6 +139,7 @@
 			// 
 			this.gameList.BackColor = System.Drawing.SystemColors.Window;
 			resources.ApplyResources(this.gameList, "gameList");
+			this.gameList.ForeColor = System.Drawing.SystemColors.WindowText;
 			this.gameList.FormattingEnabled = true;
 			this.gameList.Name = "gameList";
 			this.gameList.Click += new System.EventHandler(this.listBox1_SelectedIndexChanged);
@@ -150,11 +153,11 @@
 			this.toolTip1.SetToolTip(this.trackCheck, resources.GetString("trackCheck.ToolTip"));
 			this.trackCheck.UseVisualStyleBackColor = false;
 			// 
-			// label1
+			// titleLabel
 			// 
-			resources.ApplyResources(this.label1, "label1");
-			this.label1.BackColor = System.Drawing.Color.Transparent;
-			this.label1.Name = "label1";
+			resources.ApplyResources(this.titleLabel, "titleLabel");
+			this.titleLabel.BackColor = System.Drawing.Color.Transparent;
+			this.titleLabel.Name = "titleLabel";
 			// 
 			// startButton
 			// 
@@ -319,6 +322,7 @@
 			// 
 			resources.ApplyResources(this.delButton, "delButton");
 			this.delButton.Name = "delButton";
+			this.toolTip1.SetToolTip(this.delButton, resources.GetString("delButton.ToolTip"));
 			this.delButton.UseVisualStyleBackColor = true;
 			this.delButton.Click += new System.EventHandler(this.button5_Click);
 			// 
@@ -433,6 +437,61 @@
 			this.pictureBox1.TabStop = false;
 			this.toolTip1.SetToolTip(this.pictureBox1, resources.GetString("pictureBox1.ToolTip"));
 			// 
+			// pictureBox14
+			// 
+			this.pictureBox14.BackColor = System.Drawing.Color.Transparent;
+			resources.ApplyResources(this.pictureBox14, "pictureBox14");
+			this.pictureBox14.Name = "pictureBox14";
+			this.pictureBox14.TabStop = false;
+			this.toolTip1.SetToolTip(this.pictureBox14, resources.GetString("pictureBox14.ToolTip"));
+			this.pictureBox14.Click += new System.EventHandler(this.pictureBox14_Click);
+			// 
+			// pictureBox13
+			// 
+			this.pictureBox13.BackColor = System.Drawing.Color.Transparent;
+			resources.ApplyResources(this.pictureBox13, "pictureBox13");
+			this.pictureBox13.Name = "pictureBox13";
+			this.pictureBox13.TabStop = false;
+			this.toolTip1.SetToolTip(this.pictureBox13, resources.GetString("pictureBox13.ToolTip"));
+			this.pictureBox13.Click += new System.EventHandler(this.pictureBox13_Click);
+			// 
+			// pictureBox6
+			// 
+			this.pictureBox6.BackColor = System.Drawing.Color.Transparent;
+			this.pictureBox6.Image = global::glc_cs.Properties.Resources.copy;
+			resources.ApplyResources(this.pictureBox6, "pictureBox6");
+			this.pictureBox6.Name = "pictureBox6";
+			this.pictureBox6.TabStop = false;
+			this.toolTip1.SetToolTip(this.pictureBox6, resources.GetString("pictureBox6.ToolTip"));
+			this.pictureBox6.Click += new System.EventHandler(this.pictureBox6_Click);
+			// 
+			// pictureBox4
+			// 
+			this.pictureBox4.BackColor = System.Drawing.Color.Transparent;
+			this.pictureBox4.Image = global::glc_cs.Properties.Resources.copy;
+			resources.ApplyResources(this.pictureBox4, "pictureBox4");
+			this.pictureBox4.Name = "pictureBox4";
+			this.pictureBox4.TabStop = false;
+			this.toolTip1.SetToolTip(this.pictureBox4, resources.GetString("pictureBox4.ToolTip"));
+			this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
+			// 
+			// pictureBox3
+			// 
+			this.pictureBox3.BackColor = System.Drawing.Color.Transparent;
+			this.pictureBox3.Image = global::glc_cs.Properties.Resources.copy;
+			resources.ApplyResources(this.pictureBox3, "pictureBox3");
+			this.pictureBox3.Name = "pictureBox3";
+			this.pictureBox3.TabStop = false;
+			this.toolTip1.SetToolTip(this.pictureBox3, resources.GetString("pictureBox3.ToolTip"));
+			this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
+			// 
+			// searchingText
+			// 
+			resources.ApplyResources(this.searchingText, "searchingText");
+			this.searchingText.Name = "searchingText";
+			this.searchingText.ReadOnly = true;
+			this.toolTip1.SetToolTip(this.searchingText, resources.GetString("searchingText.ToolTip"));
+			// 
 			// fileSystemWatcher2
 			// 
 			this.fileSystemWatcher2.EnableRaisingEvents = true;
@@ -444,6 +503,7 @@
 			// 
 			resources.ApplyResources(this.upButton, "upButton");
 			this.upButton.Name = "upButton";
+			this.toolTip1.SetToolTip(this.upButton, resources.GetString("upButton.ToolTip"));
 			this.upButton.UseVisualStyleBackColor = true;
 			this.upButton.Click += new System.EventHandler(this.button6_Click);
 			// 
@@ -451,6 +511,7 @@
 			// 
 			resources.ApplyResources(this.downButton, "downButton");
 			this.downButton.Name = "downButton";
+			this.toolTip1.SetToolTip(this.downButton, resources.GetString("downButton.ToolTip"));
 			this.downButton.UseVisualStyleBackColor = true;
 			this.downButton.Click += new System.EventHandler(this.button10_Click);
 			// 
@@ -485,22 +546,6 @@
 			this.useDconCheck.Name = "useDconCheck";
 			this.useDconCheck.UseVisualStyleBackColor = true;
 			// 
-			// pictureBox14
-			// 
-			this.pictureBox14.BackColor = System.Drawing.Color.Transparent;
-			resources.ApplyResources(this.pictureBox14, "pictureBox14");
-			this.pictureBox14.Name = "pictureBox14";
-			this.pictureBox14.TabStop = false;
-			this.pictureBox14.Click += new System.EventHandler(this.pictureBox14_Click);
-			// 
-			// pictureBox13
-			// 
-			this.pictureBox13.BackColor = System.Drawing.Color.Transparent;
-			resources.ApplyResources(this.pictureBox13, "pictureBox13");
-			this.pictureBox13.Name = "pictureBox13";
-			this.pictureBox13.TabStop = false;
-			this.pictureBox13.Click += new System.EventHandler(this.pictureBox13_Click);
-			// 
 			// pictureBox11
 			// 
 			this.pictureBox11.BackColor = System.Drawing.Color.White;
@@ -509,33 +554,6 @@
 			this.pictureBox11.Name = "pictureBox11";
 			this.pictureBox11.TabStop = false;
 			this.pictureBox11.UseWaitCursor = true;
-			// 
-			// pictureBox6
-			// 
-			this.pictureBox6.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox6.Image = global::glc_cs.Properties.Resources.copy;
-			resources.ApplyResources(this.pictureBox6, "pictureBox6");
-			this.pictureBox6.Name = "pictureBox6";
-			this.pictureBox6.TabStop = false;
-			this.pictureBox6.Click += new System.EventHandler(this.pictureBox6_Click);
-			// 
-			// pictureBox4
-			// 
-			this.pictureBox4.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox4.Image = global::glc_cs.Properties.Resources.copy;
-			resources.ApplyResources(this.pictureBox4, "pictureBox4");
-			this.pictureBox4.Name = "pictureBox4";
-			this.pictureBox4.TabStop = false;
-			this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
-			// 
-			// pictureBox3
-			// 
-			this.pictureBox3.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox3.Image = global::glc_cs.Properties.Resources.copy;
-			resources.ApplyResources(this.pictureBox3, "pictureBox3");
-			this.pictureBox3.Name = "pictureBox3";
-			this.pictureBox3.TabStop = false;
-			this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
 			// 
 			// gameIcon
 			// 
@@ -633,7 +651,8 @@
             resources.GetString("lastSearchOption.Items1"),
             resources.GetString("lastSearchOption.Items2"),
             resources.GetString("lastSearchOption.Items3"),
-            resources.GetString("lastSearchOption.Items4")});
+            resources.GetString("lastSearchOption.Items4"),
+            resources.GetString("lastSearchOption.Items5")});
 			this.lastSearchOption.Name = "lastSearchOption";
 			// 
 			// orderDropDown
@@ -658,16 +677,11 @@
             resources.GetString("searchTargetDropDown.Items1"),
             resources.GetString("searchTargetDropDown.Items2"),
             resources.GetString("searchTargetDropDown.Items3"),
-            resources.GetString("searchTargetDropDown.Items4")});
+            resources.GetString("searchTargetDropDown.Items4"),
+            resources.GetString("searchTargetDropDown.Items5")});
 			resources.ApplyResources(this.searchTargetDropDown, "searchTargetDropDown");
 			this.searchTargetDropDown.Name = "searchTargetDropDown";
 			this.searchTargetDropDown.SelectedIndexChanged += new System.EventHandler(this.searchTargetDropDown_SelectedIndexChanged);
-			// 
-			// searchingText
-			// 
-			resources.ApplyResources(this.searchingText, "searchingText");
-			this.searchingText.Name = "searchingText";
-			this.searchingText.ReadOnly = true;
 			// 
 			// searchButton
 			// 
@@ -675,6 +689,7 @@
 			this.searchButton.Name = "searchButton";
 			this.searchButton.UseVisualStyleBackColor = true;
 			this.searchButton.Click += new System.EventHandler(this.button13_Click);
+			this.searchButton.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.searchText_KeyPress);
 			// 
 			// searchText
 			// 
@@ -728,6 +743,35 @@
 			resources.ApplyResources(this.dconImgText, "dconImgText");
 			this.dconImgText.Name = "dconImgText";
 			// 
+			// memoButton
+			// 
+			resources.ApplyResources(this.memoButton, "memoButton");
+			this.memoButton.Name = "memoButton";
+			this.toolTip1.SetToolTip(this.memoButton, resources.GetString("memoButton.ToolTip"));
+			this.memoButton.UseVisualStyleBackColor = true;
+			this.memoButton.Click += new System.EventHandler(this.memoButton_Click);
+			// 
+			// statusCombo
+			// 
+			this.statusCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			resources.ApplyResources(this.statusCombo, "statusCombo");
+			this.statusCombo.FormattingEnabled = true;
+			this.statusCombo.Items.AddRange(new object[] {
+            resources.GetString("statusCombo.Items"),
+            resources.GetString("statusCombo.Items1"),
+            resources.GetString("statusCombo.Items2"),
+            resources.GetString("statusCombo.Items3"),
+            resources.GetString("statusCombo.Items4"),
+            resources.GetString("statusCombo.Items5"),
+            resources.GetString("statusCombo.Items6"),
+            resources.GetString("statusCombo.Items7"),
+            resources.GetString("statusCombo.Items8"),
+            resources.GetString("statusCombo.Items9"),
+            resources.GetString("statusCombo.Items10"),
+            resources.GetString("statusCombo.Items11")});
+			this.statusCombo.Name = "statusCombo";
+			this.statusCombo.SelectedIndexChanged += new System.EventHandler(this.statusCombo_SelectedIndexChanged);
+			// 
 			// gl
 			// 
 			resources.ApplyResources(this, "$this");
@@ -762,11 +806,13 @@
 			this.Controls.Add(this.randomButton);
 			this.Controls.Add(this.startButton);
 			this.Controls.Add(this.gameIcon);
-			this.Controls.Add(this.label1);
+			this.Controls.Add(this.titleLabel);
 			this.Controls.Add(this.flowLayoutPanel1);
 			this.Controls.Add(this.flowLayoutPanel2);
 			this.Controls.Add(this.dconImgText);
 			this.Controls.Add(this.pictureBox1);
+			this.Controls.Add(this.memoButton);
+			this.Controls.Add(this.statusCombo);
 			this.DoubleBuffered = true;
 			this.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -784,15 +830,15 @@
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher2)).EndInit();
-			this.groupBox1.ResumeLayout(false);
-			this.groupBox1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher2)).EndInit();
+			this.groupBox1.ResumeLayout(false);
+			this.groupBox1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.gameIcon)).EndInit();
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
@@ -810,7 +856,7 @@
 
         #endregion
         private System.Windows.Forms.CheckBox trackCheck;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label titleLabel;
         private System.Windows.Forms.PictureBox gameIcon;
         private System.Windows.Forms.Button startButton;
         private System.Windows.Forms.Button randomButton;
@@ -885,6 +931,8 @@
 		private System.Windows.Forms.ComboBox lastOrderDrop;
 		private System.Windows.Forms.TextBox dconImgText;
 		private System.Windows.Forms.PictureBox pictureBox1;
+		private System.Windows.Forms.Button memoButton;
+		private System.Windows.Forms.ComboBox statusCombo;
 	}
 }
 

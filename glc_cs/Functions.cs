@@ -42,12 +42,12 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static readonly string appver = "1.02";
+			protected static readonly string appver = "1.03";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appbuild = "27.23.01.22";
+			protected static readonly string appbuild = "28.23.02.13";
 
 			/// <summary>
 			/// ゲームディレクトリ(作業ディレクトリ)
@@ -57,7 +57,7 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションディレクトリ(ランチャー実行パス)
 			/// </summary>
-			protected static string basedir = AppDomain.CurrentDomain.BaseDirectory;
+			protected static string baseDir = AppDomain.CurrentDomain.BaseDirectory;
 
 			/// <summary>
 			/// ゲーム情報保管iniパス
@@ -262,7 +262,7 @@ namespace glc_cs
 			/// </summary>
 			public static string BaseDir
 			{
-				get { return basedir; }
+				get { return baseDir; }
 			}
 
 			/// <summary>
@@ -1170,37 +1170,41 @@ namespace glc_cs
 				try
 				{
 					// 退避ディレクトリがある場合、削除する
-					if (Directory.Exists(basedir + "_temp_db_bak"))
+					if (Directory.Exists(baseDir + "_temp_db_bak"))
 					{
-						Directory.Delete(basedir + "_temp_db_bak", true);
+						Directory.Delete(baseDir + "_temp_db_bak", true);
 					}
 
 					// ローカルに保存されているか確認
 					if (File.Exists(localGameIni))
 					{
 						// ローカルファイルが存在する場合、退避する
-						Directory.Move(targetWorkDir, basedir + "_temp_db_bak");
+						Directory.Move(targetWorkDir, baseDir + "_temp_db_bak");
 					}
 
+					/*
+					 * ２回も要らない気がするのでコメントアウト
 					// ローカルDBフォルダがまだ残っている場合、退避する
 					if (Directory.Exists(targetWorkDir))
 					{
-						if (Directory.Exists(basedir + "_temp_db_bak"))
+						if (Directory.Exists(baseDir + "_temp_db_bak"))
 						{
 							// 退避ディレクトリがある場合、削除する
-							Directory.Delete(basedir + "_temp_db_bak", true);
+							Directory.Delete(baseDir + "_temp_db_bak", true);
 						}
-						Directory.Move(targetWorkDir, basedir + "_temp_db_bak");
+						Directory.Move(targetWorkDir, baseDir + "_temp_db_bak");
 					}
+					*/
 
 					// 保存用フォルダ作成
 					Directory.CreateDirectory(targetWorkDir);
 				}
 				catch (Exception ex)
 				{
-					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "Path: " + targetWorkDir + " / INI: " + localGameIni);
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "[初期退避処理] Path: " + targetWorkDir + " / INI: " + localGameIni);
 					return false;
 				}
+
 				// Configの最新化
 				GLConfigLoad();
 
@@ -1333,19 +1337,21 @@ namespace glc_cs
 
 					}
 					// 最後に、ローカルデータを削除する
-					Directory.Delete(basedir + "_temp_db_bak", true);
+					Directory.Delete(baseDir + "_temp_db_bak", true);
 				}
 				catch (Exception ex)
 				{
-					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "MSSQL:" + cn.ConnectionString + " / MySQL:" + mcn.ConnectionString);
-					if (Directory.Exists(basedir + "_temp_db_bak"))
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "[ダウンロード処理] SaveType:" + saveType + " / MSSQL:" + cn.ConnectionString + " / MySQL:" + mcn.ConnectionString);
+
+					// 退避ディレクトリがある場合、ロールバック
+					if (Directory.Exists(baseDir + "_temp_db_bak"))
 					{
 						if (Directory.Exists(targetWorkDir))
 						{
 							// バックアップフォルダがある場合、作業フォルダを削除しバックアップを復元
 							Directory.Delete(targetWorkDir, true);
-							Directory.Move(basedir + "_temp_db_bak", targetWorkDir);
 						}
+						Directory.Move(baseDir + "_temp_db_bak", targetWorkDir);
 					}
 				}
 				finally
