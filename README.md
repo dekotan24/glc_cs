@@ -3,15 +3,15 @@ Game Launcher C# Edition
 
 
 # About
-This application is a rewritten version of Game Launcher in C#.
+Game LauncherのC#移植版です。
+データベースの設定方法は[Wiki](https://github.com/dekotan24/glc_cs/wiki)をご覧ください。
 
-
-# dev app
+# 開発環境
 Visual Studio 2022
 
 
-#3rd-party using
-MySQL.Data (nuget)
+# 使用しているNugetパッケージ
+* MySQL.Data
 
 
 # license
