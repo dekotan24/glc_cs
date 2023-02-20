@@ -397,22 +397,35 @@ namespace glc_cs
 			return;
 		}
 
-		private void button5_Click(object sender, EventArgs e)
+		/// <summary>
+		/// DB自動作成
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void createTableButton_Click(object sender, EventArgs e)
 		{
 			if (urlText.Text.Trim().Length < 1)
 			{
+				MessageBox.Show("URLは必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				urlText.Focus();
 				return;
 			}
 			else if (portText.Text.Trim().Length < 1)
 			{
+				MessageBox.Show("ポート番号は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				portText.Focus();
 				return;
 			}
 			else if (userText.Text.Trim().Length < 1)
 			{
+				MessageBox.Show("ユーザ名は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				userText.Focus();
 				return;
 			}
 			else if (pwText.Text.Trim().Length < 1)
 			{
+				MessageBox.Show("パスワードは必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				pwText.Focus();
 				return;
 			}
 
@@ -421,6 +434,8 @@ namespace glc_cs
 			{
 				if (dbText.Text.Trim().Length < 1)
 				{
+					MessageBox.Show("データベース名は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					dbText.Focus();
 					return;
 				}
 			}
@@ -431,6 +446,12 @@ namespace glc_cs
 			General.Var.DbTable = tableText.Text.Trim();
 			General.Var.DbUser = userText.Text.Trim();
 			General.Var.DbPass = pwText.Text.Trim();
+			General.Var.SaveType = radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I";
+
+			if (string.IsNullOrEmpty(General.Var.DbTable))
+			{
+				General.Var.DbTable = "gl_item1";
+			}
 
 			if (General.Var.SaveType == "D")
 			{
@@ -457,6 +478,7 @@ namespace glc_cs
 					cn.Close();
 					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
 					label15.Text = "データベース作成中にエラーが発生しました。エラーログをご覧下さい";
+					MessageBox.Show("データベース作成中にエラーが発生しました。\n\n" + ex.Message, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 				finally
 				{
@@ -472,7 +494,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"CREATE TABLE [dekosoft_gl].[dbo].[gl_item1] ( [ID] INT IDENTITY(1,1) NOT NULL, [GAME_NAME] NVARCHAR(255), [GAME_PATH] NVARCHAR(MAX), [IMG_PATH] NVARCHAR(MAX), [UPTIME] NVARCHAR(255), [RUN_COUNT] NVARCHAR(99), [DCON_TEXT] NVARCHAR(50), [AGE_FLG] NVARCHAR(1), [TEMP1] NVARCHAR(255) NULL, [LAST_RUN] DATETIME NULL )"
+					CommandText = @"CREATE TABLE [dekosoft_gl].[dbo].[" + General.Var.DbTable + "] ( [ID] INT IDENTITY(1,1) NOT NULL, [GAME_NAME] NVARCHAR(255), [GAME_PATH] NVARCHAR(MAX), [IMG_PATH] NVARCHAR(MAX), [UPTIME] NVARCHAR(255), [RUN_COUNT] NVARCHAR(99), [DCON_TEXT] NVARCHAR(50), [AGE_FLG] NVARCHAR(1), [TEMP1] NVARCHAR(255) NULL, [LAST_RUN] DATETIME NULL, [DCON_IMG] NVARCHAR(50) NULL, [MEMO] NVARCHAR(500) NULL, [STATUS] NVARCHAR(10) NULL DEFAULT N'未プレイ', [DB_VERSION] NVARCHAR(5) NOT NULL DEFAULT N'" + General.Var.DBVer + "' )"
 				};
 				cm2.Connection = cn;
 
@@ -486,7 +508,7 @@ namespace glc_cs
 					tr.Commit();
 
 					dbText.Text = "dekosoft_gl";
-					tableText.Text = "dbo.gl_item1";
+					tableText.Text = "dbo." + General.Var.DbTable;
 					General.Var.DbName = dbText.Text.Trim();
 					General.Var.DbTable = tableText.Text.Trim();
 
@@ -500,6 +522,7 @@ namespace glc_cs
 					}
 					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm2.CommandText);
 					label15.Text = "テーブル作成中にエラーが発生しました。エラーログをご覧下さい";
+					MessageBox.Show("テーブル作成中にエラーが発生しました。\n\n" + ex.Message, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 				finally
 				{
@@ -519,7 +542,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"CREATE TABLE gl_item1 ( ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT, GAME_NAME NVARCHAR(255), GAME_PATH NVARCHAR(500), IMG_PATH NVARCHAR(500), UPTIME NVARCHAR(255), RUN_COUNT NVARCHAR(99), DCON_TEXT NVARCHAR(50), AGE_FLG NVARCHAR(1), TEMP1 NVARCHAR(255) NULL, LAST_RUN DATETIME NULL )"
+					CommandText = @"CREATE TABLE " + General.Var.DbTable + " ( ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT, GAME_NAME NVARCHAR(255), GAME_PATH NVARCHAR(500), IMG_PATH NVARCHAR(500), UPTIME NVARCHAR(255), RUN_COUNT NVARCHAR(99), DCON_TEXT NVARCHAR(50), AGE_FLG NVARCHAR(1), TEMP1 NVARCHAR(255) NULL, LAST_RUN DATETIME NULL, DCON_IMG NVARCHAR(50) NULL, MEMO NVARCHAR(500) NULL, STATUS NVARCHAR(10) NULL DEFAULT '未プレイ', DB_VERSION NVARCHAR(5) NOT NULL DEFAULT N'" + General.Var.DBVer + "' )"
 				};
 				cm2.Connection = cn;
 
@@ -532,9 +555,8 @@ namespace glc_cs
 					cm2.ExecuteNonQuery();
 					tr.Commit();
 
-					tableText.Text = "gl_item1";
+					tableText.Text = General.Var.DbTable;
 					General.Var.DbName = dbText.Text.Trim();
-					General.Var.DbTable = tableText.Text.Trim();
 
 					label15.Text = "テーブル作成が完了しました。";
 				}
@@ -546,6 +568,7 @@ namespace glc_cs
 					}
 					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm2.CommandText);
 					label15.Text = "テーブル作成中にエラーが発生しました。エラーログをご覧下さい";
+					MessageBox.Show("テーブル作成中にエラーが発生しました。\n\n" + ex.Message, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 				finally
 				{
@@ -689,11 +712,20 @@ namespace glc_cs
 			General.Var.DbTable = tableText.Text.Trim();
 			General.Var.DbUser = userText.Text.Trim();
 			General.Var.DbPass = pwText.Text.Trim();
+			General.Var.SaveType = radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I";
 
 			bool deleteAllRecodes = checkBox6.Checked;
 			bool forceCommit = checkBox7.Checked;
 
-			if (MessageBox.Show("現在ロードしている作業ディレクトリ\n[" + General.Var.GameDir + "] の全てのゲームデータをDB\n[" + General.Var.DbUrl + " " + General.Var.DbName + "." + General.Var.DbTable + "] \nへ取り込みます。\n\n続行しますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+			string gameIni = (General.Var.GameDir.EndsWith("\\") ? General.Var.GameDir : General.Var.GameDir + "\\") + "game.ini";
+			if (File.Exists(gameIni) == false)
+			{
+				MessageBox.Show("ゲームファイルが存在しません。\n[ディレクトリ関連]タブで、INIファイルの作業ディレクトリを更新してください。\n\n" + gameIni, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+			string iniCount = General.Var.IniRead(gameIni, "list", "game", "取得できませんでした。");
+
+			if (MessageBox.Show("作業ディレクトリの全データを" + (General.Var.SaveType == "D" ? "MSSQL" : "MySQL") + "に取り込みます。\n\n作業ディレクトリ\t\t：[" + General.Var.GameDir + "]（全" + iniCount + "件）\nデータベース接続先\t：[" + General.Var.DbUrl + ":" + General.Var.DbPort + "]\nデータベース名\t\t：[" + General.Var.DbName + "]\nデータベーステーブル名\t：[" + General.Var.DbTable + "]\n\n続行しますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
 			{
 				return;
 			}
@@ -706,7 +738,7 @@ namespace glc_cs
 
 			if (returnVal == 0)
 			{
-				MessageBox.Show("取込処理が完了しました。(全: " + tmpMaxGameCount + "件 / 成功: " + sCount + "件 / 失敗: " + fCount + "件)", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("取込処理が完了しました。\n全: " + tmpMaxGameCount + "件 / 成功: " + sCount + "件 / 失敗: " + fCount + "件", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 			else
 			{
@@ -746,8 +778,9 @@ namespace glc_cs
 			userText.Enabled = !controlVal;
 			label22.Enabled = !controlVal;
 			pwText.Enabled = !controlVal;
-			button5.Enabled = !controlVal;
+			createTableButton.Enabled = !controlVal;
 			checkBox8.Enabled = !controlVal;
+			dbBackupButton.Enabled = !controlVal;
 
 			groupBox7.Enabled = controlVal;
 			groupBox12.Enabled = !controlVal;
@@ -756,6 +789,50 @@ namespace glc_cs
 
 		private void button10_Click(object sender, EventArgs e)
 		{
+			if (urlText.Text.Trim().Length < 1)
+			{
+				MessageBox.Show("URLは必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				urlText.Focus();
+				return;
+			}
+			else if (portText.Text.Trim().Length < 1)
+			{
+				MessageBox.Show("ポート番号は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				portText.Focus();
+				return;
+			}
+			else if (userText.Text.Trim().Length < 1)
+			{
+				MessageBox.Show("ユーザ名は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				userText.Focus();
+				return;
+			}
+			else if (pwText.Text.Trim().Length < 1)
+			{
+				MessageBox.Show("パスワードは必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				pwText.Focus();
+				return;
+			}
+
+			// MySQLだけDatabaseも補填していないとエラーとする
+			if (radioButton5.Checked)
+			{
+				if (dbText.Text.Trim().Length < 1)
+				{
+					MessageBox.Show("データベース名は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					dbText.Focus();
+					return;
+				}
+			}
+
+			General.Var.DbUrl = urlText.Text.Trim();
+			General.Var.DbPort = portText.Text.Trim();
+			General.Var.DbName = dbText.Text.Trim();
+			General.Var.DbTable = tableText.Text.Trim();
+			General.Var.DbUser = userText.Text.Trim();
+			General.Var.DbPass = pwText.Text.Trim();
+			General.Var.SaveType = radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I";
+
 			// 修正
 			SqlConnection cn = General.Var.SqlCon;
 			SqlCommand cm;
@@ -950,6 +1027,79 @@ namespace glc_cs
 				case 4:
 					System.Media.SystemSounds.Question.Play();
 					break;
+			}
+		}
+
+		/// <summary>
+		/// バックアップボタン
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void dbBackupButton_Click(object sender, EventArgs e)
+		{
+			if (urlText.Text.Trim().Length < 1)
+			{
+				MessageBox.Show("URLは必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				urlText.Focus();
+				return;
+			}
+			else if (portText.Text.Trim().Length < 1)
+			{
+				MessageBox.Show("ポート番号は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				portText.Focus();
+				return;
+			}
+			else if (userText.Text.Trim().Length < 1)
+			{
+				MessageBox.Show("ユーザ名は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				userText.Focus();
+				return;
+			}
+			else if (pwText.Text.Trim().Length < 1)
+			{
+				MessageBox.Show("パスワードは必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				pwText.Focus();
+				return;
+			}
+
+			// MySQLだけDatabaseも補填していないとエラーとする
+			if (radioButton5.Checked)
+			{
+				if (dbText.Text.Trim().Length < 1)
+				{
+					MessageBox.Show("データベース名は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					dbText.Focus();
+					return;
+				}
+			}
+
+			General.Var.DbUrl = urlText.Text.Trim();
+			General.Var.DbPort = portText.Text.Trim();
+			General.Var.DbName = dbText.Text.Trim();
+			General.Var.DbTable = tableText.Text.Trim();
+			General.Var.DbUser = userText.Text.Trim();
+			General.Var.DbPass = pwText.Text.Trim();
+			General.Var.SaveType = radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I";
+
+			string backupPath = (General.Var.BaseDir.EndsWith("\\") ? General.Var.BaseDir : General.Var.BaseDir + "\\") + "database_backup(" + (DateTime.Now).ToString().Replace("/", "_").Replace(":", "_") + ")\\";
+			bool returnVal = General.Var.downloadDbDataToLocal(backupPath);
+
+			if (returnVal)
+			{
+				MessageBox.Show("バックアップを取得しました。\n\n" + backupPath, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+			else
+			{
+				MessageBox.Show("エラーが発生しました。\n詳細はエラーログをご覧下さい。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		private void checkBox8_CheckedChanged(object sender, EventArgs e)
+		{
+			if (checkBox8.Checked && checkBox8.Focused)
+			{
+				// オフライン保存有効時にダイアログを表示
+				MessageBox.Show("[オフラインに保存]を有効にすると、以下のタイミングで自動的にDBのバックアップが取得されます。\n\n・設定画面の[適用して閉じる]を押した時\n・アプリケーションを終了する時\n\nバックアップの保存先：" + General.Var.BaseDir + (General.Var.BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\" + "\n\nまた、バックアップの取得に時間がかかる場合があります。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 		}
 	}

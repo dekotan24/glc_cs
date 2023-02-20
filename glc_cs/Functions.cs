@@ -37,22 +37,27 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーション名
 			/// </summary>
-			protected static readonly string appname = "Game Launcher C# Edition";
+			protected static readonly string appName = "Game Launcher C# Edition";
 
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static readonly string appver = "1.03";
+			protected static readonly string appVer = "1.04";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appbuild = "28.23.02.13";
+			protected static readonly string appBuild = "29.23.02.20";
+
+			/// <summary>
+			/// データベースバージョン
+			/// </summary>
+			protected static readonly string dbVer = "1.1";
 
 			/// <summary>
 			/// ゲームディレクトリ(作業ディレクトリ)
 			/// </summary>
-			protected static string gamedir = string.Empty;
+			protected static string gameDir = string.Empty;
 
 			/// <summary>
 			/// アプリケーションディレクトリ(ランチャー実行パス)
@@ -77,7 +82,7 @@ namespace glc_cs
 			/// <summary>
 			/// ゲーム総数
 			/// </summary>
-			protected static int gamemax = 0;
+			protected static int gameMax = 0;
 
 			/// <summary>
 			/// 選択中のゲームID（データベース接続時）
@@ -97,7 +102,7 @@ namespace glc_cs
 			/// <summary>
 			/// DiscordConnectorパス
 			/// </summary>
-			protected static string dconpath = string.Empty;
+			protected static string dconPath = string.Empty;
 
 			/// <summary>
 			/// Discord connector Application ID
@@ -210,7 +215,7 @@ namespace glc_cs
 			/// <summary>
 			/// Discord Connector 有効フラグ
 			/// </summary>
-			protected static bool dconnect = false;
+			protected static bool dconnectEnabled = false;
 
 			/// <summary>
 			/// Discord Connector レーティング設定
@@ -223,13 +228,12 @@ namespace glc_cs
 			protected static bool gridMax = false;
 
 
-
 			/// <summary>
 			/// アプリケーション名を返却します
 			/// </summary>
 			public static string AppName
 			{
-				get { return appname; }
+				get { return appName; }
 			}
 
 			/// <summary>
@@ -237,7 +241,7 @@ namespace glc_cs
 			/// </summary>
 			public static string AppVer
 			{
-				get { return appver; }
+				get { return appVer; }
 			}
 
 			/// <summary>
@@ -245,7 +249,15 @@ namespace glc_cs
 			/// </summary>
 			public static string AppBuild
 			{
-				get { return appbuild; }
+				get { return appBuild; }
+			}
+
+			/// <summary>
+			/// アプリケーションのバージョンを返却します
+			/// </summary>
+			public static string DBVer
+			{
+				get { return dbVer; }
 			}
 
 			/// <summary>
@@ -253,8 +265,8 @@ namespace glc_cs
 			/// </summary>
 			public static string GameDir
 			{
-				get { return gamedir; }
-				set { gamedir = value; }
+				get { return gameDir; }
+				set { gameDir = value; }
 			}
 
 			/// <summary>
@@ -296,8 +308,8 @@ namespace glc_cs
 			/// </summary>
 			public static int GameMax
 			{
-				get { return gamemax; }
-				set { gamemax = value; }
+				get { return gameMax; }
+				set { gameMax = value; }
 			}
 
 			/// <summary>
@@ -329,8 +341,8 @@ namespace glc_cs
 			/// </summary>
 			public static string DconPath
 			{
-				get { return dconpath; }
-				set { dconpath = value; }
+				get { return dconPath; }
+				set { dconPath = value; }
 			}
 
 			/// <summary>
@@ -572,8 +584,8 @@ namespace glc_cs
 			/// </summary>
 			public static bool Dconnect
 			{
-				get { return dconnect; }
-				set { dconnect = Convert.ToBoolean(value); }
+				get { return dconnectEnabled; }
+				set { dconnectEnabled = Convert.ToBoolean(value); }
 			}
 
 			public static Int32 Rate
@@ -587,7 +599,10 @@ namespace glc_cs
 				set { gridMax = value; }
 			}
 
-
+			/// <summary>
+			/// システム変数をロードします
+			/// </summary>
+			/// <returns></returns>
 			public static bool GLConfigLoad()
 			{
 				MyBase64str base64 = new MyBase64str();
@@ -603,7 +618,7 @@ namespace glc_cs
 					GameDir = IniRead(ConfigIni, "default", "directory", BaseDir) + "Data";
 					GameIni = GameDir + "\\game.ini";
 					GameDb = IniRead(ConfigIni, "default", "database", string.Empty);
-					DconPath = ReadIni("connect", "dconpath", "-1");
+					DconPath = ReadIni("connect", "dconPath", "-1");
 
 					SaveType = ReadIni("general", "save", "I");
 					OfflineSave = Convert.ToBoolean(Convert.ToInt32(ReadIni("general", "OfflineSave", "0")));
@@ -612,6 +627,7 @@ namespace glc_cs
 					DbName = ReadIni("connect", "DBName", string.Empty);
 					DbTable = ReadIni("connect", "DBTable", string.Empty);
 					DbUser = ReadIni("connect", "DBUser", string.Empty);
+
 					try
 					{
 						DbPass = base64.Decode(ReadIni("connect", "DBPass", string.Empty));
@@ -969,14 +985,14 @@ namespace glc_cs
 					{
 						if (showDialog)
 						{
-							MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+							MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 						}
 						return;
 					}
 					wc.Dispose();
 					if (showDialog)
 					{
-						MessageBox.Show("棒読みちゃんとの接続テストに成功しました。", appname, MessageBoxButtons.OK, MessageBoxIcon.Information);
+						MessageBox.Show("棒読みちゃんとの接続テストに成功しました。", appName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 					}
 				}
 				else
@@ -1006,7 +1022,7 @@ namespace glc_cs
 					{
 						if (showDialog)
 						{
-							MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appname, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+							MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 						}
 						return;
 					}
@@ -1020,7 +1036,7 @@ namespace glc_cs
 
 					if (showDialog)
 					{
-						MessageBox.Show("棒読みちゃんとの接続テストに成功しました。", appname, MessageBoxButtons.OK, MessageBoxIcon.Information);
+						MessageBox.Show("棒読みちゃんとの接続テストに成功しました。", appName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 					}
 				}
 			}
@@ -1154,6 +1170,7 @@ namespace glc_cs
 				sb.Append(errorMsg).Append(" > ");
 				sb.AppendLine(addInfo);
 				File.AppendAllText(BaseDir + "error.log", sb.ToString());
+
 				return;
 			}
 
@@ -1164,7 +1181,7 @@ namespace glc_cs
 			/// <returns>False：エラー</returns>
 			public static bool downloadDbDataToLocal(string targetWorkDir)
 			{
-				string localGameIni = targetWorkDir + "game.ini";
+				string localGameIni = (targetWorkDir.EndsWith("\\") ? targetWorkDir : targetWorkDir + "\\") + "game.ini";
 				bool isSuc = false;
 
 				try
@@ -1175,26 +1192,12 @@ namespace glc_cs
 						Directory.Delete(baseDir + "_temp_db_bak", true);
 					}
 
-					// ローカルに保存されているか確認
+					// ターゲットパスが存在しているか確認
 					if (File.Exists(localGameIni))
 					{
 						// ローカルファイルが存在する場合、退避する
 						Directory.Move(targetWorkDir, baseDir + "_temp_db_bak");
 					}
-
-					/*
-					 * ２回も要らない気がするのでコメントアウト
-					// ローカルDBフォルダがまだ残っている場合、退避する
-					if (Directory.Exists(targetWorkDir))
-					{
-						if (Directory.Exists(baseDir + "_temp_db_bak"))
-						{
-							// 退避ディレクトリがある場合、削除する
-							Directory.Delete(baseDir + "_temp_db_bak", true);
-						}
-						Directory.Move(targetWorkDir, baseDir + "_temp_db_bak");
-					}
-					*/
 
 					// 保存用フォルダ作成
 					Directory.CreateDirectory(targetWorkDir);
@@ -1206,7 +1209,7 @@ namespace glc_cs
 				}
 
 				// Configの最新化
-				GLConfigLoad();
+				// GLConfigLoad();
 
 				// データ取得
 				DataTable dt = new DataTable();
@@ -1226,7 +1229,7 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 30,
-							CommandText = @"SELECT count(*) FROM " + DbName + "." + DbTable
+							CommandText = @"SELECT count(*) FROM " + dbName + "." + dbTable
 						};
 						cm.Connection = cn;
 
@@ -1247,8 +1250,8 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 60,
-							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN "
-										+ " FROM " + DbName + "." + DbTable
+							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION "
+										+ " FROM " + dbName + "." + dbTable
 						};
 						cm2.Connection = cn;
 
@@ -1270,6 +1273,10 @@ namespace glc_cs
 									IniWrite(saveLocalIniPath, "game", "rating", (string.IsNullOrEmpty(reader["AGE_FLG"].ToString()) ? Rate.ToString() : reader["AGE_FLG"].ToString()));
 									IniWrite(saveLocalIniPath, "game", "temp1", reader["TEMP1"].ToString());
 									IniWrite(saveLocalIniPath, "game", "lastrun", reader["LAST_RUN"].ToString());
+									IniWrite(saveLocalIniPath, "game", "dcon_img", reader["DCON_IMG"].ToString());
+									IniWrite(saveLocalIniPath, "game", "memo", reader["MEMO"].ToString());
+									IniWrite(saveLocalIniPath, "game", "status", reader["STATUS"].ToString());
+									IniWrite(saveLocalIniPath, "game", "ini_version", reader["DB_VERSION"].ToString());
 								}
 								count++;
 							}
@@ -1285,7 +1292,7 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 30,
-							CommandText = @"SELECT count(*) FROM " + DbTable
+							CommandText = @"SELECT count(*) FROM " + dbTable
 						};
 						cm.Connection = mcn;
 
@@ -1306,8 +1313,8 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 60,
-							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN "
-										+ " FROM " + DbTable
+							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION "
+										+ " FROM " + dbTable
 						};
 						cm2.Connection = mcn;
 
@@ -1329,6 +1336,10 @@ namespace glc_cs
 									IniWrite(saveLocalIniPath, "game", "rating", (string.IsNullOrEmpty(reader["AGE_FLG"].ToString()) ? Rate.ToString() : reader["AGE_FLG"].ToString()));
 									IniWrite(saveLocalIniPath, "game", "temp1", reader["TEMP1"].ToString());
 									IniWrite(saveLocalIniPath, "game", "lastrun", reader["LAST_RUN"].ToString());
+									IniWrite(saveLocalIniPath, "game", "dcon_img", reader["DCON_IMG"].ToString());
+									IniWrite(saveLocalIniPath, "game", "memo", reader["MEMO"].ToString());
+									IniWrite(saveLocalIniPath, "game", "status", reader["STATUS"].ToString());
+									IniWrite(saveLocalIniPath, "game", "ini_version", reader["DB_VERSION"].ToString());
 								}
 								count++;
 							}
@@ -1336,7 +1347,7 @@ namespace glc_cs
 						}
 
 					}
-					// 最後に、ローカルデータを削除する
+					// 退避ディレクトリを削除する
 					Directory.Delete(baseDir + "_temp_db_bak", true);
 				}
 				catch (Exception ex)
@@ -1348,9 +1359,10 @@ namespace glc_cs
 					{
 						if (Directory.Exists(targetWorkDir))
 						{
-							// バックアップフォルダがある場合、作業フォルダを削除しバックアップを復元
+							// バックアップフォルダがある場合、作業フォルダを削除
 							Directory.Delete(targetWorkDir, true);
 						}
+						// 退避ディレクトリ復元
 						Directory.Move(baseDir + "_temp_db_bak", targetWorkDir);
 					}
 				}
@@ -1401,7 +1413,7 @@ namespace glc_cs
 				sCount = 0;
 				fCount = 0;
 				bool continueAdd = true;
-				string gameName = string.Empty, gamePath = string.Empty, imgPath = string.Empty, runTime = "0", runCount = "0", dconText = string.Empty, rateFlg = "0", temp1 = string.Empty, lastRun = string.Empty;
+				string gameName = string.Empty, gamePath = string.Empty, imgPath = string.Empty, runTime = "0", runCount = "0", dconText = string.Empty, rateFlg = "0", temp1 = string.Empty, lastRun = string.Empty, dcon_img = string.Empty, memo = string.Empty, status = "未プレイ", db_version = dbVer;
 
 				// ini全件数取得
 				if (File.Exists(localGameIni))
@@ -1459,6 +1471,10 @@ namespace glc_cs
 									rateFlg = IniRead(readini, "game", "rating", Rate.ToString());
 									temp1 = IniRead(readini, "game", "temp1", "");
 									lastRun = IniRead(readini, "game", "lastrun", "");
+									dcon_img = IniRead(readini, "game", "dcon_img", "");
+									memo = IniRead(readini, "game", "memo", "").Replace("'", "''").Replace("\\", "\\\\");
+									status = IniRead(readini, "game", "status", (runCount.Equals("0") ? "未プレイ" : "プレイ中"));
+									db_version = IniRead(readini, "game", "ini_version", dbVer);
 									sCount++;
 								}
 								else
@@ -1473,7 +1489,7 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN ) VALUES ( '" + gameName + "', '" + gamePath + "', '" + imgPath + "', '" + runTime + "', '" + runCount + "','" + dconText + "', '" + rateFlg + "', '" + temp1 + "', '" + lastRun + "' )"
+									CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + gameName + "', '" + gamePath + "', '" + imgPath + "', '" + runTime + "', '" + runCount + "','" + dconText + "', '" + rateFlg + "', '" + temp1 + "', '" + (string.IsNullOrEmpty(lastRun) ? "1900-01-01 00:00:00" : lastRun) + "', '" + dcon_img + "', '" + memo + "', '" + status + "', '" + db_version + "' )"
 								};
 								cm2.Connection = cn1;
 								cm2.Transaction = tran1;
@@ -1536,6 +1552,10 @@ namespace glc_cs
 									rateFlg = IniRead(readini, "game", "rating", Rate.ToString());
 									temp1 = IniRead(readini, "game", "temp1", "");
 									lastRun = IniRead(readini, "game", "lastrun", "");
+									dcon_img = IniRead(readini, "game", "dcon_img", "");
+									memo = IniRead(readini, "game", "memo", "").Replace("'", "''").Replace("\\", "\\\\");
+									status = IniRead(readini, "game", "status", (runCount.Equals("0") ? "未プレイ" : "プレイ中"));
+									db_version = IniRead(readini, "game", "ini_version", dbVer);
 									sCount++;
 								}
 								else
@@ -1550,7 +1570,7 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN ) VALUES ( '" + gameName + "', '" + gamePath + "', '" + imgPath + "', '" + runTime + "', '" + runCount + "','" + dconText + "', '" + rateFlg + "', '" + temp1 + "', " + (string.IsNullOrEmpty(lastRun) ? "NULL" : "'" + lastRun + "'") + " )"
+									CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + gameName + "', '" + gamePath + "', '" + imgPath + "', '" + runTime + "', '" + runCount + "','" + dconText + "', '" + rateFlg + "', '" + temp1 + "', '" + (string.IsNullOrEmpty(lastRun) ? "1900-01-01 00:00:00" : lastRun) + "', '" + dcon_img + "', '" + memo + "', '" + status + "', '" + db_version + "' );"
 								};
 								mcm2.Connection = mcn1;
 								mcm2.Transaction = mtran1;
@@ -1578,7 +1598,7 @@ namespace glc_cs
 					}
 					catch (Exception ex)
 					{
-						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "cm1：" + (cm1 == null ? String.Empty : cm1.CommandText) + "cm2：" + (cm2 == null ? String.Empty : cm2.CommandText) + "mcm1：" + (mcm1 == null ? String.Empty : mcm1.CommandText) + "mcm2：" + (mcm2 == null ? String.Empty : mcm2.CommandText));
+						// ロールバック
 						ans = 3;
 						if (saveType == "D")
 						{
@@ -1592,6 +1612,9 @@ namespace glc_cs
 						{
 							ans = 4;
 						}
+
+						// エラー処理
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "cm1：" + (cm1 == null ? String.Empty : cm1.CommandText) + " / cm2：" + (cm2 == null ? String.Empty : cm2.CommandText) + " / mcm1：" + (mcm1 == null ? String.Empty : mcm1.CommandText) + " / mcm2：" + (mcm2 == null ? String.Empty : mcm2.CommandText));
 					}
 					finally
 					{
@@ -1633,7 +1656,7 @@ namespace glc_cs
 				string localGameIni = (backupDir.EndsWith("\\") ? backupDir : backupDir + "\\") + "game.ini";
 				int tmpMaxGameCount = 0;
 				bool ans = true;
-				string gameName = string.Empty, gamePath = string.Empty, imgPath = string.Empty, runTime = "0", runCount = "0", dconText = string.Empty, rateFlg = "0", temp1 = string.Empty, lastRun = string.Empty;
+				string gameName = string.Empty, gamePath = string.Empty, imgPath = string.Empty, runTime = "0", runCount = "0", dconText = string.Empty, rateFlg = "0", temp1 = string.Empty, lastRun = string.Empty, dcon_img = String.Empty, memo = String.Empty, status = "未プレイ", db_version = dbVer;
 
 				// ini全件数取得
 				if (File.Exists(localGameIni))
@@ -1664,6 +1687,10 @@ namespace glc_cs
 								rateFlg = IniRead(readini, "game", "rating", Rate.ToString());
 								temp1 = IniRead(readini, "game", "temp1", "");
 								lastRun = IniRead(readini, "game", "lastrun", "");
+								dcon_img = IniRead(readini, "game", "dcon_img", "");
+								memo = IniRead(readini, "game", "memo", "").Replace("'", "''").Replace("\\", "\\\\");
+								status = IniRead(readini, "game", "status", "未プレイ");
+								db_version = IniRead(readini, "game", "ini_version", dbVer);
 							}
 							else
 							{
@@ -1689,7 +1716,7 @@ namespace glc_cs
 							{
 								CommandType = CommandType.Text,
 								CommandTimeout = 30,
-								CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN ) VALUES ( '" + gameName + "', '" + gamePath + "', '" + imgPath + "', '" + runTime + "', '" + runCount + "','" + dconText + "', '" + rateFlg + "', '" + temp1 + "', '" + lastRun + "' )"
+								CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + gameName + "', '" + gamePath + "', '" + imgPath + "', '" + runTime + "', '" + runCount + "','" + dconText + "', '" + rateFlg + "', '" + temp1 + "', '" + (string.IsNullOrEmpty(lastRun) ? "1900-01-01 00:00:00" : lastRun) + "', '" + dcon_img + "', '" + memo + "', '" + status + "', '" + db_version + "' )"
 							};
 							cm2.Connection = cn1;
 
@@ -1718,6 +1745,10 @@ namespace glc_cs
 								rateFlg = IniRead(readini, "game", "rating", Rate.ToString());
 								temp1 = IniRead(readini, "game", "temp1", "");
 								lastRun = IniRead(readini, "game", "lastrun", "");
+								dcon_img = IniRead(readini, "game", "dcon_img", "");
+								memo = IniRead(readini, "game", "memo", "").Replace("'", "''").Replace("\\", "\\\\");
+								status = IniRead(readini, "game", "status", "未プレイ");
+								db_version = IniRead(readini, "game", "ini_version", dbVer);
 							}
 							else
 							{
@@ -1743,7 +1774,7 @@ namespace glc_cs
 							{
 								CommandType = CommandType.Text,
 								CommandTimeout = 30,
-								CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN ) VALUES ( '" + gameName + "', '" + gamePath + "', '" + imgPath + "', '" + runTime + "', '" + runCount + "','" + dconText + "', '" + rateFlg + "', '" + temp1 + "', " + (string.IsNullOrEmpty(lastRun) ? "NULL" : "'" + lastRun + "'") + " )"
+								CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + gameName + "', '" + gamePath + "', '" + imgPath + "', '" + runTime + "', '" + runCount + "','" + dconText + "', '" + rateFlg + "', '" + temp1 + "', '" + (string.IsNullOrEmpty(lastRun) ? "1900-01-01 00:00:00" : lastRun) + "', '" + dcon_img + "', '" + memo + "', '" + status + "', '" + db_version + "' )"
 							};
 							mcm2.Connection = mcn1;
 

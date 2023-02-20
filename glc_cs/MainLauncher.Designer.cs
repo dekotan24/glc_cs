@@ -78,9 +78,10 @@
 			this.pictureBox4 = new System.Windows.Forms.PictureBox();
 			this.pictureBox3 = new System.Windows.Forms.PictureBox();
 			this.searchingText = new System.Windows.Forms.TextBox();
-			this.fileSystemWatcher2 = new System.IO.FileSystemWatcher();
 			this.upButton = new System.Windows.Forms.Button();
 			this.downButton = new System.Windows.Forms.Button();
+			this.memoButton = new System.Windows.Forms.Button();
+			this.fileSystemWatcher2 = new System.IO.FileSystemWatcher();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.ratedRadio = new System.Windows.Forms.RadioButton();
 			this.normalRadio = new System.Windows.Forms.RadioButton();
@@ -106,7 +107,6 @@
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
 			this.dconImgText = new System.Windows.Forms.TextBox();
-			this.memoButton = new System.Windows.Forms.Button();
 			this.statusCombo = new System.Windows.Forms.ComboBox();
 			this.statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
@@ -165,7 +165,7 @@
 			this.startButton.Name = "startButton";
 			this.toolTip1.SetToolTip(this.startButton, resources.GetString("startButton.ToolTip"));
 			this.startButton.UseVisualStyleBackColor = true;
-			this.startButton.Click += new System.EventHandler(this.button1_Click);
+			this.startButton.Click += new System.EventHandler(this.startButton_Click);
 			// 
 			// randomButton
 			// 
@@ -173,7 +173,7 @@
 			this.randomButton.Name = "randomButton";
 			this.toolTip1.SetToolTip(this.randomButton, resources.GetString("randomButton.ToolTip"));
 			this.randomButton.UseVisualStyleBackColor = true;
-			this.randomButton.Click += new System.EventHandler(this.button2_Click);
+			this.randomButton.Click += new System.EventHandler(this.randomButton_Click);
 			// 
 			// nameText
 			// 
@@ -217,7 +217,7 @@
 			this.infoButton.Name = "infoButton";
 			this.toolTip1.SetToolTip(this.infoButton, resources.GetString("infoButton.ToolTip"));
 			this.infoButton.UseVisualStyleBackColor = true;
-			this.infoButton.Click += new System.EventHandler(this.button7_Click);
+			this.infoButton.Click += new System.EventHandler(this.infoButton_Click);
 			// 
 			// reloadButton
 			// 
@@ -225,7 +225,7 @@
 			this.reloadButton.Name = "reloadButton";
 			this.toolTip1.SetToolTip(this.reloadButton, resources.GetString("reloadButton.ToolTip"));
 			this.reloadButton.UseVisualStyleBackColor = true;
-			this.reloadButton.Click += new System.EventHandler(this.button8_Click);
+			this.reloadButton.Click += new System.EventHandler(this.reloadButton_Click);
 			// 
 			// minCheck
 			// 
@@ -304,7 +304,7 @@
 			this.reloadCheck.Name = "reloadCheck";
 			this.toolTip1.SetToolTip(this.reloadCheck, resources.GetString("reloadCheck.ToolTip"));
 			this.reloadCheck.UseVisualStyleBackColor = false;
-			this.reloadCheck.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
+			this.reloadCheck.CheckedChanged += new System.EventHandler(this.reloadCheck_CheckedChanged);
 			// 
 			// addButton
 			// 
@@ -312,7 +312,7 @@
 			this.addButton.Name = "addButton";
 			this.toolTip1.SetToolTip(this.addButton, resources.GetString("addButton.ToolTip"));
 			this.addButton.UseVisualStyleBackColor = true;
-			this.addButton.Click += new System.EventHandler(this.button3_Click);
+			this.addButton.Click += new System.EventHandler(this.addButton_Click);
 			// 
 			// openFileDialog1
 			// 
@@ -324,7 +324,7 @@
 			this.delButton.Name = "delButton";
 			this.toolTip1.SetToolTip(this.delButton, resources.GetString("delButton.ToolTip"));
 			this.delButton.UseVisualStyleBackColor = true;
-			this.delButton.Click += new System.EventHandler(this.button5_Click);
+			this.delButton.Click += new System.EventHandler(this.delButton_Click);
 			// 
 			// sensCheck
 			// 
@@ -340,7 +340,7 @@
 			this.configButton.Name = "configButton";
 			this.toolTip1.SetToolTip(this.configButton, resources.GetString("configButton.ToolTip"));
 			this.configButton.UseVisualStyleBackColor = true;
-			this.configButton.Click += new System.EventHandler(this.button4_Click);
+			this.configButton.Click += new System.EventHandler(this.configButton_Click);
 			// 
 			// editButton
 			// 
@@ -419,7 +419,7 @@
 			this.cleanButton.Name = "cleanButton";
 			this.toolTip1.SetToolTip(this.cleanButton, resources.GetString("cleanButton.ToolTip"));
 			this.cleanButton.UseVisualStyleBackColor = true;
-			this.cleanButton.Click += new System.EventHandler(this.button11_Click);
+			this.cleanButton.Click += new System.EventHandler(this.cleanButton_Click);
 			// 
 			// ocButton
 			// 
@@ -427,7 +427,7 @@
 			this.ocButton.Name = "ocButton";
 			this.toolTip1.SetToolTip(this.ocButton, resources.GetString("ocButton.ToolTip"));
 			this.ocButton.UseVisualStyleBackColor = true;
-			this.ocButton.Click += new System.EventHandler(this.button12_Click);
+			this.ocButton.Click += new System.EventHandler(this.ocButton_Click);
 			// 
 			// pictureBox1
 			// 
@@ -492,20 +492,13 @@
 			this.searchingText.ReadOnly = true;
 			this.toolTip1.SetToolTip(this.searchingText, resources.GetString("searchingText.ToolTip"));
 			// 
-			// fileSystemWatcher2
-			// 
-			this.fileSystemWatcher2.EnableRaisingEvents = true;
-			this.fileSystemWatcher2.Filter = "config.ini";
-			this.fileSystemWatcher2.SynchronizingObject = this;
-			this.fileSystemWatcher2.Changed += new System.IO.FileSystemEventHandler(this.fileSystemWatcher2_Changed);
-			// 
 			// upButton
 			// 
 			resources.ApplyResources(this.upButton, "upButton");
 			this.upButton.Name = "upButton";
 			this.toolTip1.SetToolTip(this.upButton, resources.GetString("upButton.ToolTip"));
 			this.upButton.UseVisualStyleBackColor = true;
-			this.upButton.Click += new System.EventHandler(this.button6_Click);
+			this.upButton.Click += new System.EventHandler(this.upButton_Click);
 			// 
 			// downButton
 			// 
@@ -513,7 +506,22 @@
 			this.downButton.Name = "downButton";
 			this.toolTip1.SetToolTip(this.downButton, resources.GetString("downButton.ToolTip"));
 			this.downButton.UseVisualStyleBackColor = true;
-			this.downButton.Click += new System.EventHandler(this.button10_Click);
+			this.downButton.Click += new System.EventHandler(this.downButton_Click);
+			// 
+			// memoButton
+			// 
+			resources.ApplyResources(this.memoButton, "memoButton");
+			this.memoButton.Name = "memoButton";
+			this.toolTip1.SetToolTip(this.memoButton, resources.GetString("memoButton.ToolTip"));
+			this.memoButton.UseVisualStyleBackColor = true;
+			this.memoButton.Click += new System.EventHandler(this.memoButton_Click);
+			// 
+			// fileSystemWatcher2
+			// 
+			this.fileSystemWatcher2.EnableRaisingEvents = true;
+			this.fileSystemWatcher2.Filter = "config.ini";
+			this.fileSystemWatcher2.SynchronizingObject = this;
+			this.fileSystemWatcher2.Changed += new System.IO.FileSystemEventHandler(this.fileSystemWatcher2_Changed);
 			// 
 			// groupBox1
 			// 
@@ -742,14 +750,6 @@
 			// 
 			resources.ApplyResources(this.dconImgText, "dconImgText");
 			this.dconImgText.Name = "dconImgText";
-			// 
-			// memoButton
-			// 
-			resources.ApplyResources(this.memoButton, "memoButton");
-			this.memoButton.Name = "memoButton";
-			this.toolTip1.SetToolTip(this.memoButton, resources.GetString("memoButton.ToolTip"));
-			this.memoButton.UseVisualStyleBackColor = true;
-			this.memoButton.Click += new System.EventHandler(this.memoButton_Click);
 			// 
 			// statusCombo
 			// 

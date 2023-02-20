@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Game Launcher C# Edition")]
 [assembly: AssemblyDescription("Game Launcherでゲームを管理")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("dekosoft")]
+[assembly: AssemblyCompany("dekosoft / fanet.work")]
 [assembly: AssemblyProduct("Game Launcher C# Edition")]
 [assembly: AssemblyCopyright("(c) 2019-2023 Ogura Deko")]
 [assembly: AssemblyTrademark("")]
@@ -34,6 +34,6 @@ using System.Runtime.InteropServices;
 // すべての値を指定するか、次を使用してビルド番号とリビジョン番号を既定に設定できます
 // 既定値にすることができます:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.3.0")]
-[assembly: AssemblyFileVersion("28.23.02.13")]
+[assembly: AssemblyVersion("1.0.4.0")]
+[assembly: AssemblyFileVersion("29.23.02.20")]
 [assembly: NeutralResourcesLanguage("ja-JP")]

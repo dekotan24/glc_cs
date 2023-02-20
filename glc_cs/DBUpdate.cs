@@ -2,6 +2,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -48,16 +49,15 @@ namespace glc_cs
 		private bool hasUpdate = false;
 		private int updateStatus = 0;
 		private string currentVersion = "1.0";
-		private string latestVersion = "new";
+		private string latestVersion = General.Var.DBVer;
 		private int updatePhaseCount = 0;
 
 
 		/// <summary>
 		/// [必須] Ver.1.1(update to GL 1.03)
 		/// </summary>
-		private readonly StringBuilder v1_1 = new StringBuilder("[必須] Ver.1.1(Update to GL 1.03)")
-		.AppendLine("")
-		.AppendLine("\t* [ALTER TABLE] テーブルの文字コード変更／既存のカラムの文字コード変換(utf8mb4 / utf8mb4_general_ci)")
+		private readonly StringBuilder v1_1 = new StringBuilder("[必須] Ver.1.1(Update to GL 1.03 or above)\n")
+		.AppendLine("\t* [ALTER TABLE] [※MySQLのみ] 既存テーブルの文字コード変換(utf8mb4 / utf8mb4_general_ci)")
 		.AppendLine("\t* [カラム追加] [DCON_IMG]:DiscordConnector カスタム画像用、[TEMP1]の値で更新")
 		.AppendLine("\t* [カラム追加] [MEMO]:メモ用")
 		.AppendLine("\t* [カラム追加] [STATUS]:ステータス用")
@@ -113,7 +113,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"DESCRIBE " + General.Var.DbName + "." + General.Var.DbTable + " DCON_IMG;"
+					CommandText = createIsExistsTableSQL(0, "DCON_IMG")
 				};
 				cm.Connection = con;
 
@@ -137,7 +137,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"DESCRIBE " + General.Var.DbName + "." + General.Var.DbTable + " MEMO;"
+						CommandText = createIsExistsTableSQL(0, "MEMO")
 					};
 					cm.Connection = con;
 					using (var reader = cm.ExecuteReader())
@@ -157,7 +157,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"DESCRIBE " + General.Var.DbName + "." + General.Var.DbTable + " STATUS;"
+						CommandText = createIsExistsTableSQL(0, "STATUS")
 					};
 					cm.Connection = con;
 					using (var reader = cm.ExecuteReader())
@@ -177,7 +177,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"DESCRIBE " + General.Var.DbName + "." + General.Var.DbTable + " DB_VERSION;"
+						CommandText = createIsExistsTableSQL(0, "DB_VERSION")
 					};
 					cm.Connection = con;
 					using (var reader = cm.ExecuteReader())
@@ -194,7 +194,7 @@ namespace glc_cs
 				}
 				catch (Exception ex)
 				{
-					string errorMsg = "[v1.0 -> v1.1 | DESCRIBE] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText + " / hasUpdate:" + hasUpdate;
+					string errorMsg = "[v1.0 -> v1.1 | sys.columns] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText + " / hasUpdate:" + hasUpdate;
 					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
 					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
 				}
@@ -208,7 +208,6 @@ namespace glc_cs
 					if (hasUpdate)
 					{
 						updateLog.AppendLine(v1_1.ToString());
-						latestVersion = "1.1";
 						updateRequired = true;
 						hasUpdate = false;
 						updatePhaseCount++;
@@ -228,7 +227,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"DESCRIBE " + General.Var.DbTable + " DCON_IMG;"
+					CommandText = createIsExistsTableSQL(1, "DCON_IMG")
 				};
 				cm.Connection = con2;
 
@@ -252,7 +251,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"DESCRIBE " + General.Var.DbName + "." + General.Var.DbTable + " MEMO;"
+						CommandText = createIsExistsTableSQL(1, "MEMO")
 					};
 					cm.Connection = con2;
 					using (var reader = cm.ExecuteReader())
@@ -272,7 +271,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"DESCRIBE " + General.Var.DbName + "." + General.Var.DbTable + " STATUS;"
+						CommandText = createIsExistsTableSQL(1, "STATUS")
 					};
 					cm.Connection = con2;
 					using (var reader = cm.ExecuteReader())
@@ -292,7 +291,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"DESCRIBE " + General.Var.DbName + "." + General.Var.DbTable + " DB_VERSION;"
+						CommandText = createIsExistsTableSQL(1, "DB_VERSION")
 					};
 					cm.Connection = con2;
 					using (var reader = cm.ExecuteReader())
@@ -323,7 +322,6 @@ namespace glc_cs
 					if (hasUpdate)
 					{
 						updateLog.AppendLine(v1_1.ToString());
-						latestVersion = "1.1";
 						updateRequired = true;
 						hasUpdate = false;
 						updatePhaseCount++;
@@ -338,6 +336,68 @@ namespace glc_cs
 			{
 				// INI
 				// [必須] Ver.1.1(update to GL 1.03)
+				int fileCount = 0;
+				string readini = string.Empty;
+				string gameDirName = General.Var.GameDir;
+				string dcon_img = string.Empty;
+				string memo = string.Empty;
+				string status = string.Empty;
+				string ini_version = string.Empty;
+
+				// 全ゲーム数取得
+				if (File.Exists(General.Var.GameIni))
+				{
+					fileCount = Convert.ToInt32(General.Var.IniRead(General.Var.GameIni, "list", "game", "0"));
+				}
+
+				if (fileCount >= 1) // ゲーム登録数が1以上の場合
+				{
+					for (int curCount = 1; curCount <= fileCount; curCount++)
+					{
+						// 読込iniファイル名更新
+						readini = gameDirName + "\\" + curCount + ".ini";
+
+						if (File.Exists(readini))
+						{
+							try
+							{
+								// アップデート対象のセクションを取得する
+								dcon_img = General.Var.IniRead(readini, "game", "dcon_img", "!Err");
+								memo = General.Var.IniRead(readini, "game", "memo", "!Err");
+								status = General.Var.IniRead(readini, "game", "status", "!Err");
+								ini_version = General.Var.IniRead(readini, "game", "ini_version", "!Err");
+
+								// 取得できなかった場合、アップデートフラグを立てる
+								if (dcon_img.Equals("!Err") || memo.Equals("!Err") || status.Equals("!Err") || ini_version.Equals("!Err"))
+								{
+									hasUpdate = true;
+									break;  // 1個でもアップデート対象があった場合、全てアップデート対象となるためループから抜ける
+								}
+							}
+							catch
+							{
+								errMsg.AppendLine("[ERROR] ファイルの読込中にエラー。(" + readini + ")");
+							}
+						}
+						else
+						{
+							// 個別ini存在しない場合
+							errMsg.AppendLine("[ERROR] ファイルが存在しません。(" + readini + ")");
+						}
+					}
+
+					if (hasUpdate)
+					{
+						updateLog.AppendLine(v1_1.ToString());
+						updateRequired = true;
+						hasUpdate = false;
+						updatePhaseCount++;
+					}
+					else
+					{
+						currentVersion = "1.0";
+					}
+				}
 			}
 
 			// アップデートチェック
@@ -403,21 +463,24 @@ namespace glc_cs
 				{
 					con.Open();
 					// 文字エンコード変更（ALTER TABLE）
+					/*
+					 * MSSQLでは文字コード変換を行わない
 					cm = new SqlCommand()
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + General.Var.DbName + "." + General.Var.DbName + " CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
+						CommandText = @"ALTER TABLE " + General.Var.DbName + "." + General.Var.DbName + " COLLATE Japanese_CI_AS;"
 					};
 					cm.Connection = con;
 					cm.ExecuteNonQuery();
+					*/
 
 					// カラム追加（DCON_IMG, MEMO, STATUS, DB_VERSION）
 					cm = new SqlCommand()
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + General.Var.DbName + "." + General.Var.DbTable + " ADD (DCON_IMG NVARCHAR(50) NULL, MEMO NVARCHAR(500) NULL, STATUS NVARCHAR(10) NULL, DB_VERSION NVARCHAR(5) NOT NULL DEFAULT '" + latestVersion + "');"
+						CommandText = @"ALTER TABLE " + General.Var.DbName + "." + General.Var.DbTable + " ADD DCON_IMG NVARCHAR(50) NULL, MEMO NVARCHAR(500) NULL, STATUS NVARCHAR(10) NULL DEFAULT N'未プレイ', DB_VERSION NVARCHAR(5) NOT NULL DEFAULT N'1.1';"
 					};
 					cm.Connection = con;
 					cm.ExecuteNonQuery();
@@ -427,7 +490,17 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET DCON_IMG = TEMP1 WHERE DCON_IMG IS NULL;"
+						CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET DCON_IMG = TEMP1 WHERE TEMP1 IS NOT NULL;"
+					};
+					cm.Connection = con;
+					cm.ExecuteNonQuery();
+
+					// カラム更新（STATUS）
+					cm = new SqlCommand()
+					{
+						CommandType = CommandType.Text,
+						CommandTimeout = 30,
+						CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET STATUS = (CASE WHEN RUN_COUNT = '0' THEN N'未プレイ' ELSE N'プレイ中' END);"
 					};
 					cm.Connection = con;
 					cm.ExecuteNonQuery();
@@ -437,12 +510,14 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET TEMP1 = NULL;"
+						CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET TEMP1 = NULL WHERE TEMP1 IS NOT NULL;"
 					};
 					cm.Connection = con;
 					cm.ExecuteNonQuery();
 
 					// カラム文字コード一括変換（ALTER TABLE）
+					/*
+					 * MSSQLでは文字コード変換を行わない
 					cm = new SqlCommand()
 					{
 						CommandType = CommandType.Text,
@@ -451,9 +526,9 @@ namespace glc_cs
 					};
 					cm.Connection = con;
 					cm.ExecuteNonQuery();
+					*/
 
 					updateStatus = 1;
-					updateProgress.Value++;
 				}
 				catch (Exception ex)
 				{
@@ -468,6 +543,8 @@ namespace glc_cs
 					{
 						con.Close();
 					}
+					// アップデート処理後のステータス更新
+					updateProgress.Value++;
 				}
 
 			}
@@ -495,7 +572,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + General.Var.DbTable + " ADD COLUMN DCON_IMG VARCHAR(50) NULL, ADD COLUMN MEMO VARCHAR(500) NULL, ADD COLUMN STATUS VARCHAR(10) NULL, ADD COLUMN DB_VERSION VARCHAR(5) NOT NULL DEFAULT '" + latestVersion + "';"
+						CommandText = @"ALTER TABLE " + General.Var.DbTable + " ADD COLUMN DCON_IMG VARCHAR(50) NULL, ADD COLUMN MEMO VARCHAR(500) NULL, ADD COLUMN STATUS VARCHAR(10) NULL DEFAULT '未プレイ', ADD COLUMN DB_VERSION VARCHAR(5) NOT NULL DEFAULT '1.1';"
 					};
 					cm.Connection = con2;
 					cm.ExecuteNonQuery();
@@ -505,7 +582,17 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"UPDATE " + General.Var.DbTable + " SET DCON_IMG = TEMP1 WHERE DCON_IMG IS NULL;"
+						CommandText = @"UPDATE " + General.Var.DbTable + " SET DCON_IMG = TEMP1 WHERE TEMP1 IS NOT NULL;"
+					};
+					cm.Connection = con2;
+					cm.ExecuteNonQuery();
+
+					// カラム更新（STATUS）
+					cm = new MySqlCommand()
+					{
+						CommandType = CommandType.Text,
+						CommandTimeout = 30,
+						CommandText = @"UPDATE " + General.Var.DbTable + " SET STATUS = (CASE WHEN RUN_COUNT = '0' THEN N'未プレイ' ELSE N'プレイ中' END);"
 					};
 					cm.Connection = con2;
 					cm.ExecuteNonQuery();
@@ -531,7 +618,6 @@ namespace glc_cs
 					cm.ExecuteNonQuery();
 
 					updateStatus = 1;
-					updateProgress.Value++;
 				}
 				catch (Exception ex)
 				{
@@ -546,25 +632,92 @@ namespace glc_cs
 					{
 						con2.Close();
 					}
+					// アップデート処理後のステータス更新
+					updateProgress.Value++;
 				}
 			}
 			else
 			{
 				// INI
 				// [必須] Ver.1.1(update to GL 1.03)
+				int fileCount = 0;
+				string readini = string.Empty;
+				string gameDirName = General.Var.GameDir;
+				string dcon_img = string.Empty;
+				string memo = string.Empty;
+				string status = string.Empty;
+				string ini_version = "1.1";
+
+				// アップデート処理後のステータス更新
+				updateStatus = 1;
+
+				// 全ゲーム数取得
+				if (File.Exists(General.Var.GameIni))
+				{
+					fileCount = Convert.ToInt32(General.Var.IniRead(General.Var.GameIni, "list", "game", "0"));
+				}
+
+				if (fileCount >= 1) // ゲーム登録数が1以上の場合
+				{
+					for (int curCount = 1; curCount <= fileCount; curCount++)
+					{
+						// 読込iniファイル名更新
+						readini = gameDirName + "\\" + curCount + ".ini";
+
+						if (File.Exists(readini))
+						{
+							try
+							{
+								// アップデート対象のセクションを取得する
+								dcon_img = General.Var.IniRead(readini, "game", "temp1", "!Err");
+								memo = General.Var.IniRead(readini, "game", "memo", "!Err");
+								status = General.Var.IniRead(readini, "game", "status", "!Err");
+								ini_version = General.Var.IniRead(readini, "game", "ini_version", "!Err");
+
+								// 取得できなかった場合、アップデートを行う
+								if (dcon_img.Equals("!Err") || memo.Equals("!Err") || status.Equals("!Err") || ini_version.Equals("!Err"))
+								{
+									General.Var.IniWrite(readini, "game", "dcon_img", (dcon_img.Equals("!Err") ? string.Empty : dcon_img));
+									General.Var.IniWrite(readini, "game", "memo", string.Empty);
+									General.Var.IniWrite(readini, "game", "status", (General.Var.IniRead(readini, "game", "start", "0").Equals("0") ? "未プレイ" : "プレイ中"));
+									General.Var.IniWrite(readini, "game", "ini_version", "1.1");
+									General.Var.IniWrite(readini, "game", "temp1", string.Empty);
+								}
+							}
+							catch (Exception ex)
+							{
+								string errorMsg = "[v1.0 -> v1.1 | R/W] " + ex.Message + " / SaveType:" + saveType + " / INI:" + readini + " / dcon_img:" + dcon_img + " / memo:" + memo + " / status:" + status;
+								General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+								errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+								updateStatus = -1;
+							}
+						}
+						else
+						{
+							// 個別ini存在しない場合
+							string errorMsg = "[v1.0 -> v1.1 | Read File] ファイルが存在しません。 / SaveType:" + saveType + " / INI:" + readini;
+							General.Var.WriteErrorLog("ファイルの読込に失敗しました。ファイルが存在しません。", MethodBase.GetCurrentMethod().Name, errorMsg);
+							errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+							updateStatus = -1;
+						}
+					}
+
+					// アップデート処理後のステータス更新
+					updateProgress.Value++;
+				}
 			}
 
 			// アップデート完了処理
 			if (updateStatus == 1)
 			{
 				// アップデート完了
-				MessageBox.Show("アップデートが完了しました！", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("アップデートが完了しました！（" + latestVersion + "）", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				this.DialogResult = DialogResult.OK;
 			}
 			else
 			{
 				// アップデート失敗
-				MessageBox.Show("アップデートに失敗しました。\n\n" + errMsg.ToString(), General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("アップデートに失敗しました。\n一部のファイルは更新されなかった可能性があります。\n\n" + errMsg.ToString(), General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
@@ -602,6 +755,33 @@ namespace glc_cs
 					}
 				}
 			}
+		}
+
+		/// <summary>
+		/// カラム存在チェックを行うSQL文を作成します。
+		/// </summary>
+		/// <param name="type"><value>0</value>:MSSQL / <value>1</value>:MySQL</param>
+		/// <param name="columnName">カラム名</param>
+		/// <returns><paramref name="type"/>に応じた<paramref name="columnName"/>が存在するかをチェックするSQL</returns>
+		private string createIsExistsTableSQL(int type, string columnName)
+		{
+			string ans = string.Empty;
+
+			switch (type)
+			{
+				case 0:
+					// MSSQL
+					ans = @"USE " + General.Var.DbName + "; SELECT * FROM sys.columns WHERE Name = '" + columnName + "' AND Object_ID = OBJECT_ID(N'" + General.Var.DbTable + "');";
+					break;
+
+				default:
+				case 1:
+					// MySQL / default
+					ans = @"DESCRIBE " + General.Var.DbTable + " " + columnName + ";";
+					break;
+			}
+
+			return ans;
 		}
 	}
 }

@@ -149,9 +149,6 @@
   <data name="&gt;&gt;gameList.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>545, 17</value>
-  </metadata>
   <data name="trackCheck.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -174,6 +171,9 @@
   <data name="trackCheck.Text" xml:space="preserve">
     <value>ゲームをトラッキング</value>
   </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>545, 17</value>
+  </metadata>
   <data name="trackCheck.ToolTip" xml:space="preserve">
     <value>ゲームの実行状態のトラッキング、及びDiscord RPCを有効にします</value>
   </data>
@@ -555,6 +555,27 @@
   <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="toolStripStatusLabel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>32, 17</value>
+  </data>
+  <data name="toolStripStatusLabel1.Text" xml:space="preserve">
+    <value>[0/0]</value>
+  </data>
+  <data name="toolStripProgressBar1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>140, 16</value>
+  </data>
+  <data name="toolStripStatusLabel3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 17</value>
+  </data>
+  <data name="toolStripStatusLabel3.Text" xml:space="preserve">
+    <value>【ゲーム管理データ編集】</value>
+  </data>
+  <data name="toolStripStatusLabel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>277, 17</value>
+  </data>
+  <data name="toolStripStatusLabel2.Text" xml:space="preserve">
+    <value>＊変更を保存するには「保存」か「起動」を押します。</value>
+  </data>
   <data name="statusStrip1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 418</value>
   </data>
@@ -578,27 +599,6 @@
   </data>
   <data name="&gt;&gt;statusStrip1.ZOrder" xml:space="preserve">
     <value>12</value>
-  </data>
-  <data name="toolStripStatusLabel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 17</value>
-  </data>
-  <data name="toolStripStatusLabel1.Text" xml:space="preserve">
-    <value>[0/0]</value>
-  </data>
-  <data name="toolStripProgressBar1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 16</value>
-  </data>
-  <data name="toolStripStatusLabel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 17</value>
-  </data>
-  <data name="toolStripStatusLabel3.Text" xml:space="preserve">
-    <value>【ゲーム管理データ編集】</value>
-  </data>
-  <data name="toolStripStatusLabel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>277, 17</value>
-  </data>
-  <data name="toolStripStatusLabel2.Text" xml:space="preserve">
-    <value>＊変更を保存するには「保存」か「起動」を押します。</value>
   </data>
   <data name="toolStripTextBox1.Font" type="System.Drawing.Font, System.Drawing">
     <value>Yu Gothic UI, 9pt</value>
@@ -1274,6 +1274,21 @@
   <data name="&gt;&gt;ocButton.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="tabPage1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tabPage1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>337, 394</value>
+  </data>
+  <data name="tabPage1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="tabPage1.Text" xml:space="preserve">
+    <value>リスト</value>
+  </data>
   <data name="&gt;&gt;tabPage1.Name" xml:space="preserve">
     <value>tabPage1</value>
   </data>
@@ -1286,6 +1301,72 @@
   <data name="&gt;&gt;tabPage1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="trackBar1.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="trackBar1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 375</value>
+  </data>
+  <data name="trackBar1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>330, 14</value>
+  </data>
+  <data name="trackBar1.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;trackBar1.Name" xml:space="preserve">
+    <value>trackBar1</value>
+  </data>
+  <data name="&gt;&gt;trackBar1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;trackBar1.Parent" xml:space="preserve">
+    <value>tabPage2</value>
+  </data>
+  <data name="&gt;&gt;trackBar1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="imageList1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>801, 17</value>
+  </metadata>
+  <data name="imageList1.ImageSize" type="System.Drawing.Size, System.Drawing">
+    <value>32, 32</value>
+  </data>
+  <data name="gameImgList.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="gameImgList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>330, 366</value>
+  </data>
+  <data name="gameImgList.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;gameImgList.Name" xml:space="preserve">
+    <value>gameImgList</value>
+  </data>
+  <data name="&gt;&gt;gameImgList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gameImgList.Parent" xml:space="preserve">
+    <value>tabPage2</value>
+  </data>
+  <data name="&gt;&gt;gameImgList.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tabPage2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tabPage2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>337, 394</value>
+  </data>
+  <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>グリッド</value>
+  </data>
   <data name="&gt;&gt;tabPage2.Name" xml:space="preserve">
     <value>tabPage2</value>
   </data>
@@ -1297,6 +1378,261 @@
   </data>
   <data name="&gt;&gt;tabPage2.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="lastOrderDrop.AutoCompleteCustomSource" xml:space="preserve">
+    <value>昇</value>
+  </data>
+  <data name="lastOrderDrop.AutoCompleteCustomSource1" xml:space="preserve">
+    <value>降</value>
+  </data>
+  <data name="lastOrderDrop.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="lastOrderDrop.Items" xml:space="preserve">
+    <value>昇順</value>
+  </data>
+  <data name="lastOrderDrop.Items1" xml:space="preserve">
+    <value>降順</value>
+  </data>
+  <data name="lastOrderDrop.Location" type="System.Drawing.Point, System.Drawing">
+    <value>284, 35</value>
+  </data>
+  <data name="lastOrderDrop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 20</value>
+  </data>
+  <data name="lastOrderDrop.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;lastOrderDrop.Name" xml:space="preserve">
+    <value>lastOrderDrop</value>
+  </data>
+  <data name="&gt;&gt;lastOrderDrop.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lastOrderDrop.Parent" xml:space="preserve">
+    <value>tabPage3</value>
+  </data>
+  <data name="&gt;&gt;lastOrderDrop.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="lastSearchOption.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="lastSearchOption.Items" xml:space="preserve">
+    <value>タイトル</value>
+  </data>
+  <data name="lastSearchOption.Items1" xml:space="preserve">
+    <value>最終起動</value>
+  </data>
+  <data name="lastSearchOption.Items2" xml:space="preserve">
+    <value>dcontメモ</value>
+  </data>
+  <data name="lastSearchOption.Items3" xml:space="preserve">
+    <value>実行パス</value>
+  </data>
+  <data name="lastSearchOption.Items4" xml:space="preserve">
+    <value>画像パス</value>
+  </data>
+  <data name="lastSearchOption.Items5" xml:space="preserve">
+    <value>メモ</value>
+  </data>
+  <data name="lastSearchOption.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 35</value>
+  </data>
+  <data name="lastSearchOption.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 20</value>
+  </data>
+  <data name="lastSearchOption.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;lastSearchOption.Name" xml:space="preserve">
+    <value>lastSearchOption</value>
+  </data>
+  <data name="&gt;&gt;lastSearchOption.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lastSearchOption.Parent" xml:space="preserve">
+    <value>tabPage3</value>
+  </data>
+  <data name="&gt;&gt;lastSearchOption.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="orderDropDown.AutoCompleteCustomSource" xml:space="preserve">
+    <value>昇</value>
+  </data>
+  <data name="orderDropDown.AutoCompleteCustomSource1" xml:space="preserve">
+    <value>降</value>
+  </data>
+  <data name="orderDropDown.Items" xml:space="preserve">
+    <value>昇順</value>
+  </data>
+  <data name="orderDropDown.Items1" xml:space="preserve">
+    <value>降順</value>
+  </data>
+  <data name="orderDropDown.Location" type="System.Drawing.Point, System.Drawing">
+    <value>219, 9</value>
+  </data>
+  <data name="orderDropDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 20</value>
+  </data>
+  <data name="orderDropDown.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;orderDropDown.Name" xml:space="preserve">
+    <value>orderDropDown</value>
+  </data>
+  <data name="&gt;&gt;orderDropDown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;orderDropDown.Parent" xml:space="preserve">
+    <value>tabPage3</value>
+  </data>
+  <data name="&gt;&gt;orderDropDown.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="searchTargetDropDown.Items" xml:space="preserve">
+    <value>タイトル</value>
+  </data>
+  <data name="searchTargetDropDown.Items1" xml:space="preserve">
+    <value>最終起動</value>
+  </data>
+  <data name="searchTargetDropDown.Items2" xml:space="preserve">
+    <value>dconメモ</value>
+  </data>
+  <data name="searchTargetDropDown.Items3" xml:space="preserve">
+    <value>実行パス</value>
+  </data>
+  <data name="searchTargetDropDown.Items4" xml:space="preserve">
+    <value>画像パス</value>
+  </data>
+  <data name="searchTargetDropDown.Items5" xml:space="preserve">
+    <value>メモ</value>
+  </data>
+  <data name="searchTargetDropDown.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 9</value>
+  </data>
+  <data name="searchTargetDropDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 20</value>
+  </data>
+  <data name="searchTargetDropDown.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;searchTargetDropDown.Name" xml:space="preserve">
+    <value>searchTargetDropDown</value>
+  </data>
+  <data name="&gt;&gt;searchTargetDropDown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;searchTargetDropDown.Parent" xml:space="preserve">
+    <value>tabPage3</value>
+  </data>
+  <data name="&gt;&gt;searchTargetDropDown.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="searchingText.Location" type="System.Drawing.Point, System.Drawing">
+    <value>81, 35</value>
+  </data>
+  <data name="searchingText.Size" type="System.Drawing.Size, System.Drawing">
+    <value>197, 19</value>
+  </data>
+  <data name="searchingText.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="searchingText.ToolTip" xml:space="preserve">
+    <value>searchingText.Text();</value>
+  </data>
+  <data name="&gt;&gt;searchingText.Name" xml:space="preserve">
+    <value>searchingText</value>
+  </data>
+  <data name="&gt;&gt;searchingText.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;searchingText.Parent" xml:space="preserve">
+    <value>tabPage3</value>
+  </data>
+  <data name="&gt;&gt;searchingText.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="searchButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>274, 8</value>
+  </data>
+  <data name="searchButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 23</value>
+  </data>
+  <data name="searchButton.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="searchButton.Text" xml:space="preserve">
+    <value>検索</value>
+  </data>
+  <data name="&gt;&gt;searchButton.Name" xml:space="preserve">
+    <value>searchButton</value>
+  </data>
+  <data name="&gt;&gt;searchButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;searchButton.Parent" xml:space="preserve">
+    <value>tabPage3</value>
+  </data>
+  <data name="&gt;&gt;searchButton.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="searchText.Location" type="System.Drawing.Point, System.Drawing">
+    <value>81, 10</value>
+  </data>
+  <data name="searchText.Size" type="System.Drawing.Size, System.Drawing">
+    <value>132, 19</value>
+  </data>
+  <data name="searchText.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;searchText.Name" xml:space="preserve">
+    <value>searchText</value>
+  </data>
+  <data name="&gt;&gt;searchText.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;searchText.Parent" xml:space="preserve">
+    <value>tabPage3</value>
+  </data>
+  <data name="&gt;&gt;searchText.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="searchResultList.Font" type="System.Drawing.Font, System.Drawing">
+    <value>ＭＳ ゴシック, 9.75pt</value>
+  </data>
+  <data name="searchResultList.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 63</value>
+  </data>
+  <data name="searchResultList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>330, 329</value>
+  </data>
+  <data name="searchResultList.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;searchResultList.Name" xml:space="preserve">
+    <value>searchResultList</value>
+  </data>
+  <data name="&gt;&gt;searchResultList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;searchResultList.Parent" xml:space="preserve">
+    <value>tabPage3</value>
+  </data>
+  <data name="&gt;&gt;searchResultList.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="tabPage3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>337, 394</value>
+  </data>
+  <data name="tabPage3.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tabPage3.Text" xml:space="preserve">
+    <value>検索</value>
   </data>
   <data name="&gt;&gt;tabPage3.Name" xml:space="preserve">
     <value>tabPage3</value>
@@ -1407,6 +1743,24 @@
   <data name="&gt;&gt;pictureBox13.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="ratedRadio.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ratedRadio.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ratedRadio.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 68</value>
+  </data>
+  <data name="ratedRadio.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 16</value>
+  </data>
+  <data name="ratedRadio.TabIndex" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="ratedRadio.Text" xml:space="preserve">
+    <value>成人ゲーム</value>
+  </data>
   <data name="&gt;&gt;ratedRadio.Name" xml:space="preserve">
     <value>ratedRadio</value>
   </data>
@@ -1419,6 +1773,24 @@
   <data name="&gt;&gt;ratedRadio.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="normalRadio.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="normalRadio.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="normalRadio.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 43</value>
+  </data>
+  <data name="normalRadio.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 16</value>
+  </data>
+  <data name="normalRadio.TabIndex" type="System.Int32, mscorlib">
+    <value>29</value>
+  </data>
+  <data name="normalRadio.Text" xml:space="preserve">
+    <value>一般ゲーム</value>
+  </data>
   <data name="&gt;&gt;normalRadio.Name" xml:space="preserve">
     <value>normalRadio</value>
   </data>
@@ -1430,6 +1802,27 @@
   </data>
   <data name="&gt;&gt;normalRadio.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="useDconCheck.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="useDconCheck.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="useDconCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="useDconCheck.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 18</value>
+  </data>
+  <data name="useDconCheck.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 16</value>
+  </data>
+  <data name="useDconCheck.TabIndex" type="System.Int32, mscorlib">
+    <value>52</value>
+  </data>
+  <data name="useDconCheck.Text" xml:space="preserve">
+    <value>Discordと連携する</value>
   </data>
   <data name="&gt;&gt;useDconCheck.Name" xml:space="preserve">
     <value>useDconCheck</value>
@@ -1614,7 +2007,7 @@
         K5oa8TRxSNV0yhcyHquctzhr5Spr9slfGMjpKymuU40hhiXEkYAIBVWUUIaNKO06KRaSdC518I+6/gS5
         FHKVwMixgAo0yK4f/A9+z9bKT016SQEJ6H5xnI9xoGcXaNQc5/vYcRongP8ZuNJb/kodmP0kvdbSQkfA
         4DZwcd3SlD3gcgcYeTJkU3YlP5WQzwPvZ/RNWWD4Fuhf8+bWPMfpA5CmWS3fAAeHQLhA2esd3t3bPrc/
-        77jzg/QDs31ywdXOMVwAAAAJcEhZcwAACw4AAAsOAUC+4UEAAAAHdElNRQfmCREJKBM/TtRPAAAAhUlE
+        77jzg/QDs31ywdXOMVwAAAAJcEhZcwAACw0AAAsNAe0HwCwAAAAHdElNRQfmCREJKBM/TtRPAAAAhUlE
         QVQ4T62OUQ6AIAxDOZZ/fngDr+DNvChm2GFZKmjCSxrY1i5L09jWJbPQrozmxeAow2jeGAyrWYzViD1E
         Uw9fiqgOx56qEX8/34m1YTXi/8535IIvi9iLeHtBb0n0IX4Th0qO/RFrYTNald5sDuexZ5bqsUqIsaYj
         DSPUAnujirmS0gXaocRPPxVnoAAAAABJRU5ErkJggg==
@@ -1900,6 +2293,27 @@
   <data name="&gt;&gt;gameIcon.ZOrder" xml:space="preserve">
     <value>29</value>
   </data>
+  <data name="addButton.Font" type="System.Drawing.Font, System.Drawing">
+    <value>ＭＳ ゴシック, 12pt</value>
+  </data>
+  <data name="addButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="addButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="addButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 25</value>
+  </data>
+  <data name="addButton.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="addButton.Text" xml:space="preserve">
+    <value>追加</value>
+  </data>
+  <data name="addButton.ToolTip" xml:space="preserve">
+    <value>ゲームを追加</value>
+  </data>
   <data name="&gt;&gt;addButton.Name" xml:space="preserve">
     <value>addButton</value>
   </data>
@@ -1911,6 +2325,27 @@
   </data>
   <data name="&gt;&gt;addButton.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="editButton.Font" type="System.Drawing.Font, System.Drawing">
+    <value>ＭＳ ゴシック, 12pt</value>
+  </data>
+  <data name="editButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="editButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>155, 3</value>
+  </data>
+  <data name="editButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 25</value>
+  </data>
+  <data name="editButton.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="editButton.Text" xml:space="preserve">
+    <value>編集</value>
+  </data>
+  <data name="editButton.ToolTip" xml:space="preserve">
+    <value>登録ゲームの内容を編集</value>
   </data>
   <data name="&gt;&gt;editButton.Name" xml:space="preserve">
     <value>editButton</value>
@@ -1924,6 +2359,27 @@
   <data name="&gt;&gt;editButton.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="cleanButton.Font" type="System.Drawing.Font, System.Drawing">
+    <value>ＭＳ ゴシック, 12pt</value>
+  </data>
+  <data name="cleanButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cleanButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>231, 3</value>
+  </data>
+  <data name="cleanButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 25</value>
+  </data>
+  <data name="cleanButton.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="cleanButton.Text" xml:space="preserve">
+    <value>解放</value>
+  </data>
+  <data name="cleanButton.ToolTip" xml:space="preserve">
+    <value>メモリを開放</value>
+  </data>
   <data name="&gt;&gt;cleanButton.Name" xml:space="preserve">
     <value>cleanButton</value>
   </data>
@@ -1935,6 +2391,27 @@
   </data>
   <data name="&gt;&gt;cleanButton.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="configButton.Font" type="System.Drawing.Font, System.Drawing">
+    <value>ＭＳ ゴシック, 12pt</value>
+  </data>
+  <data name="configButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="configButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>383, 3</value>
+  </data>
+  <data name="configButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 25</value>
+  </data>
+  <data name="configButton.TabIndex" type="System.Int32, mscorlib">
+    <value>28</value>
+  </data>
+  <data name="configButton.Text" xml:space="preserve">
+    <value>設定</value>
+  </data>
+  <data name="configButton.ToolTip" xml:space="preserve">
+    <value>設定を変更</value>
   </data>
   <data name="&gt;&gt;configButton.Name" xml:space="preserve">
     <value>configButton</value>
@@ -1969,6 +2446,30 @@
   <data name="&gt;&gt;flowLayoutPanel1.ZOrder" xml:space="preserve">
     <value>31</value>
   </data>
+  <data name="sensCheck.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="sensCheck.Font" type="System.Drawing.Font, System.Drawing">
+    <value>ＭＳ ゴシック, 11.25pt</value>
+  </data>
+  <data name="sensCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="sensCheck.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 53</value>
+  </data>
+  <data name="sensCheck.Size" type="System.Drawing.Size, System.Drawing">
+    <value>170, 19</value>
+  </data>
+  <data name="sensCheck.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="sensCheck.Text" xml:space="preserve">
+    <value>センシティブモード</value>
+  </data>
+  <data name="sensCheck.ToolTip" xml:space="preserve">
+    <value>Discord連携時にゲームタイトルを隠します</value>
+  </data>
   <data name="&gt;&gt;sensCheck.Name" xml:space="preserve">
     <value>sensCheck</value>
   </data>
@@ -1981,6 +2482,30 @@
   <data name="&gt;&gt;sensCheck.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="reloadCheck.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="reloadCheck.Font" type="System.Drawing.Font, System.Drawing">
+    <value>ＭＳ ゴシック, 11.25pt</value>
+  </data>
+  <data name="reloadCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="reloadCheck.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 78</value>
+  </data>
+  <data name="reloadCheck.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 19</value>
+  </data>
+  <data name="reloadCheck.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="reloadCheck.Text" xml:space="preserve">
+    <value>リスト自動更新</value>
+  </data>
+  <data name="reloadCheck.ToolTip" xml:space="preserve">
+    <value>ゲームの情報が保存されているフォルダに変更が生じると、自動的にゲームリストを更新します</value>
+  </data>
   <data name="&gt;&gt;reloadCheck.Name" xml:space="preserve">
     <value>reloadCheck</value>
   </data>
@@ -1992,6 +2517,30 @@
   </data>
   <data name="&gt;&gt;reloadCheck.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="testCheck.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="testCheck.Font" type="System.Drawing.Font, System.Drawing">
+    <value>ＭＳ ゴシック, 11.25pt</value>
+  </data>
+  <data name="testCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="testCheck.Location" type="System.Drawing.Point, System.Drawing">
+    <value>147, 78</value>
+  </data>
+  <data name="testCheck.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 19</value>
+  </data>
+  <data name="testCheck.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="testCheck.Text" xml:space="preserve">
+    <value>テスト起動</value>
+  </data>
+  <data name="testCheck.ToolTip" xml:space="preserve">
+    <value>ゲームを正常にトラッキングできるかお試し実行できます</value>
   </data>
   <data name="&gt;&gt;testCheck.Name" xml:space="preserve">
     <value>testCheck</value>
@@ -2062,7 +2611,7 @@
         K5oa8TRxSNV0yhcyHquctzhr5Spr9slfGMjpKymuU40hhiXEkYAIBVWUUIaNKO06KRaSdC518I+6/gS5
         FHKVwMixgAo0yK4f/A9+z9bKT016SQEJ6H5xnI9xoGcXaNQc5/vYcRongP8ZuNJb/kodmP0kvdbSQkfA
         4DZwcd3SlD3gcgcYeTJkU3YlP5WQzwPvZ/RNWWD4Fuhf8+bWPMfpA5CmWS3fAAeHQLhA2esd3t3bPrc/
-        77jzg/QDs31ywdXOMVwAAAAJcEhZcwAACw4AAAsOAUC+4UEAAAAHdElNRQfmCREJKAJV/vS9AAAAg0lE
+        77jzg/QDs31ywdXOMVwAAAAJcEhZcwAACw0AAAsNAe0HwCwAAAAHdElNRQfmCREJKAJV/vS9AAAAg0lE
         QVQ4T62O0Q2AMAhEO5Z/friBK7iZi1bRuwqIbU36EpLC3VHSMJZ5yrowLrT0y0AiQ0s3BkF6XRrpEXvw
         phpcimgc9rOoR/z7fOJ7QXrE/51PwgU9i7QXcXtBbYn3IX7jxaiIvBGzaDNGhZo2jn1bc0/B/kbEFl0L
         +JMvarCfpHQAhdLcN/MDyS4AAAAASUVORK5CYII=
@@ -4213,840 +4762,12 @@
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="reloadCheck.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="reloadCheck.Font" type="System.Drawing.Font, System.Drawing">
-    <value>ＭＳ ゴシック, 11.25pt</value>
-  </data>
-  <data name="reloadCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="reloadCheck.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 78</value>
-  </data>
-  <data name="reloadCheck.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 19</value>
-  </data>
-  <data name="reloadCheck.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
-  </data>
-  <data name="reloadCheck.Text" xml:space="preserve">
-    <value>リスト自動更新</value>
-  </data>
-  <data name="reloadCheck.ToolTip" xml:space="preserve">
-    <value>ゲームの情報が保存されているフォルダに変更が生じると、自動的にゲームリストを更新します</value>
-  </data>
-  <data name="&gt;&gt;reloadCheck.Name" xml:space="preserve">
-    <value>reloadCheck</value>
-  </data>
-  <data name="&gt;&gt;reloadCheck.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;reloadCheck.Parent" xml:space="preserve">
-    <value>flowLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;reloadCheck.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="addButton.Font" type="System.Drawing.Font, System.Drawing">
-    <value>ＭＳ ゴシック, 12pt</value>
-  </data>
-  <data name="addButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="addButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="addButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 25</value>
-  </data>
-  <data name="addButton.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
-  </data>
-  <data name="addButton.Text" xml:space="preserve">
-    <value>追加</value>
-  </data>
-  <data name="addButton.ToolTip" xml:space="preserve">
-    <value>ゲームを追加</value>
-  </data>
-  <data name="&gt;&gt;addButton.Name" xml:space="preserve">
-    <value>addButton</value>
-  </data>
-  <data name="&gt;&gt;addButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;addButton.Parent" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;addButton.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>405, 17</value>
   </metadata>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>545, 17</value>
-  </metadata>
-  <data name="sensCheck.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="sensCheck.Font" type="System.Drawing.Font, System.Drawing">
-    <value>ＭＳ ゴシック, 11.25pt</value>
-  </data>
-  <data name="sensCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="sensCheck.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 53</value>
-  </data>
-  <data name="sensCheck.Size" type="System.Drawing.Size, System.Drawing">
-    <value>170, 19</value>
-  </data>
-  <data name="sensCheck.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
-  </data>
-  <data name="sensCheck.Text" xml:space="preserve">
-    <value>センシティブモード</value>
-  </data>
-  <data name="sensCheck.ToolTip" xml:space="preserve">
-    <value>Discord連携時にゲームタイトルを隠します</value>
-  </data>
-  <data name="&gt;&gt;sensCheck.Name" xml:space="preserve">
-    <value>sensCheck</value>
-  </data>
-  <data name="&gt;&gt;sensCheck.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;sensCheck.Parent" xml:space="preserve">
-    <value>flowLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;sensCheck.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="configButton.Font" type="System.Drawing.Font, System.Drawing">
-    <value>ＭＳ ゴシック, 12pt</value>
-  </data>
-  <data name="configButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="configButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>383, 3</value>
-  </data>
-  <data name="configButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 25</value>
-  </data>
-  <data name="configButton.TabIndex" type="System.Int32, mscorlib">
-    <value>28</value>
-  </data>
-  <data name="configButton.Text" xml:space="preserve">
-    <value>設定</value>
-  </data>
-  <data name="configButton.ToolTip" xml:space="preserve">
-    <value>設定を変更</value>
-  </data>
-  <data name="&gt;&gt;configButton.Name" xml:space="preserve">
-    <value>configButton</value>
-  </data>
-  <data name="&gt;&gt;configButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;configButton.Parent" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;configButton.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="editButton.Font" type="System.Drawing.Font, System.Drawing">
-    <value>ＭＳ ゴシック, 12pt</value>
-  </data>
-  <data name="editButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="editButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>155, 3</value>
-  </data>
-  <data name="editButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 25</value>
-  </data>
-  <data name="editButton.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
-  </data>
-  <data name="editButton.Text" xml:space="preserve">
-    <value>編集</value>
-  </data>
-  <data name="editButton.ToolTip" xml:space="preserve">
-    <value>登録ゲームの内容を編集</value>
-  </data>
-  <data name="&gt;&gt;editButton.Name" xml:space="preserve">
-    <value>editButton</value>
-  </data>
-  <data name="&gt;&gt;editButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;editButton.Parent" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;editButton.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="testCheck.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="testCheck.Font" type="System.Drawing.Font, System.Drawing">
-    <value>ＭＳ ゴシック, 11.25pt</value>
-  </data>
-  <data name="testCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="testCheck.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 78</value>
-  </data>
-  <data name="testCheck.Size" type="System.Drawing.Size, System.Drawing">
-    <value>106, 19</value>
-  </data>
-  <data name="testCheck.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
-  </data>
-  <data name="testCheck.Text" xml:space="preserve">
-    <value>テスト起動</value>
-  </data>
-  <data name="testCheck.ToolTip" xml:space="preserve">
-    <value>ゲームを正常にトラッキングできるかお試し実行できます</value>
-  </data>
-  <data name="&gt;&gt;testCheck.Name" xml:space="preserve">
-    <value>testCheck</value>
-  </data>
-  <data name="&gt;&gt;testCheck.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;testCheck.Parent" xml:space="preserve">
-    <value>flowLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;testCheck.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="cleanButton.Font" type="System.Drawing.Font, System.Drawing">
-    <value>ＭＳ ゴシック, 12pt</value>
-  </data>
-  <data name="cleanButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="cleanButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>231, 3</value>
-  </data>
-  <data name="cleanButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 25</value>
-  </data>
-  <data name="cleanButton.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
-  </data>
-  <data name="cleanButton.Text" xml:space="preserve">
-    <value>解放</value>
-  </data>
-  <data name="cleanButton.ToolTip" xml:space="preserve">
-    <value>メモリを開放</value>
-  </data>
-  <data name="&gt;&gt;cleanButton.Name" xml:space="preserve">
-    <value>cleanButton</value>
-  </data>
-  <data name="&gt;&gt;cleanButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cleanButton.Parent" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;cleanButton.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="searchingText.Location" type="System.Drawing.Point, System.Drawing">
-    <value>81, 35</value>
-  </data>
-  <data name="searchingText.Size" type="System.Drawing.Size, System.Drawing">
-    <value>197, 19</value>
-  </data>
-  <data name="searchingText.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="searchingText.ToolTip" xml:space="preserve">
-    <value>searchingText.Text();</value>
-  </data>
-  <data name="&gt;&gt;searchingText.Name" xml:space="preserve">
-    <value>searchingText</value>
-  </data>
-  <data name="&gt;&gt;searchingText.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;searchingText.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;searchingText.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <metadata name="fileSystemWatcher2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>642, 17</value>
   </metadata>
-  <data name="ratedRadio.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ratedRadio.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ratedRadio.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 68</value>
-  </data>
-  <data name="ratedRadio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 16</value>
-  </data>
-  <data name="ratedRadio.TabIndex" type="System.Int32, mscorlib">
-    <value>30</value>
-  </data>
-  <data name="ratedRadio.Text" xml:space="preserve">
-    <value>成人ゲーム</value>
-  </data>
-  <data name="&gt;&gt;ratedRadio.Name" xml:space="preserve">
-    <value>ratedRadio</value>
-  </data>
-  <data name="&gt;&gt;ratedRadio.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ratedRadio.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;ratedRadio.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="normalRadio.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="normalRadio.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="normalRadio.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 43</value>
-  </data>
-  <data name="normalRadio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 16</value>
-  </data>
-  <data name="normalRadio.TabIndex" type="System.Int32, mscorlib">
-    <value>29</value>
-  </data>
-  <data name="normalRadio.Text" xml:space="preserve">
-    <value>一般ゲーム</value>
-  </data>
-  <data name="&gt;&gt;normalRadio.Name" xml:space="preserve">
-    <value>normalRadio</value>
-  </data>
-  <data name="&gt;&gt;normalRadio.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;normalRadio.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;normalRadio.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="useDconCheck.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="useDconCheck.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="useDconCheck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="useDconCheck.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 18</value>
-  </data>
-  <data name="useDconCheck.Size" type="System.Drawing.Size, System.Drawing">
-    <value>114, 16</value>
-  </data>
-  <data name="useDconCheck.TabIndex" type="System.Int32, mscorlib">
-    <value>52</value>
-  </data>
-  <data name="useDconCheck.Text" xml:space="preserve">
-    <value>Discordと連携する</value>
-  </data>
-  <data name="&gt;&gt;useDconCheck.Name" xml:space="preserve">
-    <value>useDconCheck</value>
-  </data>
-  <data name="&gt;&gt;useDconCheck.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;useDconCheck.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;useDconCheck.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="tabPage1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="tabPage1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>337, 394</value>
-  </data>
-  <data name="tabPage1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>リスト</value>
-  </data>
-  <data name="&gt;&gt;tabPage1.Name" xml:space="preserve">
-    <value>tabPage1</value>
-  </data>
-  <data name="&gt;&gt;tabPage1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPage1.Parent" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;tabPage1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;trackBar1.Name" xml:space="preserve">
-    <value>trackBar1</value>
-  </data>
-  <data name="&gt;&gt;trackBar1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;trackBar1.Parent" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
-  <data name="&gt;&gt;trackBar1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;gameImgList.Name" xml:space="preserve">
-    <value>gameImgList</value>
-  </data>
-  <data name="&gt;&gt;gameImgList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gameImgList.Parent" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
-  <data name="&gt;&gt;gameImgList.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tabPage2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="tabPage2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>337, 394</value>
-  </data>
-  <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>グリッド</value>
-  </data>
-  <data name="&gt;&gt;tabPage2.Name" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
-  <data name="&gt;&gt;tabPage2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPage2.Parent" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;tabPage2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="trackBar1.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="trackBar1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 375</value>
-  </data>
-  <data name="trackBar1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>330, 14</value>
-  </data>
-  <data name="trackBar1.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;trackBar1.Name" xml:space="preserve">
-    <value>trackBar1</value>
-  </data>
-  <data name="&gt;&gt;trackBar1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;trackBar1.Parent" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
-  <data name="&gt;&gt;trackBar1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <metadata name="imageList1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>801, 17</value>
-  </metadata>
-  <data name="imageList1.ImageSize" type="System.Drawing.Size, System.Drawing">
-    <value>32, 32</value>
-  </data>
-  <data name="gameImgList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="gameImgList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>330, 366</value>
-  </data>
-  <data name="gameImgList.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;gameImgList.Name" xml:space="preserve">
-    <value>gameImgList</value>
-  </data>
-  <data name="&gt;&gt;gameImgList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gameImgList.Parent" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
-  <data name="&gt;&gt;gameImgList.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;lastOrderDrop.Name" xml:space="preserve">
-    <value>lastOrderDrop</value>
-  </data>
-  <data name="&gt;&gt;lastOrderDrop.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lastOrderDrop.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;lastOrderDrop.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;lastSearchOption.Name" xml:space="preserve">
-    <value>lastSearchOption</value>
-  </data>
-  <data name="&gt;&gt;lastSearchOption.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lastSearchOption.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;lastSearchOption.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;orderDropDown.Name" xml:space="preserve">
-    <value>orderDropDown</value>
-  </data>
-  <data name="&gt;&gt;orderDropDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;orderDropDown.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;orderDropDown.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;searchTargetDropDown.Name" xml:space="preserve">
-    <value>searchTargetDropDown</value>
-  </data>
-  <data name="&gt;&gt;searchTargetDropDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;searchTargetDropDown.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;searchTargetDropDown.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;searchingText.Name" xml:space="preserve">
-    <value>searchingText</value>
-  </data>
-  <data name="&gt;&gt;searchingText.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;searchingText.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;searchingText.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;searchButton.Name" xml:space="preserve">
-    <value>searchButton</value>
-  </data>
-  <data name="&gt;&gt;searchButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;searchButton.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;searchButton.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;searchText.Name" xml:space="preserve">
-    <value>searchText</value>
-  </data>
-  <data name="&gt;&gt;searchText.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;searchText.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;searchText.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;searchResultList.Name" xml:space="preserve">
-    <value>searchResultList</value>
-  </data>
-  <data name="&gt;&gt;searchResultList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;searchResultList.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;searchResultList.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="tabPage3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>337, 394</value>
-  </data>
-  <data name="tabPage3.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="tabPage3.Text" xml:space="preserve">
-    <value>検索</value>
-  </data>
-  <data name="&gt;&gt;tabPage3.Name" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;tabPage3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPage3.Parent" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;tabPage3.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="lastOrderDrop.AutoCompleteCustomSource" xml:space="preserve">
-    <value>昇</value>
-  </data>
-  <data name="lastOrderDrop.AutoCompleteCustomSource1" xml:space="preserve">
-    <value>降</value>
-  </data>
-  <data name="lastOrderDrop.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="lastOrderDrop.Items" xml:space="preserve">
-    <value>昇順</value>
-  </data>
-  <data name="lastOrderDrop.Items1" xml:space="preserve">
-    <value>降順</value>
-  </data>
-  <data name="lastOrderDrop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>284, 35</value>
-  </data>
-  <data name="lastOrderDrop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>49, 20</value>
-  </data>
-  <data name="lastOrderDrop.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;lastOrderDrop.Name" xml:space="preserve">
-    <value>lastOrderDrop</value>
-  </data>
-  <data name="&gt;&gt;lastOrderDrop.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lastOrderDrop.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;lastOrderDrop.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="lastSearchOption.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="lastSearchOption.Items" xml:space="preserve">
-    <value>タイトル</value>
-  </data>
-  <data name="lastSearchOption.Items1" xml:space="preserve">
-    <value>最終起動</value>
-  </data>
-  <data name="lastSearchOption.Items2" xml:space="preserve">
-    <value>dcontメモ</value>
-  </data>
-  <data name="lastSearchOption.Items3" xml:space="preserve">
-    <value>実行パス</value>
-  </data>
-  <data name="lastSearchOption.Items4" xml:space="preserve">
-    <value>画像パス</value>
-  </data>
-  <data name="lastSearchOption.Items5" xml:space="preserve">
-    <value>メモ</value>
-  </data>
-  <data name="lastSearchOption.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 35</value>
-  </data>
-  <data name="lastSearchOption.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 20</value>
-  </data>
-  <data name="lastSearchOption.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;lastSearchOption.Name" xml:space="preserve">
-    <value>lastSearchOption</value>
-  </data>
-  <data name="&gt;&gt;lastSearchOption.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lastSearchOption.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;lastSearchOption.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="orderDropDown.AutoCompleteCustomSource" xml:space="preserve">
-    <value>昇</value>
-  </data>
-  <data name="orderDropDown.AutoCompleteCustomSource1" xml:space="preserve">
-    <value>降</value>
-  </data>
-  <data name="orderDropDown.Items" xml:space="preserve">
-    <value>昇順</value>
-  </data>
-  <data name="orderDropDown.Items1" xml:space="preserve">
-    <value>降順</value>
-  </data>
-  <data name="orderDropDown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>219, 9</value>
-  </data>
-  <data name="orderDropDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>49, 20</value>
-  </data>
-  <data name="orderDropDown.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;orderDropDown.Name" xml:space="preserve">
-    <value>orderDropDown</value>
-  </data>
-  <data name="&gt;&gt;orderDropDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;orderDropDown.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;orderDropDown.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="searchTargetDropDown.Items" xml:space="preserve">
-    <value>タイトル</value>
-  </data>
-  <data name="searchTargetDropDown.Items1" xml:space="preserve">
-    <value>最終起動</value>
-  </data>
-  <data name="searchTargetDropDown.Items2" xml:space="preserve">
-    <value>dconメモ</value>
-  </data>
-  <data name="searchTargetDropDown.Items3" xml:space="preserve">
-    <value>実行パス</value>
-  </data>
-  <data name="searchTargetDropDown.Items4" xml:space="preserve">
-    <value>画像パス</value>
-  </data>
-  <data name="searchTargetDropDown.Items5" xml:space="preserve">
-    <value>メモ</value>
-  </data>
-  <data name="searchTargetDropDown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 9</value>
-  </data>
-  <data name="searchTargetDropDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 20</value>
-  </data>
-  <data name="searchTargetDropDown.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;searchTargetDropDown.Name" xml:space="preserve">
-    <value>searchTargetDropDown</value>
-  </data>
-  <data name="&gt;&gt;searchTargetDropDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;searchTargetDropDown.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;searchTargetDropDown.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="searchButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>274, 8</value>
-  </data>
-  <data name="searchButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 23</value>
-  </data>
-  <data name="searchButton.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="searchButton.Text" xml:space="preserve">
-    <value>検索</value>
-  </data>
-  <data name="&gt;&gt;searchButton.Name" xml:space="preserve">
-    <value>searchButton</value>
-  </data>
-  <data name="&gt;&gt;searchButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;searchButton.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;searchButton.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="searchText.Location" type="System.Drawing.Point, System.Drawing">
-    <value>81, 10</value>
-  </data>
-  <data name="searchText.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 19</value>
-  </data>
-  <data name="searchText.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;searchText.Name" xml:space="preserve">
-    <value>searchText</value>
-  </data>
-  <data name="&gt;&gt;searchText.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;searchText.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;searchText.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="searchResultList.Font" type="System.Drawing.Font, System.Drawing">
-    <value>ＭＳ ゴシック, 9.75pt</value>
-  </data>
-  <data name="searchResultList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 63</value>
-  </data>
-  <data name="searchResultList.Size" type="System.Drawing.Size, System.Drawing">
-    <value>330, 329</value>
-  </data>
-  <data name="searchResultList.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;searchResultList.Name" xml:space="preserve">
-    <value>searchResultList</value>
-  </data>
-  <data name="&gt;&gt;searchResultList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;searchResultList.Parent" xml:space="preserve">
-    <value>tabPage3</value>
-  </data>
-  <data name="&gt;&gt;searchResultList.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <metadata name="imageList2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>911, 17</value>
   </metadata>

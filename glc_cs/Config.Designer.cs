@@ -41,6 +41,7 @@
 			this.linkLabel2 = new System.Windows.Forms.LinkLabel();
 			this.dconAppIDText = new System.Windows.Forms.TextBox();
 			this.portText = new System.Windows.Forms.TextBox();
+			this.dbBackupButton = new System.Windows.Forms.Button();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage7 = new System.Windows.Forms.TabPage();
 			this.groupBox14 = new System.Windows.Forms.GroupBox();
@@ -81,7 +82,7 @@
 			this.groupBox10 = new System.Windows.Forms.GroupBox();
 			this.label29 = new System.Windows.Forms.Label();
 			this.label28 = new System.Windows.Forms.Label();
-			this.button5 = new System.Windows.Forms.Button();
+			this.createTableButton = new System.Windows.Forms.Button();
 			this.label24 = new System.Windows.Forms.Label();
 			this.tableText = new System.Windows.Forms.TextBox();
 			this.label23 = new System.Windows.Forms.Label();
@@ -171,7 +172,7 @@
 			// 
 			// getDconButton
 			// 
-			this.getDconButton.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.getDconButton.Font = new System.Drawing.Font("ＭＳ ゴシック", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.getDconButton.Location = new System.Drawing.Point(368, 22);
 			this.getDconButton.Name = "getDconButton";
 			this.getDconButton.Size = new System.Drawing.Size(95, 29);
@@ -236,7 +237,7 @@
 			// linkLabel2
 			// 
 			this.linkLabel2.AutoSize = true;
-			this.linkLabel2.Location = new System.Drawing.Point(176, 164);
+			this.linkLabel2.Location = new System.Drawing.Point(172, 160);
 			this.linkLabel2.Name = "linkLabel2";
 			this.linkLabel2.Size = new System.Drawing.Size(103, 12);
 			this.linkLabel2.TabIndex = 5;
@@ -251,7 +252,7 @@
 			this.dconAppIDText.Location = new System.Drawing.Point(6, 22);
 			this.dconAppIDText.MaxLength = 20;
 			this.dconAppIDText.Name = "dconAppIDText";
-			this.dconAppIDText.Size = new System.Drawing.Size(411, 23);
+			this.dconAppIDText.Size = new System.Drawing.Size(384, 23);
 			this.dconAppIDText.TabIndex = 0;
 			this.toolTip1.SetToolTip(this.dconAppIDText, "ご自身で管理しているApplicationに切替できます。");
 			// 
@@ -264,6 +265,18 @@
 			this.portText.Size = new System.Drawing.Size(59, 23);
 			this.portText.TabIndex = 17;
 			this.toolTip1.SetToolTip(this.portText, "MSSQLの既定【1433】\r\nMySQLの既定【3306】");
+			// 
+			// dbBackupButton
+			// 
+			this.dbBackupButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.dbBackupButton.Location = new System.Drawing.Point(397, 127);
+			this.dbBackupButton.Name = "dbBackupButton";
+			this.dbBackupButton.Size = new System.Drawing.Size(64, 23);
+			this.dbBackupButton.TabIndex = 19;
+			this.dbBackupButton.Text = "バックアップ";
+			this.toolTip1.SetToolTip(this.dbBackupButton, "データベースをバックアップします");
+			this.dbBackupButton.UseVisualStyleBackColor = true;
+			this.dbBackupButton.Click += new System.EventHandler(this.dbBackupButton_Click);
 			// 
 			// tabControl1
 			// 
@@ -401,12 +414,12 @@
 			// 
 			// dconAppIDClearButton
 			// 
-			this.dconAppIDClearButton.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.dconAppIDClearButton.Location = new System.Drawing.Point(423, 22);
+			this.dconAppIDClearButton.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.dconAppIDClearButton.Location = new System.Drawing.Point(402, 22);
 			this.dconAppIDClearButton.Name = "dconAppIDClearButton";
-			this.dconAppIDClearButton.Size = new System.Drawing.Size(40, 23);
+			this.dconAppIDClearButton.Size = new System.Drawing.Size(61, 23);
 			this.dconAppIDClearButton.TabIndex = 1;
-			this.dconAppIDClearButton.Text = "clr";
+			this.dconAppIDClearButton.Text = "クリア";
 			this.dconAppIDClearButton.UseVisualStyleBackColor = true;
 			this.dconAppIDClearButton.Click += new System.EventHandler(this.button11_Click);
 			// 
@@ -673,10 +686,11 @@
 			// 
 			// groupBox10
 			// 
+			this.groupBox10.Controls.Add(this.dbBackupButton);
 			this.groupBox10.Controls.Add(this.label29);
 			this.groupBox10.Controls.Add(this.portText);
 			this.groupBox10.Controls.Add(this.label28);
-			this.groupBox10.Controls.Add(this.button5);
+			this.groupBox10.Controls.Add(this.createTableButton);
 			this.groupBox10.Controls.Add(this.label24);
 			this.groupBox10.Controls.Add(this.tableText);
 			this.groupBox10.Controls.Add(this.label23);
@@ -696,7 +710,7 @@
 			this.groupBox10.Size = new System.Drawing.Size(467, 208);
 			this.groupBox10.TabIndex = 3;
 			this.groupBox10.TabStop = false;
-			this.groupBox10.Text = "作業ディレクトリ／ファイル";
+			this.groupBox10.Text = "作業ディレクトリ／データベース";
 			// 
 			// label29
 			// 
@@ -711,24 +725,24 @@
 			// label28
 			// 
 			this.label28.AutoSize = true;
-			this.label28.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label28.Location = new System.Drawing.Point(2, 158);
+			this.label28.Font = new System.Drawing.Font("MS UI Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label28.Location = new System.Drawing.Point(28, 161);
 			this.label28.Name = "label28";
-			this.label28.Size = new System.Drawing.Size(464, 45);
+			this.label28.Size = new System.Drawing.Size(406, 39);
 			this.label28.TabIndex = 16;
 			this.label28.Text = "DB/Table自動作成を行う場合、URL、Port、User、Passを入力してください。\r\nMySQLを使用する場合、上記に加えてDBも入力してください。\r\n" +
     "対象のDBへのフルアクセス権（GRANT ALL PRIVILEGES）が必要です。";
 			// 
-			// button5
+			// createTableButton
 			// 
-			this.button5.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.button5.Location = new System.Drawing.Point(397, 98);
-			this.button5.Name = "button5";
-			this.button5.Size = new System.Drawing.Size(64, 54);
-			this.button5.TabIndex = 15;
-			this.button5.Text = "DB/Table自動作成";
-			this.button5.UseVisualStyleBackColor = true;
-			this.button5.Click += new System.EventHandler(this.button5_Click);
+			this.createTableButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.createTableButton.Location = new System.Drawing.Point(397, 69);
+			this.createTableButton.Name = "createTableButton";
+			this.createTableButton.Size = new System.Drawing.Size(64, 52);
+			this.createTableButton.TabIndex = 15;
+			this.createTableButton.Text = "DB/Table自動作成";
+			this.createTableButton.UseVisualStyleBackColor = true;
+			this.createTableButton.Click += new System.EventHandler(this.createTableButton_Click);
 			// 
 			// label24
 			// 
@@ -876,7 +890,7 @@
 			// radioButton5
 			// 
 			this.radioButton5.AutoSize = true;
-			this.radioButton5.Location = new System.Drawing.Point(322, 25);
+			this.radioButton5.Location = new System.Drawing.Point(311, 25);
 			this.radioButton5.Name = "radioButton5";
 			this.radioButton5.Size = new System.Drawing.Size(111, 20);
 			this.radioButton5.TabIndex = 4;
@@ -894,12 +908,13 @@
 			this.checkBox8.TabIndex = 3;
 			this.checkBox8.Text = "オフラインに保存";
 			this.checkBox8.UseVisualStyleBackColor = true;
+			this.checkBox8.CheckedChanged += new System.EventHandler(this.checkBox8_CheckedChanged);
 			// 
 			// radioButton9
 			// 
 			this.radioButton9.AutoSize = true;
 			this.radioButton9.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.radioButton9.Location = new System.Drawing.Point(182, 25);
+			this.radioButton9.Location = new System.Drawing.Point(168, 25);
 			this.radioButton9.Name = "radioButton9";
 			this.radioButton9.Size = new System.Drawing.Size(113, 20);
 			this.radioButton9.TabIndex = 1;
@@ -912,12 +927,12 @@
 			this.radioButton8.AutoSize = true;
 			this.radioButton8.Checked = true;
 			this.radioButton8.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.radioButton8.Location = new System.Drawing.Point(23, 25);
+			this.radioButton8.Location = new System.Drawing.Point(48, 25);
 			this.radioButton8.Name = "radioButton8";
-			this.radioButton8.Size = new System.Drawing.Size(136, 20);
+			this.radioButton8.Size = new System.Drawing.Size(88, 20);
 			this.radioButton8.TabIndex = 0;
 			this.radioButton8.TabStop = true;
-			this.radioButton8.Text = "INIファイル（従来）";
+			this.radioButton8.Text = "INIファイル";
 			this.radioButton8.UseVisualStyleBackColor = true;
 			this.radioButton8.CheckedChanged += new System.EventHandler(this.radioButton8_CheckedChanged);
 			// 
@@ -1131,7 +1146,7 @@
 			// linkLabel3
 			// 
 			this.linkLabel3.AutoSize = true;
-			this.linkLabel3.Location = new System.Drawing.Point(176, 219);
+			this.linkLabel3.Location = new System.Drawing.Point(172, 215);
 			this.linkLabel3.Name = "linkLabel3";
 			this.linkLabel3.Size = new System.Drawing.Size(200, 12);
 			this.linkLabel3.TabIndex = 9;
@@ -1142,7 +1157,7 @@
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(126, 219);
+			this.label8.Location = new System.Drawing.Point(122, 215);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(46, 12);
 			this.label8.TabIndex = 8;
@@ -1151,7 +1166,7 @@
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(126, 248);
+			this.label7.Location = new System.Drawing.Point(122, 244);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(205, 12);
 			this.label7.TabIndex = 7;
@@ -1160,7 +1175,7 @@
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(79, 299);
+			this.label6.Location = new System.Drawing.Point(78, 296);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(335, 12);
 			this.label6.TabIndex = 6;
@@ -1169,7 +1184,7 @@
 			// linkLabel1
 			// 
 			this.linkLabel1.AutoSize = true;
-			this.linkLabel1.Location = new System.Drawing.Point(176, 191);
+			this.linkLabel1.Location = new System.Drawing.Point(172, 187);
 			this.linkLabel1.Name = "linkLabel1";
 			this.linkLabel1.Size = new System.Drawing.Size(97, 12);
 			this.linkLabel1.TabIndex = 4;
@@ -1181,7 +1196,7 @@
 			// 
 			this.label5.AutoSize = true;
 			this.label5.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label5.Location = new System.Drawing.Point(126, 191);
+			this.label5.Location = new System.Drawing.Point(122, 187);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(32, 12);
 			this.label5.TabIndex = 3;
@@ -1191,7 +1206,7 @@
 			// 
 			this.label4.AutoSize = true;
 			this.label4.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label4.Location = new System.Drawing.Point(126, 164);
+			this.label4.Location = new System.Drawing.Point(122, 160);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(32, 12);
 			this.label4.TabIndex = 2;
@@ -1201,7 +1216,7 @@
 			// 
 			this.label3.AutoSize = true;
 			this.label3.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label3.Location = new System.Drawing.Point(126, 136);
+			this.label3.Location = new System.Drawing.Point(122, 132);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(165, 12);
 			this.label3.TabIndex = 1;
@@ -1372,7 +1387,7 @@
 		private System.Windows.Forms.TextBox pwText;
 		private System.Windows.Forms.Label label18;
 		private System.Windows.Forms.TextBox userText;
-		private System.Windows.Forms.Button button5;
+		private System.Windows.Forms.Button createTableButton;
 		private System.Windows.Forms.GroupBox groupBox12;
 		private System.Windows.Forms.Button button9;
 		private System.Windows.Forms.CheckBox checkBox6;
@@ -1401,5 +1416,6 @@
 		private System.Windows.Forms.CheckBox gridDisableCheck;
 		private System.Windows.Forms.Label label30;
 		private System.Windows.Forms.PictureBox pictureBox1;
+		private System.Windows.Forms.Button dbBackupButton;
 	}
 }
