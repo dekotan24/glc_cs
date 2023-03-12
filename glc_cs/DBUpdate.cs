@@ -196,7 +196,7 @@ namespace glc_cs
 				{
 					string errorMsg = "[v1.0 -> v1.1 | sys.columns] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText + " / hasUpdate:" + hasUpdate;
 					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
-					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+					errMsg.AppendLine(errorMsg);
 				}
 				finally
 				{
@@ -355,7 +355,7 @@ namespace glc_cs
 					for (int curCount = 1; curCount <= fileCount; curCount++)
 					{
 						// 読込iniファイル名更新
-						readini = gameDirName + "\\" + curCount + ".ini";
+						readini = gameDirName + curCount + ".ini";
 
 						if (File.Exists(readini))
 						{
@@ -429,6 +429,7 @@ namespace glc_cs
 			// エラー表示
 			if (errMsg.ToString().Length > 0)
 			{
+				General.Var.WriteErrorLog("アップデートチェック中にエラーが発生しました。", MethodBase.GetCurrentMethod().Name, errMsg.ToString());
 				MessageBox.Show("アップデートチェック中にエラーが発生しました。\n\n" + errMsg.ToString(), General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 

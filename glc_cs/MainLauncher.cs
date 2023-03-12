@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -95,7 +94,7 @@ namespace glc_cs
 						}
 						catch (Exception ex)
 						{
-							resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0);
+							resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
 						}
 					}
 				}
@@ -190,7 +189,7 @@ namespace glc_cs
 				else
 				{
 					// 個別ini存在しない場合
-					resolveError(MethodBase.GetCurrentMethod().Name, "iniファイル読み込み中にエラー。\nファイルが存在しません。\n\n処理を中断します。\n予期せぬ不具合の発生につながる場合があります。\n直ちに終了することをお勧めしますが、このまま実行することもできます。", 0, false);
+					resolveError(MethodBase.GetCurrentMethod().Name, "iniファイル読み込み中にエラー。\nファイルが存在しません。\n\n[設定]→[ツール]→[【INI】連番修正]を実行してください。", 0, false, readini);
 					this.ResumeLayout();
 					break;
 				}
@@ -199,7 +198,15 @@ namespace glc_cs
 			// ゲームが登録されていれば1つ目を選択した状態にする
 			if (General.Var.GameMax >= 1)
 			{
-				gameList.SelectedIndex = 0;
+				try
+				{
+					gameList.SelectedIndex = 0;
+				}
+				catch (Exception ex)
+				{
+					resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false, "GameMax:" + General.Var.GameMax.ToString());
+					gameList.SelectedIndex = -1;
+				}
 			}
 
 			Application.DoEvents();
@@ -667,7 +674,7 @@ namespace glc_cs
 			{
 				// iniの場合、ステータス状態を書き込み
 				// Discordカスタムステータス、各種チェックボックス、ラジオの保存
-				String path = General.Var.GameDir + "\\" + (gameList.SelectedIndex + 1) + ".ini";
+				String path = General.Var.GameDir + (gameList.SelectedIndex + 1) + ".ini";
 				if (File.Exists(path))
 				{
 					iniEditCheck(path, "game", "stat", (dconText.Text.Trim()), string.Empty);
@@ -702,8 +709,8 @@ namespace glc_cs
 					{
 						if (General.Var.SaveType == "I" || General.Var.SaveType == "T")
 						{
-							iniEditCheck(General.Var.GameDir + "\\" + (gameList.SelectedIndex + 1).ToString() + ".ini", "game", "stat", dconText.Text, string.Empty);
-							iniEditCheck(General.Var.GameDir + "\\" + (gameList.SelectedIndex + 1).ToString() + ".ini", "game", "dcon_img", dconImgText.Text, string.Empty);
+							iniEditCheck(General.Var.GameDir + (gameList.SelectedIndex + 1).ToString() + ".ini", "game", "stat", dconText.Text, string.Empty);
+							iniEditCheck(General.Var.GameDir + (gameList.SelectedIndex + 1).ToString() + ".ini", "game", "dcon_img", dconImgText.Text, string.Empty);
 						}
 
 						// 現在時刻取得
@@ -717,7 +724,7 @@ namespace glc_cs
 							if (File.Exists(General.Var.DconPath))
 							{
 								// propertiesファイル書き込み
-								String propertiesfile = System.IO.Path.GetDirectoryName(General.Var.DconPath) + "\\run.properties";
+								String propertiesfile = Path.GetDirectoryName(General.Var.DconPath) + "\\run.properties";
 								Encoding enc = Encoding.GetEncoding("Shift-JIS");
 								StreamWriter writer = new StreamWriter(propertiesfile, false, enc);
 
@@ -759,7 +766,7 @@ namespace glc_cs
 						}
 
 						// 既定ディレクトリの変更
-						String apppath = System.IO.Path.GetDirectoryName(exePathText.Text);
+						String apppath = Path.GetDirectoryName(exePathText.Text);
 						System.Environment.CurrentDirectory = apppath;
 
 						// 起動中gifの可視化
@@ -774,7 +781,7 @@ namespace glc_cs
 						System.Diagnostics.Process.Start(exePathText.Text);
 
 						// 棒読み上げ
-						if (General.Var.ByRoS)
+						if (General.Var.ByActive && General.Var.ByRoS)
 						{
 							General.Var.Bouyomiage(nameText.Text + "を、トラッキングありで起動しました。");
 						}
@@ -783,7 +790,7 @@ namespace glc_cs
 						p.WaitForExit();
 
 						// ゲーム終了
-						System.Environment.CurrentDirectory = General.Var.BaseDir;
+						Environment.CurrentDirectory = General.Var.BaseDir;
 
 						if (minCheck.Checked == true)
 						{
@@ -805,7 +812,7 @@ namespace glc_cs
 						String temp = (endtime - starttime).ToString();
 						int anss = Convert.ToInt32(TimeSpan.Parse(temp).TotalSeconds);
 
-						if (General.Var.ByRoS)
+						if (General.Var.ByActive && General.Var.ByRoS)
 						{
 							General.Var.Bouyomiage("ゲームを終了しました。起動時間は、約" + anss + "秒です。");
 						}
@@ -827,7 +834,7 @@ namespace glc_cs
 						{
 							// ini
 							int selecteditem = gameList.SelectedIndex + 1;
-							String readini = General.Var.GameDir + "\\" + selecteditem + ".ini";
+							String readini = General.Var.GameDir + selecteditem + ".ini";
 
 							if (File.Exists(readini))
 							{
@@ -951,7 +958,7 @@ namespace glc_cs
 							}
 
 
-							listBox1_SelectedIndexChanged(null, null);
+							gameList_SelectedIndexChanged(null, null);
 							if (General.Var.SaveType == "I" && reloadCheck.Checked)
 							{
 								fileSystemWatcher1.EnableRaisingEvents = true;
@@ -971,10 +978,10 @@ namespace glc_cs
 					}
 					else
 					{
-						String apppath = System.IO.Path.GetDirectoryName(exePathText.Text);
+						String apppath = Path.GetDirectoryName(exePathText.Text);
 						System.Environment.CurrentDirectory = apppath;
 
-						if (General.Var.ByRoS)
+						if (General.Var.ByActive && General.Var.ByRoS)
 						{
 							General.Var.Bouyomiage(nameText.Text + "を、トラッキングなしで起動しました。");
 						}
@@ -989,7 +996,7 @@ namespace glc_cs
 					MessageBox.Show("テスト起動モードが有効です。\nこのモードでは起動時間、起動回数、DiscordRPCなどは実行されません。\n\n無効にするには、[テスト起動]チェックを外してください。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 					// 作業ディレクトリ変更
-					String apppath = System.IO.Path.GetDirectoryName(exePathText.Text);
+					String apppath = Path.GetDirectoryName(exePathText.Text);
 					System.Environment.CurrentDirectory = apppath;
 
 					// 起動中gifの可視化
@@ -1008,7 +1015,7 @@ namespace glc_cs
 					System.Diagnostics.Process.Start(exePathText.Text);
 
 					// 棒読み上げ
-					if (General.Var.ByRoS)
+					if (General.Var.ByActive && General.Var.ByRoS)
 					{
 						General.Var.Bouyomiage(nameText.Text + "を、テストモードで起動しました。");
 					}
@@ -1042,6 +1049,7 @@ namespace glc_cs
 
 				}
 			}
+			GC.Collect();
 		}
 
 		/// <summary>
@@ -1051,6 +1059,7 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void addButton_Click(object sender, EventArgs e)
 		{
+			/*
 			String exeans = "", imgans = "", ratedata = "";
 			openFileDialog1.Title = "追加する実行ファイルを選択";
 			openFileDialog1.Filter = "実行ファイル (*.exe)|*.exe|すべてのファイル (*.*)|*.*";
@@ -1066,7 +1075,7 @@ namespace glc_cs
 
 			openFileDialog1.Title = "実行ファイルの画像を選択";
 			openFileDialog1.Filter = "画像ファイル (*.png;*.jpg;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif";
-			openFileDialog1.FileName = System.IO.Path.GetFileNameWithoutExtension(exeans).ToString() + ".png";
+			openFileDialog1.FileName = Path.GetFileNameWithoutExtension(exeans).ToString() + ".png";
 			if (openFileDialog1.ShowDialog() == DialogResult.OK)
 			{
 				imgans = openFileDialog1.FileName;
@@ -1076,7 +1085,7 @@ namespace glc_cs
 				imgans = "";
 			}
 
-			String filename = System.IO.Path.GetFileNameWithoutExtension(exeans);
+			String filename = Path.GetFileNameWithoutExtension(exeans);
 			string appname_ans = Interaction.InputBox(
 				"アプリ名を設定", General.Var.AppName, filename, -1, -1);
 
@@ -1235,9 +1244,40 @@ namespace glc_cs
 					}
 				}
 			}
+			*/
 
-			reloadButton_Click(null, null);
+			if (General.Var.SaveType == "D")
+			{
+				SqlConnection cn = General.Var.SqlCon;
 
+				AddItem addItem = new AddItem(General.Var.SaveType, cn);
+				addItem.StartPosition = FormStartPosition.CenterParent;
+				addItem.ShowDialog(this);
+			}
+			else if (General.Var.SaveType == "M")
+			{
+				MySqlConnection cn = General.Var.SqlCon2;
+
+				AddItem addItem = new AddItem(General.Var.SaveType, cn);
+				addItem.StartPosition = FormStartPosition.CenterParent;
+				addItem.ShowDialog(this);
+			}
+			else
+			{
+				fileSystemWatcher1.EnableRaisingEvents = false;
+
+				AddItem addItem = new AddItem(General.Var.SaveType);
+				addItem.StartPosition = FormStartPosition.CenterParent;
+				addItem.ShowDialog(this);
+
+				if (reloadCheck.Checked)
+				{
+					fileSystemWatcher1.EnableRaisingEvents = true;
+				}
+			}
+
+			reloadItems();
+			GC.Collect();
 		}
 
 		private void infoButton_Click(object sender, EventArgs e)
@@ -1248,7 +1288,7 @@ namespace glc_cs
 								MessageBoxIcon.Information);
 		}
 
-		private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+		private void gameList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (!(General.Var.GameMax >= 1))
 			{
@@ -1264,7 +1304,7 @@ namespace glc_cs
 
 			// ゲーム詳細取得
 			int selecteditem = gameList.SelectedIndex + 1;
-			String readini = General.Var.GameDir + "\\" + selecteditem + ".ini";
+			String readini = General.Var.GameDir + selecteditem + ".ini";
 			String id = null, namedata = null, imgpassdata = null, passdata = null, stimedata = null, startdata = null, cmtdata = null, dcon_imgdata = null, rating = null, status = null;
 
 			if (General.Var.SaveType == "I" || General.Var.SaveType == "T")
@@ -1428,7 +1468,7 @@ namespace glc_cs
 			exePathText.Text = passdata;
 			imgPathText.Text = imgpassdata;
 			runTimeText.Text = timedata.ToString();
-			startTimeText.Text = startdata;
+			startCountText.Text = startdata;
 			dconText.Text = cmtdata;
 			dconImgText.Text = dcon_imgdata;
 			statusCombo.SelectedItem = status;
@@ -1471,7 +1511,7 @@ namespace glc_cs
 				gameIcon.ImageLocation = "";
 			}
 
-			if ((runTimeText.Text == "35791394") || (startTimeText.Text == Int32.MaxValue.ToString()))
+			if ((runTimeText.Text == "35791394") || (startCountText.Text == Int32.MaxValue.ToString()))
 			{
 				// 最大の場合、実行できないようにする
 				startButton.Enabled = false;
@@ -1526,7 +1566,7 @@ namespace glc_cs
 				int total = Convert.ToInt32(runTimeText.Text);
 				String hour = (total / 60).ToString();
 				String min = (total % 60).ToString();
-				int sTotal = (Convert.ToInt32(startTimeText.Text) == 0 ? 1 : Convert.ToInt32(startTimeText.Text));
+				int sTotal = (Convert.ToInt32(startCountText.Text) == 0 ? 1 : Convert.ToInt32(startCountText.Text));
 				string sMin = (total / sTotal).ToString();
 				string sHour = (Convert.ToInt32(sMin) / 60).ToString();
 				sMin = (Convert.ToInt32(sMin) % 60).ToString();
@@ -1682,17 +1722,12 @@ namespace glc_cs
 					normalRadio.Checked = true;
 				}
 
-				if (Convert.ToInt32(General.Var.IniRead(General.Var.ConfigIni, "connect", "ByActive", "0")) == 1)
+				if (General.Var.ByActive)
 				{
-					General.Var.ByActive = true;
 					if (General.Var.ByRoW)
 					{
-						bouyomi_configload();
+						bouyomiConfigLoad();
 					}
-				}
-				else
-				{
-					General.Var.ByActive = false;
 				}
 
 				if (File.Exists(bgimg))
@@ -1733,7 +1768,7 @@ namespace glc_cs
 				// ini存在しない場合
 				File.Create(General.Var.ConfigIni).Close();
 				General.Var.GameDir = General.Var.BaseDir + "Data";
-				General.Var.GameIni = General.Var.GameDir + "\\game.ini";
+				General.Var.GameIni = General.Var.GameDir + "game.ini";
 				trackCheck.Checked = true;
 				minCheck.Checked = true;
 				fileSystemWatcher2.Path = General.Var.BaseDir;
@@ -1933,7 +1968,7 @@ namespace glc_cs
 				Editor form5 = new Editor(General.Var.SaveType, selectedListCount, cn, cm);
 				form5.StartPosition = FormStartPosition.CenterParent;
 				form5.ShowDialog(this);
-				listBox1_SelectedIndexChanged(null, null);
+				gameList_SelectedIndexChanged(null, null);
 				return;
 			}
 			else if (General.Var.SaveType == "M")
@@ -1954,18 +1989,18 @@ namespace glc_cs
 				Editor form5 = new Editor(General.Var.SaveType, selectedListCount, cn, cm);
 				form5.StartPosition = FormStartPosition.CenterParent;
 				form5.ShowDialog(this);
-				listBox1_SelectedIndexChanged(null, null);
+				gameList_SelectedIndexChanged(null, null);
 				return;
 			}
 
 			// Discordカスタムステータス、各種チェックボックス、ラジオの保存
-			String path = General.Var.GameDir + "\\" + (gameList.SelectedIndex + 1) + ".ini";
+			String path = General.Var.GameDir + (gameList.SelectedIndex + 1) + ".ini";
 			if (File.Exists(path))
 			{
 				Editor form5 = new Editor(General.Var.SaveType, selectedListCount, new SqlConnection(), new SqlCommand());
 				form5.StartPosition = FormStartPosition.CenterParent;
 				form5.ShowDialog(this);
-				listBox1_SelectedIndexChanged(null, null);
+				gameList_SelectedIndexChanged(null, null);
 			}
 			else
 			{
@@ -1973,6 +2008,7 @@ namespace glc_cs
 				resolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報保管iniが存在しません。\n" + path, 0, false);
 			}
 
+			GC.Collect();
 			return;
 		}
 
@@ -2009,7 +2045,7 @@ namespace glc_cs
 				Memo memoForm = new Memo(General.Var.SaveType, selectedListCount, cn, cm);
 				memoForm.StartPosition = FormStartPosition.CenterParent;
 				memoForm.ShowDialog(this);
-				listBox1_SelectedIndexChanged(null, null);
+				gameList_SelectedIndexChanged(null, null);
 				return;
 			}
 			else if (General.Var.SaveType == "M")
@@ -2030,18 +2066,18 @@ namespace glc_cs
 				Memo memoForm = new Memo(General.Var.SaveType, selectedListCount, cn, cm);
 				memoForm.StartPosition = FormStartPosition.CenterParent;
 				memoForm.ShowDialog(this);
-				listBox1_SelectedIndexChanged(null, null);
+				gameList_SelectedIndexChanged(null, null);
 				return;
 			}
 
 			// INIの場合
-			String path = General.Var.GameDir + "\\" + (gameList.SelectedIndex + 1) + ".ini";
+			String path = General.Var.GameDir + (gameList.SelectedIndex + 1) + ".ini";
 			if (File.Exists(path))
 			{
 				Memo memoForm = new Memo(General.Var.SaveType, selectedListCount, new SqlConnection(), new SqlCommand());
 				memoForm.StartPosition = FormStartPosition.CenterParent;
 				memoForm.ShowDialog(this);
-				listBox1_SelectedIndexChanged(null, null);
+				gameList_SelectedIndexChanged(null, null);
 			}
 			else
 			{
@@ -2061,11 +2097,11 @@ namespace glc_cs
 			}
 
 			// ini読込
-			String rawdata = General.Var.GameDir + "\\" + ((gameList.SelectedIndex + 1).ToString()) + ".ini";
+			String rawdata = General.Var.GameDir + ((gameList.SelectedIndex + 1).ToString()) + ".ini";
 
 			if (File.Exists(rawdata))
 			{
-				System.Diagnostics.Process.Start(General.Var.GameDir + "\\" + (gameList.SelectedIndex + 1) + ".ini");
+				System.Diagnostics.Process.Start(General.Var.GameDir + (gameList.SelectedIndex + 1) + ".ini");
 			}
 			else
 			{
@@ -2084,9 +2120,9 @@ namespace glc_cs
 					selected++;
 					fileSystemWatcher1.EnableRaisingEvents = false;
 					int target = selected - 1;
-					String before = General.Var.GameDir + "\\" + (selected.ToString()) + ".ini";
-					String temp = General.Var.GameDir + "\\" + (target.ToString()) + "_.ini";
-					String after = General.Var.GameDir + "\\" + (target.ToString()) + ".ini";
+					String before = General.Var.GameDir + (selected.ToString()) + ".ini";
+					String temp = General.Var.GameDir + (target.ToString()) + "_.ini";
+					String after = General.Var.GameDir + (target.ToString()) + ".ini";
 					if (File.Exists(before) && File.Exists(after))
 					{
 						File.Move(after, temp);
@@ -2128,7 +2164,7 @@ namespace glc_cs
 		{
 			if (exePathText.Text != "")
 			{
-				String opendir = System.IO.Path.GetDirectoryName(exePathText.Text);
+				String opendir = Path.GetDirectoryName(exePathText.Text);
 				if (Directory.Exists(opendir))
 				{
 					System.Diagnostics.Process.Start(opendir);
@@ -2140,7 +2176,7 @@ namespace glc_cs
 		{
 			if (exePathText.Text != "")
 			{
-				String opendir = System.IO.Path.GetDirectoryName(exePathText.Text);
+				String opendir = Path.GetDirectoryName(exePathText.Text);
 				if (Directory.Exists(opendir))
 				{
 					System.Diagnostics.Process.Start(opendir);
@@ -2171,9 +2207,9 @@ namespace glc_cs
 					selected++;
 					fileSystemWatcher1.EnableRaisingEvents = false;
 					int target = selected + 1;
-					String before = General.Var.GameDir + "\\" + (selected.ToString()) + ".ini";
-					String temp = General.Var.GameDir + "\\" + (target.ToString()) + "_.ini";
-					String after = General.Var.GameDir + "\\" + (target.ToString()) + ".ini";
+					String before = General.Var.GameDir + (selected.ToString()) + ".ini";
+					String temp = General.Var.GameDir + (target.ToString()) + "_.ini";
+					String after = General.Var.GameDir + (target.ToString()) + ".ini";
 					if (File.Exists(before) && File.Exists(after))
 					{
 						File.Move(after, temp);
@@ -2216,7 +2252,7 @@ namespace glc_cs
 			return;
 		}
 
-		private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+		private void gameImgList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (!(General.Var.GameMax >= 1))
 			{
@@ -2305,6 +2341,7 @@ namespace glc_cs
 			// リスト再読込
 			reloadItems();
 
+			GC.Collect();
 			return;
 		}
 
@@ -2341,7 +2378,7 @@ namespace glc_cs
 			int nextval;
 			string nextfile;
 			int delval = delfileval;
-			string delfile = (General.Var.GameDir + "\\" + delval + ".ini");
+			string delfile = (General.Var.GameDir + delval + ".ini");
 
 			if (File.Exists(delfile))
 			{
@@ -2351,14 +2388,14 @@ namespace glc_cs
 				{
 					File.Delete(delfile);
 					nextval = delval + 1;
-					nextfile = (General.Var.GameDir + "\\" + nextval + ".ini");
+					nextfile = (General.Var.GameDir + nextval + ".ini");
 					while (File.Exists(nextfile))
 					{
 						//削除ファイル以降にゲームが存在する場合に番号を下げる
 						File.Move(nextfile, delfile);
 						delfile = nextfile;
 						nextval++;
-						nextfile = (General.Var.GameDir + "\\" + nextval + ".ini");
+						nextfile = (General.Var.GameDir + nextval + ".ini");
 					}
 					General.Var.GameMax--;
 					General.Var.IniWrite(General.Var.GameIni, "list", "game", General.Var.GameMax.ToString());
@@ -2462,7 +2499,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"DELETE " + General.Var.DbName + "." + General.Var.DbTable + " "
+						CommandText = @"DELETE " + "glt "
 										+ "FROM " + General.Var.DbName + "." + General.Var.DbTable + " glt "
 										+ "INNER JOIN ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROWCNT FROM " + General.Var.DbName + "." + General.Var.DbTable + ") tmp "
 										+ "ON glt.ID = tmp.ID "
@@ -2543,11 +2580,11 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"DELETE " + General.Var.DbTable + " "
+						CommandText = @"DELETE " + "glt "
 										+ "FROM " + General.Var.DbTable + " glt "
 										+ "INNER JOIN ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROWCNT FROM " + General.Var.DbTable + ") tmp "
 										+ "ON glt.ID = tmp.ID "
-										+ "WHERE ROWCNT = " + delItemVal
+										+ "WHERE ROWCNT = " + delItemVal + ";"
 					};
 					cm.Connection = cn;
 					try
@@ -2613,10 +2650,10 @@ namespace glc_cs
 		/// <summary>
 		/// 棒読みちゃんの設定を読み込みます
 		/// </summary>
-		private void bouyomi_configload()
+		private void bouyomiConfigLoad()
 		{
-			General.Var.ByHost = General.Var.IniRead(General.Var.ConfigIni, "connect", "General.Var.ByHost", "127.0.0.1");
-			General.Var.ByPort = Convert.ToInt32(General.Var.IniRead(General.Var.ConfigIni, "connect", "General.Var.ByPort", "50001"));
+			General.Var.ByHost = General.Var.IniRead(General.Var.ConfigIni, "connect", "byHost", "127.0.0.1");
+			General.Var.ByPort = Convert.ToInt32(General.Var.IniRead(General.Var.ConfigIni, "connect", "byPort", "50001"));
 			General.Var.Bouyomi_Connectchk(General.Var.ByHost, General.Var.ByPort, General.Var.ByType, false);
 			return;
 		}
@@ -2668,7 +2705,7 @@ namespace glc_cs
 		public void ExitApp(bool downloadDbEnabled = true)
 		{
 			Application.ApplicationExit -= new EventHandler(Application_ApplicationExit);
-			if (General.Var.ByRoW)
+			if (General.Var.ByActive && General.Var.ByRoW)
 			{
 				General.Var.Bouyomiage("ゲームランチャーを終了しました");
 			}
@@ -2907,7 +2944,7 @@ namespace glc_cs
 					// 接続オープン
 					cn.Open();
 
-					//検索に一致するゲーム数取得
+					// 検索に一致するゲーム数取得
 					MySqlCommand cm = new MySqlCommand()
 					{
 						CommandType = CommandType.Text,
@@ -2921,7 +2958,7 @@ namespace glc_cs
 
 					if (sqlAns <= 0)
 					{
-						//ゲームが1つもない場合
+						// ゲームが1つもない場合
 						return;
 					}
 
@@ -2960,6 +2997,7 @@ namespace glc_cs
 			}
 
 			Application.DoEvents();
+			GC.Collect();
 			return;
 		}
 
@@ -2968,7 +3006,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+		private void searchResultList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			int rowCount = -1;
 
@@ -3011,7 +3049,7 @@ namespace glc_cs
 					break;
 			}
 
-			//ゲーム詳細取得
+			// ゲーム詳細取得
 			int selecteditem = searchResultList.SelectedIndex + 1;
 
 			if (General.Var.SaveType == "I" || General.Var.SaveType == "T")
@@ -3321,7 +3359,7 @@ namespace glc_cs
 			// INI
 			else
 			{
-				String readini = General.Var.GameDir + "\\" + (gameList.SelectedIndex + 1) + ".ini";
+				String readini = General.Var.GameDir + (gameList.SelectedIndex + 1) + ".ini";
 				General.Var.IniWrite(readini, "game", "status", statusCombo.SelectedItem.ToString());
 			}
 		}

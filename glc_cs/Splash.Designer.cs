@@ -31,8 +31,8 @@
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-			this.label2 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -50,10 +50,10 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label1.Location = new System.Drawing.Point(116, 27);
+			this.label1.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label1.Location = new System.Drawing.Point(120, 28);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(206, 19);
+			this.label1.Size = new System.Drawing.Size(218, 20);
 			this.label1.TabIndex = 1;
 			this.label1.Text = "Game Launcher C# Edition";
 			// 
@@ -68,15 +68,6 @@
 			this.linkLabel1.TabStop = true;
 			this.linkLabel1.Text = "https://github.com/dekotan24/glc_cs";
 			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(182, 61);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(48, 12);
-			this.label2.TabIndex = 3;
-			this.label2.Text = "Loading..";
-			// 
 			// label3
 			// 
 			this.label3.AutoEllipsis = true;
@@ -89,14 +80,23 @@
 			this.label3.TabIndex = 4;
 			this.label3.Text = "Hash:";
 			// 
-			// Form3
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(164, 62);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(122, 12);
+			this.label2.TabIndex = 5;
+			this.label2.Text = "Please wait a moment..";
+			// 
+			// Splash
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(350, 120);
 			this.ControlBox = false;
-			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
+			this.Controls.Add(this.label3);
 			this.Controls.Add(this.linkLabel1);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.pictureBox1);
@@ -104,7 +104,7 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "Form3";
+			this.Name = "Splash";
 			this.Opacity = 0.9D;
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
@@ -122,7 +122,7 @@
 		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.LinkLabel linkLabel1;
-		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label label2;
 	}
 }

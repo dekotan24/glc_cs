@@ -6,7 +6,6 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace glc_cs
@@ -104,8 +103,8 @@ namespace glc_cs
 			textBox4.Text = General.Var.ByHost;
 			textBox5.Text = General.Var.ByPort.ToString();
 
-			checkBox4.Checked = General.Var.ByRoS;
-			checkBox10.Checked = General.Var.ByRoW;
+			checkBox4.Checked = General.Var.ByRoW;
+			checkBox10.Checked = General.Var.ByRoS;
 
 			// 保存方法
 			if (General.Var.SaveType == "I")
@@ -153,15 +152,11 @@ namespace glc_cs
 			{
 				if (General.Var.GameDir.EndsWith("\\Data\\"))
 				{
-					textBox2.Text = General.Var.GameDir.Substring(0, General.Var.GameDir.Length - 5);
-				}
-				else if (General.Var.GameDir.EndsWith("\\Data"))
-				{
-					textBox2.Text = General.Var.GameDir.Substring(0, General.Var.GameDir.Length - 4);
+					iniText.Text = General.Var.GameDir.Substring(0, General.Var.GameDir.Length - 5);
 				}
 				else
 				{
-					textBox2.Text = General.Var.GameDir;
+					iniText.Text = General.Var.GameDir;
 				}
 			}
 			else
@@ -169,11 +164,11 @@ namespace glc_cs
 				string tmpRawGameDir = General.Var.ReadIni("default", "directory", General.Var.BaseDir.EndsWith("\\") ? General.Var.BaseDir : General.Var.BaseDir + "\\");
 				if (tmpRawGameDir.EndsWith("\\Data\\"))
 				{
-					textBox2.Text = tmpRawGameDir.Substring(0, General.Var.GameDir.Length - 5);
+					iniText.Text = tmpRawGameDir.Substring(0, General.Var.GameDir.Length - 5);
 				}
 				else
 				{
-					textBox2.Text = tmpRawGameDir;
+					iniText.Text = tmpRawGameDir;
 				}
 			}
 		}
@@ -183,7 +178,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void button2_Click(object sender, EventArgs e)
+		private void saveButton_Click(object sender, EventArgs e)
 		{
 			string offlineSaveTypeOld = General.Var.ReadIni("general", "OfflineSave", checkBox8.Checked ? "1" : "0");
 			bool canExit = true;
@@ -252,6 +247,8 @@ namespace glc_cs
 			General.Var.WriteIni("connect", "byType", General.Var.ByType.ToString());
 			General.Var.WriteIni("connect", "byPort", textBox5.Text);
 			General.Var.WriteIni("connect", "byHost", textBox4.Text);
+			General.Var.WriteIni("connect", "byRoW", checkBox4.Checked ? "1" : "0");
+			General.Var.WriteIni("connect", "byRoS", checkBox10.Checked ? "1" : "0");
 
 			// データベースをローカルにINIで保存する
 			if (checkBox8.Checked)
@@ -282,7 +279,7 @@ namespace glc_cs
 			Close();
 		}
 
-		private void button4_Click(object sender, EventArgs e)
+		private void iniFolderSelectButton_Click(object sender, EventArgs e)
 		{
 			//作業ディレクトリ変更(ini)
 			if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
@@ -303,7 +300,7 @@ namespace glc_cs
 
 				// textbox反映
 				General.Var.GameDir = General.Var.ReadIni("default", "directory", General.Var.BaseDir);
-				textBox2.Text = newworkdir;
+				iniText.Text = newworkdir;
 			}
 			return;
 		}
@@ -325,7 +322,7 @@ namespace glc_cs
 			System.Diagnostics.Process.Start("https://github.com/dekotan24/glc_cs");
 		}
 
-		private void button8_Click(object sender, EventArgs e)
+		private void byResetButton_Click(object sender, EventArgs e)
 		{
 			textBox4.Text = "127.0.0.1";
 			if (General.Var.ByType == 0)
@@ -338,7 +335,7 @@ namespace glc_cs
 			}
 		}
 
-		private void button3_Click(object sender, EventArgs e)
+		private void byConnectionTestButton_Click(object sender, EventArgs e)
 		{
 			General.Var.ByHost = textBox4.Text;
 			General.Var.ByPort = Convert.ToInt32(textBox5.Text);
@@ -380,7 +377,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void button1_Click(object sender, EventArgs e)
+		private void dconSearchButton_Click(object sender, EventArgs e)
 		{
 			String newpath;
 
@@ -604,7 +601,7 @@ namespace glc_cs
 			}
 		}
 
-		private void button7_Click(object sender, EventArgs e)
+		private void iniAllEditButton_Click(object sender, EventArgs e)
 		{
 			StringBuilder sb = new StringBuilder();
 			DialogResult dr = new DialogResult();
@@ -634,7 +631,7 @@ namespace glc_cs
 				{
 					return;
 				}
-				if (General.Var.EditAllFilePath(textBox8.Text.Trim(), textBox9.Text.Trim(), checkBox3.Checked, checkBox5.Checked, out sucCount, out errMsg))
+				if (General.Var.EditAllIniFile(textBox8.Text.Trim(), textBox9.Text.Trim(), checkBox3.Checked, checkBox5.Checked, out sucCount, out errMsg))
 				{
 					MessageBox.Show("成功しました。\n\n処理件数：" + sucCount, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
@@ -653,7 +650,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void button6_Click(object sender, EventArgs e)
+		private void backgroundImageSelectButton_Click(object sender, EventArgs e)
 		{
 			String newpath;
 
@@ -692,7 +689,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void button9_Click(object sender, EventArgs e)
+		private void importIniToDbButton_Click(object sender, EventArgs e)
 		{
 			int sCount = 0;
 			int fCount = 0;
@@ -717,7 +714,7 @@ namespace glc_cs
 			bool deleteAllRecodes = checkBox6.Checked;
 			bool forceCommit = checkBox7.Checked;
 
-			string gameIni = (General.Var.GameDir.EndsWith("\\") ? General.Var.GameDir : General.Var.GameDir + "\\") + "game.ini";
+			string gameIni = General.Var.GameDir + "game.ini";
 			if (File.Exists(gameIni) == false)
 			{
 				MessageBox.Show("ゲームファイルが存在しません。\n[ディレクトリ関連]タブで、INIファイルの作業ディレクトリを更新してください。\n\n" + gameIni, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -762,8 +759,9 @@ namespace glc_cs
 		{
 			// ini controlVal
 			label9.Enabled = controlVal;
-			textBox2.Enabled = controlVal;
-			button4.Enabled = controlVal;
+			iniText.Enabled = controlVal;
+			iniFolderSelectButton.Enabled = controlVal;
+			iniAutoNumberingFixButton.Enabled = controlVal;
 
 			// database controlVal
 			label16.Enabled = !controlVal;
@@ -784,10 +782,71 @@ namespace glc_cs
 
 			groupBox7.Enabled = controlVal;
 			groupBox12.Enabled = !controlVal;
-			groupBox8.Enabled = !controlVal;
+			dbOverflowFixButton.Enabled = !controlVal;
 		}
 
-		private void button10_Click(object sender, EventArgs e)
+		private void iniAutoNumberingFixButton_Click(object sender, EventArgs e)
+		{
+			string readini = string.Empty;
+			string gameDirName = General.Var.GameDir;
+			int fileCount = 0;
+			int hasErrorIni = 0;
+			int tempFileCount = 0;
+			bool overflowIni = false;
+
+			// 全ゲーム数取得
+			if (File.Exists(General.Var.GameIni))
+			{
+				fileCount = Convert.ToInt32(General.Var.IniRead(General.Var.GameIni, "list", "game", "0"));
+			}
+
+			if (fileCount >= 1) // ゲーム登録数が1以上の場合
+			{
+				// 通常ファイル存在チェック
+				for (int curCount = 1; curCount <= fileCount; curCount++)
+				{
+					readini = gameDirName + curCount + ".ini";
+
+					if (!File.Exists(readini))
+					{
+						hasErrorIni++;
+					}
+				}
+
+				// 最大値より大きいiniファイル存在チェック
+				tempFileCount = fileCount + 1;
+				readini = gameDirName + tempFileCount.ToString() + ".ini";
+				while (File.Exists(readini) && tempFileCount < 1000)
+				{
+					overflowIni = true;
+					tempFileCount++;
+					readini = gameDirName + tempFileCount.ToString() + ".ini";
+				}
+
+				// ファイルエラー修正確認
+				if (hasErrorIni > 0 || overflowIni)
+				{
+					DialogResult dr = MessageBox.Show("欠番しているINIファイルが " + hasErrorIni + "件" + (overflowIni ? "、\n範囲外に存在するINIファイルが" : "") + "あります。\n連番となるように修正しますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+					if (dr == DialogResult.Yes)
+					{
+						// 自動整番処理
+						int result = iniReNumbering(overflowIni);
+						string newFileCount = General.Var.IniRead(General.Var.GameIni, "list", "game", "0");
+						MessageBox.Show("整番が完了しました！\n\n欠番処理件数：" + result + "件\n登録済みゲーム総数：" + fileCount + "→" + newFileCount + "件", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					}
+				}
+				else
+				{
+					MessageBox.Show("欠番データは見つかりませんでした。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+			}
+			else
+			{
+				MessageBox.Show("登録済みデータはありません。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+		}
+
+		private void dbOverflowFixButton_Click(object sender, EventArgs e)
 		{
 			if (urlText.Text.Trim().Length < 1)
 			{
@@ -950,7 +1009,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void button11_Click(object sender, EventArgs e)
+		private void dconAppIDClearButton_Click(object sender, EventArgs e)
 		{
 			dconAppIDText.Text = string.Empty;
 		}
@@ -969,7 +1028,7 @@ namespace glc_cs
 			{
 				wc.Encoding = Encoding.UTF8;
 				string text = wc.DownloadString("https://raw.githubusercontent.com/dekotan24/glc_cs/master/version");
-				MessageBox.Show(text, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("Latest:" + text.Replace("\n", "") + "\nCurrent:" + General.Var.AppVer, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				if (General.Var.AppVer != text.Trim())
 				{
 					updchkButton.Text = "Update Available";
@@ -1006,7 +1065,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private async void pictureBox1_Click(object sender, EventArgs e)
+		private async void logoPictureBox_Click(object sender, EventArgs e)
 		{
 			Random r1 = new System.Random();
 			int rand = r1.Next(0, 5);
@@ -1101,6 +1160,104 @@ namespace glc_cs
 				// オフライン保存有効時にダイアログを表示
 				MessageBox.Show("[オフラインに保存]を有効にすると、以下のタイミングで自動的にDBのバックアップが取得されます。\n\n・設定画面の[適用して閉じる]を押した時\n・アプリケーションを終了する時\n\nバックアップの保存先：" + General.Var.BaseDir + (General.Var.BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\" + "\n\nまた、バックアップの取得に時間がかかる場合があります。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
+		}
+
+		/// <summary>
+		/// INIファイルの再自動採番
+		/// </summary>
+		/// <param name="hasOverflowIni"></param>
+		/// <returns>処理件数</returns>
+		private int iniReNumbering(bool hasOverflowIni)
+		{
+			bool needMoveIni = false;
+			int currentSavedCount = 1;
+			int baseFileCount = 0;
+			int movedCount = 0;
+			int curCount = 0;
+			string readini = string.Empty;
+			string newReadIni = string.Empty;
+			string gameDirName = General.Var.GameDir;
+
+			// ゲーム統括管理iniの最大値を取得する
+			if (File.Exists(General.Var.GameIni))
+			{
+				baseFileCount = Convert.ToInt32(General.Var.IniRead(General.Var.GameIni, "list", "game", "0"));
+			}
+
+			try
+			{
+				// ループで回しながら処理する
+				for (curCount = 1; curCount <= baseFileCount; curCount++)
+				{
+					readini = gameDirName + curCount + ".ini";
+
+					if (File.Exists(readini))
+					{
+						if (needMoveIni)
+						{
+							// 移動フラグが立っている場合、ファイルを移動する
+							needMoveIni = false;
+							newReadIni = gameDirName + currentSavedCount + ".ini";
+							File.Move(readini, newReadIni);
+							movedCount++;
+						}
+						currentSavedCount++;
+					}
+					else
+					{
+						// 移動フラグを立て、次にファイルが存在した時に移動するようにする
+						needMoveIni = true;
+					}
+				}
+
+				// ゲーム統括管理iniの範囲外にiniファイルが存在する場合に処理を行う
+				if (hasOverflowIni)
+				{
+					hasOverflowIni = false;
+					readini = gameDirName + curCount + ".ini";
+					while (File.Exists(readini) && curCount < 1000)
+					{
+						readini = gameDirName + curCount + ".ini";
+
+						if (File.Exists(readini))
+						{
+							if (needMoveIni)
+							{
+								// 移動フラグが立っている場合、ファイルを移動する
+								needMoveIni = false;
+								newReadIni = gameDirName + currentSavedCount + ".ini";
+								File.Move(readini, newReadIni);
+								movedCount++;
+							}
+							currentSavedCount++;
+						}
+						else
+						{
+							// 移動フラグを立て、次にファイルが存在した時に移動するようにする
+							needMoveIni = true;
+						}
+
+						curCount++;
+					}
+				}
+
+				// 最終処理
+				currentSavedCount--;
+				if (currentSavedCount > -1)
+				{
+					General.Var.IniWrite(General.Var.GameIni, "list", "game", currentSavedCount.ToString());
+					if (General.Var.SaveType == "T")
+					{
+						General.Var.IniWrite(General.Var.GameIni, "list", "dbupdate", "1");
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, readini);
+			}
+
+			return movedCount;
 		}
 	}
 }

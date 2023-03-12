@@ -40,7 +40,7 @@
 			this.imgPathText = new System.Windows.Forms.TextBox();
 			this.runTimeText = new System.Windows.Forms.TextBox();
 			this.label3 = new System.Windows.Forms.Label();
-			this.startTimeText = new System.Windows.Forms.TextBox();
+			this.startCountText = new System.Windows.Forms.TextBox();
 			this.infoButton = new System.Windows.Forms.Button();
 			this.reloadButton = new System.Windows.Forms.Button();
 			this.minCheck = new System.Windows.Forms.CheckBox();
@@ -142,8 +142,8 @@
 			this.gameList.ForeColor = System.Drawing.SystemColors.WindowText;
 			this.gameList.FormattingEnabled = true;
 			this.gameList.Name = "gameList";
-			this.gameList.Click += new System.EventHandler(this.listBox1_SelectedIndexChanged);
-			this.gameList.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+			this.gameList.Click += new System.EventHandler(this.gameList_SelectedIndexChanged);
+			this.gameList.SelectedIndexChanged += new System.EventHandler(this.gameList_SelectedIndexChanged);
 			// 
 			// trackCheck
 			// 
@@ -205,11 +205,11 @@
 			this.label3.BackColor = System.Drawing.Color.Transparent;
 			this.label3.Name = "label3";
 			// 
-			// startTimeText
+			// startCountText
 			// 
-			resources.ApplyResources(this.startTimeText, "startTimeText");
-			this.startTimeText.Name = "startTimeText";
-			this.startTimeText.ReadOnly = true;
+			resources.ApplyResources(this.startCountText, "startCountText");
+			this.startCountText.Name = "startCountText";
+			this.startCountText.ReadOnly = true;
 			// 
 			// infoButton
 			// 
@@ -614,7 +614,7 @@
 			this.gameImgList.MultiSelect = false;
 			this.gameImgList.Name = "gameImgList";
 			this.gameImgList.UseCompatibleStateImageBehavior = false;
-			this.gameImgList.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+			this.gameImgList.SelectedIndexChanged += new System.EventHandler(this.gameImgList_SelectedIndexChanged);
 			// 
 			// imageList1
 			// 
@@ -709,7 +709,7 @@
 			resources.ApplyResources(this.searchResultList, "searchResultList");
 			this.searchResultList.FormattingEnabled = true;
 			this.searchResultList.Name = "searchResultList";
-			this.searchResultList.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged);
+			this.searchResultList.SelectedIndexChanged += new System.EventHandler(this.searchResultList_SelectedIndexChanged);
 			// 
 			// imageList2
 			// 
@@ -790,7 +790,7 @@
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.label3);
-			this.Controls.Add(this.startTimeText);
+			this.Controls.Add(this.startCountText);
 			this.Controls.Add(this.pictureBox8);
 			this.Controls.Add(this.runTimeText);
 			this.Controls.Add(this.pictureBox9);
@@ -873,7 +873,7 @@
         private System.Windows.Forms.TextBox runTimeText;
         private System.Windows.Forms.PictureBox pictureBox9;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox startTimeText;
+        private System.Windows.Forms.TextBox startCountText;
         private System.Windows.Forms.Button infoButton;
         private System.Windows.Forms.Button reloadButton;
         public System.Windows.Forms.ListBox gameList;

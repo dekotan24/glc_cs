@@ -34,7 +34,7 @@
 			this.getDconButton = new System.Windows.Forms.Button();
 			this.dconEnableCheck = new System.Windows.Forms.CheckBox();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-			this.button7 = new System.Windows.Forms.Button();
+			this.iniAllEditButton = new System.Windows.Forms.Button();
 			this.textBox8 = new System.Windows.Forms.TextBox();
 			this.textBox9 = new System.Windows.Forms.TextBox();
 			this.checkBox7 = new System.Windows.Forms.CheckBox();
@@ -49,7 +49,7 @@
 			this.label30 = new System.Windows.Forms.Label();
 			this.groupBox11 = new System.Windows.Forms.GroupBox();
 			this.label26 = new System.Windows.Forms.Label();
-			this.backgroundImageSearchButton = new System.Windows.Forms.Button();
+			this.backgroundImageSelectButton = new System.Windows.Forms.Button();
 			this.backgroundImageText = new System.Windows.Forms.TextBox();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.groupBox13 = new System.Windows.Forms.GroupBox();
@@ -68,8 +68,8 @@
 			this.checkBox4 = new System.Windows.Forms.CheckBox();
 			this.groupBox4 = new System.Windows.Forms.GroupBox();
 			this.label1 = new System.Windows.Forms.Label();
-			this.button8 = new System.Windows.Forms.Button();
-			this.button3 = new System.Windows.Forms.Button();
+			this.byResetButton = new System.Windows.Forms.Button();
+			this.byConnectionTestButton = new System.Windows.Forms.Button();
 			this.textBox5 = new System.Windows.Forms.TextBox();
 			this.textBox4 = new System.Windows.Forms.TextBox();
 			this.label14 = new System.Windows.Forms.Label();
@@ -94,8 +94,8 @@
 			this.label16 = new System.Windows.Forms.Label();
 			this.urlText = new System.Windows.Forms.TextBox();
 			this.label9 = new System.Windows.Forms.Label();
-			this.textBox2 = new System.Windows.Forms.TextBox();
-			this.button4 = new System.Windows.Forms.Button();
+			this.iniText = new System.Windows.Forms.TextBox();
+			this.iniFolderSelectButton = new System.Windows.Forms.Button();
 			this.groupBox9 = new System.Windows.Forms.GroupBox();
 			this.label12 = new System.Windows.Forms.Label();
 			this.radioButton5 = new System.Windows.Forms.RadioButton();
@@ -104,10 +104,11 @@
 			this.radioButton8 = new System.Windows.Forms.RadioButton();
 			this.tabPage6 = new System.Windows.Forms.TabPage();
 			this.groupBox8 = new System.Windows.Forms.GroupBox();
-			this.button10 = new System.Windows.Forms.Button();
+			this.iniAutoNumberingFixButton = new System.Windows.Forms.Button();
+			this.dbOverflowFixButton = new System.Windows.Forms.Button();
 			this.groupBox12 = new System.Windows.Forms.GroupBox();
 			this.label25 = new System.Windows.Forms.Label();
-			this.button9 = new System.Windows.Forms.Button();
+			this.importIniToDbButton = new System.Windows.Forms.Button();
 			this.checkBox6 = new System.Windows.Forms.CheckBox();
 			this.groupBox7 = new System.Windows.Forms.GroupBox();
 			this.label17 = new System.Windows.Forms.Label();
@@ -117,7 +118,7 @@
 			this.label20 = new System.Windows.Forms.Label();
 			this.label19 = new System.Windows.Forms.Label();
 			this.TabPage3 = new System.Windows.Forms.TabPage();
-			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.logoPictureBox = new System.Windows.Forms.PictureBox();
 			this.updchkButton = new System.Windows.Forms.Button();
 			this.label10 = new System.Windows.Forms.Label();
 			this.linkLabel3 = new System.Windows.Forms.LinkLabel();
@@ -155,7 +156,7 @@
 			this.groupBox12.SuspendLayout();
 			this.groupBox7.SuspendLayout();
 			this.TabPage3.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// groupBox1
@@ -193,16 +194,16 @@
 			this.dconEnableCheck.UseVisualStyleBackColor = true;
 			this.dconEnableCheck.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
 			// 
-			// button7
+			// iniAllEditButton
 			// 
-			this.button7.Location = new System.Drawing.Point(341, 39);
-			this.button7.Name = "button7";
-			this.button7.Size = new System.Drawing.Size(103, 23);
-			this.button7.TabIndex = 0;
-			this.button7.Text = "一括変更";
-			this.toolTip1.SetToolTip(this.button7, "ゲーム管理iniのすべてのパスを置換します。");
-			this.button7.UseVisualStyleBackColor = true;
-			this.button7.Click += new System.EventHandler(this.button7_Click);
+			this.iniAllEditButton.Location = new System.Drawing.Point(341, 39);
+			this.iniAllEditButton.Name = "iniAllEditButton";
+			this.iniAllEditButton.Size = new System.Drawing.Size(103, 23);
+			this.iniAllEditButton.TabIndex = 0;
+			this.iniAllEditButton.Text = "一括変更";
+			this.toolTip1.SetToolTip(this.iniAllEditButton, "ゲーム管理iniのすべてのパスを置換します。");
+			this.iniAllEditButton.UseVisualStyleBackColor = true;
+			this.iniAllEditButton.Click += new System.EventHandler(this.iniAllEditButton_Click);
 			// 
 			// textBox8
 			// 
@@ -338,7 +339,7 @@
 			// groupBox11
 			// 
 			this.groupBox11.Controls.Add(this.label26);
-			this.groupBox11.Controls.Add(this.backgroundImageSearchButton);
+			this.groupBox11.Controls.Add(this.backgroundImageSelectButton);
 			this.groupBox11.Controls.Add(this.backgroundImageText);
 			this.groupBox11.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox11.Location = new System.Drawing.Point(6, 6);
@@ -358,15 +359,15 @@
 			this.label26.TabIndex = 2;
 			this.label26.Text = "※反映には再起動が必要な場合があります。";
 			// 
-			// backgroundImageSearchButton
+			// backgroundImageSelectButton
 			// 
-			this.backgroundImageSearchButton.Location = new System.Drawing.Point(440, 22);
-			this.backgroundImageSearchButton.Name = "backgroundImageSearchButton";
-			this.backgroundImageSearchButton.Size = new System.Drawing.Size(23, 23);
-			this.backgroundImageSearchButton.TabIndex = 1;
-			this.backgroundImageSearchButton.Text = "..";
-			this.backgroundImageSearchButton.UseVisualStyleBackColor = true;
-			this.backgroundImageSearchButton.Click += new System.EventHandler(this.button6_Click);
+			this.backgroundImageSelectButton.Location = new System.Drawing.Point(440, 22);
+			this.backgroundImageSelectButton.Name = "backgroundImageSelectButton";
+			this.backgroundImageSelectButton.Size = new System.Drawing.Size(23, 23);
+			this.backgroundImageSelectButton.TabIndex = 1;
+			this.backgroundImageSelectButton.Text = "..";
+			this.backgroundImageSelectButton.UseVisualStyleBackColor = true;
+			this.backgroundImageSelectButton.Click += new System.EventHandler(this.backgroundImageSelectButton_Click);
 			// 
 			// backgroundImageText
 			// 
@@ -421,7 +422,7 @@
 			this.dconAppIDClearButton.TabIndex = 1;
 			this.dconAppIDClearButton.Text = "クリア";
 			this.dconAppIDClearButton.UseVisualStyleBackColor = true;
-			this.dconAppIDClearButton.Click += new System.EventHandler(this.button11_Click);
+			this.dconAppIDClearButton.Click += new System.EventHandler(this.dconAppIDClearButton_Click);
 			// 
 			// groupBox6
 			// 
@@ -454,7 +455,7 @@
 			this.dconSearchButton.TabIndex = 1;
 			this.dconSearchButton.Text = "..";
 			this.dconSearchButton.UseVisualStyleBackColor = true;
-			this.dconSearchButton.Click += new System.EventHandler(this.button1_Click);
+			this.dconSearchButton.Click += new System.EventHandler(this.dconSearchButton_Click);
 			// 
 			// dconText
 			// 
@@ -546,8 +547,8 @@
 			// groupBox4
 			// 
 			this.groupBox4.Controls.Add(this.label1);
-			this.groupBox4.Controls.Add(this.button8);
-			this.groupBox4.Controls.Add(this.button3);
+			this.groupBox4.Controls.Add(this.byResetButton);
+			this.groupBox4.Controls.Add(this.byConnectionTestButton);
 			this.groupBox4.Controls.Add(this.textBox5);
 			this.groupBox4.Controls.Add(this.textBox4);
 			this.groupBox4.Controls.Add(this.label14);
@@ -572,25 +573,25 @@
 			this.label1.TabIndex = 12;
 			this.label1.Text = "※HTTPは127.0.0.1固定";
 			// 
-			// button8
+			// byResetButton
 			// 
-			this.button8.Location = new System.Drawing.Point(81, 85);
-			this.button8.Name = "button8";
-			this.button8.Size = new System.Drawing.Size(126, 23);
-			this.button8.TabIndex = 11;
-			this.button8.Text = "初期設定に戻す";
-			this.button8.UseVisualStyleBackColor = true;
-			this.button8.Click += new System.EventHandler(this.button8_Click);
+			this.byResetButton.Location = new System.Drawing.Point(81, 85);
+			this.byResetButton.Name = "byResetButton";
+			this.byResetButton.Size = new System.Drawing.Size(126, 23);
+			this.byResetButton.TabIndex = 11;
+			this.byResetButton.Text = "初期設定に戻す";
+			this.byResetButton.UseVisualStyleBackColor = true;
+			this.byResetButton.Click += new System.EventHandler(this.byResetButton_Click);
 			// 
-			// button3
+			// byConnectionTestButton
 			// 
-			this.button3.Location = new System.Drawing.Point(280, 85);
-			this.button3.Name = "button3";
-			this.button3.Size = new System.Drawing.Size(91, 23);
-			this.button3.TabIndex = 10;
-			this.button3.Text = "接続テスト";
-			this.button3.UseVisualStyleBackColor = true;
-			this.button3.Click += new System.EventHandler(this.button3_Click);
+			this.byConnectionTestButton.Location = new System.Drawing.Point(280, 85);
+			this.byConnectionTestButton.Name = "byConnectionTestButton";
+			this.byConnectionTestButton.Size = new System.Drawing.Size(91, 23);
+			this.byConnectionTestButton.TabIndex = 10;
+			this.byConnectionTestButton.Text = "接続テスト";
+			this.byConnectionTestButton.UseVisualStyleBackColor = true;
+			this.byConnectionTestButton.Click += new System.EventHandler(this.byConnectionTestButton_Click);
 			// 
 			// textBox5
 			// 
@@ -702,8 +703,8 @@
 			this.groupBox10.Controls.Add(this.label16);
 			this.groupBox10.Controls.Add(this.urlText);
 			this.groupBox10.Controls.Add(this.label9);
-			this.groupBox10.Controls.Add(this.textBox2);
-			this.groupBox10.Controls.Add(this.button4);
+			this.groupBox10.Controls.Add(this.iniText);
+			this.groupBox10.Controls.Add(this.iniFolderSelectButton);
 			this.groupBox10.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox10.Location = new System.Drawing.Point(6, 104);
 			this.groupBox10.Name = "groupBox10";
@@ -844,23 +845,23 @@
 			this.label9.TabIndex = 3;
 			this.label9.Text = "INI";
 			// 
-			// textBox2
+			// iniText
 			// 
-			this.textBox2.Location = new System.Drawing.Point(48, 25);
-			this.textBox2.Name = "textBox2";
-			this.textBox2.Size = new System.Drawing.Size(343, 23);
-			this.textBox2.TabIndex = 2;
+			this.iniText.Location = new System.Drawing.Point(48, 25);
+			this.iniText.Name = "iniText";
+			this.iniText.Size = new System.Drawing.Size(343, 23);
+			this.iniText.TabIndex = 2;
 			// 
-			// button4
+			// iniFolderSelectButton
 			// 
-			this.button4.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.button4.Location = new System.Drawing.Point(397, 25);
-			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(64, 23);
-			this.button4.TabIndex = 3;
-			this.button4.Text = "変更";
-			this.button4.UseVisualStyleBackColor = true;
-			this.button4.Click += new System.EventHandler(this.button4_Click);
+			this.iniFolderSelectButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.iniFolderSelectButton.Location = new System.Drawing.Point(397, 25);
+			this.iniFolderSelectButton.Name = "iniFolderSelectButton";
+			this.iniFolderSelectButton.Size = new System.Drawing.Size(64, 23);
+			this.iniFolderSelectButton.TabIndex = 3;
+			this.iniFolderSelectButton.Text = "変更";
+			this.iniFolderSelectButton.UseVisualStyleBackColor = true;
+			this.iniFolderSelectButton.Click += new System.EventHandler(this.iniFolderSelectButton_Click);
 			// 
 			// groupBox9
 			// 
@@ -950,30 +951,42 @@
 			// 
 			// groupBox8
 			// 
-			this.groupBox8.Controls.Add(this.button10);
+			this.groupBox8.Controls.Add(this.iniAutoNumberingFixButton);
+			this.groupBox8.Controls.Add(this.dbOverflowFixButton);
 			this.groupBox8.Location = new System.Drawing.Point(6, 212);
 			this.groupBox8.Name = "groupBox8";
-			this.groupBox8.Size = new System.Drawing.Size(470, 55);
+			this.groupBox8.Size = new System.Drawing.Size(470, 82);
 			this.groupBox8.TabIndex = 4;
 			this.groupBox8.TabStop = false;
-			this.groupBox8.Text = "DBデータ修復";
+			this.groupBox8.Text = "データ修復";
 			// 
-			// button10
+			// iniAutoNumberingFixButton
 			// 
-			this.button10.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.button10.Location = new System.Drawing.Point(6, 18);
-			this.button10.Name = "button10";
-			this.button10.Size = new System.Drawing.Size(458, 24);
-			this.button10.TabIndex = 1;
-			this.button10.Text = "最大値を超えたデータを修正";
-			this.button10.UseVisualStyleBackColor = true;
-			this.button10.Click += new System.EventHandler(this.button10_Click);
+			this.iniAutoNumberingFixButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.iniAutoNumberingFixButton.Location = new System.Drawing.Point(6, 18);
+			this.iniAutoNumberingFixButton.Name = "iniAutoNumberingFixButton";
+			this.iniAutoNumberingFixButton.Size = new System.Drawing.Size(458, 24);
+			this.iniAutoNumberingFixButton.TabIndex = 2;
+			this.iniAutoNumberingFixButton.Text = "【INI】連番修正";
+			this.iniAutoNumberingFixButton.UseVisualStyleBackColor = true;
+			this.iniAutoNumberingFixButton.Click += new System.EventHandler(this.iniAutoNumberingFixButton_Click);
+			// 
+			// dbOverflowFixButton
+			// 
+			this.dbOverflowFixButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.dbOverflowFixButton.Location = new System.Drawing.Point(6, 48);
+			this.dbOverflowFixButton.Name = "dbOverflowFixButton";
+			this.dbOverflowFixButton.Size = new System.Drawing.Size(458, 24);
+			this.dbOverflowFixButton.TabIndex = 1;
+			this.dbOverflowFixButton.Text = "【DB】最大値を超えたデータを修正";
+			this.dbOverflowFixButton.UseVisualStyleBackColor = true;
+			this.dbOverflowFixButton.Click += new System.EventHandler(this.dbOverflowFixButton_Click);
 			// 
 			// groupBox12
 			// 
 			this.groupBox12.Controls.Add(this.label25);
 			this.groupBox12.Controls.Add(this.checkBox7);
-			this.groupBox12.Controls.Add(this.button9);
+			this.groupBox12.Controls.Add(this.importIniToDbButton);
 			this.groupBox12.Controls.Add(this.checkBox6);
 			this.groupBox12.Location = new System.Drawing.Point(6, 102);
 			this.groupBox12.Name = "groupBox12";
@@ -991,16 +1004,16 @@
 			this.label25.TabIndex = 3;
 			this.label25.Text = "ゲーム管理方法が [DB] で、DB接続の各情報が入力されている場合に取込可能";
 			// 
-			// button9
+			// importIniToDbButton
 			// 
-			this.button9.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.button9.Location = new System.Drawing.Point(264, 18);
-			this.button9.Name = "button9";
-			this.button9.Size = new System.Drawing.Size(200, 47);
-			this.button9.TabIndex = 1;
-			this.button9.Text = "INIファイルのデータをDBに取込";
-			this.button9.UseVisualStyleBackColor = true;
-			this.button9.Click += new System.EventHandler(this.button9_Click);
+			this.importIniToDbButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.importIniToDbButton.Location = new System.Drawing.Point(264, 18);
+			this.importIniToDbButton.Name = "importIniToDbButton";
+			this.importIniToDbButton.Size = new System.Drawing.Size(200, 47);
+			this.importIniToDbButton.TabIndex = 1;
+			this.importIniToDbButton.Text = "INIファイルのデータをDBに取込";
+			this.importIniToDbButton.UseVisualStyleBackColor = true;
+			this.importIniToDbButton.Click += new System.EventHandler(this.importIniToDbButton_Click);
 			// 
 			// checkBox6
 			// 
@@ -1026,7 +1039,7 @@
 			this.groupBox7.Controls.Add(this.label19);
 			this.groupBox7.Controls.Add(this.textBox9);
 			this.groupBox7.Controls.Add(this.textBox8);
-			this.groupBox7.Controls.Add(this.button7);
+			this.groupBox7.Controls.Add(this.iniAllEditButton);
 			this.groupBox7.Location = new System.Drawing.Point(6, 6);
 			this.groupBox7.Name = "groupBox7";
 			this.groupBox7.Size = new System.Drawing.Size(470, 90);
@@ -1092,7 +1105,7 @@
 			// 
 			// TabPage3
 			// 
-			this.TabPage3.Controls.Add(this.pictureBox1);
+			this.TabPage3.Controls.Add(this.logoPictureBox);
 			this.TabPage3.Controls.Add(this.updchkButton);
 			this.TabPage3.Controls.Add(this.label10);
 			this.TabPage3.Controls.Add(this.linkLabel3);
@@ -1112,17 +1125,17 @@
 			this.TabPage3.Text = "バージョン情報";
 			this.TabPage3.UseVisualStyleBackColor = true;
 			// 
-			// pictureBox1
+			// logoPictureBox
 			// 
-			this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pictureBox1.Image = global::glc_cs.Properties.Resources.icon;
-			this.pictureBox1.Location = new System.Drawing.Point(13, 11);
-			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(100, 100);
-			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-			this.pictureBox1.TabIndex = 12;
-			this.pictureBox1.TabStop = false;
-			this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+			this.logoPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.logoPictureBox.Image = global::glc_cs.Properties.Resources.icon;
+			this.logoPictureBox.Location = new System.Drawing.Point(13, 11);
+			this.logoPictureBox.Name = "logoPictureBox";
+			this.logoPictureBox.Size = new System.Drawing.Size(100, 100);
+			this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.logoPictureBox.TabIndex = 12;
+			this.logoPictureBox.TabStop = false;
+			this.logoPictureBox.Click += new System.EventHandler(this.logoPictureBox_Click);
 			// 
 			// updchkButton
 			// 
@@ -1240,7 +1253,7 @@
 			this.saveButton.TabIndex = 3;
 			this.saveButton.Text = "適用して閉じる";
 			this.saveButton.UseVisualStyleBackColor = true;
-			this.saveButton.Click += new System.EventHandler(this.button2_Click);
+			this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
 			// 
 			// openFileDialog1
 			// 
@@ -1306,7 +1319,7 @@
 			this.groupBox7.PerformLayout();
 			this.TabPage3.ResumeLayout(false);
 			this.TabPage3.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -1331,15 +1344,15 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Button saveButton;
 		private System.Windows.Forms.TabPage tabPage4;
-		private System.Windows.Forms.Button button4;
+		private System.Windows.Forms.Button iniFolderSelectButton;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.RadioButton dconRatingRadio2;
 		private System.Windows.Forms.RadioButton dconRatingRadio1;
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.GroupBox groupBox4;
-		private System.Windows.Forms.Button button8;
-		private System.Windows.Forms.Button button3;
+		private System.Windows.Forms.Button byResetButton;
+		private System.Windows.Forms.Button byConnectionTestButton;
 		private System.Windows.Forms.TextBox textBox5;
 		private System.Windows.Forms.TextBox textBox4;
 		private System.Windows.Forms.Label label14;
@@ -1363,10 +1376,10 @@
 		private System.Windows.Forms.Label label16;
 		private System.Windows.Forms.TextBox urlText;
 		private System.Windows.Forms.Label label9;
-		private System.Windows.Forms.TextBox textBox2;
+		private System.Windows.Forms.TextBox iniText;
 		private System.Windows.Forms.TabPage tabPage6;
 		private System.Windows.Forms.GroupBox groupBox7;
-		private System.Windows.Forms.Button button7;
+		private System.Windows.Forms.Button iniAllEditButton;
 		private System.Windows.Forms.Label label20;
 		private System.Windows.Forms.Label label19;
 		private System.Windows.Forms.TextBox textBox9;
@@ -1377,7 +1390,7 @@
 		private System.Windows.Forms.Label label17;
 		private System.Windows.Forms.TabPage tabPage7;
 		private System.Windows.Forms.GroupBox groupBox11;
-		private System.Windows.Forms.Button backgroundImageSearchButton;
+		private System.Windows.Forms.Button backgroundImageSelectButton;
 		private System.Windows.Forms.TextBox backgroundImageText;
 		private System.Windows.Forms.Label label24;
 		private System.Windows.Forms.TextBox tableText;
@@ -1389,7 +1402,7 @@
 		private System.Windows.Forms.TextBox userText;
 		private System.Windows.Forms.Button createTableButton;
 		private System.Windows.Forms.GroupBox groupBox12;
-		private System.Windows.Forms.Button button9;
+		private System.Windows.Forms.Button importIniToDbButton;
 		private System.Windows.Forms.CheckBox checkBox6;
 		private System.Windows.Forms.Label label25;
 		private System.Windows.Forms.CheckBox checkBox7;
@@ -1398,7 +1411,7 @@
 		private System.Windows.Forms.CheckBox checkBox10;
 		private System.Windows.Forms.CheckBox checkBox4;
 		private System.Windows.Forms.GroupBox groupBox8;
-		private System.Windows.Forms.Button button10;
+		private System.Windows.Forms.Button dbOverflowFixButton;
 		private System.Windows.Forms.Label label15;
 		private System.Windows.Forms.Label label26;
 		private System.Windows.Forms.GroupBox groupBox13;
@@ -1415,7 +1428,8 @@
 		private System.Windows.Forms.GroupBox groupBox14;
 		private System.Windows.Forms.CheckBox gridDisableCheck;
 		private System.Windows.Forms.Label label30;
-		private System.Windows.Forms.PictureBox pictureBox1;
+		private System.Windows.Forms.PictureBox logoPictureBox;
 		private System.Windows.Forms.Button dbBackupButton;
+		private System.Windows.Forms.Button iniAutoNumberingFixButton;
 	}
 }

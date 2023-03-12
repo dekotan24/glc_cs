@@ -193,7 +193,7 @@ namespace glc_cs
 			// ini取得と画面反映
 			try
 			{
-				iniPath = General.Var.GameDir + "\\" + selectedListCount + ".ini";
+				iniPath = General.Var.GameDir + selectedListCount + ".ini";
 				if (File.Exists(iniPath))
 				{
 					label9.Text = selectedListCount;

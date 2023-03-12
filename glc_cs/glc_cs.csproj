@@ -168,6 +168,12 @@
     <Compile Include="DBUpdate.Designer.cs">
       <DependentUpon>DBUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddItem.Designer.cs">
+      <DependentUpon>AddItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Memo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -208,6 +214,9 @@
     <Compile Include="Program.cs" />
     <EmbeddedResource Include="DBUpdate.resx">
       <DependentUpon>DBUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddItem.resx">
+      <DependentUpon>AddItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainLauncher.ja-JP.resx">
       <DependentUpon>MainLauncher.cs</DependentUpon>

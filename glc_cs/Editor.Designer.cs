@@ -75,6 +75,7 @@
 			// titleText
 			// 
 			this.titleText.Location = new System.Drawing.Point(97, 124);
+			this.titleText.MaxLength = 255;
 			this.titleText.Name = "titleText";
 			this.titleText.Size = new System.Drawing.Size(358, 19);
 			this.titleText.TabIndex = 1;
@@ -82,6 +83,7 @@
 			// exePathText
 			// 
 			this.exePathText.Location = new System.Drawing.Point(97, 149);
+			this.exePathText.MaxLength = 500;
 			this.exePathText.Name = "exePathText";
 			this.exePathText.Size = new System.Drawing.Size(332, 19);
 			this.exePathText.TabIndex = 2;
@@ -118,6 +120,7 @@
 			// imgPathText
 			// 
 			this.imgPathText.Location = new System.Drawing.Point(97, 176);
+			this.imgPathText.MaxLength = 500;
 			this.imgPathText.Name = "imgPathText";
 			this.imgPathText.Size = new System.Drawing.Size(332, 19);
 			this.imgPathText.TabIndex = 4;
@@ -166,6 +169,7 @@
 			// dconText
 			// 
 			this.dconText.Location = new System.Drawing.Point(97, 201);
+			this.dconText.MaxLength = 50;
 			this.dconText.Name = "dconText";
 			this.dconText.Size = new System.Drawing.Size(358, 19);
 			this.dconText.TabIndex = 6;
@@ -297,7 +301,7 @@
 			// 
 			this.runTimeText.Location = new System.Drawing.Point(97, 251);
 			this.runTimeText.Maximum = new decimal(new int[] {
-            0,
+            35791394,
             0,
             0,
             0});
@@ -308,6 +312,11 @@
 			// startCountText
 			// 
 			this.startCountText.Location = new System.Drawing.Point(308, 251);
+			this.startCountText.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
 			this.startCountText.Name = "startCountText";
 			this.startCountText.Size = new System.Drawing.Size(121, 19);
 			this.startCountText.TabIndex = 10;
@@ -315,6 +324,7 @@
 			// dconImgText
 			// 
 			this.dconImgText.Location = new System.Drawing.Point(97, 226);
+			this.dconImgText.MaxLength = 50;
 			this.dconImgText.Name = "dconImgText";
 			this.dconImgText.Size = new System.Drawing.Size(358, 19);
 			this.dconImgText.TabIndex = 7;
@@ -328,7 +338,7 @@
 			this.label4.TabIndex = 29;
 			this.label4.Text = "dconイメージID";
 			// 
-			// Form5
+			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -365,7 +375,7 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "Form5";
+			this.Name = "Editor";
 			this.Text = "Editor";
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.runTimeText)).EndInit();

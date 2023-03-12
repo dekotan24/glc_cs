@@ -42,12 +42,12 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static readonly string appVer = "1.04";
+			protected static readonly string appVer = "1.05";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appBuild = "29.23.02.20";
+			protected static readonly string appBuild = "30.23.03.13";
 
 			/// <summary>
 			/// データベースバージョン
@@ -60,7 +60,7 @@ namespace glc_cs
 			protected static string gameDir = string.Empty;
 
 			/// <summary>
-			/// アプリケーションディレクトリ(ランチャー実行パス)
+			/// アプリケーションディレクトリ（ランチャー実行パス）
 			/// </summary>
 			protected static string baseDir = AppDomain.CurrentDomain.BaseDirectory;
 
@@ -253,7 +253,7 @@ namespace glc_cs
 			}
 
 			/// <summary>
-			/// アプリケーションのバージョンを返却します
+			/// データベースのバージョンを返却します
 			/// </summary>
 			public static string DBVer
 			{
@@ -266,7 +266,7 @@ namespace glc_cs
 			public static string GameDir
 			{
 				get { return gameDir; }
-				set { gameDir = value; }
+				set { gameDir = (value.EndsWith("\\") ? value : value + "\\"); }
 			}
 
 			/// <summary>
@@ -330,6 +330,9 @@ namespace glc_cs
 				set { bgimg = value; }
 			}
 
+			/// <summary>
+			/// グリッド使用フラグ
+			/// </summary>
 			public static bool GridEnable
 			{
 				get { return gridEnable; }
@@ -355,7 +358,7 @@ namespace glc_cs
 			}
 
 			/// <summary>
-			/// ゲーム保存方法(I, D, M)
+			/// ゲーム保存方法(I, D, M, T)
 			/// </summary>
 			public static string SaveType
 			{
@@ -372,42 +375,63 @@ namespace glc_cs
 				set { offlineSave = value; }
 			}
 
+			/// <summary>
+			/// データベースのURL
+			/// </summary>
 			public static string DbUrl
 			{
 				get { return dbUrl; }
 				set { dbUrl = value; }
 			}
 
+			/// <summary>
+			/// データベースのポート番号
+			/// </summary>
 			public static string DbPort
 			{
 				get { return dbPort; }
 				set { dbPort = value; }
 			}
 
+			/// <summary>
+			/// データベース名
+			/// </summary>
 			public static string DbName
 			{
 				get { return dbName; }
 				set { dbName = value; }
 			}
 
+			/// <summary>
+			/// データベースのテーブル名
+			/// </summary>
 			public static string DbTable
 			{
 				get { return dbTable; }
 				set { dbTable = value; }
 			}
 
+			/// <summary>
+			/// データベースのログインユーザ名。値の設定時以外は使用しません
+			/// </summary>
 			public static string DbUser
 			{
 				get { return dbUser; }
 				set { dbUser = value; }
 			}
 
+			/// <summary>
+			/// データベースのログインパスワード。値の設定時以外は使用しません
+			/// </summary>
 			public static string DbPass
 			{
 				get { return dbPass; }
 				set { dbPass = value; }
 			}
 
+			/// <summary>
+			/// MSSQLの<see cref="SqlConnection"/>
+			/// </summary>
 			public static SqlConnection SqlCon
 			{
 				get
@@ -425,15 +449,18 @@ namespace glc_cs
 				}
 			}
 
+			/// <summary>
+			/// MySQLの<see cref="MySqlConnection"/>
+			/// </summary>
 			public static MySqlConnection SqlCon2
 			{
 				get
 				{
-					string server = dbUrl;
-					string port = dbPort;
-					string database = dbName;
-					string user = dbUser;
-					string pass = dbPass;
+					string server = DbUrl;
+					string port = DbPort;
+					string database = DbName;
+					string user = DbUser;
+					string pass = DbPass;
 					string charset = "utf8";
 					string connectionString = string.Format("Server={0};Port={1};Database={2};Uid={3};Pwd={4};Charset={5}", server, port, database, user, pass, charset);
 
@@ -588,11 +615,18 @@ namespace glc_cs
 				set { dconnectEnabled = Convert.ToBoolean(value); }
 			}
 
+			/// <summary>
+			/// デフォルトの成人向けフラグ
+			/// </summary>
 			public static Int32 Rate
 			{
 				get { return rate; }
 				set { rate = value; }
 			}
+
+			/// <summary>
+			/// グリッドの全画面表示フラグ
+			/// </summary>
 			public static bool GridMax
 			{
 				get { return gridMax; }
@@ -616,7 +650,7 @@ namespace glc_cs
 				{
 					// config.ini 存在する場合
 					GameDir = IniRead(ConfigIni, "default", "directory", BaseDir) + "Data";
-					GameIni = GameDir + "\\game.ini";
+					GameIni = GameDir + "game.ini";
 					GameDb = IniRead(ConfigIni, "default", "database", string.Empty);
 					DconPath = ReadIni("connect", "dconPath", "-1");
 
@@ -661,7 +695,7 @@ namespace glc_cs
 						}
 						catch (Exception ex)
 						{
-							WriteErrorLog(ex.Message, "GLConfigLoad", cm.CommandText);
+							WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
 							GameMax = 0;
 						}
 						finally
@@ -691,7 +725,7 @@ namespace glc_cs
 						}
 						catch (Exception ex)
 						{
-							WriteErrorLog(ex.Message, "GLConfigLoad", cm.CommandText);
+							WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
 							GameMax = 0;
 						}
 						finally
@@ -740,7 +774,7 @@ namespace glc_cs
 
 					// config.ini 存在しない場合
 					GameDir = BaseDir + "Data";
-					GameIni = GameDir + "\\game.ini";
+					GameIni = GameDir + "game.ini";
 					GameDb = string.Empty;
 
 					// dcon.jar のチェック
@@ -803,49 +837,49 @@ namespace glc_cs
 			/// <summary>
 			/// 指定されたINIに値を書き込みます
 			/// </summary>
-			/// <param name="filename">INIパス</param>
+			/// <param name="fileName">INIパス</param>
 			/// <param name="sec">セクション名</param>
 			/// <param name="key">キー値</param>
 			/// <param name="data">値</param>
-			public static void IniWrite(String filename, String sec, String key, String data)
+			public static void IniWrite(String fileName, String sec, String key, String data)
 			{
 				try
 				{
-					if (!File.Exists(filename))
+					if (!File.Exists(fileName))
 					{
-						if (!File.Exists(System.IO.Path.GetDirectoryName(filename)))
+						if (!File.Exists(Path.GetDirectoryName(fileName)))
 						{
-							Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filename));
+							Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 						}
-						File.Create(filename).Close();
+						File.Create(fileName).Close();
 					}
 					WritePrivateProfileString(
 									sec,
 									key,
 									data.ToString(),
-									filename);
+									fileName);
 				}
 				catch (Exception ex)
 				{
 					StringBuilder sb = new StringBuilder();
-					sb.Append("ファイルパス：").Append(filename);
-					sb.Append("セクション：").Append(sec);
-					sb.Append("キー：").Append(key);
-					sb.Append("値：").Append(data);
+					sb.Append("ファイルパス：").Append(fileName);
+					sb.Append(" / セクション：").Append(sec);
+					sb.Append(" / キー：").Append(key);
+					sb.Append(" / 値：").Append(data);
 
-					WriteErrorLog(ex.Message, "IniWrite", sb.ToString());
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, sb.ToString());
 				}
 				return;
 			}
 
 			/// <summary>
-			/// Config.ini及び、opt+ゲームデータ管理INIに値を書き込みます。opt+データ管理INIへは、存在しない場合に書き込みます。
+			/// Config.ini及び、<paramref name="opt"/>+ゲームデータ管理INIに値を書き込みます。<paramref name="opt"/>+データ管理INIへは、存在しない場合に書き込みます。
 			/// </summary>
 			/// <param name="sec">セクション名</param>
 			/// <param name="key">キー値</param>
 			/// <param name="data">値</param>
 			/// <param name="isconfig">config.iniが対象か（既定値：1）</param>
-			/// <param name="opt">ゲームデータ管理INIのパス</param>
+			/// <param name="opt">ゲームデータ統括管理INIがあるディレクトリパス</param>
 			public static void WriteIni(String sec, String key, String data, int isconfig = 1, String opt = "")
 			{
 				if (isconfig == 1)
@@ -877,7 +911,7 @@ namespace glc_cs
 			/// <param name="key">キー</param>
 			/// <param name="failedval">読み込みに失敗した場合の値</param>
 			/// <returns>キーの値もしくは失敗時の値</returns>
-			public static string ReadIni(String sec, String key, String failedval)
+			public static string ReadIni(String sec, String key, String failedVal)
 			{
 				String ans = "";
 
@@ -885,7 +919,7 @@ namespace glc_cs
 				GetPrivateProfileString(
 					sec,
 					key,
-					failedval,
+					failedVal,
 					data,
 					1024,
 					ConfigIni);
@@ -997,7 +1031,6 @@ namespace glc_cs
 				}
 				else
 				{
-
 					//接続テスト
 					try
 					{
@@ -1048,7 +1081,7 @@ namespace glc_cs
 			/// <param name="afterName">置換後文字列</param>
 			/// <param name="errMsg">エラーメッセージ</param>
 			/// <returns>成功すればtrue、エラー発生時はfalse</returns>
-			public static bool EditAllFilePath(string beforeName, string afterName, bool editFlg1, bool editFlg2, out int sucCount, out string errMsg)
+			public static bool EditAllIniFile(string beforeName, string afterName, bool editFlg1, bool editFlg2, out int sucCount, out string errMsg)
 			{
 				errMsg = string.Empty;
 				sucCount = -1;
@@ -1088,7 +1121,7 @@ namespace glc_cs
 				{
 					for (int i = 1; i <= GameMax; i++)
 					{
-						String readini = GameDir + "\\" + i + ".ini";
+						String readini = GameDir + i + ".ini";
 						String imgpassdata = null, passdata = null;
 						String imgPathData = null, exePathData = null;
 						bool wasChanged = false;
@@ -1129,7 +1162,7 @@ namespace glc_cs
 						else
 						{
 							//個別ini存在しない場合
-							DialogResult dr = MessageBox.Show("iniファイル読み込み中にエラー。 [button7_Click]\nファイルが存在しません。\n\n処理を続行しますか？\n\n次のファイルの値は更新されていない可能性があります：\n" + readini,
+							DialogResult dr = MessageBox.Show("iniファイル読み込み中にエラー。 [" + MethodBase.GetCurrentMethod().Name + "]\nファイルが存在しません。\n\n処理を続行しますか？\n\n次のファイルの値は更新されていない可能性があります：\n" + readini,
 											AppName,
 											MessageBoxButtons.YesNo,
 											MessageBoxIcon.Error);
@@ -1145,12 +1178,12 @@ namespace glc_cs
 				catch (Exception ex)
 				{
 					// 予期せぬエラー
-					MessageBox.Show("予期せぬエラーが発生しました。 [button7_Click]\nファイルの値は正常に更新されていない可能性があります。\n\n" + ex.Message,
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, string.Empty);
+					MessageBox.Show("予期せぬエラーが発生しました。 [" + MethodBase.GetCurrentMethod().Name + "]\nファイルの値は正常に更新されていない可能性があります。\n\n" + ex.Message,
 									AppName,
 									MessageBoxButtons.OK,
 									MessageBoxIcon.Error);
 
-					WriteErrorLog(ex.Message, "IniRead", string.Empty);
 					return false;
 				}
 				return true;
@@ -1164,6 +1197,10 @@ namespace glc_cs
 			/// <param name="addInfo">追加情報</param>
 			public static void WriteErrorLog(string errorMsg, string moduleName, string addInfo)
 			{
+				// 改行をスペースに変換
+				errorMsg = errorMsg.Replace("\n", "");
+				addInfo = addInfo.Replace("\n", "");
+
 				StringBuilder sb = new StringBuilder();
 				sb.Append("[ERROR] [").Append(DateTime.Now).Append("] ");
 				sb.Append("(").Append(moduleName).Append(") ");
