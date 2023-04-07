@@ -461,7 +461,7 @@ namespace glc_cs
 					string database = DbName;
 					string user = DbUser;
 					string pass = DbPass;
-					string charset = "utf8";
+					string charset = "utf8mb4";
 					string connectionString = string.Format("Server={0};Port={1};Database={2};Uid={3};Pwd={4};Charset={5}", server, port, database, user, pass, charset);
 
 					MySqlConnection cn = new MySqlConnection(connectionString);
