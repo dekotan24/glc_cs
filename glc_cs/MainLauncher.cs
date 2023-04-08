@@ -1525,6 +1525,20 @@ namespace glc_cs
 		}
 
 		/// <summary>
+		/// ゲームタイトルをコピーします
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void copySelectedGameTitle(object sender, EventArgs e)
+		{
+			if (titleLabel.Text.Length > 0)
+			{
+				Clipboard.SetText(titleLabel.Text);
+				System.Media.SystemSounds.Beep.Play();
+			}
+		}
+
+		/// <summary>
 		/// 再読込ボタン
 		/// </summary>
 		/// <param name="sender"></param>

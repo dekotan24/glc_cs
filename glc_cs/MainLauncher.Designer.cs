@@ -158,6 +158,7 @@
 			resources.ApplyResources(this.titleLabel, "titleLabel");
 			this.titleLabel.BackColor = System.Drawing.Color.Transparent;
 			this.titleLabel.Name = "titleLabel";
+			this.titleLabel.DoubleClick += new System.EventHandler(this.copySelectedGameTitle);
 			// 
 			// startButton
 			// 
@@ -354,6 +355,7 @@
 			// 
 			resources.ApplyResources(this.pictureBox10, "pictureBox10");
 			this.pictureBox10.BackColor = System.Drawing.Color.Transparent;
+			this.pictureBox10.Image = global::glc_cs.Properties.Resources.dconstat;
 			this.pictureBox10.Name = "pictureBox10";
 			this.pictureBox10.TabStop = false;
 			this.toolTip1.SetToolTip(this.pictureBox10, resources.GetString("pictureBox10.ToolTip"));
@@ -432,6 +434,7 @@
 			// pictureBox1
 			// 
 			this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+			this.pictureBox1.Image = global::glc_cs.Properties.Resources.dconico;
 			resources.ApplyResources(this.pictureBox1, "pictureBox1");
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.TabStop = false;
@@ -440,6 +443,7 @@
 			// pictureBox14
 			// 
 			this.pictureBox14.BackColor = System.Drawing.Color.Transparent;
+			this.pictureBox14.Image = global::glc_cs.Properties.Resources.exp;
 			resources.ApplyResources(this.pictureBox14, "pictureBox14");
 			this.pictureBox14.Name = "pictureBox14";
 			this.pictureBox14.TabStop = false;
@@ -449,6 +453,7 @@
 			// pictureBox13
 			// 
 			this.pictureBox13.BackColor = System.Drawing.Color.Transparent;
+			this.pictureBox13.Image = global::glc_cs.Properties.Resources.exp;
 			resources.ApplyResources(this.pictureBox13, "pictureBox13");
 			this.pictureBox13.Name = "pictureBox13";
 			this.pictureBox13.TabStop = false;
@@ -750,6 +755,7 @@
 			// 
 			resources.ApplyResources(this.dconImgText, "dconImgText");
 			this.dconImgText.Name = "dconImgText";
+			this.dconImgText.ReadOnly = true;
 			// 
 			// statusCombo
 			// 

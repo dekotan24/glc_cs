@@ -1331,17 +1331,6 @@
   <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="pictureBox14.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAATxJREFUSEu1zbFKw1AUxvGbR/ARfABdRLGLm4sgQkEEQRBBFMHNQXBxEUEHUbCg
-        YB36FL5AdYjUVm0tNm0E9wju/bwZknNyueTeyE3gt5yce/5Cfl7JtEOXtEOXhBfWRRTeC+QZ1kWrUxMT
-        ymMbMqA5qPPPiPAGtwI2fp/3gfAEGB0bjb9vojTQvRTIM2xM4udpBwgOgf6enc8DpAEER/KxwcduYRTo
-        baMMLLAlB+5RoLuJMlDgfQNloMDbOspAgdc1cGcPPqqNr0LiN+odFliVA7J4N0KlFhQSv1HvUKBTBac7
-        YEO9Q4H2CjjdYxvqHQq8LIOrXA8y1P8J0x4FWkvg5q96Ger/hGmPAv4CuLmLdob6P2HaSwPj5lSEx2kk
-        Zs/9DP6Py9uLb6YB1cxpE5xuJ2a5px26pB06Irw/mxFvSiKDhjcAAAAASUVORK5CYII=
-</value>
-  </data>
   <data name="pictureBox14.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -1368,17 +1357,6 @@
   </data>
   <data name="&gt;&gt;pictureBox14.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="pictureBox13.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vAAADrwBlbxySQAAATxJREFUSEu1zbFKw1AUxvGbR/ARfABdRLGLm4sgQkEEQRBBFMHNQXBxEUEHUbCg
-        YB36FL5AdYjUVm0tNm0E9wju/bwZknNyueTeyE3gt5yce/5Cfl7JtEOXtEOXhBfWRRTeC+QZ1kWrUxMT
-        ymMbMqA5qPPPiPAGtwI2fp/3gfAEGB0bjb9vojTQvRTIM2xM4udpBwgOgf6enc8DpAEER/KxwcduYRTo
-        baMMLLAlB+5RoLuJMlDgfQNloMDbOspAgdc1cGcPPqqNr0LiN+odFliVA7J4N0KlFhQSv1HvUKBTBac7
-        YEO9Q4H2CjjdYxvqHQq8LIOrXA8y1P8J0x4FWkvg5q96Ger/hGmPAv4CuLmLdob6P2HaSwPj5lSEx2kk
-        Zs/9DP6Py9uLb6YB1cxpE5xuJ2a5px26pB06Irw/mxFvSiKDhjcAAAAASUVORK5CYII=
-</value>
   </data>
   <data name="pictureBox13.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1605,21 +1583,6 @@
   <data name="pictureBox10.AccessibleDescription" xml:space="preserve">
     <value />
   </data>
-  <data name="pictureBox10.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKM+VkTtI
-        w1AUhv+mig8qInYQcchQO7UgKuIoUSyChdJWaNXB5KYvaNKQpLg4Cq4FBx+LVQcXZ10dXAVB8AHi6OSk
-        6CIlnpsUWoQKXjjcj//e/+fccwGhXmaa1TUBaLptJmOSmMmuij2v6MMQVRgRmVlGPLWYRsf1dQ8f3++i
-        PAv/WwNqzmKATySeY4ZpE28Qz2zaBud94iAryirxOXHEpAaJH7muePzGueCywDODZjo5TxwkFgttrLQx
-        K5oa8TRxSNV0yhcyHquctzhr5Spr9slfGMjpKymuU40hhiXEkYAIBVWUUIaNKO06KRaSdC518I+6/gS5
-        FHKVwMixgAo0yK4f/A9+z9bKT016SQEJ6H5xnI9xoGcXaNQc5/vYcRongP8ZuNJb/kodmP0kvdbSQkfA
-        4DZwcd3SlD3gcgcYeTJkU3YlP5WQzwPvZ/RNWWD4Fuhf8+bWPMfpA5CmWS3fAAeHQLhA2esd3t3bPrc/
-        77jzg/QDs31ywdXOMVwAAAAJcEhZcwAACwwAAAsMAT9AIsgAAAAHdElNRQfmCREJKBM/TtRPAAAAhUlE
-        QVQ4T62OUQ6AIAxDOZZ/fngDr+DNvChm2GFZKmjCSxrY1i5L09jWJbPQrozmxeAow2jeGAyrWYzViD1E
-        Uw9fiqgOx56qEX8/34m1YTXi/8535IIvi9iLeHtBb0n0IX4Th0qO/RFrYTNald5sDuexZ5bqsUqIsaYj
-        DSPUAnujirmS0gXaocRPPxVnoAAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="pictureBox10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -1828,9 +1791,6 @@
   <data name="pictureBox3.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>545, 17</value>
-  </metadata>
   <data name="pictureBox3.ToolTip" xml:space="preserve">
     <value>タイトルをクリップボードにコピー</value>
   </data>
@@ -2055,21 +2015,6 @@
   </data>
   <data name="&gt;&gt;dconImgText.ZOrder" xml:space="preserve">
     <value>33</value>
-  </data>
-  <data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKM+VkTtI
-        w1AUhv+mig8qInYQcchQO7UgKuIoUSyChdJWaNXB5KYvaNKQpLg4Cq4FBx+LVQcXZ10dXAVB8AHi6OSk
-        6CIlnpsUWoQKXjjcj//e/+fccwGhXmaa1TUBaLptJmOSmMmuij2v6MMQVRgRmVlGPLWYRsf1dQ8f3++i
-        PAv/WwNqzmKATySeY4ZpE28Qz2zaBud94iAryirxOXHEpAaJH7muePzGueCywDODZjo5TxwkFgttrLQx
-        K5oa8TRxSNV0yhcyHquctzhr5Spr9slfGMjpKymuU40hhiXEkYAIBVWUUIaNKO06KRaSdC518I+6/gS5
-        FHKVwMixgAo0yK4f/A9+z9bKT016SQEJ6H5xnI9xoGcXaNQc5/vYcRongP8ZuNJb/kodmP0kvdbSQkfA
-        4DZwcd3SlD3gcgcYeTJkU3YlP5WQzwPvZ/RNWWD4Fuhf8+bWPMfpA5CmWS3fAAeHQLhA2esd3t3bPrc/
-        77jzg/QDs31ywdXOMVwAAAAJcEhZcwAACwwAAAsMAT9AIsgAAAAHdElNRQfmCREJKAJV/vS9AAAAg0lE
-        QVQ4T62O0Q2AMAhEO5Z/friBK7iZi1bRuwqIbU36EpLC3VHSMJZ5yrowLrT0y0AiQ0s3BkF6XRrpEXvw
-        phpcimgc9rOoR/z7fOJ7QXrE/51PwgU9i7QXcXtBbYn3IX7jxaiIvBGzaDNGhZo2jn1bc0/B/kbEFl0L
-        +JMvarCfpHQAhdLcN/MDyS4AAAAASUVORK5CYII=
-</value>
   </data>
   <data name="pictureBox1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -4287,6 +4232,9 @@
   </data>
   <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>405, 17</value>
+  </metadata>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>545, 17</value>
   </metadata>
   <data name="sensCheck.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
