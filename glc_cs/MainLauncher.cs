@@ -881,7 +881,7 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET UPTIME = CAST(CAST(UPTIME AS BIGINT) + " + anss + " AS NVARCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS INT) + 1 AS NVARCHAR), DCON_TEXT = '" + dconText.Text.Trim() + "', DCON_IMG = '" + dconImgText.Text.Trim() + "', AGE_FLG = '" + (normalRadio.Checked ? "0" : "1") + "', LAST_RUN = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' "
+									CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET UPTIME = CAST(CAST(UPTIME AS BIGINT) + " + anss + " AS NVARCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS INT) + 1 AS NVARCHAR), DCON_TEXT = N'" + dconText.Text.Trim() + "', DCON_IMG = N'" + dconImgText.Text.Trim() + "', AGE_FLG = N'" + (normalRadio.Checked ? "0" : "1") + "', LAST_RUN = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' "
 												+ " WHERE ID = '" + General.Var.CurrentGameDbVal + "'"
 								};
 								cm.Connection = cn;
@@ -923,7 +923,7 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"UPDATE " + General.Var.DbTable + " SET UPTIME = CAST(CAST(UPTIME AS SIGNED) + " + anss + " AS NCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS SIGNED) + 1 AS NCHAR), DCON_TEXT = '" + dconText.Text.Trim() + "', DCON_IMG = '" + dconImgText.Text.Trim() + "', AGE_FLG = '" + (normalRadio.Checked ? "0" : "1") + "', LAST_RUN = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' "
+									CommandText = @"UPDATE " + General.Var.DbTable + " SET UPTIME = CAST(CAST(UPTIME AS SIGNED) + " + anss + " AS NCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS SIGNED) + 1 AS NCHAR), DCON_TEXT = N'" + dconText.Text.Trim() + "', DCON_IMG = N'" + dconImgText.Text.Trim() + "', AGE_FLG = N'" + (normalRadio.Checked ? "0" : "1") + "', LAST_RUN = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' "
 												+ " WHERE ID = '" + General.Var.CurrentGameDbVal + "';"
 								};
 								cm.Connection = cn;
@@ -1720,8 +1720,6 @@ namespace glc_cs
 			{
 				int ckv0 = Convert.ToInt32(General.Var.IniRead(General.Var.ConfigIni, "checkbox", "track", "0"));
 				int ckv1 = Convert.ToInt32(General.Var.IniRead(General.Var.ConfigIni, "checkbox", "winmini", "0"));
-
-				dconImgText.Enabled = (General.Var.DconAppID.Length != 0);
 
 				String bgimg = General.Var.BgImg;
 				sensCheck.Checked = Convert.ToBoolean(Convert.ToInt32(General.Var.IniRead(General.Var.ConfigIni, "checkbox", "sens", "0")));

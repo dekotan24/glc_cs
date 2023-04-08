@@ -282,7 +282,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"INSERT INTO " + General.Var.DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + game_text.Replace("'", "''").Replace("\\", "\\\\") + "', '" + gamePath.Replace("'", "''").Replace("\\", "\\\\") + "', '" + imgPath.Replace("'", "''").Replace("\\", "\\\\") + "', '" + runTime + "', '" + startCount + "', '" + dcon_text.Replace("'", "''").Replace("\\", "\\\\") + "', '" + rate + "', '" + dcon_img.Replace("'", "''").Replace("\\", "\\\\") + "', '', '未プレイ', '" + General.Var.DBVer + "' );"
+						CommandText = @"INSERT INTO " + General.Var.DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( N'" + game_text.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + gamePath.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + imgPath.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + runTime + "', N'" + startCount + "', N'" + dcon_text.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + rate + "', N'" + dcon_img.Replace("'", "''").Replace("\\", "\\\\") + "', '', N'未プレイ', N'" + General.Var.DBVer + "' );"
 					};
 					cm.Connection = cn;
 

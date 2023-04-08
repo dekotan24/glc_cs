@@ -95,19 +95,20 @@
 			this.gameImgList = new System.Windows.Forms.ListView();
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.tabPage3 = new System.Windows.Forms.TabPage();
+			this.searchResultList = new System.Windows.Forms.ListBox();
 			this.lastOrderDrop = new System.Windows.Forms.ComboBox();
 			this.lastSearchOption = new System.Windows.Forms.ComboBox();
 			this.orderDropDown = new System.Windows.Forms.ComboBox();
 			this.searchTargetDropDown = new System.Windows.Forms.ComboBox();
 			this.searchButton = new System.Windows.Forms.Button();
 			this.searchText = new System.Windows.Forms.TextBox();
-			this.searchResultList = new System.Windows.Forms.ListBox();
 			this.imageList2 = new System.Windows.Forms.ImageList(this.components);
 			this.imageList0 = new System.Windows.Forms.ImageList(this.components);
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
 			this.dconImgText = new System.Windows.Forms.TextBox();
 			this.statusCombo = new System.Windows.Forms.ComboBox();
+			this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
 			this.statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
@@ -133,6 +134,7 @@
 			this.tabPage3.SuspendLayout();
 			this.flowLayoutPanel1.SuspendLayout();
 			this.flowLayoutPanel2.SuspendLayout();
+			this.flowLayoutPanel3.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// gameList
@@ -629,6 +631,7 @@
 			// 
 			// tabPage3
 			// 
+			this.tabPage3.Controls.Add(this.searchResultList);
 			this.tabPage3.Controls.Add(this.lastOrderDrop);
 			this.tabPage3.Controls.Add(this.lastSearchOption);
 			this.tabPage3.Controls.Add(this.orderDropDown);
@@ -636,10 +639,16 @@
 			this.tabPage3.Controls.Add(this.searchingText);
 			this.tabPage3.Controls.Add(this.searchButton);
 			this.tabPage3.Controls.Add(this.searchText);
-			this.tabPage3.Controls.Add(this.searchResultList);
 			resources.ApplyResources(this.tabPage3, "tabPage3");
 			this.tabPage3.Name = "tabPage3";
 			this.tabPage3.UseVisualStyleBackColor = true;
+			// 
+			// searchResultList
+			// 
+			resources.ApplyResources(this.searchResultList, "searchResultList");
+			this.searchResultList.FormattingEnabled = true;
+			this.searchResultList.Name = "searchResultList";
+			this.searchResultList.SelectedIndexChanged += new System.EventHandler(this.searchResultList_SelectedIndexChanged);
 			// 
 			// lastOrderDrop
 			// 
@@ -709,13 +718,6 @@
 			resources.ApplyResources(this.searchText, "searchText");
 			this.searchText.Name = "searchText";
 			// 
-			// searchResultList
-			// 
-			resources.ApplyResources(this.searchResultList, "searchResultList");
-			this.searchResultList.FormattingEnabled = true;
-			this.searchResultList.Name = "searchResultList";
-			this.searchResultList.SelectedIndexChanged += new System.EventHandler(this.searchResultList_SelectedIndexChanged);
-			// 
 			// imageList2
 			// 
 			this.imageList2.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
@@ -778,47 +780,54 @@
 			this.statusCombo.Name = "statusCombo";
 			this.statusCombo.SelectedIndexChanged += new System.EventHandler(this.statusCombo_SelectedIndexChanged);
 			// 
+			// flowLayoutPanel3
+			// 
+			this.flowLayoutPanel3.BackColor = System.Drawing.Color.Transparent;
+			this.flowLayoutPanel3.Controls.Add(this.pictureBox2);
+			this.flowLayoutPanel3.Controls.Add(this.nameText);
+			this.flowLayoutPanel3.Controls.Add(this.pictureBox3);
+			this.flowLayoutPanel3.Controls.Add(this.pictureBox5);
+			this.flowLayoutPanel3.Controls.Add(this.exePathText);
+			this.flowLayoutPanel3.Controls.Add(this.pictureBox4);
+			this.flowLayoutPanel3.Controls.Add(this.pictureBox13);
+			this.flowLayoutPanel3.Controls.Add(this.pictureBox7);
+			this.flowLayoutPanel3.Controls.Add(this.imgPathText);
+			this.flowLayoutPanel3.Controls.Add(this.pictureBox6);
+			this.flowLayoutPanel3.Controls.Add(this.pictureBox14);
+			this.flowLayoutPanel3.Controls.Add(this.pictureBox9);
+			this.flowLayoutPanel3.Controls.Add(this.runTimeText);
+			this.flowLayoutPanel3.Controls.Add(this.label2);
+			this.flowLayoutPanel3.Controls.Add(this.pictureBox8);
+			this.flowLayoutPanel3.Controls.Add(this.startCountText);
+			this.flowLayoutPanel3.Controls.Add(this.label3);
+			this.flowLayoutPanel3.Controls.Add(this.statusCombo);
+			this.flowLayoutPanel3.Controls.Add(this.memoButton);
+			this.flowLayoutPanel3.Controls.Add(this.pictureBox1);
+			this.flowLayoutPanel3.Controls.Add(this.dconText);
+			this.flowLayoutPanel3.Controls.Add(this.pictureBox10);
+			this.flowLayoutPanel3.Controls.Add(this.dconImgText);
+			resources.ApplyResources(this.flowLayoutPanel3, "flowLayoutPanel3");
+			this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+			// 
 			// gl
 			// 
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.flowLayoutPanel3);
 			this.Controls.Add(this.ocButton);
 			this.Controls.Add(this.tabControl1);
-			this.Controls.Add(this.pictureBox14);
-			this.Controls.Add(this.pictureBox13);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.downButton);
 			this.Controls.Add(this.upButton);
 			this.Controls.Add(this.pictureBox11);
 			this.Controls.Add(this.delButton);
-			this.Controls.Add(this.pictureBox10);
-			this.Controls.Add(this.dconText);
-			this.Controls.Add(this.label2);
 			this.Controls.Add(this.statusStrip1);
-			this.Controls.Add(this.label3);
-			this.Controls.Add(this.startCountText);
-			this.Controls.Add(this.pictureBox8);
-			this.Controls.Add(this.runTimeText);
-			this.Controls.Add(this.pictureBox9);
-			this.Controls.Add(this.pictureBox6);
-			this.Controls.Add(this.imgPathText);
-			this.Controls.Add(this.pictureBox7);
-			this.Controls.Add(this.pictureBox4);
-			this.Controls.Add(this.exePathText);
-			this.Controls.Add(this.pictureBox5);
-			this.Controls.Add(this.pictureBox3);
-			this.Controls.Add(this.nameText);
-			this.Controls.Add(this.pictureBox2);
 			this.Controls.Add(this.randomButton);
 			this.Controls.Add(this.startButton);
 			this.Controls.Add(this.gameIcon);
 			this.Controls.Add(this.titleLabel);
 			this.Controls.Add(this.flowLayoutPanel1);
 			this.Controls.Add(this.flowLayoutPanel2);
-			this.Controls.Add(this.dconImgText);
-			this.Controls.Add(this.pictureBox1);
-			this.Controls.Add(this.memoButton);
-			this.Controls.Add(this.statusCombo);
 			this.DoubleBuffered = true;
 			this.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -855,6 +864,8 @@
 			this.flowLayoutPanel1.ResumeLayout(false);
 			this.flowLayoutPanel2.ResumeLayout(false);
 			this.flowLayoutPanel2.PerformLayout();
+			this.flowLayoutPanel3.ResumeLayout(false);
+			this.flowLayoutPanel3.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -939,6 +950,7 @@
 		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.Button memoButton;
 		private System.Windows.Forms.ComboBox statusCombo;
+		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
 	}
 }
 
