@@ -1533,8 +1533,16 @@ namespace glc_cs
 		{
 			if (titleLabel.Text.Length > 0)
 			{
-				Clipboard.SetText(titleLabel.Text);
-				System.Media.SystemSounds.Beep.Play();
+				try
+				{
+					Clipboard.SetText(titleLabel.Text);
+					System.Media.SystemSounds.Asterisk.Play();
+				}
+				catch (Exception ex)
+				{
+					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, titleLabel.Text);
+					System.Media.SystemSounds.Exclamation.Play();
+				}
 			}
 		}
 
@@ -2193,18 +2201,6 @@ namespace glc_cs
 				{
 					System.Diagnostics.Process.Start(opendir);
 				}
-			}
-		}
-
-		private void checkBox6_CheckedChanged(object sender, EventArgs e)
-		{
-			if (testCheck.Checked)
-			{
-				trackCheck.Enabled = false;
-			}
-			else
-			{
-				trackCheck.Enabled = true;
 			}
 		}
 
@@ -3088,7 +3084,7 @@ namespace glc_cs
 						 + General.Var.DbName + "." + General.Var.DbTable + " AS MAIN "
 						 + "	LEFT OUTER JOIN ( "
 						 + "		SELECT "
-						 + "			[T].[ID], [T].[GAME_PATH], [T].[IMG_PATH], [T].[DCON_TEXT], [T].[DCON_IMG], [T].[UPTIME], [T].[RUN_COUNT], [T].[AGE_FLG], [T].[LAST_RUN], [T].[MEMO], [T].[STATUS] ROW_NUMBER() over (ORDER BY [T].[ID]) AS [ROW1], [T2].[ROW2] "
+						 + "			[T].[ID], [T].[GAME_PATH], [T].[IMG_PATH], [T].[DCON_TEXT], [T].[DCON_IMG], [T].[UPTIME], [T].[RUN_COUNT], [T].[AGE_FLG], [T].[LAST_RUN], [T].[MEMO], [T].[STATUS], ROW_NUMBER() over (ORDER BY [T].[ID]) AS [ROW1], [T2].[ROW2] "
 						 + "		FROM "
 						 + General.Var.DbName + "." + General.Var.DbTable + " AS [T] "
 						 + "		LEFT OUTER JOIN ( "
@@ -3150,28 +3146,47 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText =
-						  @" SELECT"
-						 + "	ROW1 "
-						 + " FROM "
-						 + General.Var.DbTable + " AS MAIN "
-						 + "	LEFT OUTER JOIN ( "
-						 + "		SELECT "
-						 + "			T.ID, T.GAME_PATH, T.IMG_PATH, T.DCON_TEXT, T.DCON_IMG, T.UPTIME, T.RUN_COUNT, T.AGE_FLG, T.LAST_RUN, T.MEMO, T.STATUS, ROW_NUMBER() over (ORDER BY T.ID) AS ROW1, T2.ROW2 "
-						 + "		FROM "
-						 + General.Var.DbTable + " AS T "
-						 + "		LEFT OUTER JOIN ( "
-						 + "			SELECT "
-						 + "				ID, ROW_NUMBER() over (ORDER BY " + searchOption + " " + (lastOrderDrop.SelectedIndex == 0 ? "ASC" : "DESC") + ") AS ROW2 "
-						 + "			FROM "
-						 + General.Var.DbTable
-						 + (searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE '%" + searchName + "%'")
-						 + "		) AS T2 "
-						 + " ON T.ID = T2.ID "
-						 + ") AS SUB "
-						 + " ON MAIN.ID = SUB.ID "
-						 + " WHERE SUB.ROW2 = " + selecteditem
-						 + " ORDER BY SUB.ROW2 ASC "
+						CommandText = @" SELECT "
+										+ " main.ID"
+										+ ",GAME_NAME"
+										+ ",GAME_PATH"
+										+ ",IMG_PATH"
+										+ ",UPTIME"
+										+ ",RUN_COUNT"
+										+ ",DCON_TEXT"
+										+ ",DCON_IMG"
+										+ ",AGE_FLG"
+										+ ",MEMO"
+										+ ",sub.ROW1"
+										+ ",sub2.ROW2"
+										+ " FROM "
+										+	General.Var.DbTable + " main"
+										+ " LEFT OUTER JOIN "
+										+ "("
+										+ "		SELECT "
+										+ "			 ID"
+										+ "			,ROW_NUMBER() over (ORDER BY ID ASC) AS ROW1"
+										+ "		FROM "
+										+			General.Var.DbTable
+										+ ") AS sub"
+										+ " ON "
+										+ "		main.ID = sub.ID "
+										+ " LEFT OUTER JOIN "
+										+ "("
+										+ "		SELECT "
+										+ "			 ID"
+										+ "			,ROW_NUMBER() over (ORDER BY " + searchOption + " " + (lastOrderDrop.SelectedIndex == 0 ? " ASC" : " DESC") + ") AS ROW2"
+										+ "		FROM "
+										+			General.Var.DbTable
+										+		(searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE '%" + searchName + "%'")
+										+ ") AS sub2"
+										+ " ON "
+										+ "		main.ID = sub2.ID "
+										+ " WHERE "
+										+	(searchOption == "LAST_RUN" ? "" : searchOption + " LIKE '%" + searchName + "%' AND")
+										+	" ROW2 = " + (searchResultList.SelectedIndex + 1).ToString()
+										+ " ORDER BY "
+										+	searchOption + (lastOrderDrop.SelectedIndex == 0 ? " ASC" : " DESC")
 					};
 				}
 				else

@@ -415,7 +415,6 @@
 			this.testCheck.Name = "testCheck";
 			this.toolTip1.SetToolTip(this.testCheck, resources.GetString("testCheck.ToolTip"));
 			this.testCheck.UseVisualStyleBackColor = false;
-			this.testCheck.CheckedChanged += new System.EventHandler(this.checkBox6_CheckedChanged);
 			// 
 			// cleanButton
 			// 
@@ -699,8 +698,7 @@
             resources.GetString("searchTargetDropDown.Items1"),
             resources.GetString("searchTargetDropDown.Items2"),
             resources.GetString("searchTargetDropDown.Items3"),
-            resources.GetString("searchTargetDropDown.Items4"),
-            resources.GetString("searchTargetDropDown.Items5")});
+            resources.GetString("searchTargetDropDown.Items4")});
 			resources.ApplyResources(this.searchTargetDropDown, "searchTargetDropDown");
 			this.searchTargetDropDown.Name = "searchTargetDropDown";
 			this.searchTargetDropDown.SelectedIndexChanged += new System.EventHandler(this.searchTargetDropDown_SelectedIndexChanged);
@@ -746,10 +744,10 @@
 			// 
 			this.flowLayoutPanel2.BackColor = System.Drawing.Color.Transparent;
 			this.flowLayoutPanel2.Controls.Add(this.trackCheck);
+			this.flowLayoutPanel2.Controls.Add(this.testCheck);
 			this.flowLayoutPanel2.Controls.Add(this.minCheck);
 			this.flowLayoutPanel2.Controls.Add(this.sensCheck);
 			this.flowLayoutPanel2.Controls.Add(this.reloadCheck);
-			this.flowLayoutPanel2.Controls.Add(this.testCheck);
 			resources.ApplyResources(this.flowLayoutPanel2, "flowLayoutPanel2");
 			this.flowLayoutPanel2.Name = "flowLayoutPanel2";
 			// 
