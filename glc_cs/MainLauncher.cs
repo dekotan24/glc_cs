@@ -955,7 +955,7 @@ namespace glc_cs
 							}
 
 
-							gameList_SelectedIndexChanged(null, null);
+							gameList_SelectedIndexChanged(sender, e);
 						}
 						pictureBox11.Visible = false;
 						startButton.Enabled = true;
@@ -1706,6 +1706,36 @@ namespace glc_cs
 				trackCheck.Checked = Convert.ToBoolean(ckv0);
 				minCheck.Checked = Convert.ToBoolean(ckv1);
 
+				if (trackCheck.Checked)
+				{
+					dconTextPictureBox.Visible = true;
+					dconText.Visible = true;
+					dconImgPictureBox.Visible = true;
+					dconImgText.Visible = true;
+
+					dconConnectGroupBox.Visible = true;
+
+					testCheck.Visible = true;
+					minCheck.Visible = true;
+					if (useDconCheck.Checked)
+					{
+						sensCheck.Visible = true;
+					}
+				}
+				else
+				{
+					dconTextPictureBox.Visible = false;
+					dconText.Visible = false;
+					dconImgPictureBox.Visible = false;
+					dconImgText.Visible = false;
+
+					dconConnectGroupBox.Visible = false;
+
+					testCheck.Visible = false;
+					minCheck.Visible = false;
+					sensCheck.Visible = false;
+				}
+
 				// データベース使用時の部品非表示処理
 				if (General.Var.SaveType == "D" || General.Var.SaveType == "M")
 				{
@@ -1926,7 +1956,7 @@ namespace glc_cs
 				Editor form5 = new Editor(General.Var.SaveType, selectedListCount, cn, cm);
 				form5.StartPosition = FormStartPosition.CenterParent;
 				form5.ShowDialog(this);
-				gameList_SelectedIndexChanged(null, null);
+				gameList_SelectedIndexChanged(sender, e);
 				return;
 			}
 			else if (General.Var.SaveType == "M")
@@ -1947,7 +1977,7 @@ namespace glc_cs
 				Editor form5 = new Editor(General.Var.SaveType, selectedListCount, cn, cm);
 				form5.StartPosition = FormStartPosition.CenterParent;
 				form5.ShowDialog(this);
-				gameList_SelectedIndexChanged(null, null);
+				gameList_SelectedIndexChanged(sender, e);
 				return;
 			}
 
@@ -1958,7 +1988,7 @@ namespace glc_cs
 				Editor form5 = new Editor(General.Var.SaveType, selectedListCount, new SqlConnection(), new SqlCommand());
 				form5.StartPosition = FormStartPosition.CenterParent;
 				form5.ShowDialog(this);
-				gameList_SelectedIndexChanged(null, null);
+				gameList_SelectedIndexChanged(sender, e);
 			}
 			else
 			{
@@ -2003,7 +2033,7 @@ namespace glc_cs
 				Memo memoForm = new Memo(General.Var.SaveType, selectedListCount, cn, cm);
 				memoForm.StartPosition = FormStartPosition.CenterParent;
 				memoForm.ShowDialog(this);
-				gameList_SelectedIndexChanged(null, null);
+				gameList_SelectedIndexChanged(sender, e);
 				return;
 			}
 			else if (General.Var.SaveType == "M")
@@ -2024,7 +2054,7 @@ namespace glc_cs
 				Memo memoForm = new Memo(General.Var.SaveType, selectedListCount, cn, cm);
 				memoForm.StartPosition = FormStartPosition.CenterParent;
 				memoForm.ShowDialog(this);
-				gameList_SelectedIndexChanged(null, null);
+				gameList_SelectedIndexChanged(sender, e);
 				return;
 			}
 
@@ -2035,7 +2065,7 @@ namespace glc_cs
 				Memo memoForm = new Memo(General.Var.SaveType, selectedListCount, new SqlConnection(), new SqlCommand());
 				memoForm.StartPosition = FormStartPosition.CenterParent;
 				memoForm.ShowDialog(this);
-				gameList_SelectedIndexChanged(null, null);
+				gameList_SelectedIndexChanged(sender, e);
 			}
 			else
 			{
@@ -3276,8 +3306,15 @@ namespace glc_cs
 
 		private void trackCheck_CheckedChanged(object sender, EventArgs e)
 		{
+			General.Var.WriteIni("checkbox", "track", (Convert.ToInt32(trackCheck.Checked)).ToString());
+
 			if (trackCheck.Checked)
 			{
+				dconTextPictureBox.Visible = true;
+				dconText.Visible = true;
+				dconImgPictureBox.Visible = true;
+				dconImgText.Visible = true;
+
 				dconConnectGroupBox.Visible = true;
 
 				testCheck.Visible = true;
@@ -3289,6 +3326,11 @@ namespace glc_cs
 			}
 			else
 			{
+				dconTextPictureBox.Visible = false;
+				dconText.Visible = false;
+				dconImgPictureBox.Visible = false;
+				dconImgText.Visible = false;
+
 				dconConnectGroupBox.Visible = false;
 
 				testCheck.Visible = false;
@@ -3309,6 +3351,16 @@ namespace glc_cs
 				sensCheck.Visible = false;
 			}
 			return;
+		}
+
+		private void minCheck_CheckedChanged(object sender, EventArgs e)
+		{
+			General.Var.WriteIni("checkbox", "winmini", (Convert.ToInt32(minCheck.Checked)).ToString());
+		}
+
+		private void sensCheck_CheckedChanged(object sender, EventArgs e)
+		{
+			General.Var.WriteIni("checkbox", "sens", (Convert.ToInt32(sensCheck.Checked)).ToString());
 		}
 	}
 }

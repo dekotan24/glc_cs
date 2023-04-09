@@ -60,7 +60,7 @@
 			this.sensCheck = new System.Windows.Forms.CheckBox();
 			this.configButton = new System.Windows.Forms.Button();
 			this.editButton = new System.Windows.Forms.Button();
-			this.pictureBox10 = new System.Windows.Forms.PictureBox();
+			this.dconImgPictureBox = new System.Windows.Forms.PictureBox();
 			this.pictureBox8 = new System.Windows.Forms.PictureBox();
 			this.pictureBox9 = new System.Windows.Forms.PictureBox();
 			this.pictureBox7 = new System.Windows.Forms.PictureBox();
@@ -69,7 +69,7 @@
 			this.testCheck = new System.Windows.Forms.CheckBox();
 			this.cleanButton = new System.Windows.Forms.Button();
 			this.ocButton = new System.Windows.Forms.Button();
-			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.dconTextPictureBox = new System.Windows.Forms.PictureBox();
 			this.pictureBox14 = new System.Windows.Forms.PictureBox();
 			this.pictureBox13 = new System.Windows.Forms.PictureBox();
 			this.pictureBox6 = new System.Windows.Forms.PictureBox();
@@ -102,18 +102,18 @@
 			this.imageList2 = new System.Windows.Forms.ImageList(this.components);
 			this.imageList0 = new System.Windows.Forms.ImageList(this.components);
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+			this.launchFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
 			this.dconImgText = new System.Windows.Forms.TextBox();
 			this.statusCombo = new System.Windows.Forms.ComboBox();
-			this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+			this.gameStatusFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
 			this.statusStrip1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.dconImgPictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.dconTextPictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
@@ -128,8 +128,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
 			this.tabPage3.SuspendLayout();
 			this.flowLayoutPanel1.SuspendLayout();
-			this.flowLayoutPanel2.SuspendLayout();
-			this.flowLayoutPanel3.SuspendLayout();
+			this.launchFlowLayoutPanel.SuspendLayout();
+			this.gameStatusFlowLayoutPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// gameList
@@ -234,6 +234,7 @@
 			this.minCheck.Name = "minCheck";
 			this.toolTip1.SetToolTip(this.minCheck, resources.GetString("minCheck.ToolTip"));
 			this.minCheck.UseVisualStyleBackColor = false;
+			this.minCheck.CheckedChanged += new System.EventHandler(this.minCheck_CheckedChanged);
 			// 
 			// statusStrip1
 			// 
@@ -317,6 +318,7 @@
 			this.sensCheck.Name = "sensCheck";
 			this.toolTip1.SetToolTip(this.sensCheck, resources.GetString("sensCheck.ToolTip"));
 			this.sensCheck.UseVisualStyleBackColor = true;
+			this.sensCheck.CheckedChanged += new System.EventHandler(this.sensCheck_CheckedChanged);
 			// 
 			// configButton
 			// 
@@ -334,14 +336,14 @@
 			this.editButton.UseVisualStyleBackColor = true;
 			this.editButton.Click += new System.EventHandler(this.editButton_Click);
 			// 
-			// pictureBox10
+			// dconImgPictureBox
 			// 
-			resources.ApplyResources(this.pictureBox10, "pictureBox10");
-			this.pictureBox10.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox10.Image = global::glc_cs.Properties.Resources.dconstat;
-			this.pictureBox10.Name = "pictureBox10";
-			this.pictureBox10.TabStop = false;
-			this.toolTip1.SetToolTip(this.pictureBox10, resources.GetString("pictureBox10.ToolTip"));
+			resources.ApplyResources(this.dconImgPictureBox, "dconImgPictureBox");
+			this.dconImgPictureBox.BackColor = System.Drawing.Color.Transparent;
+			this.dconImgPictureBox.Image = global::glc_cs.Properties.Resources.dconstat;
+			this.dconImgPictureBox.Name = "dconImgPictureBox";
+			this.dconImgPictureBox.TabStop = false;
+			this.toolTip1.SetToolTip(this.dconImgPictureBox, resources.GetString("dconImgPictureBox.ToolTip"));
 			// 
 			// pictureBox8
 			// 
@@ -413,14 +415,14 @@
 			this.ocButton.UseVisualStyleBackColor = true;
 			this.ocButton.Click += new System.EventHandler(this.ocButton_Click);
 			// 
-			// pictureBox1
+			// dconTextPictureBox
 			// 
-			this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox1.Image = global::glc_cs.Properties.Resources.dconico;
-			resources.ApplyResources(this.pictureBox1, "pictureBox1");
-			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.TabStop = false;
-			this.toolTip1.SetToolTip(this.pictureBox1, resources.GetString("pictureBox1.ToolTip"));
+			this.dconTextPictureBox.BackColor = System.Drawing.Color.Transparent;
+			this.dconTextPictureBox.Image = global::glc_cs.Properties.Resources.dconico;
+			resources.ApplyResources(this.dconTextPictureBox, "dconTextPictureBox");
+			this.dconTextPictureBox.Name = "dconTextPictureBox";
+			this.dconTextPictureBox.TabStop = false;
+			this.toolTip1.SetToolTip(this.dconTextPictureBox, resources.GetString("dconTextPictureBox.ToolTip"));
 			// 
 			// pictureBox14
 			// 
@@ -717,15 +719,15 @@
 			resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
 			// 
-			// flowLayoutPanel2
+			// launchFlowLayoutPanel
 			// 
-			this.flowLayoutPanel2.BackColor = System.Drawing.Color.Transparent;
-			this.flowLayoutPanel2.Controls.Add(this.trackCheck);
-			this.flowLayoutPanel2.Controls.Add(this.testCheck);
-			this.flowLayoutPanel2.Controls.Add(this.minCheck);
-			this.flowLayoutPanel2.Controls.Add(this.sensCheck);
-			resources.ApplyResources(this.flowLayoutPanel2, "flowLayoutPanel2");
-			this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+			this.launchFlowLayoutPanel.BackColor = System.Drawing.Color.Transparent;
+			this.launchFlowLayoutPanel.Controls.Add(this.trackCheck);
+			this.launchFlowLayoutPanel.Controls.Add(this.testCheck);
+			this.launchFlowLayoutPanel.Controls.Add(this.minCheck);
+			this.launchFlowLayoutPanel.Controls.Add(this.sensCheck);
+			resources.ApplyResources(this.launchFlowLayoutPanel, "launchFlowLayoutPanel");
+			this.launchFlowLayoutPanel.Name = "launchFlowLayoutPanel";
 			// 
 			// dconImgText
 			// 
@@ -754,40 +756,40 @@
 			this.statusCombo.Name = "statusCombo";
 			this.statusCombo.SelectedIndexChanged += new System.EventHandler(this.statusCombo_SelectedIndexChanged);
 			// 
-			// flowLayoutPanel3
+			// gameStatusFlowLayoutPanel
 			// 
-			this.flowLayoutPanel3.BackColor = System.Drawing.Color.Transparent;
-			this.flowLayoutPanel3.Controls.Add(this.pictureBox2);
-			this.flowLayoutPanel3.Controls.Add(this.nameText);
-			this.flowLayoutPanel3.Controls.Add(this.pictureBox3);
-			this.flowLayoutPanel3.Controls.Add(this.pictureBox5);
-			this.flowLayoutPanel3.Controls.Add(this.exePathText);
-			this.flowLayoutPanel3.Controls.Add(this.pictureBox4);
-			this.flowLayoutPanel3.Controls.Add(this.pictureBox13);
-			this.flowLayoutPanel3.Controls.Add(this.pictureBox7);
-			this.flowLayoutPanel3.Controls.Add(this.imgPathText);
-			this.flowLayoutPanel3.Controls.Add(this.pictureBox6);
-			this.flowLayoutPanel3.Controls.Add(this.pictureBox14);
-			this.flowLayoutPanel3.Controls.Add(this.pictureBox9);
-			this.flowLayoutPanel3.Controls.Add(this.runTimeText);
-			this.flowLayoutPanel3.Controls.Add(this.label2);
-			this.flowLayoutPanel3.Controls.Add(this.pictureBox8);
-			this.flowLayoutPanel3.Controls.Add(this.startCountText);
-			this.flowLayoutPanel3.Controls.Add(this.label3);
-			this.flowLayoutPanel3.Controls.Add(this.statusCombo);
-			this.flowLayoutPanel3.Controls.Add(this.memoButton);
-			this.flowLayoutPanel3.Controls.Add(this.pictureBox1);
-			this.flowLayoutPanel3.Controls.Add(this.dconText);
-			this.flowLayoutPanel3.Controls.Add(this.pictureBox10);
-			this.flowLayoutPanel3.Controls.Add(this.dconImgText);
-			resources.ApplyResources(this.flowLayoutPanel3, "flowLayoutPanel3");
-			this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+			this.gameStatusFlowLayoutPanel.BackColor = System.Drawing.Color.Transparent;
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox2);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.nameText);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox3);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox5);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.exePathText);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox4);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox13);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox7);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.imgPathText);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox6);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox14);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox9);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.runTimeText);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.label2);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox8);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.startCountText);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.label3);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.statusCombo);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.memoButton);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.dconTextPictureBox);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.dconText);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.dconImgPictureBox);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.dconImgText);
+			resources.ApplyResources(this.gameStatusFlowLayoutPanel, "gameStatusFlowLayoutPanel");
+			this.gameStatusFlowLayoutPanel.Name = "gameStatusFlowLayoutPanel";
 			// 
 			// gl
 			// 
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.flowLayoutPanel3);
+			this.Controls.Add(this.gameStatusFlowLayoutPanel);
 			this.Controls.Add(this.ocButton);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.dconConnectGroupBox);
@@ -801,7 +803,7 @@
 			this.Controls.Add(this.gameIcon);
 			this.Controls.Add(this.titleLabel);
 			this.Controls.Add(this.flowLayoutPanel1);
-			this.Controls.Add(this.flowLayoutPanel2);
+			this.Controls.Add(this.launchFlowLayoutPanel);
 			this.DoubleBuffered = true;
 			this.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -811,13 +813,13 @@
 			this.Load += new System.EventHandler(this.gl_Load);
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.dconImgPictureBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.dconTextPictureBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
@@ -834,10 +836,10 @@
 			this.tabPage3.ResumeLayout(false);
 			this.tabPage3.PerformLayout();
 			this.flowLayoutPanel1.ResumeLayout(false);
-			this.flowLayoutPanel2.ResumeLayout(false);
-			this.flowLayoutPanel2.PerformLayout();
-			this.flowLayoutPanel3.ResumeLayout(false);
-			this.flowLayoutPanel3.PerformLayout();
+			this.launchFlowLayoutPanel.ResumeLayout(false);
+			this.launchFlowLayoutPanel.PerformLayout();
+			this.gameStatusFlowLayoutPanel.ResumeLayout(false);
+			this.gameStatusFlowLayoutPanel.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -872,7 +874,7 @@
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox dconText;
-        private System.Windows.Forms.PictureBox pictureBox10;
+        private System.Windows.Forms.PictureBox dconImgPictureBox;
         private System.Windows.Forms.Button addButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
@@ -909,17 +911,17 @@
 		private System.Windows.Forms.TextBox searchText;
 		private System.Windows.Forms.TextBox searchingText;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+		private System.Windows.Forms.FlowLayoutPanel launchFlowLayoutPanel;
 		public System.Windows.Forms.NotifyIcon notifyIcon1;
 		private System.Windows.Forms.ComboBox orderDropDown;
 		private System.Windows.Forms.ComboBox searchTargetDropDown;
 		private System.Windows.Forms.ComboBox lastSearchOption;
 		private System.Windows.Forms.ComboBox lastOrderDrop;
 		private System.Windows.Forms.TextBox dconImgText;
-		private System.Windows.Forms.PictureBox pictureBox1;
+		private System.Windows.Forms.PictureBox dconTextPictureBox;
 		private System.Windows.Forms.Button memoButton;
 		private System.Windows.Forms.ComboBox statusCombo;
-		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
+		private System.Windows.Forms.FlowLayoutPanel gameStatusFlowLayoutPanel;
 	}
 }
 
