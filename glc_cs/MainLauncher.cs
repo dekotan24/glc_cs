@@ -70,6 +70,11 @@ namespace glc_cs
 			SplashForm.Dispose();
 			Application.DoEvents();
 
+			if (General.Var.ByActive && General.Var.ByRoW)
+			{
+				General.Var.Bouyomiage("ゲームランチャーを起動しました");
+			}
+
 			if (item == "_none_game_data" || item == "0")
 			{
 				if (General.Var.SaveType == "I" || General.Var.SaveType == "T")
@@ -81,16 +86,11 @@ namespace glc_cs
 					}
 
 
-					if (Directory.Exists(General.Var.GameDir))
-					{
-						fileSystemWatcher1.Path = General.Var.GameDir;
-					}
-					else
+					if (!(Directory.Exists(General.Var.GameDir)))
 					{
 						try
 						{
 							Directory.CreateDirectory(General.Var.GameDir);
-							fileSystemWatcher1.Path = General.Var.GameDir;
 						}
 						catch (Exception ex)
 						{
@@ -773,9 +773,6 @@ namespace glc_cs
 						pictureBox11.Visible = true;
 						startButton.Enabled = false;
 
-						// 自動更新有効時のファイルウォッチャー無効化
-						fileSystemWatcher1.EnableRaisingEvents = false;
-
 						// ゲーム実行
 						System.Diagnostics.Process p =
 						System.Diagnostics.Process.Start(exePathText.Text);
@@ -959,10 +956,6 @@ namespace glc_cs
 
 
 							gameList_SelectedIndexChanged(null, null);
-							if (General.Var.SaveType == "I" && reloadCheck.Checked)
-							{
-								fileSystemWatcher1.EnableRaisingEvents = true;
-							}
 						}
 						pictureBox11.Visible = false;
 						startButton.Enabled = true;
@@ -1264,16 +1257,9 @@ namespace glc_cs
 			}
 			else
 			{
-				fileSystemWatcher1.EnableRaisingEvents = false;
-
 				AddItem addItem = new AddItem(General.Var.SaveType);
 				addItem.StartPosition = FormStartPosition.CenterParent;
 				addItem.ShowDialog(this);
-
-				if (reloadCheck.Checked)
-				{
-					fileSystemWatcher1.EnableRaisingEvents = true;
-				}
 			}
 
 			reloadItems();
@@ -1594,7 +1580,7 @@ namespace glc_cs
 				sMin = (Convert.ToInt32(sMin) % 60).ToString();
 
 				DialogResult result = MessageBox.Show(nameText.Text +
-										"\nおおよその起動時間：" + hour + "時間 " + min + "分" +
+										"\n統計起動時間：" + hour + "時間 " + min + "分" +
 										"\n平均起動時間：" + sHour + "時間" + sMin + "分/回",
 										General.Var.AppName,
 										MessageBoxButtons.OK,
@@ -1631,36 +1617,6 @@ namespace glc_cs
 		}
 
 		/// <summary>
-		/// ファイル変更時検出チェック変更
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void reloadCheck_CheckedChanged(object sender, EventArgs e)
-		{
-			if (reloadCheck.Checked)
-			{
-				if (General.Var.SaveType == "I")
-				{
-					// ini
-					fileSystemWatcher1.EnableRaisingEvents = true;
-				}
-				else
-				{
-					// database
-					MessageBox.Show("データベースを使用しているため有効にできません。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-					reloadCheck.Checked = false;
-					return;
-				}
-				fileSystemWatcher2.EnableRaisingEvents = true;
-			}
-			else
-			{
-				fileSystemWatcher1.EnableRaisingEvents = false;
-				fileSystemWatcher2.EnableRaisingEvents = false;
-			}
-		}
-
-		/// <summary>
 		/// 引数とINIファイルのデータ一致チェック（相違があればINIファイルを上書き）
 		/// </summary>
 		/// <param name="ininame">調べるINIファイルパス</param>
@@ -1671,8 +1627,6 @@ namespace glc_cs
 		private void iniEditCheck(String ininame, String sec, String key, String data, String failedval)
 		{
 			pictureBox11.Visible = true;
-			fileSystemWatcher1.EnableRaisingEvents = false;
-			fileSystemWatcher2.EnableRaisingEvents = false;
 
 			if (File.Exists(ininame))
 			{
@@ -1681,20 +1635,7 @@ namespace glc_cs
 				// 取得値とデータが違う場合
 				if (!(rawdata.Equals(data)))
 				{
-					if (reloadCheck.Checked)
-					{
-						fileSystemWatcher1.EnableRaisingEvents = false;
-					}
-
 					General.Var.IniWrite(ininame, sec, key, data);
-
-					if (General.Var.SaveType == "I")
-					{
-						if (reloadCheck.Checked)
-						{
-							fileSystemWatcher1.EnableRaisingEvents = true;
-						}
-					}
 				}
 			}
 			else
@@ -1702,14 +1643,6 @@ namespace glc_cs
 				resolveError(MethodBase.GetCurrentMethod().Name, "該当するファイルがありません。\n\n[Error]\n" + ininame, 0, false, ininame);
 			}
 
-			if (reloadCheck.Checked)
-			{
-				if (General.Var.SaveType == "I")
-				{
-					fileSystemWatcher1.EnableRaisingEvents = true;
-				}
-				fileSystemWatcher2.EnableRaisingEvents = true;
-			}
 			pictureBox11.Visible = false;
 			return;
 		}
@@ -1732,6 +1665,14 @@ namespace glc_cs
 				String bgimg = General.Var.BgImg;
 				sensCheck.Checked = Convert.ToBoolean(Convert.ToInt32(General.Var.IniRead(General.Var.ConfigIni, "checkbox", "sens", "0")));
 				useDconCheck.Checked = General.Var.Dconnect;
+				if (useDconCheck.Checked)
+				{
+					sensCheck.Visible = true;
+				}
+				else
+				{
+					sensCheck.Visible = false;
+				}
 
 				if (General.Var.Rate == 1)
 				{
@@ -1765,16 +1706,12 @@ namespace glc_cs
 				trackCheck.Checked = Convert.ToBoolean(ckv0);
 				minCheck.Checked = Convert.ToBoolean(ckv1);
 
-				fileSystemWatcher2.Path = General.Var.BaseDir;
-
 				// データベース使用時の部品非表示処理
 				if (General.Var.SaveType == "D" || General.Var.SaveType == "M")
 				{
 					// databaseの場合
 					upButton.Visible = false;
 					downButton.Visible = false;
-					reloadCheck.Checked = false;
-					reloadCheck.Visible = false;
 					toolStripStatusLabel3.Visible = false;
 				}
 				else
@@ -1791,7 +1728,6 @@ namespace glc_cs
 				General.Var.GameIni = General.Var.GameDir + "game.ini";
 				trackCheck.Checked = true;
 				minCheck.Checked = true;
-				fileSystemWatcher2.Path = General.Var.BaseDir;
 				tabControl1.TabPages.Remove(tabPage3);
 				trackCheck.Checked = true;
 				minCheck.Checked = true;
@@ -1840,6 +1776,8 @@ namespace glc_cs
 		/// </summary>
 		private void reloadItems()
 		{
+			updateComponent();
+
 			if (General.Var.SaveType == "I" || General.Var.SaveType == "T")
 			{
 				// ini
@@ -2138,7 +2076,6 @@ namespace glc_cs
 				if (selected >= 1)
 				{
 					selected++;
-					fileSystemWatcher1.EnableRaisingEvents = false;
 					int target = selected - 1;
 					String before = General.Var.GameDir + (selected.ToString()) + ".ini";
 					String temp = General.Var.GameDir + (target.ToString()) + "_.ini";
@@ -2158,10 +2095,6 @@ namespace glc_cs
 					else
 					{
 						resolveError(MethodBase.GetCurrentMethod().Name, "移動先もしくは移動前のファイルが見つかりません。\n\n移動前：" + before + "\n移動先：" + after, 0, false);
-					}
-					if (reloadCheck.Checked)
-					{
-						fileSystemWatcher1.EnableRaisingEvents = true;
 					}
 				}
 				else
@@ -2213,7 +2146,6 @@ namespace glc_cs
 				if (selected + 1 < General.Var.GameMax)
 				{
 					selected++;
-					fileSystemWatcher1.EnableRaisingEvents = false;
 					int target = selected + 1;
 					String before = General.Var.GameDir + (selected.ToString()) + ".ini";
 					String temp = General.Var.GameDir + (target.ToString()) + "_.ini";
@@ -2233,15 +2165,7 @@ namespace glc_cs
 					else
 					{
 						resolveError(MethodBase.GetCurrentMethod().Name, "移動先もしくは移動前のファイルが見つかりません。\nファイルに影響はありません。\n\n移動前：" + before + "\n移動先：" + after, 0, false);
-						if (reloadCheck.Checked)
-						{
-							fileSystemWatcher1.EnableRaisingEvents = true;
-						}
 						return;
-					}
-					if (reloadCheck.Checked)
-					{
-						fileSystemWatcher1.EnableRaisingEvents = true;
 					}
 				}
 				else
@@ -2304,9 +2228,6 @@ namespace glc_cs
 		private void configButton_Click(object sender, EventArgs e)
 		{
 			// 設定
-			fileSystemWatcher1.EnableRaisingEvents = false;
-			fileSystemWatcher2.EnableRaisingEvents = false;
-
 			string beforeWorkDir = General.Var.BaseDir;
 			string beforeSaveType = General.Var.SaveType;
 			string beforeGridEnabled = General.Var.GridEnable ? "1" : "0";
@@ -2333,17 +2254,6 @@ namespace glc_cs
 			{
 				MessageBox.Show("UIに関する設定が変更されました。\nGame Launcherを再起動してください。\n\nOKを押してGame Launcherを終了します。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				ExitApp();
-			}
-
-			if (reloadCheck.Checked)
-			{
-				fileSystemWatcher2.Path = General.Var.BaseDir;
-				fileSystemWatcher2.EnableRaisingEvents = true;
-				if (General.Var.SaveType == "I")
-				{
-					fileSystemWatcher1.Path = General.Var.GameDir;
-					fileSystemWatcher1.EnableRaisingEvents = true;
-				}
 			}
 
 			// リスト再読込
@@ -2380,9 +2290,6 @@ namespace glc_cs
 
 		private void delIniItem(int delfileval, String delfilename)
 		{
-			fileSystemWatcher2.EnableRaisingEvents = false;
-			fileSystemWatcher1.EnableRaisingEvents = false;
-
 			int nextval;
 			string nextfile;
 			int delval = delfileval;
@@ -2408,18 +2315,6 @@ namespace glc_cs
 					General.Var.GameMax--;
 					General.Var.IniWrite(General.Var.GameIni, "list", "game", General.Var.GameMax.ToString());
 				}
-				else if (dialogResult == DialogResult.No)
-				{
-					if (reloadCheck.Checked)
-					{
-						fileSystemWatcher2.EnableRaisingEvents = true;
-						if (General.Var.SaveType == "I")
-						{
-							fileSystemWatcher1.EnableRaisingEvents = true;
-						}
-					}
-					return;
-				}
 			}
 			else
 			{
@@ -2439,23 +2334,11 @@ namespace glc_cs
 			{
 				gameList.SelectedIndex = 0;
 			}
-
-			if (reloadCheck.Checked)
-			{
-				fileSystemWatcher2.EnableRaisingEvents = true;
-				if (General.Var.SaveType == "I")
-				{
-					fileSystemWatcher1.EnableRaisingEvents = true;
-				}
-			}
 			return;
 		}
 
 		private void delDbItem(int delItemVal)
 		{
-			fileSystemWatcher2.EnableRaisingEvents = false;
-			fileSystemWatcher1.EnableRaisingEvents = false;
-
 			string delName = string.Empty;
 			string delPath = string.Empty;
 
@@ -3160,14 +3043,14 @@ namespace glc_cs
 										+ ",sub.ROW1"
 										+ ",sub2.ROW2"
 										+ " FROM "
-										+	General.Var.DbTable + " main"
+										+ General.Var.DbTable + " main"
 										+ " LEFT OUTER JOIN "
 										+ "("
 										+ "		SELECT "
 										+ "			 ID"
 										+ "			,ROW_NUMBER() over (ORDER BY ID ASC) AS ROW1"
 										+ "		FROM "
-										+			General.Var.DbTable
+										+ General.Var.DbTable
 										+ ") AS sub"
 										+ " ON "
 										+ "		main.ID = sub.ID "
@@ -3177,16 +3060,16 @@ namespace glc_cs
 										+ "			 ID"
 										+ "			,ROW_NUMBER() over (ORDER BY " + searchOption + " " + (lastOrderDrop.SelectedIndex == 0 ? " ASC" : " DESC") + ") AS ROW2"
 										+ "		FROM "
-										+			General.Var.DbTable
-										+		(searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE '%" + searchName + "%'")
+										+ General.Var.DbTable
+										+ (searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE '%" + searchName + "%'")
 										+ ") AS sub2"
 										+ " ON "
 										+ "		main.ID = sub2.ID "
 										+ " WHERE "
-										+	(searchOption == "LAST_RUN" ? "" : searchOption + " LIKE '%" + searchName + "%' AND")
-										+	" ROW2 = " + (searchResultList.SelectedIndex + 1).ToString()
+										+ (searchOption == "LAST_RUN" ? "" : searchOption + " LIKE '%" + searchName + "%' AND")
+										+ " ROW2 = " + (searchResultList.SelectedIndex + 1).ToString()
 										+ " ORDER BY "
-										+	searchOption + (lastOrderDrop.SelectedIndex == 0 ? " ASC" : " DESC")
+										+ searchOption + (lastOrderDrop.SelectedIndex == 0 ? " ASC" : " DESC")
 					};
 				}
 				else
@@ -3389,6 +3272,43 @@ namespace glc_cs
 				String readini = General.Var.GameDir + (gameList.SelectedIndex + 1) + ".ini";
 				General.Var.IniWrite(readini, "game", "status", statusCombo.SelectedItem.ToString());
 			}
+		}
+
+		private void trackCheck_CheckedChanged(object sender, EventArgs e)
+		{
+			if (trackCheck.Checked)
+			{
+				dconConnectGroupBox.Visible = true;
+
+				testCheck.Visible = true;
+				minCheck.Visible = true;
+				if (useDconCheck.Checked)
+				{
+					sensCheck.Visible = true;
+				}
+			}
+			else
+			{
+				dconConnectGroupBox.Visible = false;
+
+				testCheck.Visible = false;
+				minCheck.Visible = false;
+				sensCheck.Visible = false;
+			}
+		}
+
+		private void useDconCheck_CheckedChanged(object sender, EventArgs e)
+		{
+			General.Var.WriteIni("checkbox", "dconnect", (Convert.ToInt32(useDconCheck.Checked)).ToString());
+			if (useDconCheck.Checked)
+			{
+				sensCheck.Visible = true;
+			}
+			else
+			{
+				sensCheck.Visible = false;
+			}
+			return;
 		}
 	}
 }

@@ -53,8 +53,6 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
 			this.dconText = new System.Windows.Forms.TextBox();
-			this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
-			this.reloadCheck = new System.Windows.Forms.CheckBox();
 			this.addButton = new System.Windows.Forms.Button();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.delButton = new System.Windows.Forms.Button();
@@ -81,8 +79,7 @@
 			this.upButton = new System.Windows.Forms.Button();
 			this.downButton = new System.Windows.Forms.Button();
 			this.memoButton = new System.Windows.Forms.Button();
-			this.fileSystemWatcher2 = new System.IO.FileSystemWatcher();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.dconConnectGroupBox = new System.Windows.Forms.GroupBox();
 			this.ratedRadio = new System.Windows.Forms.RadioButton();
 			this.normalRadio = new System.Windows.Forms.RadioButton();
 			this.useDconCheck = new System.Windows.Forms.CheckBox();
@@ -110,7 +107,6 @@
 			this.statusCombo = new System.Windows.Forms.ComboBox();
 			this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
 			this.statusStrip1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).BeginInit();
@@ -123,8 +119,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher2)).BeginInit();
-			this.groupBox1.SuspendLayout();
+			this.dconConnectGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.gameIcon)).BeginInit();
 			this.tabControl1.SuspendLayout();
@@ -146,6 +141,7 @@
 			this.gameList.Name = "gameList";
 			this.gameList.Click += new System.EventHandler(this.gameList_SelectedIndexChanged);
 			this.gameList.SelectedIndexChanged += new System.EventHandler(this.gameList_SelectedIndexChanged);
+			this.gameList.DoubleClick += new System.EventHandler(this.startButton_Click);
 			// 
 			// trackCheck
 			// 
@@ -154,6 +150,7 @@
 			this.trackCheck.Name = "trackCheck";
 			this.toolTip1.SetToolTip(this.trackCheck, resources.GetString("trackCheck.ToolTip"));
 			this.trackCheck.UseVisualStyleBackColor = false;
+			this.trackCheck.CheckedChanged += new System.EventHandler(this.trackCheck_CheckedChanged);
 			// 
 			// titleLabel
 			// 
@@ -292,22 +289,6 @@
 			// 
 			resources.ApplyResources(this.dconText, "dconText");
 			this.dconText.Name = "dconText";
-			// 
-			// fileSystemWatcher1
-			// 
-			this.fileSystemWatcher1.EnableRaisingEvents = true;
-			this.fileSystemWatcher1.Filter = "*.ini";
-			this.fileSystemWatcher1.SynchronizingObject = this;
-			this.fileSystemWatcher1.Changed += new System.IO.FileSystemEventHandler(this.fileSystemWatcher1_Changed);
-			// 
-			// reloadCheck
-			// 
-			resources.ApplyResources(this.reloadCheck, "reloadCheck");
-			this.reloadCheck.BackColor = System.Drawing.Color.Transparent;
-			this.reloadCheck.Name = "reloadCheck";
-			this.toolTip1.SetToolTip(this.reloadCheck, resources.GetString("reloadCheck.ToolTip"));
-			this.reloadCheck.UseVisualStyleBackColor = false;
-			this.reloadCheck.CheckedChanged += new System.EventHandler(this.reloadCheck_CheckedChanged);
 			// 
 			// addButton
 			// 
@@ -522,23 +503,16 @@
 			this.memoButton.UseVisualStyleBackColor = true;
 			this.memoButton.Click += new System.EventHandler(this.memoButton_Click);
 			// 
-			// fileSystemWatcher2
+			// dconConnectGroupBox
 			// 
-			this.fileSystemWatcher2.EnableRaisingEvents = true;
-			this.fileSystemWatcher2.Filter = "config.ini";
-			this.fileSystemWatcher2.SynchronizingObject = this;
-			this.fileSystemWatcher2.Changed += new System.IO.FileSystemEventHandler(this.fileSystemWatcher2_Changed);
-			// 
-			// groupBox1
-			// 
-			this.groupBox1.BackColor = System.Drawing.Color.Transparent;
-			this.groupBox1.Controls.Add(this.ratedRadio);
-			this.groupBox1.Controls.Add(this.normalRadio);
-			this.groupBox1.Controls.Add(this.useDconCheck);
-			this.groupBox1.ForeColor = System.Drawing.SystemColors.ControlText;
-			resources.ApplyResources(this.groupBox1, "groupBox1");
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.TabStop = false;
+			this.dconConnectGroupBox.BackColor = System.Drawing.Color.Transparent;
+			this.dconConnectGroupBox.Controls.Add(this.ratedRadio);
+			this.dconConnectGroupBox.Controls.Add(this.normalRadio);
+			this.dconConnectGroupBox.Controls.Add(this.useDconCheck);
+			this.dconConnectGroupBox.ForeColor = System.Drawing.SystemColors.ControlText;
+			resources.ApplyResources(this.dconConnectGroupBox, "dconConnectGroupBox");
+			this.dconConnectGroupBox.Name = "dconConnectGroupBox";
+			this.dconConnectGroupBox.TabStop = false;
 			// 
 			// ratedRadio
 			// 
@@ -559,6 +533,7 @@
 			resources.ApplyResources(this.useDconCheck, "useDconCheck");
 			this.useDconCheck.Name = "useDconCheck";
 			this.useDconCheck.UseVisualStyleBackColor = true;
+			this.useDconCheck.CheckedChanged += new System.EventHandler(this.useDconCheck_CheckedChanged);
 			// 
 			// pictureBox11
 			// 
@@ -621,6 +596,7 @@
 			this.gameImgList.Name = "gameImgList";
 			this.gameImgList.UseCompatibleStateImageBehavior = false;
 			this.gameImgList.SelectedIndexChanged += new System.EventHandler(this.gameImgList_SelectedIndexChanged);
+			this.gameImgList.DoubleClick += new System.EventHandler(this.startButton_Click);
 			// 
 			// imageList1
 			// 
@@ -648,6 +624,7 @@
 			this.searchResultList.FormattingEnabled = true;
 			this.searchResultList.Name = "searchResultList";
 			this.searchResultList.SelectedIndexChanged += new System.EventHandler(this.searchResultList_SelectedIndexChanged);
+			this.searchResultList.DoubleClick += new System.EventHandler(this.startButton_Click);
 			// 
 			// lastOrderDrop
 			// 
@@ -747,7 +724,6 @@
 			this.flowLayoutPanel2.Controls.Add(this.testCheck);
 			this.flowLayoutPanel2.Controls.Add(this.minCheck);
 			this.flowLayoutPanel2.Controls.Add(this.sensCheck);
-			this.flowLayoutPanel2.Controls.Add(this.reloadCheck);
 			resources.ApplyResources(this.flowLayoutPanel2, "flowLayoutPanel2");
 			this.flowLayoutPanel2.Name = "flowLayoutPanel2";
 			// 
@@ -814,7 +790,7 @@
 			this.Controls.Add(this.flowLayoutPanel3);
 			this.Controls.Add(this.ocButton);
 			this.Controls.Add(this.tabControl1);
-			this.Controls.Add(this.groupBox1);
+			this.Controls.Add(this.dconConnectGroupBox);
 			this.Controls.Add(this.downButton);
 			this.Controls.Add(this.upButton);
 			this.Controls.Add(this.pictureBox11);
@@ -835,7 +811,6 @@
 			this.Load += new System.EventHandler(this.gl_Load);
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).EndInit();
@@ -848,9 +823,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher2)).EndInit();
-			this.groupBox1.ResumeLayout(false);
-			this.groupBox1.PerformLayout();
+			this.dconConnectGroupBox.ResumeLayout(false);
+			this.dconConnectGroupBox.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.gameIcon)).EndInit();
 			this.tabControl1.ResumeLayout(false);
@@ -899,8 +873,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox dconText;
         private System.Windows.Forms.PictureBox pictureBox10;
-        private System.IO.FileSystemWatcher fileSystemWatcher1;
-        private System.Windows.Forms.CheckBox reloadCheck;
         private System.Windows.Forms.Button addButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
@@ -912,10 +884,9 @@
         private System.Windows.Forms.CheckBox sensCheck;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
         private System.Windows.Forms.Button configButton;
-        private System.IO.FileSystemWatcher fileSystemWatcher2;
         private System.Windows.Forms.Button downButton;
         private System.Windows.Forms.Button upButton;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox dconConnectGroupBox;
         private System.Windows.Forms.CheckBox useDconCheck;
         private System.Windows.Forms.RadioButton ratedRadio;
         private System.Windows.Forms.RadioButton normalRadio;
