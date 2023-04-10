@@ -2412,7 +2412,7 @@ namespace glc_cs
 				}
 
 				//削除ファイル存在
-				DialogResult dialogResult = MessageBox.Show("次のゲームをランチャーの一覧から削除します。\n※この操作は元に戻せません。\n[" + delName + "]\n" + delPath + "\n削除しますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+				DialogResult dialogResult = MessageBox.Show("次のゲームをランチャーの一覧から削除します。\n※この操作は元に戻せません。\n\n[" + delName + "]\n" + delPath + "\n\n削除しますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 				if (dialogResult == DialogResult.Yes)
 				{
 					// 削除
@@ -2493,7 +2493,7 @@ namespace glc_cs
 				}
 
 				//削除ファイル存在
-				DialogResult dialogResult = MessageBox.Show("次のゲームをランチャーの一覧から削除します。\n※この操作は元に戻せません。\n[" + delName + "]\n" + delPath + "\n削除しますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+				DialogResult dialogResult = MessageBox.Show("次のゲームをランチャーの一覧から削除します。\n※この操作は元に戻せません。\n\n[" + delName + "]\n" + delPath + "\n\n削除しますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 				if (dialogResult == DialogResult.Yes)
 				{
 					// 削除
@@ -2667,20 +2667,20 @@ namespace glc_cs
 				// 現在最大表示の場合、最小表示にする
 				tabControl1.Width = 345;
 
-				gameList.Width = 330;
+				gameList.Width = 337;
 
-				gameImgList.Width = 330;
-				trackBar1.Width = 330;
+				gameImgList.Width = 337;
+				trackBar1.Width = 337;
 
-				searchText.Width = 132;
-				orderDropDown.Location = new Point(219, 9);
-				searchButton.Location = new Point(274, 8);
+				searchText.Width = 142;
+				orderDropDown.Location = new Point(224, 1);
+				searchButton.Location = new Point(277, 0);
 
 				searchingText.Width = 197;
-				searchResultList.Width = 330;
+				searchResultList.Width = 337;
 				lastOrderDrop.Location = new Point(284, 35);
 
-				ocButton.Text = ">";
+				ocButton.Text = ">>";
 				General.Var.GridMax = false;
 			}
 			else
@@ -2688,20 +2688,20 @@ namespace glc_cs
 				// 最小表示の場合、最大表示にする
 				tabControl1.Width = 840;
 
-				gameList.Width = 825;
+				gameList.Width = 832;
 
-				gameImgList.Width = 825;
-				trackBar1.Width = 825;
+				gameImgList.Width = 832;
+				trackBar1.Width = 832;
 
-				searchText.Width = 623;
-				orderDropDown.Location = new Point(711, 9);
-				searchButton.Location = new Point(766, 8);
+				searchText.Width = 637;
+				orderDropDown.Location = new Point(720, 1);
+				searchButton.Location = new Point(773, 0);
 
 				searchingText.Width = 623;
-				searchResultList.Width = 825;
+				searchResultList.Width = 832;
 				lastOrderDrop.Location = new Point(711, 35);
 
-				ocButton.Text = "<";
+				ocButton.Text = "<<";
 				General.Var.GridMax = true;
 			}
 		}

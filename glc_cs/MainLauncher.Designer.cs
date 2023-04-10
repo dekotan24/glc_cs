@@ -789,7 +789,6 @@
 			// 
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.gameStatusFlowLayoutPanel);
 			this.Controls.Add(this.ocButton);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.dconConnectGroupBox);
@@ -804,6 +803,7 @@
 			this.Controls.Add(this.titleLabel);
 			this.Controls.Add(this.flowLayoutPanel1);
 			this.Controls.Add(this.launchFlowLayoutPanel);
+			this.Controls.Add(this.gameStatusFlowLayoutPanel);
 			this.DoubleBuffered = true;
 			this.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
