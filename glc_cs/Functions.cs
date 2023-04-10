@@ -42,12 +42,12 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static readonly string appVer = "1.05";
+			protected static readonly string appVer = "1.06";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appBuild = "30.23.03.13";
+			protected static readonly string appBuild = "31.23.04.10";
 
 			/// <summary>
 			/// データベースバージョン

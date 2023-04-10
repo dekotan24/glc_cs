@@ -1580,7 +1580,7 @@ namespace glc_cs
 				sMin = (Convert.ToInt32(sMin) % 60).ToString();
 
 				DialogResult result = MessageBox.Show(nameText.Text +
-										"\n統計起動時間：" + hour + "時間 " + min + "分" +
+										"\n統計起動時間：" + hour + "時間" + min + "分" +
 										"\n平均起動時間：" + sHour + "時間" + sMin + "分/回",
 										General.Var.AppName,
 										MessageBoxButtons.OK,
@@ -3306,61 +3306,104 @@ namespace glc_cs
 
 		private void trackCheck_CheckedChanged(object sender, EventArgs e)
 		{
-			General.Var.WriteIni("checkbox", "track", (Convert.ToInt32(trackCheck.Checked)).ToString());
-
-			if (trackCheck.Checked)
+			if (trackCheck.Focused)
 			{
-				dconTextPictureBox.Visible = true;
-				dconText.Visible = true;
-				dconImgPictureBox.Visible = true;
-				dconImgText.Visible = true;
-
-				dconConnectGroupBox.Visible = true;
-
-				testCheck.Visible = true;
-				minCheck.Visible = true;
-				if (useDconCheck.Checked)
+				try
 				{
-					sensCheck.Visible = true;
+					General.Var.WriteIni("checkbox", "track", (Convert.ToInt32(trackCheck.Checked)).ToString());
 				}
-			}
-			else
-			{
-				dconTextPictureBox.Visible = false;
-				dconText.Visible = false;
-				dconImgPictureBox.Visible = false;
-				dconImgText.Visible = false;
+				catch (Exception ex)
+				{
+					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, Convert.ToInt32(trackCheck.Checked).ToString());
+				}
 
-				dconConnectGroupBox.Visible = false;
+				if (trackCheck.Checked)
+				{
+					dconTextPictureBox.Visible = true;
+					dconText.Visible = true;
+					dconImgPictureBox.Visible = true;
+					dconImgText.Visible = true;
 
-				testCheck.Visible = false;
-				minCheck.Visible = false;
-				sensCheck.Visible = false;
+					dconConnectGroupBox.Visible = true;
+
+					testCheck.Visible = true;
+					minCheck.Visible = true;
+					if (useDconCheck.Checked)
+					{
+						sensCheck.Visible = true;
+					}
+				}
+				else
+				{
+					dconTextPictureBox.Visible = false;
+					dconText.Visible = false;
+					dconImgPictureBox.Visible = false;
+					dconImgText.Visible = false;
+
+					dconConnectGroupBox.Visible = false;
+
+					testCheck.Visible = false;
+					minCheck.Visible = false;
+					sensCheck.Visible = false;
+				}
 			}
 		}
 
 		private void useDconCheck_CheckedChanged(object sender, EventArgs e)
 		{
-			General.Var.WriteIni("checkbox", "dconnect", (Convert.ToInt32(useDconCheck.Checked)).ToString());
-			if (useDconCheck.Checked)
+			if (useDconCheck.Focused)
 			{
-				sensCheck.Visible = true;
+				try
+				{
+					General.Var.WriteIni("checkbox", "dconnect", (Convert.ToInt32(useDconCheck.Checked)).ToString());
+				}
+				catch (Exception ex)
+				{
+					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, Convert.ToInt32(useDconCheck.Checked).ToString());
+					System.Media.SystemSounds.Hand.Play();
+				}
+
+				if (useDconCheck.Checked)
+				{
+					sensCheck.Visible = true;
+				}
+				else
+				{
+					sensCheck.Visible = false;
+				}
 			}
-			else
-			{
-				sensCheck.Visible = false;
-			}
-			return;
 		}
 
 		private void minCheck_CheckedChanged(object sender, EventArgs e)
 		{
-			General.Var.WriteIni("checkbox", "winmini", (Convert.ToInt32(minCheck.Checked)).ToString());
+			if (minCheck.Focused)
+			{
+				try
+				{
+					General.Var.WriteIni("checkbox", "winmini", (Convert.ToInt32(minCheck.Checked)).ToString());
+				}
+				catch (Exception ex)
+				{
+					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, Convert.ToInt32(minCheck.Checked).ToString());
+					System.Media.SystemSounds.Hand.Play();
+				}
+			}
 		}
 
 		private void sensCheck_CheckedChanged(object sender, EventArgs e)
 		{
-			General.Var.WriteIni("checkbox", "sens", (Convert.ToInt32(sensCheck.Checked)).ToString());
+			if (sensCheck.Focused)
+			{
+				try
+				{
+					General.Var.WriteIni("checkbox", "sens", (Convert.ToInt32(sensCheck.Checked)).ToString());
+				}
+				catch (Exception ex)
+				{
+					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, Convert.ToInt32(sensCheck.Checked).ToString());
+					System.Media.SystemSounds.Hand.Play();
+				}
+			}
 		}
 	}
 }

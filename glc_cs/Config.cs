@@ -1028,7 +1028,7 @@ namespace glc_cs
 			{
 				wc.Encoding = Encoding.UTF8;
 				string text = wc.DownloadString("https://raw.githubusercontent.com/dekotan24/glc_cs/master/version");
-				MessageBox.Show("Latest:" + text.Replace("\n", "") + "\nCurrent:" + General.Var.AppVer, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("最新バージョン:" + text.Replace("\n", "") + "\n現在のバージョン:" + General.Var.AppVer, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				if (General.Var.AppVer != text.Trim())
 				{
 					updchkButton.Text = "Update Available";
