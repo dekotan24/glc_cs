@@ -15,5 +15,9 @@ Visual Studio 2022
 * MySQL.Data
 
 
+## Webビューア
+PHPで作成したMySQLのデータベースに登録しているデータを表示する[GLWeb](https://github.com/dekotan24/GLWeb/)もどうぞ。
+
+
 ## license
 This application is developed under the MIT license.
