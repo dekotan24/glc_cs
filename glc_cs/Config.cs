@@ -1032,17 +1032,18 @@ namespace glc_cs
 			{
 				wc.Encoding = Encoding.UTF8;
 				string text = wc.DownloadString("https://raw.githubusercontent.com/dekotan24/glc_cs/master/version");
-				MessageBox.Show("最新バージョン:" + text.Replace("\n", "") + "\n現在のバージョン:" + General.Var.AppVer, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				if (General.Var.AppVer != text.Trim())
 				{
 					updchkButton.Text = "Update Available";
 					updchkButton.Enabled = true;
+					MessageBox.Show("アップデートがあります。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 					System.Diagnostics.Process.Start("https://github.com/dekotan24/glc_cs/releases");
 				}
 				else
 				{
 					updchkButton.Text = "Latest!";
 					updchkButton.Enabled = true;
+					MessageBox.Show("最新版です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 			}
 			catch (Exception ex)
