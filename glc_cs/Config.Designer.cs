@@ -34,14 +34,16 @@
 			this.getDconButton = new System.Windows.Forms.Button();
 			this.dconEnableCheck = new System.Windows.Forms.CheckBox();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-			this.iniAllEditButton = new System.Windows.Forms.Button();
-			this.textBox8 = new System.Windows.Forms.TextBox();
-			this.textBox9 = new System.Windows.Forms.TextBox();
-			this.checkBox7 = new System.Windows.Forms.CheckBox();
 			this.linkLabel2 = new System.Windows.Forms.LinkLabel();
 			this.dconAppIDText = new System.Windows.Forms.TextBox();
 			this.portText = new System.Windows.Forms.TextBox();
 			this.dbBackupButton = new System.Windows.Forms.Button();
+			this.checkBox7 = new System.Windows.Forms.CheckBox();
+			this.textBox9 = new System.Windows.Forms.TextBox();
+			this.textBox8 = new System.Windows.Forms.TextBox();
+			this.iniAllEditButton = new System.Windows.Forms.Button();
+			this.executeNonQueryRadio = new System.Windows.Forms.RadioButton();
+			this.executeScalerRadio = new System.Windows.Forms.RadioButton();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage7 = new System.Windows.Forms.TabPage();
 			this.groupBox14 = new System.Windows.Forms.GroupBox();
@@ -103,6 +105,8 @@
 			this.radioButton9 = new System.Windows.Forms.RadioButton();
 			this.radioButton8 = new System.Windows.Forms.RadioButton();
 			this.tabPage6 = new System.Windows.Forms.TabPage();
+			this.tabControl2 = new System.Windows.Forms.TabControl();
+			this.tabPage5 = new System.Windows.Forms.TabPage();
 			this.groupBox8 = new System.Windows.Forms.GroupBox();
 			this.iniAutoNumberingFixButton = new System.Windows.Forms.Button();
 			this.dbOverflowFixButton = new System.Windows.Forms.Button();
@@ -117,6 +121,16 @@
 			this.checkBox3 = new System.Windows.Forms.CheckBox();
 			this.label20 = new System.Windows.Forms.Label();
 			this.label19 = new System.Windows.Forms.Label();
+			this.tabPage8 = new System.Windows.Forms.TabPage();
+			this.groupBox15 = new System.Windows.Forms.GroupBox();
+			this.insertColumnsDropDown = new System.Windows.Forms.ComboBox();
+			this.insertColumnButton = new System.Windows.Forms.Button();
+			this.insertTableNameButton = new System.Windows.Forms.Button();
+			this.insertDatabaseNameButton = new System.Windows.Forms.Button();
+			this.ExecuteModeGroup = new System.Windows.Forms.GroupBox();
+			this.queryClearButton = new System.Windows.Forms.Button();
+			this.queryExecuteButton = new System.Windows.Forms.Button();
+			this.queryText = new System.Windows.Forms.RichTextBox();
 			this.TabPage3 = new System.Windows.Forms.TabPage();
 			this.logoPictureBox = new System.Windows.Forms.PictureBox();
 			this.updchkButton = new System.Windows.Forms.Button();
@@ -152,9 +166,14 @@
 			this.groupBox10.SuspendLayout();
 			this.groupBox9.SuspendLayout();
 			this.tabPage6.SuspendLayout();
+			this.tabControl2.SuspendLayout();
+			this.tabPage5.SuspendLayout();
 			this.groupBox8.SuspendLayout();
 			this.groupBox12.SuspendLayout();
 			this.groupBox7.SuspendLayout();
+			this.tabPage8.SuspendLayout();
+			this.groupBox15.SuspendLayout();
+			this.ExecuteModeGroup.SuspendLayout();
 			this.TabPage3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
 			this.SuspendLayout();
@@ -193,47 +212,6 @@
 			this.toolTip1.SetToolTip(this.dconEnableCheck, "「ゲームをトラッキング」が有効の場合のみ動作します");
 			this.dconEnableCheck.UseVisualStyleBackColor = true;
 			this.dconEnableCheck.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-			// 
-			// iniAllEditButton
-			// 
-			this.iniAllEditButton.Location = new System.Drawing.Point(341, 39);
-			this.iniAllEditButton.Name = "iniAllEditButton";
-			this.iniAllEditButton.Size = new System.Drawing.Size(103, 23);
-			this.iniAllEditButton.TabIndex = 0;
-			this.iniAllEditButton.Text = "一括変更";
-			this.toolTip1.SetToolTip(this.iniAllEditButton, "ゲーム管理iniのすべてのパスを置換します。");
-			this.iniAllEditButton.UseVisualStyleBackColor = true;
-			this.iniAllEditButton.Click += new System.EventHandler(this.iniAllEditButton_Click);
-			// 
-			// textBox8
-			// 
-			this.textBox8.Location = new System.Drawing.Point(6, 41);
-			this.textBox8.Name = "textBox8";
-			this.textBox8.Size = new System.Drawing.Size(142, 19);
-			this.textBox8.TabIndex = 1;
-			this.toolTip1.SetToolTip(this.textBox8, "変更前のキーワード");
-			// 
-			// textBox9
-			// 
-			this.textBox9.Location = new System.Drawing.Point(174, 41);
-			this.textBox9.Name = "textBox9";
-			this.textBox9.Size = new System.Drawing.Size(141, 19);
-			this.textBox9.TabIndex = 2;
-			this.toolTip1.SetToolTip(this.textBox9, "変更後のキーワード");
-			// 
-			// checkBox7
-			// 
-			this.checkBox7.AutoSize = true;
-			this.checkBox7.Checked = true;
-			this.checkBox7.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.checkBox7.Enabled = false;
-			this.checkBox7.Location = new System.Drawing.Point(13, 49);
-			this.checkBox7.Name = "checkBox7";
-			this.checkBox7.Size = new System.Drawing.Size(248, 16);
-			this.checkBox7.TabIndex = 2;
-			this.checkBox7.Text = "エラー発生時は該当データをスキップする（強制）";
-			this.toolTip1.SetToolTip(this.checkBox7, "取込処理中にエラーが発生した場合、エラー発生直前までに取り込んだデータをコミットします");
-			this.checkBox7.UseVisualStyleBackColor = true;
 			// 
 			// linkLabel2
 			// 
@@ -278,6 +256,71 @@
 			this.toolTip1.SetToolTip(this.dbBackupButton, "データベースをバックアップします");
 			this.dbBackupButton.UseVisualStyleBackColor = true;
 			this.dbBackupButton.Click += new System.EventHandler(this.dbBackupButton_Click);
+			// 
+			// checkBox7
+			// 
+			this.checkBox7.AutoSize = true;
+			this.checkBox7.Checked = true;
+			this.checkBox7.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBox7.Enabled = false;
+			this.checkBox7.Location = new System.Drawing.Point(13, 49);
+			this.checkBox7.Name = "checkBox7";
+			this.checkBox7.Size = new System.Drawing.Size(248, 16);
+			this.checkBox7.TabIndex = 2;
+			this.checkBox7.Text = "エラー発生時は該当データをスキップする（強制）";
+			this.toolTip1.SetToolTip(this.checkBox7, "取込処理中にエラーが発生した場合、エラー発生直前までに取り込んだデータをコミットします");
+			this.checkBox7.UseVisualStyleBackColor = true;
+			// 
+			// textBox9
+			// 
+			this.textBox9.Location = new System.Drawing.Point(174, 41);
+			this.textBox9.Name = "textBox9";
+			this.textBox9.Size = new System.Drawing.Size(141, 19);
+			this.textBox9.TabIndex = 2;
+			this.toolTip1.SetToolTip(this.textBox9, "変更後のキーワード");
+			// 
+			// textBox8
+			// 
+			this.textBox8.Location = new System.Drawing.Point(6, 41);
+			this.textBox8.Name = "textBox8";
+			this.textBox8.Size = new System.Drawing.Size(142, 19);
+			this.textBox8.TabIndex = 1;
+			this.toolTip1.SetToolTip(this.textBox8, "変更前のキーワード");
+			// 
+			// iniAllEditButton
+			// 
+			this.iniAllEditButton.Location = new System.Drawing.Point(341, 39);
+			this.iniAllEditButton.Name = "iniAllEditButton";
+			this.iniAllEditButton.Size = new System.Drawing.Size(103, 23);
+			this.iniAllEditButton.TabIndex = 0;
+			this.iniAllEditButton.Text = "一括変更";
+			this.toolTip1.SetToolTip(this.iniAllEditButton, "ゲーム管理iniのすべてのパスを置換します。");
+			this.iniAllEditButton.UseVisualStyleBackColor = true;
+			this.iniAllEditButton.Click += new System.EventHandler(this.iniAllEditButton_Click);
+			// 
+			// executeNonQueryRadio
+			// 
+			this.executeNonQueryRadio.AutoSize = true;
+			this.executeNonQueryRadio.Checked = true;
+			this.executeNonQueryRadio.Location = new System.Drawing.Point(84, 18);
+			this.executeNonQueryRadio.Name = "executeNonQueryRadio";
+			this.executeNonQueryRadio.Size = new System.Drawing.Size(114, 16);
+			this.executeNonQueryRadio.TabIndex = 0;
+			this.executeNonQueryRadio.TabStop = true;
+			this.executeNonQueryRadio.Text = "ExecuteNonQuery";
+			this.toolTip1.SetToolTip(this.executeNonQueryRadio, "結果セットを返さない場合に使用します。\r\n影響を受けた行数を返します。");
+			this.executeNonQueryRadio.UseVisualStyleBackColor = true;
+			// 
+			// executeScalerRadio
+			// 
+			this.executeScalerRadio.AutoSize = true;
+			this.executeScalerRadio.Location = new System.Drawing.Point(275, 18);
+			this.executeScalerRadio.Name = "executeScalerRadio";
+			this.executeScalerRadio.Size = new System.Drawing.Size(96, 16);
+			this.executeScalerRadio.TabIndex = 1;
+			this.executeScalerRadio.Text = "ExecuteScaler";
+			this.toolTip1.SetToolTip(this.executeScalerRadio, "結果セットの一番最初の値を返します。");
+			this.executeScalerRadio.UseVisualStyleBackColor = true;
 			// 
 			// tabControl1
 			// 
@@ -939,9 +982,7 @@
 			// 
 			// tabPage6
 			// 
-			this.tabPage6.Controls.Add(this.groupBox8);
-			this.tabPage6.Controls.Add(this.groupBox12);
-			this.tabPage6.Controls.Add(this.groupBox7);
+			this.tabPage6.Controls.Add(this.tabControl2);
 			this.tabPage6.Location = new System.Drawing.Point(4, 22);
 			this.tabPage6.Name = "tabPage6";
 			this.tabPage6.Size = new System.Drawing.Size(483, 320);
@@ -949,14 +990,37 @@
 			this.tabPage6.Text = "ツール";
 			this.tabPage6.UseVisualStyleBackColor = true;
 			// 
+			// tabControl2
+			// 
+			this.tabControl2.Controls.Add(this.tabPage5);
+			this.tabControl2.Controls.Add(this.tabPage8);
+			this.tabControl2.Location = new System.Drawing.Point(2, 2);
+			this.tabControl2.Name = "tabControl2";
+			this.tabControl2.SelectedIndex = 0;
+			this.tabControl2.Size = new System.Drawing.Size(480, 317);
+			this.tabControl2.TabIndex = 5;
+			// 
+			// tabPage5
+			// 
+			this.tabPage5.Controls.Add(this.groupBox8);
+			this.tabPage5.Controls.Add(this.groupBox12);
+			this.tabPage5.Controls.Add(this.groupBox7);
+			this.tabPage5.Location = new System.Drawing.Point(4, 22);
+			this.tabPage5.Name = "tabPage5";
+			this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage5.Size = new System.Drawing.Size(472, 291);
+			this.tabPage5.TabIndex = 0;
+			this.tabPage5.Text = "データ";
+			this.tabPage5.UseVisualStyleBackColor = true;
+			// 
 			// groupBox8
 			// 
 			this.groupBox8.Controls.Add(this.iniAutoNumberingFixButton);
 			this.groupBox8.Controls.Add(this.dbOverflowFixButton);
-			this.groupBox8.Location = new System.Drawing.Point(6, 212);
+			this.groupBox8.Location = new System.Drawing.Point(1, 209);
 			this.groupBox8.Name = "groupBox8";
-			this.groupBox8.Size = new System.Drawing.Size(470, 82);
-			this.groupBox8.TabIndex = 4;
+			this.groupBox8.Size = new System.Drawing.Size(470, 78);
+			this.groupBox8.TabIndex = 7;
 			this.groupBox8.TabStop = false;
 			this.groupBox8.Text = "データ修復";
 			// 
@@ -988,10 +1052,10 @@
 			this.groupBox12.Controls.Add(this.checkBox7);
 			this.groupBox12.Controls.Add(this.importIniToDbButton);
 			this.groupBox12.Controls.Add(this.checkBox6);
-			this.groupBox12.Location = new System.Drawing.Point(6, 102);
+			this.groupBox12.Location = new System.Drawing.Point(1, 99);
 			this.groupBox12.Name = "groupBox12";
 			this.groupBox12.Size = new System.Drawing.Size(470, 104);
-			this.groupBox12.TabIndex = 1;
+			this.groupBox12.TabIndex = 6;
 			this.groupBox12.TabStop = false;
 			this.groupBox12.Text = "INI→DB取込";
 			// 
@@ -1027,7 +1091,6 @@
 			this.checkBox6.TabIndex = 0;
 			this.checkBox6.Text = "テーブルのすべてのレコードを削除する（強制）";
 			this.checkBox6.UseVisualStyleBackColor = true;
-			this.checkBox6.CheckedChanged += new System.EventHandler(this.checkBox6_CheckedChanged);
 			// 
 			// groupBox7
 			// 
@@ -1040,10 +1103,10 @@
 			this.groupBox7.Controls.Add(this.textBox9);
 			this.groupBox7.Controls.Add(this.textBox8);
 			this.groupBox7.Controls.Add(this.iniAllEditButton);
-			this.groupBox7.Location = new System.Drawing.Point(6, 6);
+			this.groupBox7.Location = new System.Drawing.Point(1, 3);
 			this.groupBox7.Name = "groupBox7";
 			this.groupBox7.Size = new System.Drawing.Size(470, 90);
-			this.groupBox7.TabIndex = 0;
+			this.groupBox7.TabIndex = 5;
 			this.groupBox7.TabStop = false;
 			this.groupBox7.Text = "ゲームパス更新";
 			// 
@@ -1102,6 +1165,126 @@
 			this.label19.Size = new System.Drawing.Size(14, 12);
 			this.label19.TabIndex = 3;
 			this.label19.Text = "を";
+			// 
+			// tabPage8
+			// 
+			this.tabPage8.Controls.Add(this.groupBox15);
+			this.tabPage8.Controls.Add(this.ExecuteModeGroup);
+			this.tabPage8.Controls.Add(this.queryClearButton);
+			this.tabPage8.Controls.Add(this.queryExecuteButton);
+			this.tabPage8.Controls.Add(this.queryText);
+			this.tabPage8.Location = new System.Drawing.Point(4, 22);
+			this.tabPage8.Name = "tabPage8";
+			this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage8.Size = new System.Drawing.Size(472, 291);
+			this.tabPage8.TabIndex = 1;
+			this.tabPage8.Text = "SQLエディタ";
+			this.tabPage8.UseVisualStyleBackColor = true;
+			// 
+			// groupBox15
+			// 
+			this.groupBox15.Controls.Add(this.insertColumnsDropDown);
+			this.groupBox15.Controls.Add(this.insertColumnButton);
+			this.groupBox15.Controls.Add(this.insertTableNameButton);
+			this.groupBox15.Controls.Add(this.insertDatabaseNameButton);
+			this.groupBox15.Location = new System.Drawing.Point(3, 166);
+			this.groupBox15.Name = "groupBox15";
+			this.groupBox15.Size = new System.Drawing.Size(466, 45);
+			this.groupBox15.TabIndex = 8;
+			this.groupBox15.TabStop = false;
+			this.groupBox15.Text = "ショートカット・ツールボックス";
+			// 
+			// insertColumnsDropDown
+			// 
+			this.insertColumnsDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.insertColumnsDropDown.FormattingEnabled = true;
+			this.insertColumnsDropDown.Items.AddRange(new object[] {
+            "ID（システム）",
+            "ゲームタイトル",
+            "実行ファイルパス",
+            "画像ファイルパス",
+            "起動時間",
+            "起動回数",
+            "dconテキスト",
+            "18+フラグ",
+            "最終起動日時",
+            "dconイメージパス",
+            "メモ",
+            "ステータス",
+            "DBバージョン（システム）"});
+			this.insertColumnsDropDown.Location = new System.Drawing.Point(255, 18);
+			this.insertColumnsDropDown.Name = "insertColumnsDropDown";
+			this.insertColumnsDropDown.Size = new System.Drawing.Size(149, 20);
+			this.insertColumnsDropDown.TabIndex = 11;
+			// 
+			// insertColumnButton
+			// 
+			this.insertColumnButton.Location = new System.Drawing.Point(410, 16);
+			this.insertColumnButton.Name = "insertColumnButton";
+			this.insertColumnButton.Size = new System.Drawing.Size(50, 23);
+			this.insertColumnButton.TabIndex = 10;
+			this.insertColumnButton.Text = "挿入";
+			this.insertColumnButton.UseVisualStyleBackColor = true;
+			this.insertColumnButton.Click += new System.EventHandler(this.insertColumnButton_Click);
+			// 
+			// insertTableNameButton
+			// 
+			this.insertTableNameButton.Location = new System.Drawing.Point(6, 16);
+			this.insertTableNameButton.Name = "insertTableNameButton";
+			this.insertTableNameButton.Size = new System.Drawing.Size(87, 23);
+			this.insertTableNameButton.TabIndex = 9;
+			this.insertTableNameButton.Text = "テーブル名";
+			this.insertTableNameButton.UseVisualStyleBackColor = true;
+			this.insertTableNameButton.Click += new System.EventHandler(this.insertTableNameButton_Click);
+			// 
+			// insertDatabaseNameButton
+			// 
+			this.insertDatabaseNameButton.Location = new System.Drawing.Point(99, 16);
+			this.insertDatabaseNameButton.Name = "insertDatabaseNameButton";
+			this.insertDatabaseNameButton.Size = new System.Drawing.Size(87, 23);
+			this.insertDatabaseNameButton.TabIndex = 8;
+			this.insertDatabaseNameButton.Text = "データベース名";
+			this.insertDatabaseNameButton.UseVisualStyleBackColor = true;
+			this.insertDatabaseNameButton.Click += new System.EventHandler(this.insertDatabaseNameButton_Click);
+			// 
+			// ExecuteModeGroup
+			// 
+			this.ExecuteModeGroup.Controls.Add(this.executeScalerRadio);
+			this.ExecuteModeGroup.Controls.Add(this.executeNonQueryRadio);
+			this.ExecuteModeGroup.Location = new System.Drawing.Point(3, 217);
+			this.ExecuteModeGroup.Name = "ExecuteModeGroup";
+			this.ExecuteModeGroup.Size = new System.Drawing.Size(466, 40);
+			this.ExecuteModeGroup.TabIndex = 3;
+			this.ExecuteModeGroup.TabStop = false;
+			this.ExecuteModeGroup.Text = "実行方法";
+			// 
+			// queryClearButton
+			// 
+			this.queryClearButton.Location = new System.Drawing.Point(278, 263);
+			this.queryClearButton.Name = "queryClearButton";
+			this.queryClearButton.Size = new System.Drawing.Size(191, 24);
+			this.queryClearButton.TabIndex = 2;
+			this.queryClearButton.Text = "Clear query";
+			this.queryClearButton.UseVisualStyleBackColor = true;
+			this.queryClearButton.Click += new System.EventHandler(this.queryClearButton_Click);
+			// 
+			// queryExecuteButton
+			// 
+			this.queryExecuteButton.Location = new System.Drawing.Point(3, 263);
+			this.queryExecuteButton.Name = "queryExecuteButton";
+			this.queryExecuteButton.Size = new System.Drawing.Size(255, 24);
+			this.queryExecuteButton.TabIndex = 1;
+			this.queryExecuteButton.Text = "Execute";
+			this.queryExecuteButton.UseVisualStyleBackColor = true;
+			this.queryExecuteButton.Click += new System.EventHandler(this.queryExecuteButton_Click);
+			// 
+			// queryText
+			// 
+			this.queryText.Location = new System.Drawing.Point(3, 3);
+			this.queryText.Name = "queryText";
+			this.queryText.Size = new System.Drawing.Size(466, 157);
+			this.queryText.TabIndex = 0;
+			this.queryText.Text = "";
 			// 
 			// TabPage3
 			// 
@@ -1312,11 +1495,17 @@
 			this.groupBox9.ResumeLayout(false);
 			this.groupBox9.PerformLayout();
 			this.tabPage6.ResumeLayout(false);
+			this.tabControl2.ResumeLayout(false);
+			this.tabPage5.ResumeLayout(false);
 			this.groupBox8.ResumeLayout(false);
 			this.groupBox12.ResumeLayout(false);
 			this.groupBox12.PerformLayout();
 			this.groupBox7.ResumeLayout(false);
 			this.groupBox7.PerformLayout();
+			this.tabPage8.ResumeLayout(false);
+			this.groupBox15.ResumeLayout(false);
+			this.ExecuteModeGroup.ResumeLayout(false);
+			this.ExecuteModeGroup.PerformLayout();
 			this.TabPage3.ResumeLayout(false);
 			this.TabPage3.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
@@ -1378,16 +1567,6 @@
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.TextBox iniText;
 		private System.Windows.Forms.TabPage tabPage6;
-		private System.Windows.Forms.GroupBox groupBox7;
-		private System.Windows.Forms.Button iniAllEditButton;
-		private System.Windows.Forms.Label label20;
-		private System.Windows.Forms.Label label19;
-		private System.Windows.Forms.TextBox textBox9;
-		private System.Windows.Forms.TextBox textBox8;
-		private System.Windows.Forms.Label label21;
-		private System.Windows.Forms.CheckBox checkBox5;
-		private System.Windows.Forms.CheckBox checkBox3;
-		private System.Windows.Forms.Label label17;
 		private System.Windows.Forms.TabPage tabPage7;
 		private System.Windows.Forms.GroupBox groupBox11;
 		private System.Windows.Forms.Button backgroundImageSelectButton;
@@ -1401,17 +1580,10 @@
 		private System.Windows.Forms.Label label18;
 		private System.Windows.Forms.TextBox userText;
 		private System.Windows.Forms.Button createTableButton;
-		private System.Windows.Forms.GroupBox groupBox12;
-		private System.Windows.Forms.Button importIniToDbButton;
-		private System.Windows.Forms.CheckBox checkBox6;
-		private System.Windows.Forms.Label label25;
-		private System.Windows.Forms.CheckBox checkBox7;
 		private System.Windows.Forms.CheckBox checkBox8;
 		private System.Windows.Forms.GroupBox groupBox5;
 		private System.Windows.Forms.CheckBox checkBox10;
 		private System.Windows.Forms.CheckBox checkBox4;
-		private System.Windows.Forms.GroupBox groupBox8;
-		private System.Windows.Forms.Button dbOverflowFixButton;
 		private System.Windows.Forms.Label label15;
 		private System.Windows.Forms.Label label26;
 		private System.Windows.Forms.GroupBox groupBox13;
@@ -1430,6 +1602,37 @@
 		private System.Windows.Forms.Label label30;
 		private System.Windows.Forms.PictureBox logoPictureBox;
 		private System.Windows.Forms.Button dbBackupButton;
+		private System.Windows.Forms.TabControl tabControl2;
+		private System.Windows.Forms.TabPage tabPage5;
+		private System.Windows.Forms.GroupBox groupBox8;
 		private System.Windows.Forms.Button iniAutoNumberingFixButton;
+		private System.Windows.Forms.Button dbOverflowFixButton;
+		private System.Windows.Forms.GroupBox groupBox12;
+		private System.Windows.Forms.Label label25;
+		private System.Windows.Forms.CheckBox checkBox7;
+		private System.Windows.Forms.Button importIniToDbButton;
+		private System.Windows.Forms.CheckBox checkBox6;
+		private System.Windows.Forms.GroupBox groupBox7;
+		private System.Windows.Forms.Label label17;
+		private System.Windows.Forms.Label label21;
+		private System.Windows.Forms.CheckBox checkBox5;
+		private System.Windows.Forms.CheckBox checkBox3;
+		private System.Windows.Forms.Label label20;
+		private System.Windows.Forms.Label label19;
+		private System.Windows.Forms.TextBox textBox9;
+		private System.Windows.Forms.TextBox textBox8;
+		private System.Windows.Forms.Button iniAllEditButton;
+		private System.Windows.Forms.TabPage tabPage8;
+		private System.Windows.Forms.Button queryClearButton;
+		private System.Windows.Forms.Button queryExecuteButton;
+		private System.Windows.Forms.RichTextBox queryText;
+		private System.Windows.Forms.GroupBox ExecuteModeGroup;
+		private System.Windows.Forms.RadioButton executeScalerRadio;
+		private System.Windows.Forms.RadioButton executeNonQueryRadio;
+		private System.Windows.Forms.GroupBox groupBox15;
+		private System.Windows.Forms.ComboBox insertColumnsDropDown;
+		private System.Windows.Forms.Button insertColumnButton;
+		private System.Windows.Forms.Button insertTableNameButton;
+		private System.Windows.Forms.Button insertDatabaseNameButton;
 	}
 }

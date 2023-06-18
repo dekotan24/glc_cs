@@ -223,6 +223,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainLauncher.resx">
       <DependentUpon>MainLauncher.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Config.resx">
       <DependentUpon>Config.cs</DependentUpon>
@@ -311,8 +312,6 @@
     <None Include="Resources\dconstat.png" />
     <None Include="Resources\dconico.png" />
     <None Include="Resources\icon.png" />
-    <None Include="appicon.png" />
-    <Content Include="favicon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

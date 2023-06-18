@@ -749,10 +749,7 @@
             resources.GetString("statusCombo.Items5"),
             resources.GetString("statusCombo.Items6"),
             resources.GetString("statusCombo.Items7"),
-            resources.GetString("statusCombo.Items8"),
-            resources.GetString("statusCombo.Items9"),
-            resources.GetString("statusCombo.Items10"),
-            resources.GetString("statusCombo.Items11")});
+            resources.GetString("statusCombo.Items8")});
 			this.statusCombo.Name = "statusCombo";
 			this.statusCombo.SelectedIndexChanged += new System.EventHandler(this.statusCombo_SelectedIndexChanged);
 			// 
