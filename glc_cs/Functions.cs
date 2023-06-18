@@ -42,17 +42,17 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static readonly string appVer = "1.06";
+			protected static readonly string appVer = "1.07";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appBuild = "31.23.04.10";
+			protected static readonly string appBuild = "32.23.06.19";
 
 			/// <summary>
 			/// データベースバージョン
 			/// </summary>
-			protected static readonly string dbVer = "1.1";
+			protected static readonly string dbVer = "1.2";
 
 			/// <summary>
 			/// ゲームディレクトリ(作業ディレクトリ)

@@ -147,6 +147,10 @@ namespace glc_cs
 
 			checkBox8.Checked = General.Var.OfflineSave;
 
+			// スーパーモード
+			// ドロップダウン既定値設定
+			insertColumnsDropDown.SelectedIndex = 0;
+
 			// 作業ディレクトリ反映
 			if (General.Var.SaveType != "T")
 			{
@@ -1028,17 +1032,18 @@ namespace glc_cs
 			{
 				wc.Encoding = Encoding.UTF8;
 				string text = wc.DownloadString("https://raw.githubusercontent.com/dekotan24/glc_cs/master/version");
-				MessageBox.Show("最新バージョン:" + text.Replace("\n", "") + "\n現在のバージョン:" + General.Var.AppVer, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				if (General.Var.AppVer != text.Trim())
 				{
 					updchkButton.Text = "Update Available";
 					updchkButton.Enabled = true;
+					MessageBox.Show("アップデートがあります。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 					System.Diagnostics.Process.Start("https://github.com/dekotan24/glc_cs/releases");
 				}
 				else
 				{
 					updchkButton.Text = "Latest!";
 					updchkButton.Enabled = true;
+					MessageBox.Show("最新版です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 			}
 			catch (Exception ex)
@@ -1258,6 +1263,253 @@ namespace glc_cs
 			}
 
 			return movedCount;
+		}
+
+		/// <summary>
+		/// クエリ実行ボタン
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void queryExecuteButton_Click(object sender, EventArgs e)
+		{
+			if (queryText.Text.Trim().Length != 0 && MessageBox.Show("入力したSQLクエリを実行しますか？\n\nクエリはトランザクションで実行され、\nエラーが発生した場合はロールバックされます。\n\n※元に戻すことはできません！\n\nHost：" + urlText.Text.Trim() + " / Port：" + portText.Text.Trim() + "\nDatabase：" + dbText.Text.Trim() + " / Table：" + tableText.Text.Trim() + "\nUser：" + userText.Text.Trim() + " / Pass：*** Your Password ***", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+			{
+				// Execute
+
+				if (urlText.Text.Trim().Length < 1)
+				{
+					MessageBox.Show("URLは必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					urlText.Focus();
+					return;
+				}
+				else if (portText.Text.Trim().Length < 1)
+				{
+					MessageBox.Show("ポート番号は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					portText.Focus();
+					return;
+				}
+				else if (userText.Text.Trim().Length < 1)
+				{
+					MessageBox.Show("ユーザ名は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					userText.Focus();
+					return;
+				}
+				else if (pwText.Text.Trim().Length < 1)
+				{
+					MessageBox.Show("パスワードは必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					pwText.Focus();
+					return;
+				}
+				else if (tableText.Text.Trim().Length < 1)
+				{
+					MessageBox.Show("テーブル名は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					tableText.Focus();
+					return;
+				}
+
+				// MySQLだけDatabaseも補填していないとエラーとする
+				if (radioButton5.Checked)
+				{
+					if (dbText.Text.Trim().Length < 1)
+					{
+						MessageBox.Show("データベース名は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+						dbText.Focus();
+						return;
+					}
+				}
+
+				General.Var.DbUrl = urlText.Text.Trim();
+				General.Var.DbPort = portText.Text.Trim();
+				General.Var.DbName = dbText.Text.Trim();
+				General.Var.DbTable = tableText.Text.Trim();
+				General.Var.DbUser = userText.Text.Trim();
+				General.Var.DbPass = pwText.Text.Trim();
+				General.Var.SaveType = radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I";
+
+				// 修正
+				SqlConnection cn = General.Var.SqlCon;
+				SqlCommand cm;
+				SqlCommand cm2;
+				SqlTransaction tr = null;
+
+				MySqlConnection mcn = General.Var.SqlCon2;
+				MySqlCommand mcm;
+				MySqlCommand mcm2;
+				MySqlTransaction mtr = null;
+
+				string queryResult = string.Empty;
+
+				if (General.Var.SaveType == "D")
+				{
+					cm = new SqlCommand()
+					{
+						CommandType = CommandType.Text,
+						CommandTimeout = 30,
+						CommandText = @queryText.Text
+					};
+					cm.Connection = cn;
+
+					try
+					{
+						cn.Open();
+						tr = cn.BeginTransaction();
+						cm.Transaction = tr;
+
+						if (executeNonQueryRadio.Checked)
+						{
+							queryResult = "影響行数：" + cm.ExecuteNonQuery().ToString();
+						}
+						else
+						{
+							queryResult = cm.ExecuteScalar().ToString();
+						}
+
+						tr.Commit();
+						if (queryResult.Length != 0)
+						{
+							MessageBox.Show(@queryResult, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+						}
+					}
+					catch (Exception ex)
+					{
+						if (tr != null)
+						{
+							tr.Rollback();
+						}
+						General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
+						MessageBox.Show("実行に失敗しました。\n\n" + ex.Message, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+					finally
+					{
+						if (cn.State == ConnectionState.Open)
+						{
+							cn.Close();
+						}
+					}
+				}
+				else
+				{
+					mcm = new MySqlCommand()
+					{
+						CommandType = CommandType.Text,
+						CommandTimeout = 30,
+						CommandText = @queryText.Text
+					};
+					mcm.Connection = mcn;
+
+					try
+					{
+						mcn.Open();
+						mtr = mcn.BeginTransaction();
+						mcm.Transaction = mtr;
+
+						if (executeNonQueryRadio.Checked)
+						{
+							queryResult = "影響行数：" + mcm.ExecuteNonQuery().ToString();
+						}
+						else
+						{
+							queryResult = mcm.ExecuteScalar().ToString();
+						}
+
+						mtr.Commit();
+						if (queryResult.Length != 0)
+						{
+							MessageBox.Show(@queryResult, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+						}
+					}
+					catch (Exception ex)
+					{
+						if (mtr != null)
+						{
+							mtr.Rollback();
+						}
+						General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, mcm.CommandText);
+						MessageBox.Show("実行に失敗しました。\n\n" + ex.Message, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+					finally
+					{
+						if (mcn.State == ConnectionState.Open)
+						{
+							mcn.Close();
+						}
+					}
+				}
+			}
+			return;
+		}
+
+		/// <summary>
+		/// クエリクリアボタン
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void queryClearButton_Click(object sender, EventArgs e)
+		{
+			queryText.Clear();
+			return;
+		}
+
+		private void insertTableNameButton_Click(object sender, EventArgs e)
+		{
+			queryText.AppendText(tableText.Text.Trim());
+			return;
+		}
+
+		private void insertDatabaseNameButton_Click(object sender, EventArgs e)
+		{
+			queryText.AppendText(dbText.Text.Trim());
+			return;
+		}
+
+		private void insertColumnButton_Click(object sender, EventArgs e)
+		{
+			string appendText = string.Empty;
+			switch (insertColumnsDropDown.SelectedIndex)
+			{
+				case 0:
+					appendText = "ID";
+					break;
+				case 1:
+					appendText = "GAME_NAME";
+					break;
+				case 2:
+					appendText = "GAME_PATH";
+					break;
+				case 3:
+					appendText = "IMG_PATH";
+					break;
+				case 4:
+					appendText = "UPTIME";
+					break;
+				case 5:
+					appendText = "RUN_COUNT";
+					break;
+				case 6:
+					appendText = "DCON_TEXT";
+					break;
+				case 7:
+					appendText = "AGE_FLG";
+					break;
+				case 8:
+					appendText = "LAST_RUN";
+					break;
+				case 9:
+					appendText = "DCON_IMG";
+					break;
+				case 10:
+					appendText = "MEMO";
+					break;
+				case 11:
+					appendText = "STATUS";
+					break;
+				case 12:
+					appendText = "DB_VERSION";
+					break;
+			}
+			queryText.AppendText(appendText + " ");
+			queryText.Focus();
+			return;
 		}
 	}
 }

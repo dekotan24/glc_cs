@@ -39,17 +39,59 @@ namespace glc_cs
 		public const UInt32 FLASHW_TIMERNOFG = 12;
 
 		// 変数宣言
+		/// <summary>
+		/// セーブデータ管理方法（I：INI、D：MSSQL、M：MySQL、T：Temp）。
+		/// </summary>
 		private string saveType = "I";  // INIファイルをデフォルトとしてセット
-		private string configIni = string.Empty;
+
+		/// <summary>
+		/// MSSQLの接続用<see cref="SqlConnection"/>。
+		/// </summary>
 		private SqlConnection con = new SqlConnection();
+
+		/// <summary>
+		/// MySQLの接続用<see cref="MySqlConnection"/>。
+		/// </summary>
 		private MySqlConnection con2 = new MySqlConnection();
+
+		/// <summary>
+		/// エラーメッセージ保持用<see cref="StringBuilder"/>。
+		/// </summary>
 		private StringBuilder errMsg = new StringBuilder();
+
+		/// <summary>
+		/// 更新履歴表示用<see cref="StringBuilder"/>。適用対象の更新履歴を追加します。
+		/// </summary>
 		private StringBuilder updateLog = new StringBuilder();
+
+		/// <summary>
+		/// 強制アップデートフラグ。
+		/// </summary>
 		private bool updateRequired = false;
+
+		/// <summary>
+		/// アップデート有無フラグ。
+		/// </summary>
 		private bool hasUpdate = false;
+
+		/// <summary>
+		/// アップデートのステータスフラグの管理。
+		/// </summary>
 		private int updateStatus = 0;
+
+		/// <summary>
+		/// 現在のDBバージョン。
+		/// </summary>
 		private string currentVersion = "1.0";
+
+		/// <summary>
+		/// 最新のDBバージョン。<see cref="General.Var.DBVer"/> を保持。
+		/// </summary>
 		private string latestVersion = General.Var.DBVer;
+
+		/// <summary>
+		/// 必要なアップデート数カウンタ。全体進捗度の管理に使用。
+		/// </summary>
 		private int updatePhaseCount = 0;
 
 
@@ -63,6 +105,12 @@ namespace glc_cs
 		.AppendLine("\t* [カラム追加] [STATUS]:ステータス用")
 		.AppendLine("\t* [カラム追加] [DB_VERSION]:DBバージョン管理用")
 		.AppendLine("\t* [UPDATE] [TEMP1]:NULL");
+
+		/// <summary>
+		/// [必須] Ver.1.2(update to GL 1.07)
+		/// </summary>
+		private readonly StringBuilder v1_2 = new StringBuilder("[必須] Ver.1.2(Update to GL 1.07 or above)\n")
+		.AppendLine("\t* [UPDATE] [STATUS]:(【未着手/着手中/完了】が【未プレイ/プレイ中/プレイ済】のどれかになるように更新");
 
 
 		/// <summary>
@@ -103,11 +151,11 @@ namespace glc_cs
 		{
 			glVersionLabel.Text = General.Var.AppVer;
 
-			if (saveType == "D")
+			if (saveType == "D")    // MSSQLの場合
 			{
 				// MSSQL
 
-				// [必須] Ver.1.1(update to GL 1.03)
+				/* ↓ [必須] Ver.1.1(update to GL 1.03) ↓ */
 				// [DCON_IMG] 存在チェック
 				SqlCommand cm = new SqlCommand()
 				{
@@ -210,19 +258,72 @@ namespace glc_cs
 						updateLog.AppendLine(v1_1.ToString());
 						updateRequired = true;
 						hasUpdate = false;
-						updatePhaseCount++;
 					}
 					else
 					{
-						currentVersion = "1.0";
+						currentVersion = "1.1";
+					}
+					updatePhaseCount++;
+				}
+				/* ↑ [必須] Ver.1.1(update to GL 1.03) ↑ */
+				/* ↓ [必須] Ver.1.2(update to GL 1.07) ↓ */
+				// [STATUS]が削除対象の存在チェック
+				cm = new SqlCommand()
+				{
+					CommandType = CommandType.Text,
+					CommandTimeout = 30,
+					CommandText = createAndGetDataSQL(0, "*", "WHERE STATUS IN(N'',N'-------',N'未攻略',N'攻略中',N'攻略済',N'未着手',N'着手',N'完了',NULL)")
+				};
+				cm.Connection = con;
+
+				try
+				{
+					con.Open();
+					using (var reader = cm.ExecuteReader())
+					{
+						// カラムが存在する場合、アップデートを行う
+						if (reader.Read())
+						{
+							// DataReaderクローズ（クローズしないとエラーになる）
+							reader.Close();
+
+							hasUpdate = true;
+						}
 					}
 				}
+				catch (Exception ex)
+				{
+					string errorMsg = "[v1.1 -> v1.2 | STATUS] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText + " / hasUpdate:" + hasUpdate;
+					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+					errMsg.AppendLine(errorMsg);
+				}
+				finally
+				{
+					if (con.State == ConnectionState.Open)
+					{
+						con.Close();
+					}
+
+					if (hasUpdate)
+					{
+						updateLog.AppendLine(v1_2.ToString());
+						updateRequired = true;
+						hasUpdate = false;
+					}
+					else
+					{
+						currentVersion = "1.2";
+					}
+					updatePhaseCount++;
+				}
+				/* ↑ [必須] Ver.1.2(update to GL 1.07) ↑ */
+
 
 			}
-			else if (saveType == "M")
+			else if (saveType == "M")   // MySQLの場合
 			{
 				// MySQL
-				// [必須] Ver.1.1(update to GL 1.03)
+				/* ↓ [必須] Ver.1.1(update to GL 1.03) ↓ */
 				MySqlCommand cm = new MySqlCommand()
 				{
 					CommandType = CommandType.Text,
@@ -324,18 +425,70 @@ namespace glc_cs
 						updateLog.AppendLine(v1_1.ToString());
 						updateRequired = true;
 						hasUpdate = false;
-						updatePhaseCount++;
 					}
 					else
 					{
-						currentVersion = "1.0";
+						currentVersion = "1.1";
+					}
+					updatePhaseCount++;
+				}
+
+				/* ↑ [必須] Ver.1.1(update to GL 1.03) ↑ */
+				/* ↓ [必須] Ver.1.2(update to GL 1.07) ↓ */
+				// [STATUS]が削除対象の存在チェック
+				cm = new MySqlCommand()
+				{
+					CommandType = CommandType.Text,
+					CommandTimeout = 30,
+					CommandText = createAndGetDataSQL(1, "*", "WHERE STATUS IN(N'',N'-------',N'未着手',N'着手',N'完了',NULL)")
+				};
+				cm.Connection = con2;
+
+				try
+				{
+					con2.Open();
+					using (var reader = cm.ExecuteReader())
+					{
+						// カラムが存在する場合、アップデートを行う
+						if (reader.Read())
+						{
+							// DataReaderクローズ（クローズしないとエラーになる）
+							reader.Close();
+
+							hasUpdate = true;
+						}
 					}
 				}
+				catch (Exception ex)
+				{
+					string errorMsg = "[v1.1 -> v1.2 | STATUS] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con2.ConnectionString + " / SQLCommand:" + cm.CommandText + " / hasUpdate:" + hasUpdate;
+					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+					errMsg.AppendLine(errorMsg);
+				}
+				finally
+				{
+					if (con2.State == ConnectionState.Open)
+					{
+						con2.Close();
+					}
+
+					if (hasUpdate)
+					{
+						updateLog.AppendLine(v1_2.ToString());
+						updateRequired = true;
+						hasUpdate = false;
+					}
+					else
+					{
+						currentVersion = "1.2";
+					}
+					updatePhaseCount++;
+				}
+				/* ↑ [必須] Ver.1.2(update to GL 1.07) ↑ */
 			}
 			else
 			{
 				// INI
-				// [必須] Ver.1.1(update to GL 1.03)
 				int fileCount = 0;
 				string readini = string.Empty;
 				string gameDirName = General.Var.GameDir;
@@ -361,6 +514,7 @@ namespace glc_cs
 						{
 							try
 							{
+								/* ↓ [必須] Ver.1.1(update to GL 1.03) ↓ */
 								// アップデート対象のセクションを取得する
 								dcon_img = General.Var.IniRead(readini, "game", "dcon_img", "!Err");
 								memo = General.Var.IniRead(readini, "game", "memo", "!Err");
@@ -371,8 +525,23 @@ namespace glc_cs
 								if (dcon_img.Equals("!Err") || memo.Equals("!Err") || status.Equals("!Err") || ini_version.Equals("!Err"))
 								{
 									hasUpdate = true;
+									currentVersion = "1.0";
 									break;  // 1個でもアップデート対象があった場合、全てアップデート対象となるためループから抜ける
 								}
+								/* ↑ [必須] Ver.1.1(update to GL 1.03) ↑ */
+
+								/* ↓ [必須] Ver.1.2(update to GL 1.07) ↓ */
+								// 廃止したステータスの場合、アップデートフラグを立てる
+								if (status.Contains("-------") || status.Contains("未着手") || status.Contains("着手") || status.Contains("完了") || status.Contains(""))
+								{
+									if (!hasUpdate)
+									{
+										currentVersion = "1.1";
+									}
+									hasUpdate = true;
+									break;  // 1個でもアップデート対象があった場合、全てアップデート対象となるためループから抜ける
+								}
+								/* ↑ [必須] Ver.1.2(update to GL 1.07) ↑ */
 							}
 							catch
 							{
@@ -388,14 +557,21 @@ namespace glc_cs
 
 					if (hasUpdate)
 					{
-						updateLog.AppendLine(v1_1.ToString());
-						updateRequired = true;
+						switch (currentVersion)
+						{
+							case "1.0":
+								updateLog.AppendLine(v1_1.ToString());
+								updateRequired = true;
+								updatePhaseCount++;
+								goto case "1.1";
+
+							case "1.1":
+								updateLog.AppendLine(v1_2.ToString());
+								updateRequired = true;
+								updatePhaseCount++;
+								break;
+						}
 						hasUpdate = false;
-						updatePhaseCount++;
-					}
-					else
-					{
-						currentVersion = "1.0";
 					}
 				}
 			}
@@ -501,7 +677,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET STATUS = (CASE WHEN RUN_COUNT = '0' THEN N'未プレイ' ELSE N'プレイ中' END);"
+						CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET STATUS = (CASE WHEN RUN_COUNT = '0' THEN N'未プレイ' ELSE N'プレイ中' END) WHERE STATUS IN(N'未着手',N'着手中',N'完了');"
 					};
 					cm.Connection = con;
 					cm.ExecuteNonQuery();
@@ -534,6 +710,61 @@ namespace glc_cs
 				catch (Exception ex)
 				{
 					string errorMsg = "[v1.0 -> v1.1 | ALTER TABLE(ADD), UPDATE] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText;
+					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+					updateStatus = -1;
+				}
+				finally
+				{
+					if (con.State == ConnectionState.Open)
+					{
+						con.Close();
+					}
+					// アップデート処理後のステータス更新
+					updateProgress.Value++;
+				}
+
+				// [必須] Ver.1.2(update to GL 1.07)
+				try
+				{
+					con.Open();
+
+					// レコード更新
+					cm = new SqlCommand()
+					{
+						CommandType = CommandType.Text,
+						CommandTimeout = 30,
+						CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET STATUS = (CASE WHEN STATUS = N'完了' THEN N'プレイ済' WHEN STATUS = N'着手中' THEN N'プレイ中' ELSE N'未プレイ' END) WHERE STATUS IN(N'未着手',N'着手中',N'完了',N'-------',N'',NULL);"
+					};
+					cm.Connection = con;
+					cm.ExecuteNonQuery();
+
+					// DBバージョン更新
+					cm = new SqlCommand()
+					{
+						CommandType = CommandType.Text,
+						CommandTimeout = 30,
+						CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET DB_VERSION = N'1.2';"
+					};
+					cm.Connection = con;
+					cm.ExecuteNonQuery();
+
+					// DBバージョンデフォルト値更新
+					cm = new SqlCommand()
+					{
+						CommandType = CommandType.Text,
+						CommandTimeout = 30,
+						CommandText = @"ALTER TABLE " + General.Var.DbName + "." + General.Var.DbTable + " ADD DEFAULT N'1.2' FOR DB_VERSION;"
+					};
+					cm.Connection = con;
+					cm.ExecuteNonQuery();
+
+
+					updateStatus = 1;
+				}
+				catch (Exception ex)
+				{
+					string errorMsg = "[v1.1 -> v1.2 | UPDATE] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText;
 					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
 					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
 					updateStatus = -1;
@@ -636,11 +867,64 @@ namespace glc_cs
 					// アップデート処理後のステータス更新
 					updateProgress.Value++;
 				}
+
+				// [必須] Ver.1.2(update to GL 1.07)
+				try
+				{
+					con2.Open();
+
+					// カラム更新（STATUS）
+					cm = new MySqlCommand()
+					{
+						CommandType = CommandType.Text,
+						CommandTimeout = 30,
+						CommandText = @"UPDATE " + General.Var.DbTable + " SET STATUS = (CASE WHEN STATUS = N'完了' THEN N'プレイ済' WHEN STATUS = N'着手中' THEN N'プレイ中' ELSE N'未プレイ' END) WHERE STATUS IN(N'未着手',N'着手中',N'完了',N'-------',N'',NULL);"
+					};
+					cm.Connection = con2;
+					cm.ExecuteNonQuery();
+
+					// DBバージョン更新
+					cm = new MySqlCommand()
+					{
+						CommandType = CommandType.Text,
+						CommandTimeout = 30,
+						CommandText = @"UPDATE " + General.Var.DbTable + " SET DB_VERSION = N'1.2';"
+					};
+					cm.Connection = con2;
+					cm.ExecuteNonQuery();
+
+					// DBバージョンデフォルト値更新
+					cm = new MySqlCommand()
+					{
+						CommandType = CommandType.Text,
+						CommandTimeout = 30,
+						CommandText = @"ALTER TABLE " + General.Var.DbTable + " ALTER DB_VERSION SET DEFAULT N'1.2';"
+					};
+					cm.Connection = con2;
+					cm.ExecuteNonQuery();
+
+					updateStatus = 1;
+				}
+				catch (Exception ex)
+				{
+					string errorMsg = "[v1.1 -> v1.2 | UPDATE] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con2.ConnectionString + " / SQLCommand:" + cm.CommandText;
+					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+					updateStatus = -1;
+				}
+				finally
+				{
+					if (con2.State == ConnectionState.Open)
+					{
+						con2.Close();
+					}
+					// アップデート処理後のステータス更新
+					updateProgress.Value++;
+				}
 			}
 			else
 			{
 				// INI
-				// [必須] Ver.1.1(update to GL 1.03)
 				int fileCount = 0;
 				string readini = string.Empty;
 				string gameDirName = General.Var.GameDir;
@@ -675,6 +959,7 @@ namespace glc_cs
 								status = General.Var.IniRead(readini, "game", "status", "!Err");
 								ini_version = General.Var.IniRead(readini, "game", "ini_version", "!Err");
 
+								/* ↓ [必須] Ver.1.1(update to GL 1.03) ↓ */
 								// 取得できなかった場合、アップデートを行う
 								if (dcon_img.Equals("!Err") || memo.Equals("!Err") || status.Equals("!Err") || ini_version.Equals("!Err"))
 								{
@@ -684,10 +969,29 @@ namespace glc_cs
 									General.Var.IniWrite(readini, "game", "ini_version", "1.1");
 									General.Var.IniWrite(readini, "game", "temp1", string.Empty);
 								}
+								updateProgress.Value++;
+								/* ↑ [必須] Ver.1.1(update to GL 1.03) ↑ */
+
+								/* ↓ [必須] Ver.1.2(update to GL 1.07) ↓ */
+								// 廃止したステータスの場合、アップデートフラグを立てる
+								if (status.Contains("-------") || status.Contains("未着手") || status.Contains(""))
+								{
+									General.Var.IniWrite(readini, "game", "status", "未プレイ");
+								}
+								else if (status.Contains("着手"))
+								{
+									General.Var.IniWrite(readini, "game", "status", "プレイ中");
+								}
+								else if (status.Contains("完了"))
+								{
+									General.Var.IniWrite(readini, "game", "status", "プレイ済");
+								}
+								updateProgress.Value++;
+								/* ↑ [必須] Ver.1.2(update to GL 1.07) ↑ */
 							}
 							catch (Exception ex)
 							{
-								string errorMsg = "[v1.0 -> v1.1 | R/W] " + ex.Message + " / SaveType:" + saveType + " / INI:" + readini + " / dcon_img:" + dcon_img + " / memo:" + memo + " / status:" + status;
+								string errorMsg = "[v" + currentVersion + " -> v" + latestVersion + " | R/W] " + ex.Message + " / SaveType:" + saveType + " / INI:" + readini + " / dcon_img:" + dcon_img + " / memo:" + memo + " / status:" + status;
 								General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
 								errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
 								updateStatus = -1;
@@ -696,7 +1000,7 @@ namespace glc_cs
 						else
 						{
 							// 個別ini存在しない場合
-							string errorMsg = "[v1.0 -> v1.1 | Read File] ファイルが存在しません。 / SaveType:" + saveType + " / INI:" + readini;
+							string errorMsg = "[v" + currentVersion + " -> v" + latestVersion + " | Read File] ファイルが存在しません。 / SaveType:" + saveType + " / INI:" + readini;
 							General.Var.WriteErrorLog("ファイルの読込に失敗しました。ファイルが存在しません。", MethodBase.GetCurrentMethod().Name, errorMsg);
 							errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
 							updateStatus = -1;
@@ -704,7 +1008,6 @@ namespace glc_cs
 					}
 
 					// アップデート処理後のステータス更新
-					updateProgress.Value++;
 				}
 			}
 
@@ -761,7 +1064,7 @@ namespace glc_cs
 		/// <summary>
 		/// カラム存在チェックを行うSQL文を作成します。
 		/// </summary>
-		/// <param name="type"><value>0</value>:MSSQL / <value>1</value>:MySQL</param>
+		/// <param name="type"><value>0</value>：<see cref="System.Data.SqlClient"/>、<value>1</value>:<see cref="MySql.Data.MySqlClient"/></param>
 		/// <param name="columnName">カラム名</param>
 		/// <returns><paramref name="type"/>に応じた<paramref name="columnName"/>が存在するかをチェックするSQL</returns>
 		private string createIsExistsTableSQL(int type, string columnName)
@@ -779,6 +1082,34 @@ namespace glc_cs
 				case 1:
 					// MySQL / default
 					ans = @"DESCRIBE " + General.Var.DbTable + " " + columnName + ";";
+					break;
+			}
+
+			return ans;
+		}
+
+		/// <summary>
+		/// レコード存在チェックを行うSQL文を作成します。以下のSQLと等価です。<code>SELECT <paramref name="getTargetColumn"/> FROM (<see cref="General.Var.DbName"/>).(<see cref="General.Var.DbTable"/>) <paramref name="wherePhraseFullText"/></code>
+		/// </summary>
+		/// <param name="type"><value>0</value>：<see cref="System.Data.SqlClient"/>、<value>1</value>:<see cref="MySql.Data.MySqlClient"/></param>
+		/// <param name="getTargetColumn">検索対象のカラム名</param>
+		/// <param name="wherePhraseFullText">フルテキストのWHERE条件</param>
+		/// <returns><paramref name="type"/>に応じたSELECT文</returns>
+		private string createAndGetDataSQL(int type, string getTargetColumn, string wherePhraseFullText)
+		{
+			string ans = string.Empty;
+
+			switch (type)
+			{
+				case 0:
+					// MSSQL
+					ans = @"USE " + General.Var.DbName + "; SELECT " + getTargetColumn + " FROM " + General.Var.DbTable + " " + wherePhraseFullText + ";";
+					break;
+
+				default:
+				case 1:
+					// MySQL / default
+					ans = @"SELECT " + getTargetColumn + " FROM " + General.Var.DbName + "." + General.Var.DbTable + " " + wherePhraseFullText + ";";
 					break;
 			}
 
