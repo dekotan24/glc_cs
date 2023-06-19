@@ -4,8 +4,6 @@
 name: .NET
 
 on:
-  push:
-    branches: [ "beta" ]
   pull_request:
     branches: [ "beta" ]
 
