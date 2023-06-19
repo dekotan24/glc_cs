@@ -42,12 +42,12 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static readonly string appVer = "1.07";
+			protected static readonly string appVer = "1.08";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appBuild = "32.23.06.19";
+			protected static readonly string appBuild = "33.23.06.20";
 
 			/// <summary>
 			/// データベースバージョン
@@ -203,14 +203,19 @@ namespace glc_cs
 			protected static TcpClient tc = null;
 
 			/// <summary>
-			/// 棒読みちゃん ランチャー起動時に読み上げ
+			/// 棒読みちゃん ランチャー起動/終了時に読み上げ
 			/// </summary>
 			protected static bool byRoW = false;
 
 			/// <summary>
-			/// 棒読みちゃん ゲーム起動時に読み上げ
+			/// 棒読みちゃん ゲーム起動/終了時に読み上げ
 			/// </summary>
 			protected static bool byRoS = false;
+
+			/// <summary>
+			/// 棒読みちゃん オフラインデータ取得時に読み上げ
+			/// </summary>
+			protected static bool byRoG = false;
 
 			/// <summary>
 			/// Discord Connector 有効フラグ
@@ -226,6 +231,16 @@ namespace glc_cs
 			/// グリッドサイズ最大化フラグ
 			/// </summary>
 			protected static bool gridMax = false;
+
+			/// <summary>
+			/// 未プレイ時のデフォルトステータス
+			/// </summary>
+			protected static string defaultStatusValueOfNotPlaying = "未プレイ";
+
+			/// <summary>
+			/// プレイ中のデフォルトステータス
+			/// </summary>
+			protected static string defaultStatusValueOfPlaying = "プレイ中";
 
 
 			/// <summary>
@@ -598,6 +613,15 @@ namespace glc_cs
 			}
 
 			/// <summary>
+			/// 棒読みちゃん接続時に、オフラインデータ取得時の読み上げのフラグを設定/返却します
+			/// </summary>
+			public static bool ByRoG
+			{
+				get { return byRoG; }
+				set { byRoG = value; }
+			}
+
+			/// <summary>
 			/// 棒読みちゃんとのTCP接続を構築し、その値を返却します。
 			/// 受け手側でTcpClientに代入して使用します。
 			/// </summary>
@@ -631,6 +655,24 @@ namespace glc_cs
 			{
 				get { return gridMax; }
 				set { gridMax = value; }
+			}
+
+			/// <summary>
+			/// 未プレイ時のデフォルトのステータス
+			/// </summary>
+			public static string DefaultStatusValueOfNotPlaying
+			{
+				get { return defaultStatusValueOfNotPlaying; }
+				set { defaultStatusValueOfNotPlaying = value; }
+			}
+
+			/// <summary>
+			/// プレイ中のデフォルトのステータス
+			/// </summary>
+			public static string DefaultStatusValueOfPlaying
+			{
+				get { return defaultStatusValueOfPlaying; }
+				set { defaultStatusValueOfPlaying = value; }
 			}
 
 			/// <summary>
@@ -757,6 +799,7 @@ namespace glc_cs
 					ByPort = Convert.ToInt32(ReadIni("connect", "byPort", "50001"));
 					ByRoW = Convert.ToBoolean(Convert.ToInt32(ReadIni("connect", "byRoW", "0")));
 					ByRoS = Convert.ToBoolean(Convert.ToInt32(ReadIni("connect", "byRoS", "0")));
+					ByRoG = Convert.ToBoolean(Convert.ToInt32(ReadIni("connect", "byRoG", "0")));
 
 					// 総合
 					BgImg = ReadIni("imgd", "bgimg", string.Empty);
@@ -787,13 +830,14 @@ namespace glc_cs
 						DconPath = string.Empty;
 					}
 
-					//棒読みちゃん設定読み込み
+					// 棒読みちゃん設定読み込み
 					ByActive = false;
 					ByType = 0;
 					ByHost = "127.0.0.1";
 					ByPort = 50001;
 					ByRoW = false;
 					ByRoS = false;
+					ByRoG = false;
 
 					// 総合
 					BgImg = null;
@@ -1218,6 +1262,11 @@ namespace glc_cs
 			/// <returns>False：エラー</returns>
 			public static bool downloadDbDataToLocal(string targetWorkDir)
 			{
+				if (ByActive && ByRoG)
+				{
+					Bouyomiage("最新のゲームデータのオフラインバックアップを取得しています。しばらくお待ち下さい。");
+				}
+
 				string localGameIni = (targetWorkDir.EndsWith("\\") ? targetWorkDir : targetWorkDir + "\\") + "game.ini";
 				bool isSuc = false;
 

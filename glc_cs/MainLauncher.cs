@@ -703,9 +703,9 @@ namespace glc_cs
 
 			if (File.Exists(exePathText.Text))
 			{
-				if (!testCheck.Checked)
+				if (trackCheck.Checked)
 				{
-					if (trackCheck.Checked)
+					if (!testCheck.Checked)
 					{
 						if (General.Var.SaveType == "I" || General.Var.SaveType == "T")
 						{
@@ -878,7 +878,7 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET UPTIME = CAST(CAST(UPTIME AS BIGINT) + " + anss + " AS NVARCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS INT) + 1 AS NVARCHAR), DCON_TEXT = N'" + dconText.Text.Trim() + "', DCON_IMG = N'" + dconImgText.Text.Trim() + "', AGE_FLG = N'" + (normalRadio.Checked ? "0" : "1") + "', LAST_RUN = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' "
+									CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET UPTIME = CAST(CAST(UPTIME AS BIGINT) + " + anss + " AS NVARCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS INT) + 1 AS NVARCHAR), DCON_TEXT = N'" + dconText.Text.Trim() + "', DCON_IMG = N'" + dconImgText.Text.Trim() + "', AGE_FLG = N'" + (normalRadio.Checked ? "0" : "1") + "', LAST_RUN = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', STATUS = (CASE STATUS WHEN N'" + General.Var.DefaultStatusValueOfNotPlaying + "' THEN N'" + General.Var.DefaultStatusValueOfPlaying + "' ELSE STATUS END) "
 												+ " WHERE ID = '" + General.Var.CurrentGameDbVal + "'"
 								};
 								cm.Connection = cn;
@@ -920,7 +920,7 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"UPDATE " + General.Var.DbTable + " SET UPTIME = CAST(CAST(UPTIME AS SIGNED) + " + anss + " AS NCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS SIGNED) + 1 AS NCHAR), DCON_TEXT = N'" + dconText.Text.Trim() + "', DCON_IMG = N'" + dconImgText.Text.Trim() + "', AGE_FLG = N'" + (normalRadio.Checked ? "0" : "1") + "', LAST_RUN = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' "
+									CommandText = @"UPDATE " + General.Var.DbTable + " SET UPTIME = CAST(CAST(UPTIME AS SIGNED) + " + anss + " AS NCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS SIGNED) + 1 AS NCHAR), DCON_TEXT = N'" + dconText.Text.Trim() + "', DCON_IMG = N'" + dconImgText.Text.Trim() + "', AGE_FLG = N'" + (normalRadio.Checked ? "0" : "1") + "', LAST_RUN = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', STATUS = (CASE STATUS WHEN N'" + General.Var.DefaultStatusValueOfNotPlaying + "' THEN N'" + General.Var.DefaultStatusValueOfPlaying + "' ELSE STATUS END) "
 												+ " WHERE ID = '" + General.Var.CurrentGameDbVal + "';"
 								};
 								cm.Connection = cn;
@@ -962,7 +962,7 @@ namespace glc_cs
 
 						if (General.Var.SaveType == "D" || General.Var.SaveType == "M")
 						{
-							if (searchingText.Text.Trim().Length != 0 && searchResultList.Items.Count > 0)
+							if (searchResultList.Items.Count > 0)
 							{
 								// 再検索
 								searchExec(true);
@@ -971,75 +971,75 @@ namespace glc_cs
 					}
 					else
 					{
+						// checkBox6.Checked
+						MessageBox.Show("テスト起動モードが有効です。\nこのモードでは起動時間、起動回数、DiscordRPCなどは実行されません。\n\n無効にするには、[テスト起動]チェックを外してください。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+						// 作業ディレクトリ変更
 						String apppath = Path.GetDirectoryName(exePathText.Text);
 						System.Environment.CurrentDirectory = apppath;
 
-						if (General.Var.ByActive && General.Var.ByRoS)
+						// 起動中gifの可視化
+						pictureBox11.Visible = true;
+						startButton.Enabled = false;
+
+						// ウィンドウ最小化
+						if (minCheck.Checked == true)
 						{
-							General.Var.Bouyomiage(nameText.Text + "を、トラッキングなしで起動しました。");
+							this.WindowState = FormWindowState.Minimized;
+							this.notifyIcon1.Visible = true;
 						}
+
+						// ゲーム実行
+						System.Diagnostics.Process p =
 						System.Diagnostics.Process.Start(exePathText.Text);
 
+						// 棒読み上げ
+						if (General.Var.ByActive && General.Var.ByRoS)
+						{
+							General.Var.Bouyomiage(nameText.Text + "を、テストモードで起動しました。");
+						}
+
+						// ゲーム終了まで待機
+						p.WaitForExit();
+
+						// 作業ディレクトリ復元
 						System.Environment.CurrentDirectory = General.Var.BaseDir;
+
+						if (minCheck.Checked == true)
+						{
+							this.WindowState = FormWindowState.Normal;
+							this.notifyIcon1.Visible = false;
+						}
+
+						// 起動中gifの非可視化
+						pictureBox11.Visible = false;
+						startButton.Enabled = true;
+
+						// 終了検出後
+						DialogResult dr = MessageBox.Show("実行終了を検出しました。\nゲームが正しく終了しましたか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+						if (dr == DialogResult.Yes)
+						{
+							MessageBox.Show("正常にトラッキングできています。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+						}
+						else
+						{
+							MessageBox.Show("トラッキングに失敗しています。\n\n以下をご確認ください。\n\n・ランチャーを指定していませんか？\n・GLを管理者権限で起動してみてください。\n・実行パスを英数字のみにしてみてください。\n\nそれでも解決しない場合は、トラッキングできません。ご了承ください。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						}
+
 					}
 				}
 				else
 				{
-					// checkBox6.Checked
-					MessageBox.Show("テスト起動モードが有効です。\nこのモードでは起動時間、起動回数、DiscordRPCなどは実行されません。\n\n無効にするには、[テスト起動]チェックを外してください。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-					// 作業ディレクトリ変更
 					String apppath = Path.GetDirectoryName(exePathText.Text);
 					System.Environment.CurrentDirectory = apppath;
 
-					// 起動中gifの可視化
-					pictureBox11.Visible = true;
-					startButton.Enabled = false;
-
-					// ウィンドウ最小化
-					if (minCheck.Checked == true)
-					{
-						this.WindowState = FormWindowState.Minimized;
-						this.notifyIcon1.Visible = true;
-					}
-
-					// ゲーム実行
-					System.Diagnostics.Process p =
-					System.Diagnostics.Process.Start(exePathText.Text);
-
-					// 棒読み上げ
 					if (General.Var.ByActive && General.Var.ByRoS)
 					{
-						General.Var.Bouyomiage(nameText.Text + "を、テストモードで起動しました。");
+						General.Var.Bouyomiage(nameText.Text + "を、トラッキングなしで起動しました。");
 					}
+					System.Diagnostics.Process.Start(exePathText.Text);
 
-					// ゲーム終了まで待機
-					p.WaitForExit();
-
-					// 作業ディレクトリ復元
 					System.Environment.CurrentDirectory = General.Var.BaseDir;
-
-					if (minCheck.Checked == true)
-					{
-						this.WindowState = FormWindowState.Normal;
-						this.notifyIcon1.Visible = false;
-					}
-
-					// 起動中gifの非可視化
-					pictureBox11.Visible = false;
-					startButton.Enabled = true;
-
-					// 終了検出後
-					DialogResult dr = MessageBox.Show("実行終了を検出しました。\nゲームが正しく終了しましたか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-					if (dr == DialogResult.Yes)
-					{
-						MessageBox.Show("正常にトラッキングできています。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-					}
-					else
-					{
-						MessageBox.Show("トラッキングに失敗しています。\n\n以下をご確認ください。\n\n・ランチャーを指定していませんか？\n・GLを管理者権限で起動してみてください。\n・実行パスを英数字のみにしてみてください。\n\nそれでも解決しない場合は、トラッキングできません。ご了承ください。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-					}
-
 				}
 			}
 			GC.Collect();
@@ -2626,10 +2626,6 @@ namespace glc_cs
 		public void ExitApp(bool downloadDbEnabled = true)
 		{
 			Application.ApplicationExit -= new EventHandler(Application_ApplicationExit);
-			if (General.Var.ByActive && General.Var.ByRoW)
-			{
-				General.Var.Bouyomiage("ゲームランチャーを終了しました");
-			}
 
 			if ((General.Var.SaveType == "D" || General.Var.SaveType == "M") && General.Var.OfflineSave && downloadDbEnabled)
 			{
@@ -2637,6 +2633,10 @@ namespace glc_cs
 				General.Var.downloadDbDataToLocal(localPath);
 			}
 
+			if (General.Var.ByActive && General.Var.ByRoW)
+			{
+				General.Var.Bouyomiage("ゲームランチャーを終了しました。");
+			}
 			Application.DoEvents();
 			Environment.Exit(0);
 		}

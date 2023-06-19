@@ -103,8 +103,9 @@ namespace glc_cs
 			textBox4.Text = General.Var.ByHost;
 			textBox5.Text = General.Var.ByPort.ToString();
 
-			checkBox4.Checked = General.Var.ByRoW;
-			checkBox10.Checked = General.Var.ByRoS;
+			RoWCheck.Checked = General.Var.ByRoW;
+			RoSCheck.Checked = General.Var.ByRoS;
+			RoGCheck.Checked = General.Var.ByRoG;
 
 			// 保存方法
 			if (General.Var.SaveType == "I")
@@ -251,8 +252,9 @@ namespace glc_cs
 			General.Var.WriteIni("connect", "byType", General.Var.ByType.ToString());
 			General.Var.WriteIni("connect", "byPort", textBox5.Text);
 			General.Var.WriteIni("connect", "byHost", textBox4.Text);
-			General.Var.WriteIni("connect", "byRoW", checkBox4.Checked ? "1" : "0");
-			General.Var.WriteIni("connect", "byRoS", checkBox10.Checked ? "1" : "0");
+			General.Var.WriteIni("connect", "byRoW", RoWCheck.Checked ? "1" : "0");
+			General.Var.WriteIni("connect", "byRoS", RoSCheck.Checked ? "1" : "0");
+			General.Var.WriteIni("connect", "byRoG", RoGCheck.Checked ? "1" : "0");
 
 			// データベースをローカルにINIで保存する
 			if (checkBox8.Checked)
@@ -1036,14 +1038,14 @@ namespace glc_cs
 				{
 					updchkButton.Text = "Update Available";
 					updchkButton.Enabled = true;
-					MessageBox.Show("アップデートがあります。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show("アップデートがあります。\n（" + General.Var.AppVer + " -> " + text.Trim() + "）", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 					System.Diagnostics.Process.Start("https://github.com/dekotan24/glc_cs/releases");
 				}
 				else
 				{
 					updchkButton.Text = "Latest!";
 					updchkButton.Enabled = true;
-					MessageBox.Show("最新版です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show("最新版です。（" + text.Trim() + "）", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 			}
 			catch (Exception ex)
@@ -1070,7 +1072,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private async void logoPictureBox_Click(object sender, EventArgs e)
+		private void logoPictureBox_Click(object sender, EventArgs e)
 		{
 			Random r1 = new System.Random();
 			int rand = r1.Next(0, 5);
@@ -1279,30 +1281,35 @@ namespace glc_cs
 				if (urlText.Text.Trim().Length < 1)
 				{
 					MessageBox.Show("URLは必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					tabControl1.SelectedIndex = 3;
 					urlText.Focus();
 					return;
 				}
 				else if (portText.Text.Trim().Length < 1)
 				{
 					MessageBox.Show("ポート番号は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					tabControl1.SelectedIndex = 3;
 					portText.Focus();
 					return;
 				}
 				else if (userText.Text.Trim().Length < 1)
 				{
 					MessageBox.Show("ユーザ名は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					tabControl1.SelectedIndex = 3;
 					userText.Focus();
 					return;
 				}
 				else if (pwText.Text.Trim().Length < 1)
 				{
 					MessageBox.Show("パスワードは必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					tabControl1.SelectedIndex = 3;
 					pwText.Focus();
 					return;
 				}
 				else if (tableText.Text.Trim().Length < 1)
 				{
 					MessageBox.Show("テーブル名は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					tabControl1.SelectedIndex = 3;
 					tableText.Focus();
 					return;
 				}
@@ -1313,6 +1320,7 @@ namespace glc_cs
 					if (dbText.Text.Trim().Length < 1)
 					{
 						MessageBox.Show("データベース名は必須です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+						tabControl1.SelectedIndex = 3;
 						dbText.Focus();
 						return;
 					}
@@ -1329,12 +1337,10 @@ namespace glc_cs
 				// 修正
 				SqlConnection cn = General.Var.SqlCon;
 				SqlCommand cm;
-				SqlCommand cm2;
 				SqlTransaction tr = null;
 
 				MySqlConnection mcn = General.Var.SqlCon2;
 				MySqlCommand mcm;
-				MySqlCommand mcm2;
 				MySqlTransaction mtr = null;
 
 				string queryResult = string.Empty;

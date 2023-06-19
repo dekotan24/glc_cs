@@ -66,8 +66,8 @@
 			this.dconRatingRadio1 = new System.Windows.Forms.RadioButton();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.groupBox5 = new System.Windows.Forms.GroupBox();
-			this.checkBox10 = new System.Windows.Forms.CheckBox();
-			this.checkBox4 = new System.Windows.Forms.CheckBox();
+			this.RoSCheck = new System.Windows.Forms.CheckBox();
+			this.RoWCheck = new System.Windows.Forms.CheckBox();
 			this.groupBox4 = new System.Windows.Forms.GroupBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.byResetButton = new System.Windows.Forms.Button();
@@ -149,6 +149,8 @@
 			this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.label15 = new System.Windows.Forms.Label();
+			this.RoGCheck = new System.Windows.Forms.CheckBox();
+			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage7.SuspendLayout();
@@ -556,36 +558,37 @@
 			// 
 			// groupBox5
 			// 
-			this.groupBox5.Controls.Add(this.checkBox10);
-			this.groupBox5.Controls.Add(this.checkBox4);
+			this.groupBox5.Controls.Add(this.RoGCheck);
+			this.groupBox5.Controls.Add(this.RoSCheck);
+			this.groupBox5.Controls.Add(this.RoWCheck);
 			this.groupBox5.Enabled = false;
 			this.groupBox5.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox5.Location = new System.Drawing.Point(6, 198);
 			this.groupBox5.Name = "groupBox5";
-			this.groupBox5.Size = new System.Drawing.Size(470, 65);
+			this.groupBox5.Size = new System.Drawing.Size(470, 119);
 			this.groupBox5.TabIndex = 2;
 			this.groupBox5.TabStop = false;
 			this.groupBox5.Text = "読み上げのタイミング";
 			// 
-			// checkBox10
+			// RoSCheck
 			// 
-			this.checkBox10.AutoSize = true;
-			this.checkBox10.Location = new System.Drawing.Point(280, 30);
-			this.checkBox10.Name = "checkBox10";
-			this.checkBox10.Size = new System.Drawing.Size(177, 20);
-			this.checkBox10.TabIndex = 2;
-			this.checkBox10.Text = "ゲーム起動時／終了時";
-			this.checkBox10.UseVisualStyleBackColor = true;
+			this.RoSCheck.AutoSize = true;
+			this.RoSCheck.Location = new System.Drawing.Point(280, 30);
+			this.RoSCheck.Name = "RoSCheck";
+			this.RoSCheck.Size = new System.Drawing.Size(177, 20);
+			this.RoSCheck.TabIndex = 2;
+			this.RoSCheck.Text = "ゲーム起動時／終了時";
+			this.RoSCheck.UseVisualStyleBackColor = true;
 			// 
-			// checkBox4
+			// RoWCheck
 			// 
-			this.checkBox4.AutoSize = true;
-			this.checkBox4.Location = new System.Drawing.Point(25, 30);
-			this.checkBox4.Name = "checkBox4";
-			this.checkBox4.Size = new System.Drawing.Size(198, 20);
-			this.checkBox4.TabIndex = 1;
-			this.checkBox4.Text = "ランチャー起動時／終了時";
-			this.checkBox4.UseVisualStyleBackColor = true;
+			this.RoWCheck.AutoSize = true;
+			this.RoWCheck.Location = new System.Drawing.Point(25, 30);
+			this.RoWCheck.Name = "RoWCheck";
+			this.RoWCheck.Size = new System.Drawing.Size(198, 20);
+			this.RoWCheck.TabIndex = 1;
+			this.RoWCheck.Text = "ランチャー起動時／終了時";
+			this.RoWCheck.UseVisualStyleBackColor = true;
 			// 
 			// groupBox4
 			// 
@@ -1288,6 +1291,7 @@
 			// 
 			// TabPage3
 			// 
+			this.TabPage3.Controls.Add(this.checkBox1);
 			this.TabPage3.Controls.Add(this.logoPictureBox);
 			this.TabPage3.Controls.Add(this.updchkButton);
 			this.TabPage3.Controls.Add(this.label10);
@@ -1451,6 +1455,28 @@
 			this.label15.TabIndex = 4;
 			this.label15.Text = ":)";
 			// 
+			// RoGCheck
+			// 
+			this.RoGCheck.AutoSize = true;
+			this.RoGCheck.Location = new System.Drawing.Point(25, 57);
+			this.RoGCheck.Name = "RoGCheck";
+			this.RoGCheck.Size = new System.Drawing.Size(169, 20);
+			this.RoGCheck.TabIndex = 3;
+			this.RoGCheck.Text = "オフラインデータ取得時";
+			this.RoGCheck.UseVisualStyleBackColor = true;
+			// 
+			// checkBox1
+			// 
+			this.checkBox1.AutoSize = true;
+			this.checkBox1.Enabled = false;
+			this.checkBox1.Location = new System.Drawing.Point(368, 102);
+			this.checkBox1.Name = "checkBox1";
+			this.checkBox1.Size = new System.Drawing.Size(92, 16);
+			this.checkBox1.TabIndex = 13;
+			this.checkBox1.Text = "ベータを含める";
+			this.checkBox1.UseVisualStyleBackColor = true;
+			this.checkBox1.Visible = false;
+			// 
 			// Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1582,8 +1608,8 @@
 		private System.Windows.Forms.Button createTableButton;
 		private System.Windows.Forms.CheckBox checkBox8;
 		private System.Windows.Forms.GroupBox groupBox5;
-		private System.Windows.Forms.CheckBox checkBox10;
-		private System.Windows.Forms.CheckBox checkBox4;
+		private System.Windows.Forms.CheckBox RoSCheck;
+		private System.Windows.Forms.CheckBox RoWCheck;
 		private System.Windows.Forms.Label label15;
 		private System.Windows.Forms.Label label26;
 		private System.Windows.Forms.GroupBox groupBox13;
@@ -1634,5 +1660,7 @@
 		private System.Windows.Forms.Button insertColumnButton;
 		private System.Windows.Forms.Button insertTableNameButton;
 		private System.Windows.Forms.Button insertDatabaseNameButton;
+		private System.Windows.Forms.CheckBox RoGCheck;
+		private System.Windows.Forms.CheckBox checkBox1;
 	}
 }
