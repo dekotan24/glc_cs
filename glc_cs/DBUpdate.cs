@@ -532,7 +532,7 @@ namespace glc_cs
 
 								/* ↓ [必須] Ver.1.2(update to GL 1.07) ↓ */
 								// 廃止したステータスの場合、アップデートフラグを立てる
-								if (status.Contains("-------") || status.Contains("未着手") || status.Contains("着手") || status.Contains("完了") || status.Contains(""))
+								if (status == "-------" || status == "未着手" || status == "着手" || status == "完了" || status == "")
 								{
 									if (!hasUpdate)
 									{
@@ -562,17 +562,17 @@ namespace glc_cs
 							case "1.0":
 								updateLog.AppendLine(v1_1.ToString());
 								updateRequired = true;
-								updatePhaseCount++;
 								goto case "1.1";
 
 							case "1.1":
 								updateLog.AppendLine(v1_2.ToString());
 								updateRequired = true;
-								updatePhaseCount++;
 								break;
 						}
 						hasUpdate = false;
+						updatePhaseCount++;
 					}
+					updatePhaseCount++;
 				}
 			}
 
@@ -969,7 +969,6 @@ namespace glc_cs
 									General.Var.IniWrite(readini, "game", "ini_version", "1.1");
 									General.Var.IniWrite(readini, "game", "temp1", string.Empty);
 								}
-								updateProgress.Value++;
 								/* ↑ [必須] Ver.1.1(update to GL 1.03) ↑ */
 
 								/* ↓ [必須] Ver.1.2(update to GL 1.07) ↓ */
@@ -986,7 +985,6 @@ namespace glc_cs
 								{
 									General.Var.IniWrite(readini, "game", "status", "プレイ済");
 								}
-								updateProgress.Value++;
 								/* ↑ [必須] Ver.1.2(update to GL 1.07) ↑ */
 							}
 							catch (Exception ex)
@@ -1006,8 +1004,7 @@ namespace glc_cs
 							updateStatus = -1;
 						}
 					}
-
-					// アップデート処理後のステータス更新
+					updateProgress.Value++;
 				}
 			}
 
