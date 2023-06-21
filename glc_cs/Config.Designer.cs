@@ -133,6 +133,7 @@
 			this.queryExecuteButton = new System.Windows.Forms.Button();
 			this.queryText = new System.Windows.Forms.RichTextBox();
 			this.TabPage3 = new System.Windows.Forms.TabPage();
+			this.label31 = new System.Windows.Forms.Label();
 			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			this.logoPictureBox = new System.Windows.Forms.PictureBox();
 			this.updchkButton = new System.Windows.Forms.Button();
@@ -150,7 +151,6 @@
 			this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.label15 = new System.Windows.Forms.Label();
-			this.label31 = new System.Windows.Forms.Label();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage7.SuspendLayout();
@@ -1322,6 +1322,15 @@
 			this.TabPage3.Text = "バージョン情報";
 			this.TabPage3.UseVisualStyleBackColor = true;
 			// 
+			// label31
+			// 
+			this.label31.AutoSize = true;
+			this.label31.Location = new System.Drawing.Point(171, 150);
+			this.label31.Name = "label31";
+			this.label31.Size = new System.Drawing.Size(109, 12);
+			this.label31.TabIndex = 14;
+			this.label31.Text = "小倉照孤（dekosoft）";
+			// 
 			// checkBox1
 			// 
 			this.checkBox1.AutoSize = true;
@@ -1429,7 +1438,7 @@
 			// 
 			this.label3.AutoSize = true;
 			this.label3.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label3.Location = new System.Drawing.Point(127, 150);
+			this.label3.Location = new System.Drawing.Point(129, 150);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(35, 12);
 			this.label3.TabIndex = 1;
@@ -1467,15 +1476,6 @@
 			this.label15.Size = new System.Drawing.Size(11, 12);
 			this.label15.TabIndex = 4;
 			this.label15.Text = ":)";
-			// 
-			// label31
-			// 
-			this.label31.AutoSize = true;
-			this.label31.Location = new System.Drawing.Point(171, 150);
-			this.label31.Name = "label31";
-			this.label31.Size = new System.Drawing.Size(109, 12);
-			this.label31.TabIndex = 14;
-			this.label31.Text = "小倉照孤（dekosoft）";
 			// 
 			// Config
 			// 
