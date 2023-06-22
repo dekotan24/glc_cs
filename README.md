@@ -15,6 +15,9 @@ Visual Studio 2022
 * MySQL.Data
 
 
+## dcon
+Discord Connectorのソースコードは[dcon](https://github.com/dekotan24/dcon)リポジトリへどうぞ。
+
 ## Webビューア
 PHPで作成したMySQLのデータベースに登録しているデータを表示する[GLWeb](https://github.com/dekotan24/GLWeb/)もどうぞ。
 
