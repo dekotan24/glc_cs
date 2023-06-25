@@ -657,6 +657,7 @@ namespace glc_cs
 		private void startButton_Click(object sender, EventArgs e)
 		{
 			int startdata, timedata, ratinginfo;
+			bool sucExit = true;
 
 			if (gameList.SelectedIndex == -1)
 			{
@@ -778,7 +779,7 @@ namespace glc_cs
 						System.Diagnostics.Process.Start(exePathText.Text);
 
 						// 棒読み上げ
-						if (General.Var.ByActive && General.Var.ByRoS)
+						if (General.Var.ByRoS)
 						{
 							General.Var.Bouyomiage(nameText.Text + "を、トラッキングありで起動しました。");
 						}
@@ -798,11 +799,11 @@ namespace glc_cs
 						// 子プロセスの終了
 						if (useDconCheck.Checked)
 						{
-							KillChildProcess(drunp);
+							sucExit = KillChildProcess(drunp);
 						}
 
 						// 終了時刻取得
-						String time = p.ExitTime.ToString("yyyy/MM/dd HH:mm:ss");
+						String time = (sucExit ? p.ExitTime : DateTime.Now).ToString("yyyy/MM/dd HH:mm:ss");
 						DateTime endtime = Convert.ToDateTime(time);
 
 						// 起動時間計算
@@ -2555,16 +2556,18 @@ namespace glc_cs
 		/// 子プロセスを終了します
 		/// </summary>
 		/// <param name="process"></param>
-		void KillChildProcess(System.Diagnostics.Process process)
+		bool KillChildProcess(System.Diagnostics.Process process)
 		{
 			try
 			{
 				process.Kill();
+				return true;
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show("既にdcon.jarが終了しています。\n起動時間が正常に記録されない可能性があります。\n\n" + ex.Message, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "processName:" + process.ProcessName + " (" + process.HasExited + ") / exitTime:" + process.ExitTime);
+				return false;
 			}
 		}
 
