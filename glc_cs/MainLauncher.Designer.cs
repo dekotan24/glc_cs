@@ -283,7 +283,7 @@
 			// 
 			// notifyIcon1
 			// 
-			this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
+			this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
 			resources.ApplyResources(this.notifyIcon1, "notifyIcon1");
 			// 
 			// dconText

@@ -261,7 +261,7 @@ namespace glc_cs
 				}
 				else
 				{
-					//ゲームが1つもない場合
+					// ゲームが1つもない場合
 					General.Var.GameMax = 0;
 					reloadButton.Enabled = false;
 					editButton.Enabled = false;
@@ -479,7 +479,7 @@ namespace glc_cs
 				}
 				else
 				{
-					//ゲームが1つもない場合
+					// ゲームが1つもない場合
 					General.Var.GameMax = 0;
 					reloadButton.Enabled = false;
 					editButton.Enabled = false;
@@ -979,6 +979,9 @@ namespace glc_cs
 						String apppath = Path.GetDirectoryName(exePathText.Text);
 						System.Environment.CurrentDirectory = apppath;
 
+						// 起動開始日時を取得
+						DateTime startTime = DateTime.Now;
+
 						// 起動中gifの可視化
 						pictureBox11.Visible = true;
 						startButton.Enabled = false;
@@ -1003,6 +1006,9 @@ namespace glc_cs
 						// ゲーム終了まで待機
 						p.WaitForExit();
 
+						// 起動終了日時を取得
+						DateTime endTime = DateTime.Now;
+
 						// 作業ディレクトリ復元
 						System.Environment.CurrentDirectory = General.Var.BaseDir;
 
@@ -1017,7 +1023,7 @@ namespace glc_cs
 						startButton.Enabled = true;
 
 						// 終了検出後
-						DialogResult dr = MessageBox.Show("実行終了を検出しました。\nゲームが正しく終了しましたか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+						DialogResult dr = MessageBox.Show("実行終了を検出しました。\n開始日時：" + startTime.ToString("yyyy/MM/dd HH:mm:ss") + "\n終了日時：" + endTime.ToString("yyyy/MM/dd HH:mm:ss") + "\n\nゲームを正しくトラッキングできていますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 						if (dr == DialogResult.Yes)
 						{
 							MessageBox.Show("正常にトラッキングできています。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -1589,34 +1595,6 @@ namespace glc_cs
 			}
 		}
 
-		private void fileSystemWatcher1_Changed(object sender, FileSystemEventArgs e)
-		{
-			pictureBox11.Visible = true;
-			String selectedtext = gameList.SelectedItem.ToString();
-
-			LoadItem(General.Var.GameDir);
-			if (gameList.Items.Contains(selectedtext))
-			{
-				gameList.SelectedIndex = gameList.Items.IndexOf(selectedtext);
-			}
-			pictureBox11.Visible = false;
-			return;
-		}
-		private void fileSystemWatcher2_Changed(object sender, FileSystemEventArgs e)
-		{
-			pictureBox11.Visible = true;
-			String selectedtext = gameList.SelectedItem.ToString();
-
-			updateComponent();
-			LoadItem(General.Var.GameDir);
-			if (gameList.Items.Contains(selectedtext))
-			{
-				gameList.SelectedIndex = gameList.Items.IndexOf(selectedtext);
-			}
-			pictureBox11.Visible = false;
-			return;
-		}
-
 		/// <summary>
 		/// 引数とINIファイルのデータ一致チェック（相違があればINIファイルを上書き）
 		/// </summary>
@@ -1863,7 +1841,7 @@ namespace glc_cs
 
 			if (rawdata >= 1)
 			{
-				//乱数生成
+				// 乱数生成
 				System.Random r = new System.Random();
 				int ans = r.Next(1, rawdata + 1);
 
@@ -1871,7 +1849,7 @@ namespace glc_cs
 
 				if (General.Var.GridEnable)
 				{
-					//グリッドと同期
+					// グリッドと同期
 					gameImgList.Items[gameList.SelectedIndex].Selected = true;
 					gameImgList.EnsureVisible(gameList.SelectedIndex);
 				}
@@ -1904,7 +1882,7 @@ namespace glc_cs
 				MessageBox.Show("ゲームリストが空です。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
-			//選択中のゲーム保管ファイルを削除
+			// 選択中のゲーム保管ファイルを削除
 			pictureBox11.Visible = true;
 			int delval = gameList.SelectedIndex + 1;
 			String delname = nameText.Text;
@@ -1941,6 +1919,7 @@ namespace glc_cs
 
 			if (General.Var.SaveType == "D")
 			{
+				// MSSQLの場合
 				SqlConnection cn = General.Var.SqlCon;
 				SqlCommand cm;
 
@@ -1957,11 +1936,10 @@ namespace glc_cs
 				Editor form5 = new Editor(General.Var.SaveType, selectedListCount, cn, cm);
 				form5.StartPosition = FormStartPosition.CenterParent;
 				form5.ShowDialog(this);
-				gameList_SelectedIndexChanged(sender, e);
-				return;
 			}
 			else if (General.Var.SaveType == "M")
 			{
+				// MySQLの場合
 				MySqlConnection cn = General.Var.SqlCon2;
 				MySqlCommand cm;
 
@@ -1978,25 +1956,29 @@ namespace glc_cs
 				Editor form5 = new Editor(General.Var.SaveType, selectedListCount, cn, cm);
 				form5.StartPosition = FormStartPosition.CenterParent;
 				form5.ShowDialog(this);
-				gameList_SelectedIndexChanged(sender, e);
-				return;
-			}
-
-			// Discordカスタムステータス、各種チェックボックス、ラジオの保存
-			String path = General.Var.GameDir + (gameList.SelectedIndex + 1) + ".ini";
-			if (File.Exists(path))
-			{
-				Editor form5 = new Editor(General.Var.SaveType, selectedListCount, new SqlConnection(), new SqlCommand());
-				form5.StartPosition = FormStartPosition.CenterParent;
-				form5.ShowDialog(this);
-				gameList_SelectedIndexChanged(sender, e);
 			}
 			else
 			{
-				// 個別ini不存在
-				resolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報保管iniが存在しません。\n" + path, 0, false);
+				// iniの場合
+				String path = General.Var.GameDir + (gameList.SelectedIndex + 1) + ".ini";
+				if (File.Exists(path))
+				{
+					Editor form5 = new Editor(General.Var.SaveType, selectedListCount, new SqlConnection(), new SqlCommand());
+					form5.StartPosition = FormStartPosition.CenterParent;
+					form5.ShowDialog(this);
+				}
+				else
+				{
+					// 個別ini不存在
+					resolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報保管iniが存在しません。\n" + path, 0, false);
+				}
 			}
 
+			gameList_SelectedIndexChanged(sender, e);
+			if ((General.Var.SaveType == "D" || General.Var.SaveType == "M") && searchResultList.Items.Count > 0)
+			{
+				searchExec(true);
+			}
 			GC.Collect();
 			return;
 		}
@@ -2227,7 +2209,7 @@ namespace glc_cs
 				return;
 			}
 
-			//リストと同期
+			// リストと同期
 			gameList.SelectedIndex = Convert.ToInt32(gameImgList.SelectedItems[0].Index);
 
 			return;
@@ -2261,7 +2243,7 @@ namespace glc_cs
 			// 設定
 			string beforeWorkDir = General.Var.BaseDir;
 			string beforeSaveType = General.Var.SaveType;
-			string beforeGridEnabled = General.Var.GridEnable ? "1" : "0";
+			bool beforeGridEnabled = General.Var.GridEnable;
 
 			ConfigForm.StartPosition = FormStartPosition.CenterParent;
 			ConfigForm.ShowDialog(this);
@@ -2269,26 +2251,23 @@ namespace glc_cs
 
 			string afterWorkDir = General.Var.BaseDir;
 			string afterSaveType = General.Var.SaveType;
-			string afterGridEnabled = General.Var.GridEnable ? "1" : "0";
+			bool afterGridEnabled = General.Var.GridEnable;
 
 			if (beforeWorkDir != afterWorkDir)
 			{
 				MessageBox.Show("既定の作業ディレクトリが変更されました。\nGame Launcherを再起動してください。\n\nOKを押してGame Launcherを終了します。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-				ExitApp();
+				ExitApp(!General.Var.OfflineSave);
 			}
 			else if (beforeSaveType != afterSaveType)
 			{
 				MessageBox.Show("データの保存方法が変更されました。\nGame Launcherを再起動してください。\n\nOKを押してGame Launcherを終了します。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-				ExitApp();
+				ExitApp(!General.Var.OfflineSave);
 			}
 			else if (beforeGridEnabled != afterGridEnabled)
 			{
 				MessageBox.Show("UIに関する設定が変更されました。\nGame Launcherを再起動してください。\n\nOKを押してGame Launcherを終了します。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-				ExitApp();
+				ExitApp(!General.Var.OfflineSave);
 			}
-
-			// リスト再読込
-			reloadItems();
 
 			GC.Collect();
 			return;
@@ -2328,7 +2307,7 @@ namespace glc_cs
 
 			if (File.Exists(delfile))
 			{
-				//削除ファイル存在
+				// 削除ファイル存在
 				DialogResult dialogResult = MessageBox.Show("選択中のゲームをランチャーの一覧から削除します。\n※この操作は元に戻せません。\n[" + delfilename + "]\n" + delfile + "\n削除しますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 				if (dialogResult == DialogResult.Yes)
 				{
@@ -2337,7 +2316,7 @@ namespace glc_cs
 					nextfile = (General.Var.GameDir + nextval + ".ini");
 					while (File.Exists(nextfile))
 					{
-						//削除ファイル以降にゲームが存在する場合に番号を下げる
+						// 削除ファイル以降にゲームが存在する場合に番号を下げる
 						File.Move(nextfile, delfile);
 						delfile = nextfile;
 						nextval++;
@@ -2412,7 +2391,7 @@ namespace glc_cs
 					}
 				}
 
-				//削除ファイル存在
+				// 削除ファイル存在
 				DialogResult dialogResult = MessageBox.Show("次のゲームをランチャーの一覧から削除します。\n※この操作は元に戻せません。\n\n[" + delName + "]\n" + delPath + "\n\n削除しますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 				if (dialogResult == DialogResult.Yes)
 				{
@@ -2493,7 +2472,7 @@ namespace glc_cs
 					}
 				}
 
-				//削除ファイル存在
+				// 削除ファイル存在
 				DialogResult dialogResult = MessageBox.Show("次のゲームをランチャーの一覧から削除します。\n※この操作は元に戻せません。\n\n[" + delName + "]\n" + delPath + "\n\n削除しますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 				if (dialogResult == DialogResult.Yes)
 				{
@@ -2641,6 +2620,7 @@ namespace glc_cs
 				General.Var.Bouyomiage("ゲームランチャーを終了しました。");
 			}
 			Application.DoEvents();
+			ShowInTaskbar = false;
 			Environment.Exit(0);
 		}
 
@@ -2736,7 +2716,7 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void searchText_KeyPress(object sender, KeyPressEventArgs e)
 		{
-			//Enter押下で検索を実行
+			// Enter押下で検索を実行
 			if (e.KeyChar == (char)Keys.Enter)
 			{
 				button13_Click(sender, e);
@@ -2806,7 +2786,7 @@ namespace glc_cs
 					// 接続オープン
 					cn.Open();
 
-					//検索に一致するゲーム数取得
+					// 検索に一致するゲーム数取得
 					SqlCommand cm = new SqlCommand()
 					{
 						CommandType = CommandType.Text,
@@ -2820,7 +2800,7 @@ namespace glc_cs
 
 					if (sqlAns <= 0)
 					{
-						//ゲームが1つもない場合
+						// ゲームが1つもない場合
 						return;
 					}
 

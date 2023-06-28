@@ -29,7 +29,7 @@ namespace glc_cs
 				label15.Text = "Configロード中にエラー。詳しくはエラーログを参照して下さい。";
 			}
 
-			//バージョン取得
+			// バージョン取得
 			label10.Text = "Ver." + General.Var.AppVer + " Build " + General.Var.AppBuild;
 
 			// 背景画像
@@ -38,7 +38,7 @@ namespace glc_cs
 			// グリッド
 			gridDisableCheck.Checked = !General.Var.GridEnable;
 
-			//Discord設定読み込み
+			// Discord設定読み込み
 			bool dconActive = General.Var.Dconnect;
 			dconAppIDText.Text = General.Var.DconAppID;
 
@@ -73,7 +73,7 @@ namespace glc_cs
 
 			if (File.Exists(dconpath))
 			{
-				//指定パスにdcon.jar存在する場合
+				// 指定パスにdcon.jar存在する場合
 				dconText.Text = dconpath;
 				label11.Text = "OK";
 			}
@@ -83,7 +83,7 @@ namespace glc_cs
 				label11.Text = "NG";
 			}
 
-			//棒読みちゃん設定読み込み
+			// 棒読みちゃん設定読み込み
 			bool isbyActive = General.Var.ByActive;
 			bouyomiEnableCheck.Checked = isbyActive;
 			if (isbyActive)
@@ -234,7 +234,7 @@ namespace glc_cs
 			General.Var.WriteIni("connect", "DBUser", userText.Text.Trim());
 			General.Var.WriteIni("connect", "DBPass", base64.Encode(pwText.Text.Trim()));
 
-			//discord設定適用
+			// discord設定適用
 			General.Var.WriteIni("checkbox", "dconnect", (Convert.ToInt32(dconEnableCheck.Checked)).ToString());
 			if (dconRatingRadio1.Checked)
 			{
@@ -247,7 +247,7 @@ namespace glc_cs
 			General.Var.WriteIni("connect", "dconpath", dconText.Text);
 			General.Var.WriteIni("connect", "dconappid", dconAppIDText.Text);
 
-			//棒読みちゃん設定適用
+			// 棒読みちゃん設定適用
 			General.Var.WriteIni("connect", "byActive", (Convert.ToInt32(bouyomiEnableCheck.Checked)).ToString());
 			General.Var.WriteIni("connect", "byType", General.Var.ByType.ToString());
 			General.Var.WriteIni("connect", "byPort", textBox5.Text);
@@ -262,6 +262,10 @@ namespace glc_cs
 				if (radioButton9.Checked || radioButton5.Checked)
 				{
 					string localPath = General.Var.BaseDir + (General.Var.BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\";
+					saveButton.Enabled = false;
+					saveButton.Text = "データ取得中…";
+					Application.DoEvents();
+
 					if (!General.Var.downloadDbDataToLocal(localPath))
 					{
 						// ローカル保存に失敗
@@ -280,6 +284,8 @@ namespace glc_cs
 						// オフラインINIのフラグ変更
 						General.Var.IniWrite((localPath + "game.ini"), "list", "dbupdate", "0");
 					}
+					saveButton.Enabled = true;
+					saveButton.Text = "適用して閉じる";
 				}
 			}
 			Close();
@@ -287,7 +293,7 @@ namespace glc_cs
 
 		private void iniFolderSelectButton_Click(object sender, EventArgs e)
 		{
-			//作業ディレクトリ変更(ini)
+			// 作業ディレクトリ変更(ini)
 			if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
 			{
 				String newworkdir = folderBrowserDialog1.SelectedPath;
@@ -387,7 +393,7 @@ namespace glc_cs
 		{
 			String newpath;
 
-			//dcon.jar選択
+			// dcon.jar選択
 			openFileDialog1.Title = "\"dcon.jar\"を選択";
 			openFileDialog1.Filter = "Discord Connector|dcon.jar";
 			openFileDialog1.FileName = "";
@@ -798,6 +804,7 @@ namespace glc_cs
 			int fileCount = 0;
 			int hasErrorIni = 0;
 			int tempFileCount = 0;
+			int baseFileCount = 0;
 			bool overflowIni = false;
 
 			// 全ゲーム数取得
@@ -821,10 +828,16 @@ namespace glc_cs
 
 				// 最大値より大きいiniファイル存在チェック
 				tempFileCount = fileCount + 1;
+				baseFileCount = (int.MaxValue - 1001 > tempFileCount) ? tempFileCount + 1000 : int.MaxValue - 1000;
 				readini = gameDirName + tempFileCount.ToString() + ".ini";
-				while (File.Exists(readini) && tempFileCount < 1000)
+				// 既に登録されているゲーム数+1000（もしくはIntの最大値）上限突破しているファイルがあるか調べる
+				while (tempFileCount < baseFileCount)
 				{
-					overflowIni = true;
+					if (File.Exists(readini))
+					{
+						overflowIni = true;
+						break;
+					}
 					tempFileCount++;
 					readini = gameDirName + tempFileCount.ToString() + ".ini";
 				}
@@ -836,7 +849,7 @@ namespace glc_cs
 					if (dr == DialogResult.Yes)
 					{
 						// 自動整番処理
-						int result = iniReNumbering(overflowIni);
+						int result = iniReNumbering((overflowIni ? baseFileCount : 0));
 						string newFileCount = General.Var.IniRead(General.Var.GameIni, "list", "game", "0");
 						MessageBox.Show("整番が完了しました！\n\n欠番処理件数：" + result + "件\n登録済みゲーム総数：" + fileCount + "→" + newFileCount + "件", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 					}
@@ -1174,9 +1187,10 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="hasOverflowIni"></param>
 		/// <returns>処理件数</returns>
-		private int iniReNumbering(bool hasOverflowIni)
+		private int iniReNumbering(int overflowIniMaxCount)
 		{
 			bool needMoveIni = false;
+			bool hasMovedIni = false;
 			int currentSavedCount = 1;
 			int baseFileCount = 0;
 			int movedCount = 0;
@@ -1200,13 +1214,14 @@ namespace glc_cs
 
 					if (File.Exists(readini))
 					{
-						if (needMoveIni)
+						if (needMoveIni || hasMovedIni)
 						{
 							// 移動フラグが立っている場合、ファイルを移動する
 							needMoveIni = false;
 							newReadIni = gameDirName + currentSavedCount + ".ini";
 							File.Move(readini, newReadIni);
 							movedCount++;
+							hasMovedIni = true;
 						}
 						currentSavedCount++;
 					}
@@ -1218,23 +1233,21 @@ namespace glc_cs
 				}
 
 				// ゲーム統括管理iniの範囲外にiniファイルが存在する場合に処理を行う
-				if (hasOverflowIni)
+				if (overflowIniMaxCount > 0)
 				{
-					hasOverflowIni = false;
-					readini = gameDirName + curCount + ".ini";
-					while (File.Exists(readini) && curCount < 1000)
+					while (curCount < overflowIniMaxCount)
 					{
 						readini = gameDirName + curCount + ".ini";
-
 						if (File.Exists(readini))
 						{
-							if (needMoveIni)
+							if (needMoveIni || hasMovedIni)
 							{
 								// 移動フラグが立っている場合、ファイルを移動する
 								needMoveIni = false;
 								newReadIni = gameDirName + currentSavedCount + ".ini";
 								File.Move(readini, newReadIni);
 								movedCount++;
+								hasMovedIni = true;
 							}
 							currentSavedCount++;
 						}
