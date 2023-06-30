@@ -22,15 +22,7 @@ jobs:
             goos: windows
 
     steps:
-    - uses: actions/checkout@v3
-
-    - uses: wangyoucao577/go-release-action@v1
-      with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          goos: ${{ matrix.goos }}
-          goarch: ${{ matrix.goarch }}
-          compress_assets: OFF
-          md5sum: FALSE
+    - uses: actions/checkout@v2
 
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
@@ -47,3 +39,9 @@ jobs:
     - name: Build solution
       run: msbuild glc_cs.sln -t:rebuild -property:Configuration=Release
       
+    - name: Upload build as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: GrasshopperComponent
+        path: ./glc_cs/bin/glc_cs.gha
+    
