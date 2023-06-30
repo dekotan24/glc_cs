@@ -35,11 +35,12 @@ jobs:
     - name: Zip output
       run: |
         cd .\glc_cs\bin\Release\
-        powershell compress-archive *.* Release
+        powershell compress-archive *.* ..\Release
+        dir ../
         
     - name: Upload build as artifact
       uses: actions/upload-artifact@v2
       with:
         name: glc_release
-        path: ./Release.zip
+        path: ../Release.zip
     
