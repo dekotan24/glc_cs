@@ -12,14 +12,7 @@ on:
 jobs:
   build_and_release:
 
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        goos: [windows]
-        goarch: ["386", amd64, arm64]
-        exclude:
-          - goarch: "386"
-            goos: windows
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
