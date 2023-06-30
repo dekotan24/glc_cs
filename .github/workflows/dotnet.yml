@@ -35,11 +35,11 @@ jobs:
     - name: Zip output
       run: |
         cd .\glc_cs\bin\Release\
-        zip release *.*
+        powershell compress-archive *.* Release
         
     - name: Upload build as artifact
       uses: actions/upload-artifact@v2
       with:
-        name: GrasshopperComponent
-        path: ./release.zip
+        name: glc_release
+        path: ./Release.zip
     
