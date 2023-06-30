@@ -34,7 +34,7 @@ jobs:
       
     - name: Zip output
       run: |
-        cd .\glc_cs\glc_cs\bin\Release\
+        cd .\glc_cs\bin\Release\
         zip release *.*
         
     - name: Upload build as artifact
