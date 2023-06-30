@@ -5,17 +5,32 @@ name: .NET
 
 on:
   push:
-    branches: [ "beta" ]
+    branches: [ "dev" ]
   pull_request:
     branches: [ "master" ]
 
 jobs:
-  build:
+  build_and_release:
 
     runs-on: windows-2019
+    strategy:
+      matrix:
+        goos: [windows]
+        goarch: ["386", amd64, arm64]
+        exclude:
+          - goarch: "386"
+            goos: windows
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+
+    - uses: wangyoucao577/go-release-action@v1
+      with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          compress_assets: OFF
+          md5sum: FALSE
 
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
@@ -31,3 +46,4 @@ jobs:
 
     - name: Build solution
       run: msbuild glc_cs.sln -t:rebuild -property:Configuration=Release
+      
