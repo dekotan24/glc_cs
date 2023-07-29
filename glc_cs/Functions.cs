@@ -42,17 +42,17 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static readonly string appVer = "1.08c";
+			protected static readonly string appVer = "1.09";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appBuild = "36.23.06.28";
+			protected static readonly string appBuild = "37.23.07.29";
 
 			/// <summary>
 			/// データベースバージョン
 			/// </summary>
-			protected static readonly string dbVer = "1.2";
+			protected static readonly string dbVer = "1.3";
 
 			/// <summary>
 			/// ゲームディレクトリ(作業ディレクトリ)
@@ -67,7 +67,7 @@ namespace glc_cs
 			/// <summary>
 			/// ゲーム情報保管iniパス
 			/// </summary>
-			protected static string gameini;
+			protected static string gameIni;
 
 			/// <summary>
 			/// ゲーム情報保管dbパス
@@ -77,7 +77,17 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーション設定パス(config.ini)
 			/// </summary>
-			protected static string configini = AppDomain.CurrentDomain.BaseDirectory + "config.ini";
+			protected static string configIni = AppDomain.CurrentDomain.BaseDirectory + "config.ini";
+
+			/// <summary>
+			/// オフラインINI用ローカルディレクトリ
+			/// </summary>
+			protected static string localPath = BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\";
+
+			/// <summary>
+			/// オフラインINI用ローカル統括管理ファイル
+			/// </summary>
+			protected static string localIni = BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\game.ini";
 
 			/// <summary>
 			/// ゲーム総数
@@ -92,12 +102,22 @@ namespace glc_cs
 			/// <summary>
 			/// 背景画像パス
 			/// </summary>
-			protected static string bgimg = null;
+			protected static string bgimg = string.Empty;
 
 			/// <summary>
 			/// グリッドロード有無
 			/// </summary>
 			protected static bool gridEnable = true;
+
+			/// <summary>
+			/// 起動時のINI／DBアップデートチェックフラグ
+			/// </summary>
+			protected static bool initialUpdateCheckSkipFlg = false;
+
+			/// <summary>
+			/// 起動時のINI／DBアップデートチェック対象バージョン
+			/// </summary>
+			protected static string initialUpdateCheckSkipVer = string.Empty;
 
 			/// <summary>
 			/// DiscordConnectorパス
@@ -242,6 +262,26 @@ namespace glc_cs
 			/// </summary>
 			protected static string defaultStatusValueOfPlaying = "プレイ中";
 
+			/// <summary>
+			/// INIファイルに書き込む際に使用可能なキー名一覧
+			/// </summary>
+			public enum KeyNames
+			{
+				name
+				, imgpass
+				, pass
+				, time
+				, start
+				, stat
+				, dcon_img
+				, memo
+				, status
+				, ini_version
+				, rating
+				, lastrun
+				, temp1
+				, execute_cmd
+			}
 
 			/// <summary>
 			/// アプリケーション名を返却します
@@ -297,8 +337,8 @@ namespace glc_cs
 			/// </summary>
 			public static string GameIni
 			{
-				get { return gameini; }
-				set { gameini = value; }
+				get { return gameIni; }
+				set { gameIni = value; }
 			}
 
 			/// <summary>
@@ -315,7 +355,23 @@ namespace glc_cs
 			/// </summary>
 			public static string ConfigIni
 			{
-				get { return configini; }
+				get { return configIni; }
+			}
+
+			/// <summary>
+			/// オフラインINIが格納されているディレクトリパスを返却します
+			/// </summary>
+			public static string LocalPath
+			{
+				get { return localPath; }
+			}
+
+			/// <summary>
+			/// オフラインINIの統括管理INIファイルパスを返却します
+			/// </summary>
+			public static string LocalIni
+			{
+				get { return localIni; }
 			}
 
 			/// <summary>
@@ -352,6 +408,24 @@ namespace glc_cs
 			{
 				get { return gridEnable; }
 				set { gridEnable = value; }
+			}
+
+			/// <summary>
+			/// 起動時アップデートチェックスキップフラグ
+			/// </summary>
+			public static bool InitialUpdateCheckSkipFlg
+			{
+				get { return initialUpdateCheckSkipFlg; }
+				set { initialUpdateCheckSkipFlg = value; }
+			}
+
+			/// <summary>
+			/// 起動時アップデートチェックスキップ対象バージョン
+			/// </summary>
+			public static string InitialUpdateCheckSkipVer
+			{
+				get { return initialUpdateCheckSkipVer; }
+				set { initialUpdateCheckSkipVer = value; }
 			}
 
 			/// <summary>
@@ -691,9 +765,9 @@ namespace glc_cs
 				if (File.Exists(ConfigIni))
 				{
 					// config.ini 存在する場合
-					GameDir = IniRead(ConfigIni, "default", "directory", BaseDir) + "Data";
+					GameDir = ReadIni("default", "directory", BaseDir) + "Data";
 					GameIni = GameDir + "game.ini";
-					GameDb = IniRead(ConfigIni, "default", "database", string.Empty);
+					GameDb = ReadIni("default", "database", string.Empty);
 					DconPath = ReadIni("connect", "dconPath", "-1");
 
 					SaveType = ReadIni("general", "save", "I");
@@ -716,7 +790,7 @@ namespace glc_cs
 					if (SaveType == "I")
 					{
 						// ini
-						GameMax = Convert.ToInt32(IniRead(GameIni, "list", "game", "0"));
+						GameMax = Convert.ToInt32(ReadIni("list", "game", "0", 0));
 					}
 					else if (saveType == "D")
 					{
@@ -792,7 +866,7 @@ namespace glc_cs
 						}
 					}
 
-					//棒読みちゃん設定読み込み
+					// 棒読みちゃん設定読み込み
 					ByActive = Convert.ToBoolean(Convert.ToInt32(ReadIni("connect", "byActive", "0")));
 					ByType = Convert.ToInt32(ReadIni("connect", "byType", "0"));
 					ByHost = ReadIni("connect", "byHost", "127.0.0.1");
@@ -804,6 +878,8 @@ namespace glc_cs
 					// 総合
 					BgImg = ReadIni("imgd", "bgimg", string.Empty);
 					GridEnable = !Convert.ToBoolean(Convert.ToInt32(ReadIni("disable", "grid", "0")));
+					InitialUpdateCheckSkipFlg = Convert.ToBoolean(Convert.ToInt32(ReadIni("disable", "updchk", "0")));
+					InitialUpdateCheckSkipVer = ReadIni("disable", "updchkVer", string.Empty);
 
 					// dcon設定
 					Dconnect = Convert.ToBoolean(Convert.ToInt32(ReadIni("checkbox", "dconnect", "0")));
@@ -812,10 +888,10 @@ namespace glc_cs
 				}
 				else
 				{
+					// config.ini 存在しない場合
 					// ゲーム保存方法をiniに設定
 					SaveType = "I";
 
-					// config.ini 存在しない場合
 					GameDir = BaseDir + "Data";
 					GameIni = GameDir + "game.ini";
 					GameDb = string.Empty;
@@ -840,7 +916,7 @@ namespace glc_cs
 					ByRoG = false;
 
 					// 総合
-					BgImg = null;
+					BgImg = string.Empty;
 
 					// dcon設定
 					Dconnect = false;
@@ -850,66 +926,175 @@ namespace glc_cs
 				return true;
 			}
 
-			public static string IniRead(String filename, String sec, String key, String failedval)
+			public static string[] IniRead(string fileName, string sectionName, KeyNames[] keyArray, string[] failedVal)
 			{
-				String ans = "";
-				StringBuilder data = new StringBuilder(1024);
+				StringBuilder ans = new StringBuilder(1024);
+				string[] data = new string[keyArray.Length];
+
+				for (int i = 0; i < keyArray.Length; i++)
+				{
+					try
+					{
+						GetPrivateProfileString(
+							sectionName,
+							keyArray[i].ToString(),
+							failedVal[i],
+							ans,
+							((uint)ans.Capacity),
+							fileName);
+						data[i] = ans.ToString().Replace("\\", "\\\\").Replace("'", "''");
+					}
+					catch (Exception ex)
+					{
+						StringBuilder sb = new StringBuilder();
+						sb.Append("ファイルパス：").Append(fileName);
+						sb.Append("セクション：").Append(sectionName);
+						sb.Append("キー：").Append(keyArray[i]);
+						sb.Append("値：").Append(data[i]);
+
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, sb.ToString());
+					}
+				}
+
+				return data;
+			}
+
+			public static string IniRead(string fileName, string sectionName, KeyNames keyArray, string failedVal)
+			{
+				StringBuilder ans = new StringBuilder(1024);
+				string data = string.Empty;
+
 				try
 				{
 					GetPrivateProfileString(
-						sec,
-						key,
-						failedval,
-						data,
-						1024,
-						filename);
+						sectionName,
+						keyArray.ToString(),
+						failedVal,
+						ans,
+						((uint)ans.Capacity),
+						fileName);
+					data = ans.ToString().Replace("\\", "\\\\").Replace("'", "''");
 				}
 				catch (Exception ex)
 				{
 					StringBuilder sb = new StringBuilder();
-					sb.Append("ファイルパス：").Append(filename);
-					sb.Append("セクション：").Append(sec);
-					sb.Append("キー：").Append(key);
+					sb.Append("ファイルパス：").Append(fileName);
+					sb.Append("セクション：").Append(sectionName);
+					sb.Append("キー：").Append(keyArray);
 					sb.Append("値：").Append(data);
 
-					WriteErrorLog(ex.Message, "IniRead", sb.ToString());
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, sb.ToString());
 				}
-				ans = data.ToString();
-				return ans;
+
+				return data;
+			}
+
+			public static string[] IniRead(string fileName, string sectionName, string[] keyArray, string[] failedVal)
+			{
+				StringBuilder ans = new StringBuilder(1024);
+				string[] data = new string[keyArray.Length];
+
+				for (int i = 0; i < keyArray.Length; i++)
+				{
+					try
+					{
+						GetPrivateProfileString(
+							sectionName,
+							keyArray[i],
+							failedVal[i],
+							ans,
+							((uint)ans.Capacity),
+							fileName);
+						data[i] = ans.ToString().Replace("\\", "\\\\").Replace("'", "''");
+					}
+					catch (Exception ex)
+					{
+						StringBuilder sb = new StringBuilder();
+						sb.Append("ファイルパス：").Append(fileName);
+						sb.Append("セクション：").Append(sectionName);
+						sb.Append("キー：").Append(keyArray[i]);
+						sb.Append("値：").Append(data[i]);
+
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, sb.ToString());
+					}
+				}
+
+				return data;
 			}
 
 			/// <summary>
 			/// 指定されたINIに値を書き込みます
 			/// </summary>
 			/// <param name="fileName">INIパス</param>
-			/// <param name="sec">セクション名</param>
+			/// <param name="sectionName">セクション名</param>
+			/// <param name="keyArray">配列のキー値</param>
+			/// <param name="valueArray">配列の値</param>
+			public static void IniWrite(string fileName, string sectionName, KeyNames[] keyArray, string[] valueArray)
+			{
+				for (int i = 0; i < keyArray.Length; i++)
+				{
+					try
+					{
+						if (!File.Exists(fileName))
+						{
+							if (!Directory.Exists(Path.GetDirectoryName(fileName)))
+							{
+								Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+							}
+							File.Create(fileName).Close();
+						}
+						WritePrivateProfileString(
+										sectionName,
+										keyArray[i].ToString(),
+										valueArray.ToString(),
+										fileName);
+					}
+					catch (Exception ex)
+					{
+						StringBuilder sb = new StringBuilder();
+						sb.Append("ファイルパス：").Append(fileName);
+						sb.Append(" | セクション：").Append(sectionName);
+						sb.Append(" | キー：").Append("keyArray[" + i + "]").Append(keyArray[i]);
+						sb.Append(" | 値：").Append("valueArray[" + i + "]").Append(valueArray[i]);
+
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, sb.ToString());
+					}
+				}
+				return;
+			}
+
+			/// <summary>
+			/// 指定されたINIに値を書き込みます
+			/// </summary>
+			/// <param name="fileName">INIパス</param>
+			/// <param name="sectionName">セクション名</param>
 			/// <param name="key">キー値</param>
-			/// <param name="data">値</param>
-			public static void IniWrite(String fileName, String sec, String key, String data)
+			/// <param name="value">値</param>
+			public static void IniWrite(string fileName, string sectionName, KeyNames key, string value)
 			{
 				try
 				{
 					if (!File.Exists(fileName))
 					{
-						if (!File.Exists(Path.GetDirectoryName(fileName)))
+						if (!Directory.Exists(Path.GetDirectoryName(fileName)))
 						{
 							Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 						}
 						File.Create(fileName).Close();
 					}
 					WritePrivateProfileString(
-									sec,
-									key,
-									data.ToString(),
+									sectionName,
+									key.ToString(),
+									value.ToString(),
 									fileName);
 				}
 				catch (Exception ex)
 				{
 					StringBuilder sb = new StringBuilder();
 					sb.Append("ファイルパス：").Append(fileName);
-					sb.Append(" / セクション：").Append(sec);
-					sb.Append(" / キー：").Append(key);
-					sb.Append(" / 値：").Append(data);
+					sb.Append(" | セクション：").Append(sectionName);
+					sb.Append(" | キー：").Append(key);
+					sb.Append(" | 値：").Append(value);
 
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, sb.ToString());
 				}
@@ -917,14 +1102,55 @@ namespace glc_cs
 			}
 
 			/// <summary>
-			/// Config.ini及び、<paramref name="opt"/>+ゲームデータ管理INIに値を書き込みます。<paramref name="opt"/>+データ管理INIへは、存在しない場合に書き込みます。
+			/// 指定されたINIに値を書き込みます
+			/// </summary>
+			/// <param name="fileName">INIパス</param>
+			/// <param name="sectionName">セクション名</param>
+			/// <param name="key">キー値</param>
+			/// <param name="value">値</param>
+			public static void IniWrite(string fileName, string sectionName, string key, string value)
+			{
+				try
+				{
+					if (!File.Exists(fileName))
+					{
+						if (!Directory.Exists(Path.GetDirectoryName(fileName)))
+						{
+							Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+						}
+						File.Create(fileName).Close();
+					}
+					WritePrivateProfileString(
+									sectionName,
+									key.ToString(),
+									value.ToString(),
+									fileName);
+				}
+				catch (Exception ex)
+				{
+					StringBuilder sb = new StringBuilder();
+					sb.Append("ファイルパス：").Append(fileName);
+					sb.Append(" | セクション：").Append(sectionName);
+					sb.Append(" | キー：").Append(key);
+					sb.Append(" | 値：").Append(value);
+
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, sb.ToString());
+				}
+				return;
+			}
+
+			/// <summary>
+			/// Config.iniもしくはゲームデータ管理INIに値を書き込みます。
+			/// <paramref name="isconfig"/>が1の時はConfig.iniに、
+			/// <paramref name="isconfig"/>が1でない時、<paramref name="opt"/>に値が指定されていた場合は<paramref name="opt"/>\game.ini、
+			/// <paramref name="opt"/>に値が指定されていない場合は、設定されているゲーム統括管理INIファイル（GameIni）に書き込みます。
 			/// </summary>
 			/// <param name="sec">セクション名</param>
 			/// <param name="key">キー値</param>
 			/// <param name="data">値</param>
 			/// <param name="isconfig">config.iniが対象か（既定値：1）</param>
-			/// <param name="opt">ゲームデータ統括管理INIがあるディレクトリパス</param>
-			public static void WriteIni(String sec, String key, String data, int isconfig = 1, String opt = "")
+			/// <param name="opt">ゲーム統括管理INIがあるディレクトリパス</param>
+			public static void WriteIni(string sec, string key, string data, int isconfig = 1, string opt = "")
 			{
 				if (isconfig == 1)
 				{
@@ -934,53 +1160,92 @@ namespace glc_cs
 									data,
 									ConfigIni);
 				}
-				else
+				else if (opt.Length == 0)
 				{
-					if (!File.Exists(opt + "\\Data\\game.ini"))
+					if (!File.Exists(GameIni))
 					{
 						WritePrivateProfileString(
 										sec,
 										key,
 										data,
-										opt);
+										GameIni);
 					}
+				}
+				else
+				{
+					if (!File.Exists((opt.EndsWith("\\") ? opt : opt + "\\") + "game.ini"))
+					{
+						WritePrivateProfileString(
+										sec,
+										key,
+										data,
+										(opt.EndsWith("\\") ? opt : opt + "\\") + "game.ini");
+					}
+
 				}
 				return;
 			}
 
 			/// <summary>
-			/// Configファイル内の値を返却します
+			/// Config.iniもしくはゲームデータ管理INIに値を読み込みます。
+			/// <paramref name="isconfig"/>が1の時はConfig.ini、
+			/// <paramref name="isconfig"/>が1でない時、<paramref name="opt"/>に値が指定されていた場合は<paramref name="opt"/>\game.ini、
+			/// <paramref name="opt"/>に値が指定されていない場合は、設定されているゲーム統括管理INIファイルから読み込みます。
 			/// </summary>
-			/// <param name="sec">セクション</param>
-			/// <param name="key">キー</param>
+			/// <param name="sec">セクション名</param>
+			/// <param name="key">キー値</param>
 			/// <param name="failedval">読み込みに失敗した場合の値</param>
-			/// <returns>キーの値もしくは失敗時の値</returns>
-			public static string ReadIni(String sec, String key, String failedVal)
+			/// <returns>キーの値もしくは<paramref name="failedVal"/></returns>
+			public static string ReadIni(string sec, string key, string failedVal, int isconfig = 1, string opt = "")
 			{
-				String ans = "";
-
+				string ans = "";
 				StringBuilder data = new StringBuilder(1024);
-				GetPrivateProfileString(
-					sec,
-					key,
-					failedVal,
-					data,
-					1024,
-					ConfigIni);
+
+				if (isconfig == 1)
+				{
+					GetPrivateProfileString(
+						sec,
+						key,
+						failedVal,
+						data,
+						1024,
+						ConfigIni);
+				}
+				else if (opt.Length == 0)
+				{
+					GetPrivateProfileString(
+						sec,
+						key,
+						failedVal,
+						data,
+						1024,
+						GameIni);
+				}
+				else
+				{
+					GetPrivateProfileString(
+						sec,
+						key,
+						failedVal,
+						data,
+						1024,
+						(opt.EndsWith("\\") ? opt : opt + "\\") + "game.ini");
+
+				}
 
 				ans = data.ToString();
 				return ans;
 			}
 
-			public static void Bouyomiage(String text)
+			public static void Bouyomiage(string text)
 			{
 				if (ByActive)
 				{
 					TcpClient tc;
 
-					if (Convert.ToInt32(IniRead(ConfigIni, "connect", "byType", "0")) == 1)
+					if (Convert.ToInt32(ReadIni("connect", "byType", "0")) == 1)
 					{
-						string url = "http://localhost:" + IniRead(ConfigIni, "connect", "byPort", "50080") + "/talk";
+						string url = "http://localhost:" + ReadIni("connect", "byPort", "50080") + "/talk";
 						System.Net.WebClient wc = new System.Net.WebClient();
 						//NameValueCollectionの作成
 						System.Collections.Specialized.NameValueCollection ps =
@@ -1165,16 +1430,20 @@ namespace glc_cs
 				{
 					for (int i = 1; i <= GameMax; i++)
 					{
-						String readini = GameDir + i + ".ini";
-						String imgpassdata = null, passdata = null;
-						String imgPathData = null, exePathData = null;
+						string readini = GameDir + i + ".ini";
+						string imgpassdata = string.Empty, passdata = string.Empty;
+						string imgPathData = string.Empty, exePathData = string.Empty;
 						bool wasChanged = false;
 
 						if (File.Exists(readini))
 						{
 							//ini読込開始
-							imgpassdata = IniRead(readini, "game", "imgpass", "");
-							passdata = IniRead(readini, "game", "pass", "");
+							KeyNames[] getTargetValues = { KeyNames.imgpass, KeyNames.pass };
+							string[] failedValues = { "", "" };
+							string[] returnValues = IniRead(readini, "game", getTargetValues, failedValues);
+
+							imgpassdata = returnValues[0];
+							passdata = returnValues[1];
 
 							// 実行ファイル
 							if (editFlg1)
@@ -1182,7 +1451,7 @@ namespace glc_cs
 								exePathData = passdata.Replace(beforeName, afterName);
 								if (!passdata.Equals(exePathData))
 								{
-									IniWrite(readini, "game", "pass", exePathData);
+									IniWrite(readini, "game", KeyNames.pass, exePathData);
 									wasChanged = true;
 								}
 							}
@@ -1193,7 +1462,7 @@ namespace glc_cs
 								imgPathData = imgpassdata.Replace(beforeName, afterName);
 								if (!imgpassdata.Equals(imgPathData))
 								{
-									IniWrite(readini, "game", "imgpass", imgPathData);
+									IniWrite(readini, "game", KeyNames.pass, imgPathData);
 									wasChanged = true;
 								}
 							}
@@ -1267,7 +1536,6 @@ namespace glc_cs
 					Bouyomiage("最新のゲームデータのオフラインバックアップを取得しています。しばらくお待ち下さい。");
 				}
 
-				string localGameIni = (targetWorkDir.EndsWith("\\") ? targetWorkDir : targetWorkDir + "\\") + "game.ini";
 				bool isSuc = false;
 
 				try
@@ -1279,7 +1547,7 @@ namespace glc_cs
 					}
 
 					// ターゲットパスが存在しているか確認
-					if (File.Exists(localGameIni))
+					if (File.Exists(targetWorkDir))
 					{
 						// ローカルファイルが存在する場合、退避する
 						Directory.Move(targetWorkDir, baseDir + "_temp_db_bak");
@@ -1290,7 +1558,7 @@ namespace glc_cs
 				}
 				catch (Exception ex)
 				{
-					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "[初期退避処理] Path: " + targetWorkDir + " / INI: " + localGameIni);
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "[初期退避処理] Path: " + targetWorkDir);
 					return false;
 				}
 
@@ -1323,7 +1591,7 @@ namespace glc_cs
 
 						if (sqlAns > 0)
 						{
-							IniWrite(localGameIni, "list", "game", sqlAns.ToString());
+							WriteIni("list", "game", sqlAns.ToString(), 0, targetWorkDir);
 						}
 						else
 						{
@@ -1350,19 +1618,40 @@ namespace glc_cs
 								if (Convert.ToInt32(reader["ID"].ToString()) > 0)
 								{
 									string saveLocalIniPath = targetWorkDir + count + ".ini";
-									IniWrite(saveLocalIniPath, "game", "name", reader["GAME_NAME"].ToString());
-									IniWrite(saveLocalIniPath, "game", "imgpass", reader["IMG_PATH"].ToString());
-									IniWrite(saveLocalIniPath, "game", "pass", reader["GAME_PATH"].ToString());
-									IniWrite(saveLocalIniPath, "game", "time", (string.IsNullOrEmpty(reader["UPTIME"].ToString()) ? "0" : reader["UPTIME"].ToString()));
-									IniWrite(saveLocalIniPath, "game", "start", (string.IsNullOrEmpty(reader["RUN_COUNT"].ToString()) ? "0" : reader["RUN_COUNT"].ToString()));
-									IniWrite(saveLocalIniPath, "game", "stat", reader["DCON_TEXT"].ToString());
-									IniWrite(saveLocalIniPath, "game", "rating", (string.IsNullOrEmpty(reader["AGE_FLG"].ToString()) ? Rate.ToString() : reader["AGE_FLG"].ToString()));
-									IniWrite(saveLocalIniPath, "game", "temp1", reader["TEMP1"].ToString());
-									IniWrite(saveLocalIniPath, "game", "lastrun", reader["LAST_RUN"].ToString());
-									IniWrite(saveLocalIniPath, "game", "dcon_img", reader["DCON_IMG"].ToString());
-									IniWrite(saveLocalIniPath, "game", "memo", reader["MEMO"].ToString());
-									IniWrite(saveLocalIniPath, "game", "status", reader["STATUS"].ToString());
-									IniWrite(saveLocalIniPath, "game", "ini_version", reader["DB_VERSION"].ToString());
+									KeyNames[] colNames =
+									{
+										KeyNames.name,
+										KeyNames.imgpass,
+										KeyNames.pass,
+										KeyNames.time,
+										KeyNames.time,
+										KeyNames.start,
+										KeyNames.stat,
+										KeyNames.rating,
+										KeyNames.temp1,
+										KeyNames.lastrun,
+										KeyNames.dcon_img,
+										KeyNames.memo,
+										KeyNames.status,
+										KeyNames.ini_version
+									};
+									string[] keys =
+									{
+										reader["GAME_NAME"].ToString(),
+										reader["IMG_PATH"].ToString(),
+										reader["GAME_PATH"].ToString(),
+										(string.IsNullOrEmpty(reader["UPTIME"].ToString()) ? "0" : reader["UPTIME"].ToString()),
+										(string.IsNullOrEmpty(reader["RUN_COUNT"].ToString()) ? "0" : reader["RUN_COUNT"].ToString()),
+										reader["DCON_TEXT"].ToString(),
+										(string.IsNullOrEmpty(reader["AGE_FLG"].ToString()) ? Rate.ToString() : reader["AGE_FLG"].ToString()),
+										reader["TEMP1"].ToString(),
+										reader["LAST_RUN"].ToString(),
+										reader["DCON_IMG"].ToString(),
+										reader["MEMO"].ToString(),
+										reader["STATUS"].ToString(),
+										reader["DB_VERSION"].ToString()
+									};
+									IniWrite(saveLocalIniPath, "game", colNames, keys);
 								}
 								count++;
 							}
@@ -1386,7 +1675,7 @@ namespace glc_cs
 
 						if (sqlAns > 0)
 						{
-							IniWrite(localGameIni, "list", "game", sqlAns.ToString());
+							WriteIni("list", "game", sqlAns.ToString(), 0, targetWorkDir);
 						}
 						else
 						{
@@ -1413,19 +1702,40 @@ namespace glc_cs
 								if (Convert.ToInt32(reader["ID"].ToString()) > 0)
 								{
 									string saveLocalIniPath = targetWorkDir + count + ".ini";
-									IniWrite(saveLocalIniPath, "game", "name", reader["GAME_NAME"].ToString());
-									IniWrite(saveLocalIniPath, "game", "imgpass", reader["IMG_PATH"].ToString());
-									IniWrite(saveLocalIniPath, "game", "pass", reader["GAME_PATH"].ToString());
-									IniWrite(saveLocalIniPath, "game", "time", (string.IsNullOrEmpty(reader["UPTIME"].ToString()) ? "0" : reader["UPTIME"].ToString()));
-									IniWrite(saveLocalIniPath, "game", "start", (string.IsNullOrEmpty(reader["RUN_COUNT"].ToString()) ? "0" : reader["RUN_COUNT"].ToString()));
-									IniWrite(saveLocalIniPath, "game", "stat", reader["DCON_TEXT"].ToString());
-									IniWrite(saveLocalIniPath, "game", "rating", (string.IsNullOrEmpty(reader["AGE_FLG"].ToString()) ? Rate.ToString() : reader["AGE_FLG"].ToString()));
-									IniWrite(saveLocalIniPath, "game", "temp1", reader["TEMP1"].ToString());
-									IniWrite(saveLocalIniPath, "game", "lastrun", reader["LAST_RUN"].ToString());
-									IniWrite(saveLocalIniPath, "game", "dcon_img", reader["DCON_IMG"].ToString());
-									IniWrite(saveLocalIniPath, "game", "memo", reader["MEMO"].ToString());
-									IniWrite(saveLocalIniPath, "game", "status", reader["STATUS"].ToString());
-									IniWrite(saveLocalIniPath, "game", "ini_version", reader["DB_VERSION"].ToString());
+									KeyNames[] colNames =
+									{
+										KeyNames.name,
+										KeyNames.imgpass,
+										KeyNames.pass,
+										KeyNames.time,
+										KeyNames.time,
+										KeyNames.start,
+										KeyNames.stat,
+										KeyNames.rating,
+										KeyNames.temp1,
+										KeyNames.lastrun,
+										KeyNames.dcon_img,
+										KeyNames.memo,
+										KeyNames.status,
+										KeyNames.ini_version
+									};
+									string[] keys =
+									{
+										reader["GAME_NAME"].ToString(),
+										reader["IMG_PATH"].ToString(),
+										reader["GAME_PATH"].ToString(),
+										(string.IsNullOrEmpty(reader["UPTIME"].ToString()) ? "0" : reader["UPTIME"].ToString()),
+										(string.IsNullOrEmpty(reader["RUN_COUNT"].ToString()) ? "0" : reader["RUN_COUNT"].ToString()),
+										reader["DCON_TEXT"].ToString(),
+										(string.IsNullOrEmpty(reader["AGE_FLG"].ToString()) ? Rate.ToString() : reader["AGE_FLG"].ToString()),
+										reader["TEMP1"].ToString(),
+										reader["LAST_RUN"].ToString(),
+										reader["DCON_IMG"].ToString(),
+										reader["MEMO"].ToString(),
+										reader["STATUS"].ToString(),
+										reader["DB_VERSION"].ToString()
+									};
+									IniWrite(saveLocalIniPath, "game", colNames, keys);
 								}
 								count++;
 							}
@@ -1493,18 +1803,17 @@ namespace glc_cs
 				MySqlCommand mcm2 = null; // INSERT用
 				MySqlTransaction mtran1 = null;
 
-				string localGameIni = (workDir.EndsWith("\\") ? workDir : workDir + "\\") + "game.ini";
 				tmpMaxGameCount = 0;
 				int ans = 0;
 				sCount = 0;
 				fCount = 0;
 				bool continueAdd = true;
-				string gameName = string.Empty, gamePath = string.Empty, imgPath = string.Empty, runTime = "0", runCount = "0", dconText = string.Empty, rateFlg = "0", temp1 = string.Empty, lastRun = string.Empty, dcon_img = string.Empty, memo = string.Empty, status = "未プレイ", db_version = dbVer;
+				string localGameIni = (workDir.EndsWith("\\") ? workDir : workDir + "\\") + "game.ini";
 
 				// ini全件数取得
 				if (File.Exists(localGameIni))
 				{
-					tmpMaxGameCount = Convert.ToInt32(IniRead(localGameIni, "list", "game", "0"));
+					tmpMaxGameCount = Convert.ToInt32(ReadIni("list", "game", "0", 0, workDir));
 				}
 
 				// データベースをバックアップ
@@ -1545,22 +1854,43 @@ namespace glc_cs
 							{
 								// ini情報取得
 								string readini = workDir + "\\" + i + ".ini";
+								KeyNames[] keyName =
+								{
+									KeyNames.name,			// 0
+									KeyNames.pass,			// 1
+									KeyNames.imgpass,		// 2
+									KeyNames.time,			// 3
+									KeyNames.start,			// 4
+									KeyNames.stat,			// 5
+									KeyNames.rating,		// 6
+									KeyNames.temp1,			// 7
+									KeyNames.lastrun,		// 8
+									KeyNames.dcon_img,		// 9
+									KeyNames.memo,			// 10
+									KeyNames.status,		// 11
+									KeyNames.ini_version	// 12
+								};
+								string[] failedVal =
+								{
+									"",
+									"",
+									"",
+									"0",
+									"0",
+									"",
+									Rate.ToString(),
+									"",
+									"",
+									"",
+									"",
+									"未プレイ",
+									DBVer
+								};
+								string[] returnVal = new string[keyName.Length];
 
 								if (File.Exists(readini))
 								{
-									gameName = IniRead(readini, "game", "name", "").Replace("'", "''").Replace("\\", "\\\\");
-									imgPath = IniRead(readini, "game", "imgpass", "").Replace("'", "''").Replace("\\", "\\\\");
-									gamePath = IniRead(readini, "game", "pass", "").Replace("'", "''").Replace("\\", "\\\\");
-									runTime = IniRead(readini, "game", "time", "0");
-									runCount = IniRead(readini, "game", "start", "0");
-									dconText = IniRead(readini, "game", "stat", "").Replace("'", "''").Replace("\\", "\\\\");
-									rateFlg = IniRead(readini, "game", "rating", Rate.ToString());
-									temp1 = IniRead(readini, "game", "temp1", "");
-									lastRun = IniRead(readini, "game", "lastrun", "");
-									dcon_img = IniRead(readini, "game", "dcon_img", "");
-									memo = IniRead(readini, "game", "memo", "").Replace("'", "''").Replace("\\", "\\\\");
-									status = IniRead(readini, "game", "status", (runCount.Equals("0") ? "未プレイ" : "プレイ中"));
-									db_version = IniRead(readini, "game", "ini_version", dbVer);
+									returnVal = IniRead(readini, "game", keyName, failedVal);
 									sCount++;
 								}
 								else
@@ -1575,7 +1905,7 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + gameName + "', '" + gamePath + "', '" + imgPath + "', '" + runTime + "', '" + runCount + "','" + dconText + "', '" + rateFlg + "', '" + temp1 + "', '" + (string.IsNullOrEmpty(lastRun) ? "1900-01-01 00:00:00" : lastRun) + "', '" + dcon_img + "', '" + memo + "', '" + status + "', '" + db_version + "' )"
+									CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "' )"
 								};
 								cm2.Connection = cn1;
 								cm2.Transaction = tran1;
@@ -1596,7 +1926,7 @@ namespace glc_cs
 								// 問題なければコミット
 								tran1.Commit();
 								// オフラインINIのフラグ変更
-								IniWrite(localGameIni, "list", "dbupdate", "0");
+								WriteIni("list", "dbupdate", "0", 0, workDir);
 								Directory.Delete(backupDir, true);
 							}
 						}
@@ -1626,22 +1956,43 @@ namespace glc_cs
 							{
 								// ini情報取得
 								string readini = workDir + "\\" + i + ".ini";
+								KeyNames[] keyName =
+								{
+									KeyNames.name,			// 0
+									KeyNames.pass,			// 1
+									KeyNames.imgpass,		// 2
+									KeyNames.time,			// 3
+									KeyNames.start,			// 4
+									KeyNames.stat,			// 5
+									KeyNames.rating,		// 6
+									KeyNames.temp1,			// 7
+									KeyNames.lastrun,		// 8
+									KeyNames.dcon_img,		// 9
+									KeyNames.memo,			// 10
+									KeyNames.status,		// 11
+									KeyNames.ini_version	// 12
+								};
+								string[] failedVal =
+								{
+									"",
+									"",
+									"",
+									"0",
+									"0",
+									"",
+									Rate.ToString(),
+									"",
+									"",
+									"",
+									"",
+									"未プレイ",
+									DBVer
+								};
+								string[] returnVal = new string[keyName.Length];
 
 								if (File.Exists(readini))
 								{
-									gameName = IniRead(readini, "game", "name", "").Replace("'", "''").Replace("\\", "\\\\");
-									imgPath = IniRead(readini, "game", "imgpass", "").Replace("'", "''").Replace("\\", "\\\\");
-									gamePath = IniRead(readini, "game", "pass", "").Replace("'", "''").Replace("\\", "\\\\");
-									runTime = IniRead(readini, "game", "time", "0");
-									runCount = IniRead(readini, "game", "start", "0");
-									dconText = IniRead(readini, "game", "stat", "").Replace("'", "''").Replace("\\", "\\\\");
-									rateFlg = IniRead(readini, "game", "rating", Rate.ToString());
-									temp1 = IniRead(readini, "game", "temp1", "");
-									lastRun = IniRead(readini, "game", "lastrun", "");
-									dcon_img = IniRead(readini, "game", "dcon_img", "");
-									memo = IniRead(readini, "game", "memo", "").Replace("'", "''").Replace("\\", "\\\\");
-									status = IniRead(readini, "game", "status", (runCount.Equals("0") ? "未プレイ" : "プレイ中"));
-									db_version = IniRead(readini, "game", "ini_version", dbVer);
+									returnVal = IniRead(readini, "game", keyName, failedVal);
 									sCount++;
 								}
 								else
@@ -1656,7 +2007,7 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + gameName + "', '" + gamePath + "', '" + imgPath + "', '" + runTime + "', '" + runCount + "','" + dconText + "', '" + rateFlg + "', '" + temp1 + "', '" + (string.IsNullOrEmpty(lastRun) ? "1900-01-01 00:00:00" : lastRun) + "', '" + dcon_img + "', '" + memo + "', '" + status + "', '" + db_version + "' );"
+									CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "' );"
 								};
 								mcm2.Connection = mcn1;
 								mcm2.Transaction = mtran1;
@@ -1677,7 +2028,7 @@ namespace glc_cs
 								// 問題なければコミット
 								mtran1.Commit();
 								// オフラインINIのフラグ変更
-								IniWrite(localGameIni, "list", "dbupdate", "0");
+								WriteIni("list", "dbupdate", "0", 0, workDir);
 								Directory.Delete(backupDir, true);
 							}
 						}
@@ -1742,12 +2093,11 @@ namespace glc_cs
 				string localGameIni = (backupDir.EndsWith("\\") ? backupDir : backupDir + "\\") + "game.ini";
 				int tmpMaxGameCount = 0;
 				bool ans = true;
-				string gameName = string.Empty, gamePath = string.Empty, imgPath = string.Empty, runTime = "0", runCount = "0", dconText = string.Empty, rateFlg = "0", temp1 = string.Empty, lastRun = string.Empty, dcon_img = String.Empty, memo = String.Empty, status = "未プレイ", db_version = dbVer;
 
 				// ini全件数取得
 				if (File.Exists(localGameIni))
 				{
-					tmpMaxGameCount = Convert.ToInt32(IniRead(localGameIni, "list", "game", "0"));
+					tmpMaxGameCount = Convert.ToInt32(ReadIni("list", "game", "0", 0, backupDir));
 				}
 
 				try
@@ -1761,22 +2111,43 @@ namespace glc_cs
 						{
 							// ini情報取得
 							string readini = backupDir + "\\" + i + ".ini";
+							KeyNames[] keyName =
+							{
+									KeyNames.name,			// 0
+									KeyNames.pass,			// 1
+									KeyNames.imgpass,		// 2
+									KeyNames.time,			// 3
+									KeyNames.start,			// 4
+									KeyNames.stat,			// 5
+									KeyNames.rating,		// 6
+									KeyNames.temp1,			// 7
+									KeyNames.lastrun,		// 8
+									KeyNames.dcon_img,		// 9
+									KeyNames.memo,			// 10
+									KeyNames.status,		// 11
+									KeyNames.ini_version	// 12
+								};
+							string[] failedVal =
+							{
+									"",
+									"",
+									"",
+									"0",
+									"0",
+									"",
+									Rate.ToString(),
+									"",
+									"",
+									"",
+									"",
+									"未プレイ",
+									DBVer
+								};
+							string[] returnVal = new string[keyName.Length];
 
 							if (File.Exists(readini))
 							{
-								gameName = IniRead(readini, "game", "name", "").Replace("'", "''").Replace("\\", "\\\\");
-								imgPath = IniRead(readini, "game", "imgpass", "").Replace("'", "''").Replace("\\", "\\\\");
-								gamePath = IniRead(readini, "game", "pass", "").Replace("'", "''").Replace("\\", "\\\\");
-								runTime = IniRead(readini, "game", "time", "0");
-								runCount = IniRead(readini, "game", "start", "0");
-								dconText = IniRead(readini, "game", "stat", "").Replace("'", "''").Replace("\\", "\\\\");
-								rateFlg = IniRead(readini, "game", "rating", Rate.ToString());
-								temp1 = IniRead(readini, "game", "temp1", "");
-								lastRun = IniRead(readini, "game", "lastrun", "");
-								dcon_img = IniRead(readini, "game", "dcon_img", "");
-								memo = IniRead(readini, "game", "memo", "").Replace("'", "''").Replace("\\", "\\\\");
-								status = IniRead(readini, "game", "status", "未プレイ");
-								db_version = IniRead(readini, "game", "ini_version", dbVer);
+								returnVal = IniRead(readini, "game", keyName, failedVal);
 							}
 							else
 							{
@@ -1802,7 +2173,7 @@ namespace glc_cs
 							{
 								CommandType = CommandType.Text,
 								CommandTimeout = 30,
-								CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + gameName + "', '" + gamePath + "', '" + imgPath + "', '" + runTime + "', '" + runCount + "','" + dconText + "', '" + rateFlg + "', '" + temp1 + "', '" + (string.IsNullOrEmpty(lastRun) ? "1900-01-01 00:00:00" : lastRun) + "', '" + dcon_img + "', '" + memo + "', '" + status + "', '" + db_version + "' )"
+								CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "' )"
 							};
 							cm2.Connection = cn1;
 
@@ -1819,22 +2190,43 @@ namespace glc_cs
 						{
 							// ini情報取得
 							string readini = backupDir + "\\" + i + ".ini";
+							KeyNames[] keyName =
+							{
+									KeyNames.name,			// 0
+									KeyNames.pass,			// 1
+									KeyNames.imgpass,		// 2
+									KeyNames.time,			// 3
+									KeyNames.start,			// 4
+									KeyNames.stat,			// 5
+									KeyNames.rating,		// 6
+									KeyNames.temp1,			// 7
+									KeyNames.lastrun,		// 8
+									KeyNames.dcon_img,		// 9
+									KeyNames.memo,			// 10
+									KeyNames.status,		// 11
+									KeyNames.ini_version	// 12
+								};
+							string[] failedVal =
+							{
+									"",
+									"",
+									"",
+									"0",
+									"0",
+									"",
+									Rate.ToString(),
+									"",
+									"",
+									"",
+									"",
+									"未プレイ",
+									DBVer
+								};
+							string[] returnVal = new string[keyName.Length];
 
 							if (File.Exists(readini))
 							{
-								gameName = IniRead(readini, "game", "name", "").Replace("'", "''").Replace("\\", "\\\\");
-								imgPath = IniRead(readini, "game", "imgpass", "").Replace("'", "''").Replace("\\", "\\\\");
-								gamePath = IniRead(readini, "game", "pass", "").Replace("'", "''").Replace("\\", "\\\\");
-								runTime = IniRead(readini, "game", "time", "0");
-								runCount = IniRead(readini, "game", "start", "0");
-								dconText = IniRead(readini, "game", "stat", "").Replace("'", "''").Replace("\\", "\\\\");
-								rateFlg = IniRead(readini, "game", "rating", Rate.ToString());
-								temp1 = IniRead(readini, "game", "temp1", "");
-								lastRun = IniRead(readini, "game", "lastrun", "");
-								dcon_img = IniRead(readini, "game", "dcon_img", "");
-								memo = IniRead(readini, "game", "memo", "").Replace("'", "''").Replace("\\", "\\\\");
-								status = IniRead(readini, "game", "status", "未プレイ");
-								db_version = IniRead(readini, "game", "ini_version", dbVer);
+								returnVal = IniRead(readini, "game", keyName, failedVal);
 							}
 							else
 							{
@@ -1860,7 +2252,7 @@ namespace glc_cs
 							{
 								CommandType = CommandType.Text,
 								CommandTimeout = 30,
-								CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + gameName + "', '" + gamePath + "', '" + imgPath + "', '" + runTime + "', '" + runCount + "','" + dconText + "', '" + rateFlg + "', '" + temp1 + "', '" + (string.IsNullOrEmpty(lastRun) ? "1900-01-01 00:00:00" : lastRun) + "', '" + dcon_img + "', '" + memo + "', '" + status + "', '" + db_version + "' )"
+								CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "' )"
 							};
 							mcm2.Connection = mcn1;
 

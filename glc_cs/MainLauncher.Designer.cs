@@ -106,6 +106,7 @@
 			this.dconImgText = new System.Windows.Forms.TextBox();
 			this.statusCombo = new System.Windows.Forms.ComboBox();
 			this.gameStatusFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+			this.executeCmdText = new System.Windows.Forms.TextBox();
 			this.statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dconImgPictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
@@ -758,6 +759,7 @@
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox3);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox5);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.exePathText);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.executeCmdText);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox4);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox13);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox7);
@@ -778,6 +780,13 @@
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.dconImgText);
 			resources.ApplyResources(this.gameStatusFlowLayoutPanel, "gameStatusFlowLayoutPanel");
 			this.gameStatusFlowLayoutPanel.Name = "gameStatusFlowLayoutPanel";
+			// 
+			// executeCmdText
+			// 
+			this.executeCmdText.BackColor = System.Drawing.SystemColors.Control;
+			resources.ApplyResources(this.executeCmdText, "executeCmdText");
+			this.executeCmdText.Name = "executeCmdText";
+			this.executeCmdText.ReadOnly = true;
 			// 
 			// gl
 			// 
@@ -916,6 +925,7 @@
 		private System.Windows.Forms.Button memoButton;
 		private System.Windows.Forms.ComboBox statusCombo;
 		private System.Windows.Forms.FlowLayoutPanel gameStatusFlowLayoutPanel;
+		private System.Windows.Forms.TextBox executeCmdText;
 	}
 }
 

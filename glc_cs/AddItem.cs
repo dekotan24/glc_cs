@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using static glc_cs.General.Var;
 
 namespace glc_cs
 {
@@ -173,87 +174,73 @@ namespace glc_cs
 			if (genSaveType == "I" || genSaveType == "T")
 			{
 				// ini
-				if (File.Exists(General.Var.GameIni))
+				if (File.Exists(GameIni))
 				{
-					int newmaxval = General.Var.GameMax + 1;
+					int newmaxval = GameMax + 1;
 
-					string targetFilePath = General.Var.GameDir + newmaxval + ".ini";
+					string targetFilePath = GameDir + newmaxval + ".ini";
 
 					if (!(File.Exists(targetFilePath)))
 					{
-						General.Var.IniWrite(targetFilePath, "game", "name", game_text);
-						General.Var.IniWrite(targetFilePath, "game", "imgpass", imgPath);
-						General.Var.IniWrite(targetFilePath, "game", "pass", gamePath);
-						General.Var.IniWrite(targetFilePath, "game", "time", runTime);
-						General.Var.IniWrite(targetFilePath, "game", "start", startCount);
-						General.Var.IniWrite(targetFilePath, "game", "stat", dcon_text);
-						General.Var.IniWrite(targetFilePath, "game", "dcon_img", dcon_img);
-						General.Var.IniWrite(targetFilePath, "game", "memo", string.Empty);
-						General.Var.IniWrite(targetFilePath, "game", "status", "未プレイ");
-						General.Var.IniWrite(targetFilePath, "game", "ini_version", General.Var.DBVer);
-						General.Var.IniWrite(targetFilePath, "game", "rating", rate);
-						General.Var.IniWrite(General.Var.GameIni, "list", "game", newmaxval.ToString());
+						KeyNames[] writeKeys = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.rating };
+						string[] writeValues = { game_text, imgPath, gamePath, runTime, startCount, dcon_text, dcon_img, string.Empty, "未プレイ", DBVer, rate };
+
+						IniWrite(targetFilePath, "game", writeKeys, writeValues);
+						WriteIni("list", "game", newmaxval.ToString(), 0);
 
 						// 次回DB接続時に更新するフラグを立てる
-						if (General.Var.SaveType == "T")
+						if (SaveType == "T")
 						{
-							General.Var.IniWrite(General.Var.GameIni, "list", "dbupdate", "1");
+							WriteIni("list", "dbupdate", "1", 0);
 						}
 					}
 					else
 					{
-						String dup = General.Var.IniRead(targetFilePath, "game", "name", "unknown");
-						DialogResult dialogResult = MessageBox.Show("既にiniファイルが存在します！（有り得ません）\n" + targetFilePath + "\n[" + dup + "]\n上書きしますか？", General.Var.AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+						String dup = IniRead(targetFilePath, "game", KeyNames.name, "unknown");
+						DialogResult dialogResult = MessageBox.Show("既にiniファイルが存在します！！\nあり得ません。手動で管理INIファイルを追加したか、内部処理で何らかのミスが発生した可能性があります。\n最も安全な対処法は、一度このフォームを閉じて、[再読込]することです。\n\n" + targetFilePath + "\n[" + dup + "]\n上書きしますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 						if (dialogResult == DialogResult.Yes)
 						{
-							General.Var.IniWrite(targetFilePath, "game", "name", game_text);
-							General.Var.IniWrite(targetFilePath, "game", "imgpass", imgPath);
-							General.Var.IniWrite(targetFilePath, "game", "pass", gamePath);
-							General.Var.IniWrite(targetFilePath, "game", "time", runTime);
-							General.Var.IniWrite(targetFilePath, "game", "start", startCount);
-							General.Var.IniWrite(targetFilePath, "game", "stat", dcon_text);
-							General.Var.IniWrite(targetFilePath, "game", "dcon_img", dcon_img);
-							General.Var.IniWrite(targetFilePath, "game", "memo", string.Empty);
-							General.Var.IniWrite(targetFilePath, "game", "status", "未プレイ");
-							General.Var.IniWrite(targetFilePath, "game", "ini_version", General.Var.DBVer);
-							General.Var.IniWrite(targetFilePath, "game", "rating", rate);
-							General.Var.IniWrite(General.Var.GameIni, "list", "game", newmaxval.ToString());
+							KeyNames[] writeKeys = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.rating };
+							string[] writeValues = { game_text, imgPath, gamePath, runTime, startCount, dcon_text, dcon_img, string.Empty, "未プレイ", DBVer, rate };
+
+							IniWrite(targetFilePath, "game", writeKeys, writeValues);
+							WriteIni("list", "game", newmaxval.ToString(), 0);
 
 							// 次回DB接続時に更新するフラグを立てる
-							if (General.Var.SaveType == "T")
+							if (SaveType == "T")
 							{
-								General.Var.IniWrite(General.Var.GameIni, "list", "dbupdate", "1");
+								WriteIni("list", "dbupdate", "1", 0);
 							}
 						}
 						else if (dialogResult == DialogResult.No)
 						{
-							MessageBox.Show("新規のゲームを追加せずに処理を中断します。", General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+							MessageBox.Show("新規のゲームを追加せずに処理を中断します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 						}
 						else
 						{
-							General.Var.WriteErrorLog(MethodBase.GetCurrentMethod().Name, "不明な結果です。\n実行を中断します。", string.Empty);
+							WriteErrorLog(MethodBase.GetCurrentMethod().Name, "不明な結果です。\n実行を中断します。", string.Empty);
 						}
 					}
 				}
 				else
 				{
-					General.Var.WriteErrorLog("ゲーム情報統括管理ファイルが見つかりません！", MethodBase.GetCurrentMethod().Name, General.Var.GameIni);
-					MessageBox.Show("ゲーム情報統括管理ファイルが見つかりません！\n" + General.Var.GameIni , General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					WriteErrorLog("ゲーム情報統括管理ファイルが見つかりません！", MethodBase.GetCurrentMethod().Name, GameIni);
+					MessageBox.Show("ゲーム情報統括管理ファイルが見つかりません！\n" + GameIni, AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 					return;
 				}
 			}
 			else
 			{
 				// database
-				if (General.Var.SaveType == "D")
+				if (SaveType == "D")
 				{
-					SqlConnection cn = General.Var.SqlCon;
+					SqlConnection cn = SqlCon;
 					SqlCommand cm;
 					cm = new SqlCommand()
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"INSERT INTO " + General.Var.DbName + "." + General.Var.DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( N'" + game_text.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + gamePath.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + imgPath.Replace("'", "''").Replace("\\", "\\\\") + "', '" + runTime + "', '" + startCount + "', '" + dcon_text.Replace("'", "''").Replace("\\", "\\\\") + "', '" + rate + "', '" + dcon_img.Replace("'", "''").Replace("\\", "\\\\") + "', '', N'未プレイ', N'" + General.Var.DBVer + "' )"
+						CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( N'" + game_text.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + gamePath.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + imgPath.Replace("'", "''").Replace("\\", "\\\\") + "', '" + runTime + "', '" + startCount + "', '" + dcon_text.Replace("'", "''").Replace("\\", "\\\\") + "', '" + rate + "', '" + dcon_img.Replace("'", "''").Replace("\\", "\\\\") + "', '', N'未プレイ', N'" + DBVer + "' )"
 					};
 					cm.Connection = cn;
 
@@ -264,7 +251,7 @@ namespace glc_cs
 					}
 					catch (Exception ex)
 					{
-						General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
 					}
 					finally
 					{
@@ -276,13 +263,13 @@ namespace glc_cs
 				}
 				else
 				{
-					MySqlConnection cn = General.Var.SqlCon2;
+					MySqlConnection cn = SqlCon2;
 					MySqlCommand cm;
 					cm = new MySqlCommand()
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"INSERT INTO " + General.Var.DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( N'" + game_text.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + gamePath.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + imgPath.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + runTime + "', N'" + startCount + "', N'" + dcon_text.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + rate + "', N'" + dcon_img.Replace("'", "''").Replace("\\", "\\\\") + "', '', N'未プレイ', N'" + General.Var.DBVer + "' );"
+						CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( N'" + game_text.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + gamePath.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + imgPath.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + runTime + "', N'" + startCount + "', N'" + dcon_text.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + rate + "', N'" + dcon_img.Replace("'", "''").Replace("\\", "\\\\") + "', '', N'未プレイ', N'" + DBVer + "' );"
 					};
 					cm.Connection = cn;
 
@@ -293,7 +280,7 @@ namespace glc_cs
 					}
 					catch (Exception ex)
 					{
-						General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
 					}
 					finally
 					{
@@ -429,7 +416,7 @@ namespace glc_cs
 			runTimeText.Value = 0;
 
 			// フラグ初期化
-			rateCheck.Checked = General.Var.Rate != 0;
+			rateCheck.Checked = Rate != 0;
 		}
 
 		/// <summary>
@@ -449,7 +436,7 @@ namespace glc_cs
 				catch (Exception ex)
 				{
 					imgPictureBox.ImageLocation = "";
-					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, imgPathText.Text);
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, imgPathText.Text);
 				}
 			}
 			else
@@ -460,7 +447,7 @@ namespace glc_cs
 
 		private void reloadIni()
 		{
-			General.Var.GLConfigLoad();
+			GLConfigLoad();
 		}
 	}
 }

@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using static glc_cs.General.Var;
 
 namespace glc_cs
 {
@@ -113,6 +114,7 @@ namespace glc_cs
 					label9.Text = reader["ID"].ToString();
 					titleText.Text = reader["GAME_NAME"].ToString();
 					gameTitleLabel.Text = titleText.Text;
+					executeCmdText.Text = reader["EXECUTE_CMD"].ToString();
 					imgPathText.Text = reader["IMG_PATH"].ToString();
 					exePathText.Text = reader["GAME_PATH"].ToString();
 					runTimeText.Value = Convert.ToInt32(reader["UPTIME"]);
@@ -133,7 +135,7 @@ namespace glc_cs
 			}
 			catch (Exception ex)
 			{
-				General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
+				WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
 			}
 			finally
 			{
@@ -157,6 +159,7 @@ namespace glc_cs
 					label9.Text = reader["ID"].ToString();
 					titleText.Text = reader["GAME_NAME"].ToString();
 					gameTitleLabel.Text = titleText.Text;
+					executeCmdText.Text = reader["EXECUTE_CMD"].ToString();
 					imgPathText.Text = reader["IMG_PATH"].ToString();
 					exePathText.Text = reader["GAME_PATH"].ToString();
 					runTimeText.Value = Convert.ToInt32(reader["UPTIME"]);
@@ -177,7 +180,7 @@ namespace glc_cs
 			}
 			catch (Exception ex)
 			{
-				General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
+				WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
 			}
 			finally
 			{
@@ -193,19 +196,25 @@ namespace glc_cs
 			// ini取得と画面反映
 			try
 			{
-				iniPath = General.Var.GameDir + selectedListCount + ".ini";
+				iniPath = GameDir + selectedListCount + ".ini";
 				if (File.Exists(iniPath))
 				{
+					KeyNames[] keyNames = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.rating, KeyNames.execute_cmd };
+					string[] failedVal = { string.Empty, string.Empty, string.Empty, "0", string.Empty, string.Empty, string.Empty, Rate.ToString(), String.Empty };
+
+					string[] resultValues = IniRead(iniPath, "game", keyNames, failedVal);
+
 					label9.Text = selectedListCount;
-					titleText.Text = General.Var.IniRead(iniPath, "game", "name", string.Empty);
+					titleText.Text = resultValues[0];
 					gameTitleLabel.Text = titleText.Text;
-					imgPathText.Text = General.Var.IniRead(iniPath, "game", "imgpass", string.Empty);
-					exePathText.Text = General.Var.IniRead(iniPath, "game", "pass", string.Empty);
-					runTimeText.Value = Convert.ToInt32(General.Var.IniRead(iniPath, "game", "time", "0"));
-					startCountText.Value = Convert.ToInt32(General.Var.IniRead(iniPath, "game", "start", string.Empty));
-					dconText.Text = General.Var.IniRead(iniPath, "game", "stat", string.Empty);
-					dconImgText.Text = General.Var.IniRead(iniPath, "game", "dcon_img", string.Empty);
-					rateCheck.Checked = Convert.ToBoolean(Convert.ToInt32(General.Var.IniRead(iniPath, "game", "rating", General.Var.Rate.ToString())));
+					executeCmdText.Text = resultValues[8];
+					imgPathText.Text = resultValues[1];
+					exePathText.Text = resultValues[2];
+					runTimeText.Value = Convert.ToInt32(resultValues[3]);
+					startCountText.Value = Convert.ToInt32(resultValues[4]);
+					dconText.Text = resultValues[5];
+					dconImgText.Text = resultValues[6];
+					rateCheck.Checked = Convert.ToBoolean(Convert.ToInt32(resultValues[7]));
 					if (File.Exists(imgPathText.Text))
 					{
 						pictureBox1.ImageLocation = imgPathText.Text;
@@ -219,7 +228,7 @@ namespace glc_cs
 			}
 			catch (Exception ex)
 			{
-				General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, string.Empty);
+				WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, string.Empty);
 			}
 		}
 
@@ -230,6 +239,7 @@ namespace glc_cs
 
 		private void ApplyButton_Click(object sender, EventArgs e)
 		{
+			bool hasError = false;
 			if (genSaveType == "D")
 			{
 				string exMsg = string.Empty;
@@ -241,7 +251,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT GAME_NAME FROM " + General.Var.DbName + "." + General.Var.DbTable
+					CommandText = @"SELECT GAME_NAME FROM " + DbName + "." + DbTable
 									+ " WHERE ID = " + label9.Text.Trim()
 				};
 
@@ -251,7 +261,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET GAME_NAME = N'" + titleText.Text.Trim() + "', GAME_PATH = N'" + exePathText.Text.Trim() + "', IMG_PATH = N'" + imgPathText.Text.Trim() + "', UPTIME = N'" + runTimeText.Value + "', RUN_COUNT = N'" + startCountText.Value + "', DCON_TEXT = N'" + dconText.Text.Trim() + "', AGE_FLG = N'" + (rateCheck.Checked ? "1" : "0") + "', DCON_IMG = N'" + dconImgText.Text.Trim() + "' "
+					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET GAME_NAME = N'" + titleText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', GAME_PATH = N'" + exePathText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', IMG_PATH = N'" + imgPathText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', UPTIME = N'" + runTimeText.Value + "', RUN_COUNT = N'" + startCountText.Value + "', DCON_TEXT = N'" + dconText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', AGE_FLG = N'" + (rateCheck.Checked ? "1" : "0") + "', DCON_IMG = N'" + dconImgText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', EXECUTE_CMD = N'" + executeCmdText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "' "
 									+ "WHERE ID = " + label9.Text.Trim()
 				};
 
@@ -276,8 +286,9 @@ namespace glc_cs
 				}
 				catch (Exception ex)
 				{
-					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
 					exMsg = ex.Message;
+					hasError = true;
 				}
 				finally
 				{
@@ -287,7 +298,7 @@ namespace glc_cs
 					}
 					if (exMsg.Length != 0)
 					{
-						MessageBox.Show(exMsg, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+						MessageBox.Show(exMsg, AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 					}
 				}
 			}
@@ -302,7 +313,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT GAME_NAME FROM " + General.Var.DbTable
+					CommandText = @"SELECT GAME_NAME FROM " + DbTable
 									+ " WHERE ID = " + label9.Text.Trim()
 				};
 
@@ -312,7 +323,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"UPDATE " + General.Var.DbTable + " SET GAME_NAME = N'" + titleText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', GAME_PATH = N'" + exePathText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', IMG_PATH = N'" + imgPathText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', UPTIME = N'" + runTimeText.Value + "', RUN_COUNT = N'" + startCountText.Value + "', DCON_TEXT = N'" + dconText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', AGE_FLG = N'" + (rateCheck.Checked ? "1" : "0") + "', DCON_IMG = N'" + dconImgText.Text.Trim() + "' "
+					CommandText = @"UPDATE " + DbTable + " SET GAME_NAME = N'" + titleText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', GAME_PATH = N'" + exePathText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', IMG_PATH = N'" + imgPathText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', UPTIME = N'" + runTimeText.Value + "', RUN_COUNT = N'" + startCountText.Value + "', DCON_TEXT = N'" + dconText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', AGE_FLG = N'" + (rateCheck.Checked ? "1" : "0") + "', DCON_IMG = N'" + dconImgText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', EXECUTE_CMD = N'" + executeCmdText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "' "
 									+ "WHERE ID = " + label9.Text.Trim()
 				};
 
@@ -337,8 +348,9 @@ namespace glc_cs
 				}
 				catch (Exception ex)
 				{
-					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
 					exMsg = ex.Message;
+					hasError = true;
 				}
 				finally
 				{
@@ -348,7 +360,7 @@ namespace glc_cs
 					}
 					if (exMsg.Length != 0)
 					{
-						MessageBox.Show(exMsg, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+						MessageBox.Show(exMsg, AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 					}
 				}
 			}
@@ -357,23 +369,21 @@ namespace glc_cs
 				// 次回DB接続時に更新するフラグを立てる
 				if (genSaveType == "T")
 				{
-					General.Var.IniWrite(General.Var.GameIni, "list", "dbupdate", "1");
+					IniWrite(GameIni, "list", "dbupdate", "1");
 				}
 
 				decimal runTimeTmp = runTimeText.Value;
 				decimal startTimeTmp = startCountText.Value;
 
-				General.Var.IniWrite(iniPath, "game", "name", titleText.Text.Trim());
-				General.Var.IniWrite(iniPath, "game", "imgpass", imgPathText.Text.Trim());
-				General.Var.IniWrite(iniPath, "game", "pass", exePathText.Text.Trim());
-				General.Var.IniWrite(iniPath, "game", "time", runTimeTmp.ToString());
-				General.Var.IniWrite(iniPath, "game", "start", startTimeTmp.ToString());
-				General.Var.IniWrite(iniPath, "game", "stat", dconText.Text.Trim());
-				General.Var.IniWrite(iniPath, "game", "dcon_img", dconImgText.Text.Trim());
-				General.Var.IniWrite(iniPath, "game", "rating", (rateCheck.Checked ? "1" : "0"));
+				KeyNames[] keyColumns = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.rating, KeyNames.execute_cmd };
+				string[] writeValues = { titleText.Text.Trim(), imgPathText.Text.Trim(), exePathText.Text.Trim(), runTimeTmp.ToString(), startTimeTmp.ToString(), dconText.Text.Trim(), dconImgText.Text.Trim(), (rateCheck.Checked ? "1" : "0"), executeCmdText.Text.Trim() };
+				IniWrite(iniPath, "game", keyColumns, writeValues);
 			}
 
-			Close();
+			if (!hasError)
+			{
+				Close();
+			}
 		}
 
 		private void button3_Click(object sender, EventArgs e)
