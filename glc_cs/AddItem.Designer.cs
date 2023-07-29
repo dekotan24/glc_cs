@@ -45,7 +45,7 @@
 			this.label7 = new System.Windows.Forms.Label();
 			this.startCountResetButton = new System.Windows.Forms.Button();
 			this.AddButton = new System.Windows.Forms.Button();
-			this.CancelButton = new System.Windows.Forms.Button();
+			this.CloseButton = new System.Windows.Forms.Button();
 			this.localIniCheck = new System.Windows.Forms.CheckBox();
 			this.onlineCheck = new System.Windows.Forms.CheckBox();
 			this.offlineCheck = new System.Windows.Forms.CheckBox();
@@ -212,15 +212,15 @@
 			this.AddButton.UseVisualStyleBackColor = true;
 			this.AddButton.Click += new System.EventHandler(this.ApplyButton_Click);
 			// 
-			// CancelButton
+			// CloseButton
 			// 
-			this.CancelButton.Location = new System.Drawing.Point(250, 284);
-			this.CancelButton.Name = "CancelButton";
-			this.CancelButton.Size = new System.Drawing.Size(122, 33);
-			this.CancelButton.TabIndex = 14;
-			this.CancelButton.Text = "キャンセル";
-			this.CancelButton.UseVisualStyleBackColor = true;
-			this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+			this.CloseButton.Location = new System.Drawing.Point(250, 284);
+			this.CloseButton.Name = "CloseButton";
+			this.CloseButton.Size = new System.Drawing.Size(122, 33);
+			this.CloseButton.TabIndex = 14;
+			this.CloseButton.Text = "キャンセル";
+			this.CloseButton.UseVisualStyleBackColor = true;
+			this.CloseButton.Click += new System.EventHandler(this.CancelButton_Click);
 			// 
 			// localIniCheck
 			// 
@@ -355,7 +355,7 @@
 			this.Controls.Add(this.offlineCheck);
 			this.Controls.Add(this.onlineCheck);
 			this.Controls.Add(this.localIniCheck);
-			this.Controls.Add(this.CancelButton);
+			this.Controls.Add(this.CloseButton);
 			this.Controls.Add(this.AddButton);
 			this.Controls.Add(this.label7);
 			this.Controls.Add(this.startCountResetButton);
@@ -406,7 +406,7 @@
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.Button startCountResetButton;
 		private System.Windows.Forms.Button AddButton;
-		private System.Windows.Forms.Button CancelButton;
+		private System.Windows.Forms.Button CloseButton;
 		private System.Windows.Forms.CheckBox localIniCheck;
 		private System.Windows.Forms.CheckBox onlineCheck;
 		private System.Windows.Forms.CheckBox offlineCheck;

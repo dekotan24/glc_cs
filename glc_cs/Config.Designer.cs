@@ -133,6 +133,7 @@
 			this.queryExecuteButton = new System.Windows.Forms.Button();
 			this.queryText = new System.Windows.Forms.RichTextBox();
 			this.TabPage3 = new System.Windows.Forms.TabPage();
+			this.label31 = new System.Windows.Forms.Label();
 			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			this.logoPictureBox = new System.Windows.Forms.PictureBox();
 			this.updchkButton = new System.Windows.Forms.Button();
@@ -150,7 +151,9 @@
 			this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.label15 = new System.Windows.Forms.Label();
-			this.label31 = new System.Windows.Forms.Label();
+			this.groupBox16 = new System.Windows.Forms.GroupBox();
+			this.updateCheckDisableCheck = new System.Windows.Forms.CheckBox();
+			this.label7 = new System.Windows.Forms.Label();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage7.SuspendLayout();
@@ -178,6 +181,7 @@
 			this.ExecuteModeGroup.SuspendLayout();
 			this.TabPage3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
+			this.groupBox16.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox1
@@ -221,7 +225,7 @@
 			this.linkLabel2.Location = new System.Drawing.Point(171, 178);
 			this.linkLabel2.Name = "linkLabel2";
 			this.linkLabel2.Size = new System.Drawing.Size(103, 12);
-			this.linkLabel2.TabIndex = 5;
+			this.linkLabel2.TabIndex = 12;
 			this.linkLabel2.TabStop = true;
 			this.linkLabel2.Text = "support@fanet.work";
 			this.toolTip1.SetToolTip(this.linkLabel2, "メールアドレスをコピーします");
@@ -244,7 +248,7 @@
 			this.portText.Location = new System.Drawing.Point(332, 69);
 			this.portText.Name = "portText";
 			this.portText.Size = new System.Drawing.Size(59, 23);
-			this.portText.TabIndex = 17;
+			this.portText.TabIndex = 9;
 			this.toolTip1.SetToolTip(this.portText, "MSSQLの既定【1433】\r\nMySQLの既定【3306】");
 			// 
 			// dbBackupButton
@@ -268,7 +272,7 @@
 			this.checkBox7.Location = new System.Drawing.Point(13, 49);
 			this.checkBox7.Name = "checkBox7";
 			this.checkBox7.Size = new System.Drawing.Size(248, 16);
-			this.checkBox7.TabIndex = 2;
+			this.checkBox7.TabIndex = 11;
 			this.checkBox7.Text = "エラー発生時は該当データをスキップする（強制）";
 			this.toolTip1.SetToolTip(this.checkBox7, "取込処理中にエラーが発生した場合、エラー発生直前までに取り込んだデータをコミットします");
 			this.checkBox7.UseVisualStyleBackColor = true;
@@ -278,7 +282,7 @@
 			this.textBox9.Location = new System.Drawing.Point(174, 41);
 			this.textBox9.Name = "textBox9";
 			this.textBox9.Size = new System.Drawing.Size(141, 19);
-			this.textBox9.TabIndex = 2;
+			this.textBox9.TabIndex = 8;
 			this.toolTip1.SetToolTip(this.textBox9, "変更後のキーワード");
 			// 
 			// textBox8
@@ -286,7 +290,7 @@
 			this.textBox8.Location = new System.Drawing.Point(6, 41);
 			this.textBox8.Name = "textBox8";
 			this.textBox8.Size = new System.Drawing.Size(142, 19);
-			this.textBox8.TabIndex = 1;
+			this.textBox8.TabIndex = 7;
 			this.toolTip1.SetToolTip(this.textBox8, "変更前のキーワード");
 			// 
 			// iniAllEditButton
@@ -294,7 +298,7 @@
 			this.iniAllEditButton.Location = new System.Drawing.Point(341, 39);
 			this.iniAllEditButton.Name = "iniAllEditButton";
 			this.iniAllEditButton.Size = new System.Drawing.Size(103, 23);
-			this.iniAllEditButton.TabIndex = 0;
+			this.iniAllEditButton.TabIndex = 9;
 			this.iniAllEditButton.Text = "一括変更";
 			this.toolTip1.SetToolTip(this.iniAllEditButton, "ゲーム管理iniのすべてのパスを置換します。");
 			this.iniAllEditButton.UseVisualStyleBackColor = true;
@@ -307,7 +311,7 @@
 			this.executeNonQueryRadio.Location = new System.Drawing.Point(84, 18);
 			this.executeNonQueryRadio.Name = "executeNonQueryRadio";
 			this.executeNonQueryRadio.Size = new System.Drawing.Size(114, 16);
-			this.executeNonQueryRadio.TabIndex = 0;
+			this.executeNonQueryRadio.TabIndex = 10;
 			this.executeNonQueryRadio.TabStop = true;
 			this.executeNonQueryRadio.Text = "ExecuteNonQuery";
 			this.toolTip1.SetToolTip(this.executeNonQueryRadio, "結果セットを返さない場合に使用します。\r\n影響を受けた行数を返します。");
@@ -319,7 +323,7 @@
 			this.executeScalerRadio.Location = new System.Drawing.Point(275, 18);
 			this.executeScalerRadio.Name = "executeScalerRadio";
 			this.executeScalerRadio.Size = new System.Drawing.Size(96, 16);
-			this.executeScalerRadio.TabIndex = 1;
+			this.executeScalerRadio.TabIndex = 11;
 			this.executeScalerRadio.Text = "ExecuteScaler";
 			this.toolTip1.SetToolTip(this.executeScalerRadio, "結果セットの一番最初の値を返します。");
 			this.executeScalerRadio.UseVisualStyleBackColor = true;
@@ -340,6 +344,7 @@
 			// 
 			// tabPage7
 			// 
+			this.tabPage7.Controls.Add(this.groupBox16);
 			this.tabPage7.Controls.Add(this.groupBox14);
 			this.tabPage7.Controls.Add(this.groupBox11);
 			this.tabPage7.Location = new System.Drawing.Point(4, 22);
@@ -576,7 +581,7 @@
 			this.RoGCheck.Location = new System.Drawing.Point(25, 57);
 			this.RoGCheck.Name = "RoGCheck";
 			this.RoGCheck.Size = new System.Drawing.Size(169, 20);
-			this.RoGCheck.TabIndex = 3;
+			this.RoGCheck.TabIndex = 14;
 			this.RoGCheck.Text = "オフラインデータ取得時";
 			this.RoGCheck.UseVisualStyleBackColor = true;
 			// 
@@ -586,7 +591,7 @@
 			this.RoSCheck.Location = new System.Drawing.Point(280, 30);
 			this.RoSCheck.Name = "RoSCheck";
 			this.RoSCheck.Size = new System.Drawing.Size(177, 20);
-			this.RoSCheck.TabIndex = 2;
+			this.RoSCheck.TabIndex = 13;
 			this.RoSCheck.Text = "ゲーム起動時／終了時";
 			this.RoSCheck.UseVisualStyleBackColor = true;
 			// 
@@ -596,7 +601,7 @@
 			this.RoWCheck.Location = new System.Drawing.Point(25, 30);
 			this.RoWCheck.Name = "RoWCheck";
 			this.RoWCheck.Size = new System.Drawing.Size(198, 20);
-			this.RoWCheck.TabIndex = 1;
+			this.RoWCheck.TabIndex = 12;
 			this.RoWCheck.Text = "ランチャー起動時／終了時";
 			this.RoWCheck.UseVisualStyleBackColor = true;
 			// 
@@ -634,7 +639,7 @@
 			this.byResetButton.Location = new System.Drawing.Point(81, 85);
 			this.byResetButton.Name = "byResetButton";
 			this.byResetButton.Size = new System.Drawing.Size(126, 23);
-			this.byResetButton.TabIndex = 11;
+			this.byResetButton.TabIndex = 10;
 			this.byResetButton.Text = "初期設定に戻す";
 			this.byResetButton.UseVisualStyleBackColor = true;
 			this.byResetButton.Click += new System.EventHandler(this.byResetButton_Click);
@@ -644,7 +649,7 @@
 			this.byConnectionTestButton.Location = new System.Drawing.Point(280, 85);
 			this.byConnectionTestButton.Name = "byConnectionTestButton";
 			this.byConnectionTestButton.Size = new System.Drawing.Size(91, 23);
-			this.byConnectionTestButton.TabIndex = 10;
+			this.byConnectionTestButton.TabIndex = 11;
 			this.byConnectionTestButton.Text = "接続テスト";
 			this.byConnectionTestButton.UseVisualStyleBackColor = true;
 			this.byConnectionTestButton.Click += new System.EventHandler(this.byConnectionTestButton_Click);
@@ -817,7 +822,7 @@
 			this.tableText.Location = new System.Drawing.Point(239, 98);
 			this.tableText.Name = "tableText";
 			this.tableText.Size = new System.Drawing.Size(152, 23);
-			this.tableText.TabIndex = 6;
+			this.tableText.TabIndex = 11;
 			// 
 			// label23
 			// 
@@ -835,7 +840,7 @@
 			this.dbText.Location = new System.Drawing.Point(48, 98);
 			this.dbText.Name = "dbText";
 			this.dbText.Size = new System.Drawing.Size(135, 23);
-			this.dbText.TabIndex = 5;
+			this.dbText.TabIndex = 10;
 			// 
 			// label22
 			// 
@@ -854,7 +859,7 @@
 			this.pwText.Name = "pwText";
 			this.pwText.PasswordChar = '*';
 			this.pwText.Size = new System.Drawing.Size(152, 23);
-			this.pwText.TabIndex = 8;
+			this.pwText.TabIndex = 13;
 			// 
 			// label18
 			// 
@@ -872,7 +877,7 @@
 			this.userText.Location = new System.Drawing.Point(48, 127);
 			this.userText.Name = "userText";
 			this.userText.Size = new System.Drawing.Size(135, 23);
-			this.userText.TabIndex = 7;
+			this.userText.TabIndex = 12;
 			// 
 			// label16
 			// 
@@ -890,7 +895,7 @@
 			this.urlText.Location = new System.Drawing.Point(48, 69);
 			this.urlText.Name = "urlText";
 			this.urlText.Size = new System.Drawing.Size(227, 23);
-			this.urlText.TabIndex = 4;
+			this.urlText.TabIndex = 8;
 			// 
 			// label9
 			// 
@@ -906,7 +911,7 @@
 			this.iniText.Location = new System.Drawing.Point(48, 25);
 			this.iniText.Name = "iniText";
 			this.iniText.Size = new System.Drawing.Size(343, 23);
-			this.iniText.TabIndex = 2;
+			this.iniText.TabIndex = 6;
 			// 
 			// iniFolderSelectButton
 			// 
@@ -914,7 +919,7 @@
 			this.iniFolderSelectButton.Location = new System.Drawing.Point(397, 25);
 			this.iniFolderSelectButton.Name = "iniFolderSelectButton";
 			this.iniFolderSelectButton.Size = new System.Drawing.Size(64, 23);
-			this.iniFolderSelectButton.TabIndex = 3;
+			this.iniFolderSelectButton.TabIndex = 7;
 			this.iniFolderSelectButton.Text = "変更";
 			this.iniFolderSelectButton.UseVisualStyleBackColor = true;
 			this.iniFolderSelectButton.Click += new System.EventHandler(this.iniFolderSelectButton_Click);
@@ -962,7 +967,7 @@
 			this.checkBox8.Location = new System.Drawing.Point(353, 49);
 			this.checkBox8.Name = "checkBox8";
 			this.checkBox8.Size = new System.Drawing.Size(109, 17);
-			this.checkBox8.TabIndex = 3;
+			this.checkBox8.TabIndex = 5;
 			this.checkBox8.Text = "オフラインに保存";
 			this.checkBox8.UseVisualStyleBackColor = true;
 			this.checkBox8.CheckedChanged += new System.EventHandler(this.checkBox8_CheckedChanged);
@@ -1011,7 +1016,7 @@
 			this.tabControl2.Name = "tabControl2";
 			this.tabControl2.SelectedIndex = 0;
 			this.tabControl2.Size = new System.Drawing.Size(480, 317);
-			this.tabControl2.TabIndex = 5;
+			this.tabControl2.TabIndex = 4;
 			// 
 			// tabPage5
 			// 
@@ -1043,7 +1048,7 @@
 			this.iniAutoNumberingFixButton.Location = new System.Drawing.Point(6, 18);
 			this.iniAutoNumberingFixButton.Name = "iniAutoNumberingFixButton";
 			this.iniAutoNumberingFixButton.Size = new System.Drawing.Size(458, 24);
-			this.iniAutoNumberingFixButton.TabIndex = 2;
+			this.iniAutoNumberingFixButton.TabIndex = 15;
 			this.iniAutoNumberingFixButton.Text = "【INI】連番修正";
 			this.iniAutoNumberingFixButton.UseVisualStyleBackColor = true;
 			this.iniAutoNumberingFixButton.Click += new System.EventHandler(this.iniAutoNumberingFixButton_Click);
@@ -1054,7 +1059,7 @@
 			this.dbOverflowFixButton.Location = new System.Drawing.Point(6, 48);
 			this.dbOverflowFixButton.Name = "dbOverflowFixButton";
 			this.dbOverflowFixButton.Size = new System.Drawing.Size(458, 24);
-			this.dbOverflowFixButton.TabIndex = 1;
+			this.dbOverflowFixButton.TabIndex = 16;
 			this.dbOverflowFixButton.Text = "【DB】最大値を超えたデータを修正";
 			this.dbOverflowFixButton.UseVisualStyleBackColor = true;
 			this.dbOverflowFixButton.Click += new System.EventHandler(this.dbOverflowFixButton_Click);
@@ -1087,7 +1092,7 @@
 			this.importIniToDbButton.Location = new System.Drawing.Point(264, 18);
 			this.importIniToDbButton.Name = "importIniToDbButton";
 			this.importIniToDbButton.Size = new System.Drawing.Size(200, 47);
-			this.importIniToDbButton.TabIndex = 1;
+			this.importIniToDbButton.TabIndex = 12;
 			this.importIniToDbButton.Text = "INIファイルのデータをDBに取込";
 			this.importIniToDbButton.UseVisualStyleBackColor = true;
 			this.importIniToDbButton.Click += new System.EventHandler(this.importIniToDbButton_Click);
@@ -1101,7 +1106,7 @@
 			this.checkBox6.Location = new System.Drawing.Point(13, 25);
 			this.checkBox6.Name = "checkBox6";
 			this.checkBox6.Size = new System.Drawing.Size(235, 16);
-			this.checkBox6.TabIndex = 0;
+			this.checkBox6.TabIndex = 10;
 			this.checkBox6.Text = "テーブルのすべてのレコードを削除する（強制）";
 			this.checkBox6.UseVisualStyleBackColor = true;
 			// 
@@ -1211,6 +1216,7 @@
 			// 
 			this.insertColumnsDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.insertColumnsDropDown.FormattingEnabled = true;
+			this.insertColumnsDropDown.ItemHeight = 12;
 			this.insertColumnsDropDown.Items.AddRange(new object[] {
             "ID（システム）",
             "ゲームタイトル",
@@ -1228,14 +1234,14 @@
 			this.insertColumnsDropDown.Location = new System.Drawing.Point(255, 18);
 			this.insertColumnsDropDown.Name = "insertColumnsDropDown";
 			this.insertColumnsDropDown.Size = new System.Drawing.Size(149, 20);
-			this.insertColumnsDropDown.TabIndex = 11;
+			this.insertColumnsDropDown.TabIndex = 8;
 			// 
 			// insertColumnButton
 			// 
 			this.insertColumnButton.Location = new System.Drawing.Point(410, 16);
 			this.insertColumnButton.Name = "insertColumnButton";
 			this.insertColumnButton.Size = new System.Drawing.Size(50, 23);
-			this.insertColumnButton.TabIndex = 10;
+			this.insertColumnButton.TabIndex = 9;
 			this.insertColumnButton.Text = "挿入";
 			this.insertColumnButton.UseVisualStyleBackColor = true;
 			this.insertColumnButton.Click += new System.EventHandler(this.insertColumnButton_Click);
@@ -1245,7 +1251,7 @@
 			this.insertTableNameButton.Location = new System.Drawing.Point(6, 16);
 			this.insertTableNameButton.Name = "insertTableNameButton";
 			this.insertTableNameButton.Size = new System.Drawing.Size(87, 23);
-			this.insertTableNameButton.TabIndex = 9;
+			this.insertTableNameButton.TabIndex = 6;
 			this.insertTableNameButton.Text = "テーブル名";
 			this.insertTableNameButton.UseVisualStyleBackColor = true;
 			this.insertTableNameButton.Click += new System.EventHandler(this.insertTableNameButton_Click);
@@ -1255,7 +1261,7 @@
 			this.insertDatabaseNameButton.Location = new System.Drawing.Point(99, 16);
 			this.insertDatabaseNameButton.Name = "insertDatabaseNameButton";
 			this.insertDatabaseNameButton.Size = new System.Drawing.Size(87, 23);
-			this.insertDatabaseNameButton.TabIndex = 8;
+			this.insertDatabaseNameButton.TabIndex = 7;
 			this.insertDatabaseNameButton.Text = "データベース名";
 			this.insertDatabaseNameButton.UseVisualStyleBackColor = true;
 			this.insertDatabaseNameButton.Click += new System.EventHandler(this.insertDatabaseNameButton_Click);
@@ -1276,7 +1282,7 @@
 			this.queryClearButton.Location = new System.Drawing.Point(278, 263);
 			this.queryClearButton.Name = "queryClearButton";
 			this.queryClearButton.Size = new System.Drawing.Size(191, 24);
-			this.queryClearButton.TabIndex = 2;
+			this.queryClearButton.TabIndex = 13;
 			this.queryClearButton.Text = "Clear query";
 			this.queryClearButton.UseVisualStyleBackColor = true;
 			this.queryClearButton.Click += new System.EventHandler(this.queryClearButton_Click);
@@ -1286,7 +1292,7 @@
 			this.queryExecuteButton.Location = new System.Drawing.Point(3, 263);
 			this.queryExecuteButton.Name = "queryExecuteButton";
 			this.queryExecuteButton.Size = new System.Drawing.Size(255, 24);
-			this.queryExecuteButton.TabIndex = 1;
+			this.queryExecuteButton.TabIndex = 12;
 			this.queryExecuteButton.Text = "Execute";
 			this.queryExecuteButton.UseVisualStyleBackColor = true;
 			this.queryExecuteButton.Click += new System.EventHandler(this.queryExecuteButton_Click);
@@ -1296,7 +1302,7 @@
 			this.queryText.Location = new System.Drawing.Point(3, 3);
 			this.queryText.Name = "queryText";
 			this.queryText.Size = new System.Drawing.Size(466, 157);
-			this.queryText.TabIndex = 0;
+			this.queryText.TabIndex = 5;
 			this.queryText.Text = "";
 			// 
 			// TabPage3
@@ -1322,6 +1328,15 @@
 			this.TabPage3.Text = "バージョン情報";
 			this.TabPage3.UseVisualStyleBackColor = true;
 			// 
+			// label31
+			// 
+			this.label31.AutoSize = true;
+			this.label31.Location = new System.Drawing.Point(171, 150);
+			this.label31.Name = "label31";
+			this.label31.Size = new System.Drawing.Size(109, 12);
+			this.label31.TabIndex = 14;
+			this.label31.Text = "小倉照孤（dekosoft）";
+			// 
 			// checkBox1
 			// 
 			this.checkBox1.AutoSize = true;
@@ -1329,7 +1344,7 @@
 			this.checkBox1.Location = new System.Drawing.Point(368, 105);
 			this.checkBox1.Name = "checkBox1";
 			this.checkBox1.Size = new System.Drawing.Size(92, 16);
-			this.checkBox1.TabIndex = 13;
+			this.checkBox1.TabIndex = 11;
 			this.checkBox1.Text = "ベータを含める";
 			this.checkBox1.UseVisualStyleBackColor = true;
 			this.checkBox1.Visible = false;
@@ -1351,7 +1366,7 @@
 			this.updchkButton.Location = new System.Drawing.Point(368, 76);
 			this.updchkButton.Name = "updchkButton";
 			this.updchkButton.Size = new System.Drawing.Size(106, 23);
-			this.updchkButton.TabIndex = 11;
+			this.updchkButton.TabIndex = 10;
 			this.updchkButton.Text = "Check Update";
 			this.updchkButton.UseVisualStyleBackColor = true;
 			this.updchkButton.Click += new System.EventHandler(this.updchkButton_Click);
@@ -1371,7 +1386,7 @@
 			this.linkLabel3.Location = new System.Drawing.Point(171, 233);
 			this.linkLabel3.Name = "linkLabel3";
 			this.linkLabel3.Size = new System.Drawing.Size(200, 12);
-			this.linkLabel3.TabIndex = 9;
+			this.linkLabel3.TabIndex = 14;
 			this.linkLabel3.TabStop = true;
 			this.linkLabel3.Text = "https://github.com/dekotan24/glc_cs/";
 			this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
@@ -1400,7 +1415,7 @@
 			this.linkLabel1.Location = new System.Drawing.Point(171, 205);
 			this.linkLabel1.Name = "linkLabel1";
 			this.linkLabel1.Size = new System.Drawing.Size(97, 12);
-			this.linkLabel1.TabIndex = 4;
+			this.linkLabel1.TabIndex = 13;
 			this.linkLabel1.TabStop = true;
 			this.linkLabel1.Text = "https://fanet.work";
 			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
@@ -1429,7 +1444,7 @@
 			// 
 			this.label3.AutoSize = true;
 			this.label3.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label3.Location = new System.Drawing.Point(127, 150);
+			this.label3.Location = new System.Drawing.Point(129, 150);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(35, 12);
 			this.label3.TabIndex = 1;
@@ -1450,7 +1465,7 @@
 			this.saveButton.Location = new System.Drawing.Point(389, 355);
 			this.saveButton.Name = "saveButton";
 			this.saveButton.Size = new System.Drawing.Size(101, 23);
-			this.saveButton.TabIndex = 3;
+			this.saveButton.TabIndex = 99;
 			this.saveButton.Text = "適用して閉じる";
 			this.saveButton.UseVisualStyleBackColor = true;
 			this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
@@ -1468,14 +1483,38 @@
 			this.label15.TabIndex = 4;
 			this.label15.Text = ":)";
 			// 
-			// label31
+			// groupBox16
 			// 
-			this.label31.AutoSize = true;
-			this.label31.Location = new System.Drawing.Point(171, 150);
-			this.label31.Name = "label31";
-			this.label31.Size = new System.Drawing.Size(109, 12);
-			this.label31.TabIndex = 14;
-			this.label31.Text = "小倉照孤（dekosoft）";
+			this.groupBox16.Controls.Add(this.label7);
+			this.groupBox16.Controls.Add(this.updateCheckDisableCheck);
+			this.groupBox16.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox16.Location = new System.Drawing.Point(6, 168);
+			this.groupBox16.Name = "groupBox16";
+			this.groupBox16.Size = new System.Drawing.Size(469, 85);
+			this.groupBox16.TabIndex = 5;
+			this.groupBox16.TabStop = false;
+			this.groupBox16.Text = "INI／DBアップデートチェック";
+			// 
+			// updateCheckDisableCheck
+			// 
+			this.updateCheckDisableCheck.AutoSize = true;
+			this.updateCheckDisableCheck.Location = new System.Drawing.Point(25, 25);
+			this.updateCheckDisableCheck.Name = "updateCheckDisableCheck";
+			this.updateCheckDisableCheck.Size = new System.Drawing.Size(212, 20);
+			this.updateCheckDisableCheck.TabIndex = 5;
+			this.updateCheckDisableCheck.Text = "次のバージョンまでスキップする";
+			this.updateCheckDisableCheck.UseVisualStyleBackColor = true;
+			this.updateCheckDisableCheck.CheckedChanged += new System.EventHandler(this.updateCheckDisableCheck_CheckedChanged);
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label7.Location = new System.Drawing.Point(18, 55);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(429, 15);
+			this.label7.TabIndex = 4;
+			this.label7.Text = "※予期せぬ動作を行う可能性があるため、不正に使用しないでください。";
 			// 
 			// Config
 			// 
@@ -1535,6 +1574,8 @@
 			this.TabPage3.ResumeLayout(false);
 			this.TabPage3.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
+			this.groupBox16.ResumeLayout(false);
+			this.groupBox16.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -1662,5 +1703,8 @@
 		private System.Windows.Forms.CheckBox RoGCheck;
 		private System.Windows.Forms.CheckBox checkBox1;
 		private System.Windows.Forms.Label label31;
+		private System.Windows.Forms.GroupBox groupBox16;
+		private System.Windows.Forms.CheckBox updateCheckDisableCheck;
+		private System.Windows.Forms.Label label7;
 	}
 }

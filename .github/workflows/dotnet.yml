@@ -5,14 +5,14 @@ name: .NET
 
 on:
   push:
-    branches: [ "beta" ]
+    branches: [ "dev" ]
   pull_request:
     branches: [ "master" ]
 
 jobs:
-  build:
+  build_and_release:
 
-    runs-on: windows-2019
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -31,3 +31,15 @@ jobs:
 
     - name: Build solution
       run: msbuild glc_cs.sln -t:rebuild -property:Configuration=Release
+      
+    - name: Zip output
+      run: |
+        powershell compress-archive .\glc_cs\bin\Release\*.* Release
+        dir ../
+        
+    - name: Upload build as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: glc_release
+        path: Release.zip
+    

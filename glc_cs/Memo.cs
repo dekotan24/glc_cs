@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using static glc_cs.General.Var;
 
 namespace glc_cs
 {
@@ -107,7 +108,7 @@ namespace glc_cs
 			}
 			catch (Exception ex)
 			{
-				General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
+				WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
 			}
 			finally
 			{
@@ -145,7 +146,7 @@ namespace glc_cs
 			}
 			catch (Exception ex)
 			{
-				General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
+				WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
 			}
 			finally
 			{
@@ -161,16 +162,21 @@ namespace glc_cs
 			// ini取得と画面反映
 			try
 			{
-				iniPath = General.Var.GameDir + selectedListCount + ".ini";
+				iniPath = GameDir + selectedListCount + ".ini";
 				if (File.Exists(iniPath))
 				{
+					KeyNames[] keyNames = { KeyNames.name, KeyNames.memo, KeyNames.imgpass };
+					string[] failedVal = { string.Empty, string.Empty, string.Empty };
+
+					string[] resultValues = IniRead(iniPath, "game", keyNames, failedVal);
+
 					gameIDLabel.Text = selectedListCount;
-					gameTitleLabel.Text = General.Var.IniRead(iniPath, "game", "name", string.Empty);
+					gameTitleLabel.Text = resultValues[0];
 					toolTip1.SetToolTip(gameTitleLabel, gameTitleLabel.Text);
-					memoTextBox.Text = General.Var.IniRead(iniPath, "game", "memo", string.Empty);
-					if (File.Exists(General.Var.IniRead(iniPath, "game", "imgpass", string.Empty)))
+					memoTextBox.Text = resultValues[1];
+					if (File.Exists(resultValues[2]))
 					{
-						gameImage.ImageLocation = General.Var.IniRead(iniPath, "game", "imgpass", string.Empty);
+						gameImage.ImageLocation = resultValues[2];
 					}
 					else
 					{
@@ -181,7 +187,7 @@ namespace glc_cs
 			}
 			catch (Exception ex)
 			{
-				General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, string.Empty);
+				WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, string.Empty);
 			}
 		}
 
@@ -204,7 +210,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT GAME_NAME FROM " + General.Var.DbName + "." + General.Var.DbTable
+					CommandText = @"SELECT GAME_NAME FROM " + DbName + "." + DbTable
 									+ " WHERE ID = " + gameIDLabel.Text.Trim()
 				};
 
@@ -214,7 +220,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET MEMO = N'" + memoTextBox.Text.Trim() + "' "
+					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET MEMO = N'" + memoTextBox.Text.Trim() + "' "
 									+ "WHERE ID = " + gameIDLabel.Text.Trim()
 				};
 
@@ -239,7 +245,7 @@ namespace glc_cs
 				}
 				catch (Exception ex)
 				{
-					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
 					exMsg = ex.Message;
 				}
 				finally
@@ -250,7 +256,7 @@ namespace glc_cs
 					}
 					if (exMsg.Length != 0)
 					{
-						MessageBox.Show(exMsg, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+						MessageBox.Show(exMsg, AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 					}
 				}
 			}
@@ -265,7 +271,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT GAME_NAME FROM " + General.Var.DbTable
+					CommandText = @"SELECT GAME_NAME FROM " + DbTable
 									+ " WHERE ID = " + gameIDLabel.Text.Trim()
 				};
 
@@ -275,7 +281,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"UPDATE " + General.Var.DbName + "." + General.Var.DbTable + " SET MEMO = N'" + memoTextBox.Text.Trim() + "' "
+					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET MEMO = N'" + memoTextBox.Text.Trim() + "' "
 									+ "WHERE ID = " + gameIDLabel.Text.Trim()
 				};
 
@@ -300,7 +306,7 @@ namespace glc_cs
 				}
 				catch (Exception ex)
 				{
-					General.Var.WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
 					exMsg = ex.Message;
 				}
 				finally
@@ -311,7 +317,7 @@ namespace glc_cs
 					}
 					if (exMsg.Length != 0)
 					{
-						MessageBox.Show(exMsg, General.Var.AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+						MessageBox.Show(exMsg, AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 					}
 				}
 			}
@@ -320,10 +326,10 @@ namespace glc_cs
 				// 次回DB接続時に更新するフラグを立てる
 				if (genSaveType == "T")
 				{
-					General.Var.IniWrite(General.Var.GameIni, "list", "dbupdate", "1");
+					IniWrite(GameIni, "list", "dbupdate", "1");
 				}
 
-				General.Var.IniWrite(iniPath, "game", "memo", memoTextBox.Text.Trim());
+				IniWrite(iniPath, "game", KeyNames.memo, memoTextBox.Text.Trim());
 			}
 
 			Close();

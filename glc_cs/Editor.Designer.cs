@@ -46,7 +46,7 @@
 			this.label7 = new System.Windows.Forms.Label();
 			this.button4 = new System.Windows.Forms.Button();
 			this.ApplyButton = new System.Windows.Forms.Button();
-			this.CancelButton = new System.Windows.Forms.Button();
+			this.CloseButton = new System.Windows.Forms.Button();
 			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			this.checkBox2 = new System.Windows.Forms.CheckBox();
 			this.checkBox3 = new System.Windows.Forms.CheckBox();
@@ -58,6 +58,8 @@
 			this.startCountText = new System.Windows.Forms.NumericUpDown();
 			this.dconImgText = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
+			this.executeCmdText = new System.Windows.Forms.TextBox();
+			this.executeCmdTextLabel = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.runTimeText)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.startCountText)).BeginInit();
@@ -109,26 +111,26 @@
 			// 
 			// button2
 			// 
-			this.button2.Location = new System.Drawing.Point(435, 174);
+			this.button2.Location = new System.Drawing.Point(435, 197);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(20, 23);
-			this.button2.TabIndex = 5;
+			this.button2.TabIndex = 6;
 			this.button2.Text = "..";
 			this.button2.UseVisualStyleBackColor = true;
 			this.button2.Click += new System.EventHandler(this.button2_Click);
 			// 
 			// imgPathText
 			// 
-			this.imgPathText.Location = new System.Drawing.Point(97, 176);
+			this.imgPathText.Location = new System.Drawing.Point(97, 199);
 			this.imgPathText.MaxLength = 500;
 			this.imgPathText.Name = "imgPathText";
 			this.imgPathText.Size = new System.Drawing.Size(332, 19);
-			this.imgPathText.TabIndex = 4;
+			this.imgPathText.TabIndex = 5;
 			// 
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(43, 179);
+			this.label3.Location = new System.Drawing.Point(43, 202);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(48, 12);
 			this.label3.TabIndex = 5;
@@ -158,26 +160,26 @@
 			// 
 			// button3
 			// 
-			this.button3.Location = new System.Drawing.Point(213, 251);
+			this.button3.Location = new System.Drawing.Point(213, 274);
 			this.button3.Name = "button3";
 			this.button3.Size = new System.Drawing.Size(20, 19);
-			this.button3.TabIndex = 9;
+			this.button3.TabIndex = 10;
 			this.button3.Text = "0";
 			this.button3.UseVisualStyleBackColor = true;
 			this.button3.Click += new System.EventHandler(this.button3_Click);
 			// 
 			// dconText
 			// 
-			this.dconText.Location = new System.Drawing.Point(97, 201);
+			this.dconText.Location = new System.Drawing.Point(97, 224);
 			this.dconText.MaxLength = 50;
 			this.dconText.Name = "dconText";
 			this.dconText.Size = new System.Drawing.Size(358, 19);
-			this.dconText.TabIndex = 6;
+			this.dconText.TabIndex = 7;
 			// 
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(26, 204);
+			this.label5.Location = new System.Drawing.Point(26, 227);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(65, 12);
 			this.label5.TabIndex = 10;
@@ -186,7 +188,7 @@
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(38, 254);
+			this.label6.Location = new System.Drawing.Point(38, 277);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(53, 12);
 			this.label6.TabIndex = 13;
@@ -195,7 +197,7 @@
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(249, 254);
+			this.label7.Location = new System.Drawing.Point(249, 277);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(53, 12);
 			this.label7.TabIndex = 16;
@@ -203,33 +205,33 @@
 			// 
 			// button4
 			// 
-			this.button4.Location = new System.Drawing.Point(435, 251);
+			this.button4.Location = new System.Drawing.Point(435, 274);
 			this.button4.Name = "button4";
 			this.button4.Size = new System.Drawing.Size(20, 19);
-			this.button4.TabIndex = 11;
+			this.button4.TabIndex = 12;
 			this.button4.Text = "0";
 			this.button4.UseVisualStyleBackColor = true;
 			this.button4.Click += new System.EventHandler(this.button4_Click);
 			// 
 			// ApplyButton
 			// 
-			this.ApplyButton.Location = new System.Drawing.Point(97, 300);
+			this.ApplyButton.Location = new System.Drawing.Point(97, 325);
 			this.ApplyButton.Name = "ApplyButton";
 			this.ApplyButton.Size = new System.Drawing.Size(122, 33);
-			this.ApplyButton.TabIndex = 13;
+			this.ApplyButton.TabIndex = 14;
 			this.ApplyButton.Text = "適用";
 			this.ApplyButton.UseVisualStyleBackColor = true;
 			this.ApplyButton.Click += new System.EventHandler(this.ApplyButton_Click);
 			// 
-			// CancelButton
+			// CloseButton
 			// 
-			this.CancelButton.Location = new System.Drawing.Point(251, 300);
-			this.CancelButton.Name = "CancelButton";
-			this.CancelButton.Size = new System.Drawing.Size(122, 33);
-			this.CancelButton.TabIndex = 14;
-			this.CancelButton.Text = "キャンセル";
-			this.CancelButton.UseVisualStyleBackColor = true;
-			this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+			this.CloseButton.Location = new System.Drawing.Point(251, 325);
+			this.CloseButton.Name = "CloseButton";
+			this.CloseButton.Size = new System.Drawing.Size(122, 33);
+			this.CloseButton.TabIndex = 15;
+			this.CloseButton.Text = "キャンセル";
+			this.CloseButton.UseVisualStyleBackColor = true;
+			this.CloseButton.Click += new System.EventHandler(this.CancelButton_Click);
 			// 
 			// checkBox1
 			// 
@@ -277,17 +279,17 @@
 			// rateCheck
 			// 
 			this.rateCheck.AutoSize = true;
-			this.rateCheck.Location = new System.Drawing.Point(97, 276);
+			this.rateCheck.Location = new System.Drawing.Point(97, 299);
 			this.rateCheck.Name = "rateCheck";
-			this.rateCheck.Size = new System.Drawing.Size(50, 16);
-			this.rateCheck.TabIndex = 12;
-			this.rateCheck.Text = "R-18";
+			this.rateCheck.Size = new System.Drawing.Size(125, 16);
+			this.rateCheck.TabIndex = 13;
+			this.rateCheck.Text = "X-Rated (成人向け)";
 			this.rateCheck.UseVisualStyleBackColor = true;
 			// 
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(61, 277);
+			this.label8.Location = new System.Drawing.Point(61, 300);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(30, 12);
 			this.label8.TabIndex = 27;
@@ -299,7 +301,7 @@
 			// 
 			// runTimeText
 			// 
-			this.runTimeText.Location = new System.Drawing.Point(97, 251);
+			this.runTimeText.Location = new System.Drawing.Point(97, 274);
 			this.runTimeText.Maximum = new decimal(new int[] {
             35791394,
             0,
@@ -307,11 +309,11 @@
             0});
 			this.runTimeText.Name = "runTimeText";
 			this.runTimeText.Size = new System.Drawing.Size(110, 19);
-			this.runTimeText.TabIndex = 8;
+			this.runTimeText.TabIndex = 9;
 			// 
 			// startCountText
 			// 
-			this.startCountText.Location = new System.Drawing.Point(308, 251);
+			this.startCountText.Location = new System.Drawing.Point(308, 274);
 			this.startCountText.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -319,30 +321,49 @@
             0});
 			this.startCountText.Name = "startCountText";
 			this.startCountText.Size = new System.Drawing.Size(121, 19);
-			this.startCountText.TabIndex = 10;
+			this.startCountText.TabIndex = 11;
 			// 
 			// dconImgText
 			// 
-			this.dconImgText.Location = new System.Drawing.Point(97, 226);
+			this.dconImgText.Location = new System.Drawing.Point(97, 249);
 			this.dconImgText.MaxLength = 50;
 			this.dconImgText.Name = "dconImgText";
 			this.dconImgText.Size = new System.Drawing.Size(358, 19);
-			this.dconImgText.TabIndex = 7;
+			this.dconImgText.TabIndex = 8;
 			// 
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(14, 229);
+			this.label4.Location = new System.Drawing.Point(14, 252);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(77, 12);
 			this.label4.TabIndex = 29;
 			this.label4.Text = "dconイメージID";
 			// 
+			// executeCmdText
+			// 
+			this.executeCmdText.Location = new System.Drawing.Point(97, 174);
+			this.executeCmdText.MaxLength = 255;
+			this.executeCmdText.Name = "executeCmdText";
+			this.executeCmdText.Size = new System.Drawing.Size(358, 19);
+			this.executeCmdText.TabIndex = 4;
+			// 
+			// executeCmdTextLabel
+			// 
+			this.executeCmdTextLabel.AutoSize = true;
+			this.executeCmdTextLabel.Location = new System.Drawing.Point(18, 177);
+			this.executeCmdTextLabel.Name = "executeCmdTextLabel";
+			this.executeCmdTextLabel.Size = new System.Drawing.Size(73, 12);
+			this.executeCmdTextLabel.TabIndex = 30;
+			this.executeCmdTextLabel.Text = "実行パラメータ";
+			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(467, 348);
+			this.ClientSize = new System.Drawing.Size(467, 374);
+			this.Controls.Add(this.executeCmdText);
+			this.Controls.Add(this.executeCmdTextLabel);
 			this.Controls.Add(this.dconImgText);
 			this.Controls.Add(this.label4);
 			this.Controls.Add(this.startCountText);
@@ -353,7 +374,7 @@
 			this.Controls.Add(this.checkBox3);
 			this.Controls.Add(this.checkBox2);
 			this.Controls.Add(this.checkBox1);
-			this.Controls.Add(this.CancelButton);
+			this.Controls.Add(this.CloseButton);
 			this.Controls.Add(this.ApplyButton);
 			this.Controls.Add(this.label7);
 			this.Controls.Add(this.button4);
@@ -404,7 +425,7 @@
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.Button button4;
 		private System.Windows.Forms.Button ApplyButton;
-		private System.Windows.Forms.Button CancelButton;
+		private System.Windows.Forms.Button CloseButton;
 		private System.Windows.Forms.CheckBox checkBox1;
 		private System.Windows.Forms.CheckBox checkBox2;
 		private System.Windows.Forms.CheckBox checkBox3;
@@ -416,5 +437,7 @@
 		private System.Windows.Forms.NumericUpDown startCountText;
 		private System.Windows.Forms.TextBox dconImgText;
 		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.TextBox executeCmdText;
+		private System.Windows.Forms.Label executeCmdTextLabel;
 	}
 }

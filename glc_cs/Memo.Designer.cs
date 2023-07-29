@@ -34,7 +34,7 @@
 			this.checkBox3 = new System.Windows.Forms.CheckBox();
 			this.checkBox2 = new System.Windows.Forms.CheckBox();
 			this.checkBox1 = new System.Windows.Forms.CheckBox();
-			this.CancelButton = new System.Windows.Forms.Button();
+			this.CloseButton = new System.Windows.Forms.Button();
 			this.ApplyButton = new System.Windows.Forms.Button();
 			this.gameTitleLabel = new System.Windows.Forms.Label();
 			this.gameImage = new System.Windows.Forms.PictureBox();
@@ -87,15 +87,15 @@
 			this.checkBox1.Text = "ローカルINI";
 			this.checkBox1.UseVisualStyleBackColor = true;
 			// 
-			// CancelButton
+			// CloseButton
 			// 
-			this.CancelButton.Location = new System.Drawing.Point(251, 300);
-			this.CancelButton.Name = "CancelButton";
-			this.CancelButton.Size = new System.Drawing.Size(122, 33);
-			this.CancelButton.TabIndex = 30;
-			this.CancelButton.Text = "キャンセル";
-			this.CancelButton.UseVisualStyleBackColor = true;
-			this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+			this.CloseButton.Location = new System.Drawing.Point(251, 300);
+			this.CloseButton.Name = "CloseButton";
+			this.CloseButton.Size = new System.Drawing.Size(122, 33);
+			this.CloseButton.TabIndex = 30;
+			this.CloseButton.Text = "キャンセル";
+			this.CloseButton.UseVisualStyleBackColor = true;
+			this.CloseButton.Click += new System.EventHandler(this.CancelButton_Click);
 			// 
 			// ApplyButton
 			// 
@@ -158,7 +158,7 @@
 			this.Controls.Add(this.checkBox3);
 			this.Controls.Add(this.checkBox2);
 			this.Controls.Add(this.checkBox1);
-			this.Controls.Add(this.CancelButton);
+			this.Controls.Add(this.CloseButton);
 			this.Controls.Add(this.ApplyButton);
 			this.Controls.Add(this.gameTitleLabel);
 			this.Controls.Add(this.gameImage);
@@ -181,7 +181,7 @@
 		private System.Windows.Forms.CheckBox checkBox3;
 		private System.Windows.Forms.CheckBox checkBox2;
 		private System.Windows.Forms.CheckBox checkBox1;
-		private System.Windows.Forms.Button CancelButton;
+		private System.Windows.Forms.Button CloseButton;
 		private System.Windows.Forms.Button ApplyButton;
 		private System.Windows.Forms.Label gameTitleLabel;
 		private System.Windows.Forms.PictureBox gameImage;
