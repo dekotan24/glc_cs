@@ -46,6 +46,9 @@
 			this.executeScalerRadio = new System.Windows.Forms.RadioButton();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage7 = new System.Windows.Forms.TabPage();
+			this.groupBox16 = new System.Windows.Forms.GroupBox();
+			this.label7 = new System.Windows.Forms.Label();
+			this.updateCheckDisableCheck = new System.Windows.Forms.CheckBox();
 			this.groupBox14 = new System.Windows.Forms.GroupBox();
 			this.gridDisableCheck = new System.Windows.Forms.CheckBox();
 			this.label30 = new System.Windows.Forms.Label();
@@ -151,12 +154,10 @@
 			this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.label15 = new System.Windows.Forms.Label();
-			this.groupBox16 = new System.Windows.Forms.GroupBox();
-			this.updateCheckDisableCheck = new System.Windows.Forms.CheckBox();
-			this.label7 = new System.Windows.Forms.Label();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage7.SuspendLayout();
+			this.groupBox16.SuspendLayout();
 			this.groupBox14.SuspendLayout();
 			this.groupBox11.SuspendLayout();
 			this.tabPage1.SuspendLayout();
@@ -181,7 +182,6 @@
 			this.ExecuteModeGroup.SuspendLayout();
 			this.TabPage3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
-			this.groupBox16.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox1
@@ -353,6 +353,39 @@
 			this.tabPage7.TabIndex = 6;
 			this.tabPage7.Text = "全般";
 			this.tabPage7.UseVisualStyleBackColor = true;
+			// 
+			// groupBox16
+			// 
+			this.groupBox16.Controls.Add(this.label7);
+			this.groupBox16.Controls.Add(this.updateCheckDisableCheck);
+			this.groupBox16.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox16.Location = new System.Drawing.Point(6, 168);
+			this.groupBox16.Name = "groupBox16";
+			this.groupBox16.Size = new System.Drawing.Size(469, 78);
+			this.groupBox16.TabIndex = 5;
+			this.groupBox16.TabStop = false;
+			this.groupBox16.Text = "INI／DBアップデートチェック";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label7.Location = new System.Drawing.Point(18, 52);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(429, 15);
+			this.label7.TabIndex = 4;
+			this.label7.Text = "※予期せぬ動作を行う可能性があるため、不正に使用しないでください。";
+			// 
+			// updateCheckDisableCheck
+			// 
+			this.updateCheckDisableCheck.AutoSize = true;
+			this.updateCheckDisableCheck.Location = new System.Drawing.Point(25, 25);
+			this.updateCheckDisableCheck.Name = "updateCheckDisableCheck";
+			this.updateCheckDisableCheck.Size = new System.Drawing.Size(212, 20);
+			this.updateCheckDisableCheck.TabIndex = 5;
+			this.updateCheckDisableCheck.Text = "次のバージョンまでスキップする";
+			this.updateCheckDisableCheck.UseVisualStyleBackColor = true;
+			this.updateCheckDisableCheck.CheckedChanged += new System.EventHandler(this.updateCheckDisableCheck_CheckedChanged);
 			// 
 			// groupBox14
 			// 
@@ -1483,39 +1516,6 @@
 			this.label15.TabIndex = 4;
 			this.label15.Text = ":)";
 			// 
-			// groupBox16
-			// 
-			this.groupBox16.Controls.Add(this.label7);
-			this.groupBox16.Controls.Add(this.updateCheckDisableCheck);
-			this.groupBox16.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.groupBox16.Location = new System.Drawing.Point(6, 168);
-			this.groupBox16.Name = "groupBox16";
-			this.groupBox16.Size = new System.Drawing.Size(469, 85);
-			this.groupBox16.TabIndex = 5;
-			this.groupBox16.TabStop = false;
-			this.groupBox16.Text = "INI／DBアップデートチェック";
-			// 
-			// updateCheckDisableCheck
-			// 
-			this.updateCheckDisableCheck.AutoSize = true;
-			this.updateCheckDisableCheck.Location = new System.Drawing.Point(25, 25);
-			this.updateCheckDisableCheck.Name = "updateCheckDisableCheck";
-			this.updateCheckDisableCheck.Size = new System.Drawing.Size(212, 20);
-			this.updateCheckDisableCheck.TabIndex = 5;
-			this.updateCheckDisableCheck.Text = "次のバージョンまでスキップする";
-			this.updateCheckDisableCheck.UseVisualStyleBackColor = true;
-			this.updateCheckDisableCheck.CheckedChanged += new System.EventHandler(this.updateCheckDisableCheck_CheckedChanged);
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label7.Location = new System.Drawing.Point(18, 55);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(429, 15);
-			this.label7.TabIndex = 4;
-			this.label7.Text = "※予期せぬ動作を行う可能性があるため、不正に使用しないでください。";
-			// 
 			// Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1536,6 +1536,8 @@
 			this.groupBox1.PerformLayout();
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage7.ResumeLayout(false);
+			this.groupBox16.ResumeLayout(false);
+			this.groupBox16.PerformLayout();
 			this.groupBox14.ResumeLayout(false);
 			this.groupBox14.PerformLayout();
 			this.groupBox11.ResumeLayout(false);
@@ -1574,8 +1576,6 @@
 			this.TabPage3.ResumeLayout(false);
 			this.TabPage3.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
-			this.groupBox16.ResumeLayout(false);
-			this.groupBox16.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

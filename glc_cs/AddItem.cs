@@ -157,11 +157,12 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void ApplyButton_Click(object sender, EventArgs e)
 		{
-			string game_text = titleText.Text;
-			string gamePath = exePathText.Text;
-			string imgPath = imgPathText.Text;
-			string dcon_text = dconText.Text;
-			string dcon_img = dconImgText.Text;
+			string game_text = titleText.Text.Trim();
+			string gamePath = exePathText.Text.Trim();
+			string executeCmd = executeCmdText.Text.Trim();
+			string imgPath = imgPathText.Text.Trim();
+			string dcon_text = dconText.Text.Trim();
+			string dcon_img = dconImgText.Text.Trim();
 			string runTime = runTimeText.Value.ToString();
 			string startCount = startCountText.Value.ToString();
 			string rate = rateCheck.Checked ? "1" : "0";
@@ -182,8 +183,8 @@ namespace glc_cs
 
 					if (!(File.Exists(targetFilePath)))
 					{
-						KeyNames[] writeKeys = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.rating };
-						string[] writeValues = { game_text, imgPath, gamePath, runTime, startCount, dcon_text, dcon_img, string.Empty, "未プレイ", DBVer, rate };
+						KeyNames[] writeKeys = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.execute_cmd, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.rating };
+						string[] writeValues = { game_text, imgPath, gamePath, executeCmd, runTime, startCount, dcon_text, dcon_img, string.Empty, "未プレイ", DBVer, rate };
 
 						IniWrite(targetFilePath, "game", writeKeys, writeValues);
 						WriteIni("list", "game", newmaxval.ToString(), 0);
@@ -200,8 +201,8 @@ namespace glc_cs
 						DialogResult dialogResult = MessageBox.Show("既にiniファイルが存在します！！\nあり得ません。手動で管理INIファイルを追加したか、内部処理で何らかのミスが発生した可能性があります。\n最も安全な対処法は、一度このフォームを閉じて、[再読込]することです。\n\n" + targetFilePath + "\n[" + dup + "]\n上書きしますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 						if (dialogResult == DialogResult.Yes)
 						{
-							KeyNames[] writeKeys = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.rating };
-							string[] writeValues = { game_text, imgPath, gamePath, runTime, startCount, dcon_text, dcon_img, string.Empty, "未プレイ", DBVer, rate };
+							KeyNames[] writeKeys = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.execute_cmd, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.rating };
+							string[] writeValues = { game_text, imgPath, gamePath, executeCmd, runTime, startCount, dcon_text, dcon_img, string.Empty, "未プレイ", DBVer, rate };
 
 							IniWrite(targetFilePath, "game", writeKeys, writeValues);
 							WriteIni("list", "game", newmaxval.ToString(), 0);
@@ -240,7 +241,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( N'" + game_text.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + gamePath.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + imgPath.Replace("'", "''").Replace("\\", "\\\\") + "', '" + runTime + "', '" + startCount + "', '" + dcon_text.Replace("'", "''").Replace("\\", "\\\\") + "', '" + rate + "', '" + dcon_img.Replace("'", "''").Replace("\\", "\\\\") + "', '', N'未プレイ', N'" + DBVer + "' )"
+						CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + game_text.Replace("'", "''").Replace("\\", "\\\\") + "', '" + gamePath.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + executeCmd.Replace("'", "''").Replace("\\", "\\\\") + "', '" + imgPath.Replace("'", "''").Replace("\\", "\\\\") + "', '" + runTime + "', '" + startCount + "', '" + dcon_text.Replace("'", "''").Replace("\\", "\\\\") + "', '" + rate + "', '" + dcon_img.Replace("'", "''").Replace("\\", "\\\\") + "', '', '未プレイ', '" + DBVer + "' )"
 					};
 					cm.Connection = cn;
 
@@ -269,7 +270,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( N'" + game_text.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + gamePath.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + imgPath.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + runTime + "', N'" + startCount + "', N'" + dcon_text.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + rate + "', N'" + dcon_img.Replace("'", "''").Replace("\\", "\\\\") + "', '', N'未プレイ', N'" + DBVer + "' );"
+						CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + game_text.Replace("'", "''").Replace("\\", "\\\\") + "', '" + gamePath.Replace("'", "''").Replace("\\", "\\\\") + "', '" + executeCmd.Replace("'", "''").Replace("\\", "\\\\") + "', '" + imgPath.Replace("'", "''").Replace("\\", "\\\\") + "', '" + runTime + "', N'" + startCount + "', '" + dcon_text.Replace("'", "''").Replace("\\", "\\\\") + "', '" + rate + "', '" + dcon_img.Replace("'", "''").Replace("\\", "\\\\") + "', '', N'未プレイ', '" + DBVer + "' );"
 					};
 					cm.Connection = cn;
 
@@ -300,6 +301,7 @@ namespace glc_cs
 			{
 				titleText.Text = string.Empty;
 				exePathText.Text = string.Empty;
+				executeCmdText.Text = string.Empty;
 				imgPathText.Text = string.Empty;
 				dconText.Text = string.Empty;
 				dconImgText.Text = string.Empty;
