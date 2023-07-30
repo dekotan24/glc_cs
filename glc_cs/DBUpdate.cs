@@ -693,7 +693,7 @@ namespace glc_cs
 							case "1.1":
 								updateLog.AppendLine(v1_2.ToString());
 								updateRequired = true;
-								goto case "1.1";
+								goto case "1.2";
 
 							case "1.2":
 								updateLog.AppendLine(v1_3.ToString());

@@ -46,7 +46,7 @@ namespace glc_cs
 			// アップデートチェック
 			if (!(InitialUpdateCheckSkipFlg && InitialUpdateCheckSkipVer.Equals(AppVer)))
 			{
-				checkDBUpdate();
+				checkItemUpdate();
 			}
 
 			// アイテム読込
@@ -1789,9 +1789,9 @@ namespace glc_cs
 		}
 
 		/// <summary>
-		/// DBアップデートチェック用のSQL作成
+		/// アップデートチェック
 		/// </summary>
-		private void checkDBUpdate()
+		private void checkItemUpdate()
 		{
 			DialogResult dr = new DialogResult();
 			if (SaveType == "D")
@@ -1902,6 +1902,8 @@ namespace glc_cs
 			{
 				MessageBox.Show("登録ゲーム数が少ないため、ランダム選択できません！", AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
+
+			GC.Collect();
 		}
 
 		/// <summary>

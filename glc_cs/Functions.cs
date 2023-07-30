@@ -42,12 +42,12 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static readonly string appVer = "1.09";
+			protected static readonly string appVer = "1.09a";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appBuild = "37.23.07.29";
+			protected static readonly string appBuild = "38.23.07.30";
 
 			/// <summary>
 			/// データベースバージョン
@@ -1623,7 +1623,7 @@ namespace glc_cs
 										KeyNames.name,
 										KeyNames.imgpass,
 										KeyNames.pass,
-										KeyNames.time,
+										KeyNames.execute_cmd,
 										KeyNames.time,
 										KeyNames.start,
 										KeyNames.stat,
@@ -1640,6 +1640,7 @@ namespace glc_cs
 										reader["GAME_NAME"].ToString(),
 										reader["IMG_PATH"].ToString(),
 										reader["GAME_PATH"].ToString(),
+										reader["EXECUTE_CMD"].ToString(),
 										(string.IsNullOrEmpty(reader["UPTIME"].ToString()) ? "0" : reader["UPTIME"].ToString()),
 										(string.IsNullOrEmpty(reader["RUN_COUNT"].ToString()) ? "0" : reader["RUN_COUNT"].ToString()),
 										reader["DCON_TEXT"].ToString(),
@@ -1688,7 +1689,7 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 60,
-							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION "
+							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION "
 										+ " FROM " + dbTable
 						};
 						cm2.Connection = mcn;
@@ -1707,7 +1708,7 @@ namespace glc_cs
 										KeyNames.name,
 										KeyNames.imgpass,
 										KeyNames.pass,
-										KeyNames.time,
+										KeyNames.execute_cmd,
 										KeyNames.time,
 										KeyNames.start,
 										KeyNames.stat,
@@ -1724,6 +1725,7 @@ namespace glc_cs
 										reader["GAME_NAME"].ToString(),
 										reader["IMG_PATH"].ToString(),
 										reader["GAME_PATH"].ToString(),
+										reader["EXECUTE_CMD"].ToString(),
 										(string.IsNullOrEmpty(reader["UPTIME"].ToString()) ? "0" : reader["UPTIME"].ToString()),
 										(string.IsNullOrEmpty(reader["RUN_COUNT"].ToString()) ? "0" : reader["RUN_COUNT"].ToString()),
 										reader["DCON_TEXT"].ToString(),
@@ -1868,7 +1870,8 @@ namespace glc_cs
 									KeyNames.dcon_img,		// 9
 									KeyNames.memo,			// 10
 									KeyNames.status,		// 11
-									KeyNames.ini_version	// 12
+									KeyNames.ini_version,	// 12
+									KeyNames.execute_cmd	// 13
 								};
 								string[] failedVal =
 								{
@@ -1884,7 +1887,8 @@ namespace glc_cs
 									"",
 									"",
 									"未プレイ",
-									DBVer
+									DBVer,
+									""
 								};
 								string[] returnVal = new string[keyName.Length];
 
@@ -1905,7 +1909,7 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "' )"
+									CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "' )"
 								};
 								cm2.Connection = cn1;
 								cm2.Transaction = tran1;
@@ -1970,7 +1974,8 @@ namespace glc_cs
 									KeyNames.dcon_img,		// 9
 									KeyNames.memo,			// 10
 									KeyNames.status,		// 11
-									KeyNames.ini_version	// 12
+									KeyNames.ini_version,	// 12
+									KeyNames.execute_cmd	// 13
 								};
 								string[] failedVal =
 								{
@@ -1986,7 +1991,8 @@ namespace glc_cs
 									"",
 									"",
 									"未プレイ",
-									DBVer
+									DBVer,
+									""
 								};
 								string[] returnVal = new string[keyName.Length];
 
@@ -2007,7 +2013,7 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "' );"
+									CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "', '" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "' );"
 								};
 								mcm2.Connection = mcn1;
 								mcm2.Transaction = mtran1;
@@ -2125,7 +2131,8 @@ namespace glc_cs
 									KeyNames.dcon_img,		// 9
 									KeyNames.memo,			// 10
 									KeyNames.status,		// 11
-									KeyNames.ini_version	// 12
+									KeyNames.ini_version,	// 12
+									KeyNames.execute_cmd	// 13
 								};
 							string[] failedVal =
 							{
@@ -2141,7 +2148,8 @@ namespace glc_cs
 									"",
 									"",
 									"未プレイ",
-									DBVer
+									DBVer,
+									""
 								};
 							string[] returnVal = new string[keyName.Length];
 
@@ -2173,7 +2181,7 @@ namespace glc_cs
 							{
 								CommandType = CommandType.Text,
 								CommandTimeout = 30,
-								CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "' )"
+								CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "' )"
 							};
 							cm2.Connection = cn1;
 
@@ -2204,7 +2212,8 @@ namespace glc_cs
 									KeyNames.dcon_img,		// 9
 									KeyNames.memo,			// 10
 									KeyNames.status,		// 11
-									KeyNames.ini_version	// 12
+									KeyNames.ini_version,	// 12
+									KeyNames.execute_cmd	// 13
 								};
 							string[] failedVal =
 							{
@@ -2220,7 +2229,8 @@ namespace glc_cs
 									"",
 									"",
 									"未プレイ",
-									DBVer
+									DBVer,
+									""
 								};
 							string[] returnVal = new string[keyName.Length];
 
@@ -2252,7 +2262,7 @@ namespace glc_cs
 							{
 								CommandType = CommandType.Text,
 								CommandTimeout = 30,
-								CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "' )"
+								CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "' )"
 							};
 							mcm2.Connection = mcn1;
 
