@@ -42,17 +42,22 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static readonly string appVer = "1.09a";
+			protected static readonly string appVer = "1.09b";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appBuild = "38.23.07.30";
+			protected static readonly string appBuild = "39.23.08.01";
 
 			/// <summary>
 			/// データベースバージョン
 			/// </summary>
 			protected static readonly string dbVer = "1.3";
+
+			/// <summary>
+			/// ウィンドウ最小化ボタン表示フラグ
+			/// </summary>
+			protected static bool windowHideControlFlg = false;
 
 			/// <summary>
 			/// ゲームディレクトリ(作業ディレクトリ)
@@ -313,6 +318,15 @@ namespace glc_cs
 			public static string DBVer
 			{
 				get { return dbVer; }
+			}
+
+			/// <summary>
+			/// ウィンドウに最小化コントロールを表示するかのフラグです
+			/// </summary>
+			public static bool WindowHideControlFlg
+			{
+				get { return windowHideControlFlg; }
+				set { windowHideControlFlg = value; }
 			}
 
 			/// <summary>
@@ -880,6 +894,7 @@ namespace glc_cs
 					GridEnable = !Convert.ToBoolean(Convert.ToInt32(ReadIni("disable", "grid", "0")));
 					InitialUpdateCheckSkipFlg = Convert.ToBoolean(Convert.ToInt32(ReadIni("disable", "updchk", "0")));
 					InitialUpdateCheckSkipVer = ReadIni("disable", "updchkVer", string.Empty);
+					WindowHideControlFlg = Convert.ToBoolean(Convert.ToInt32(ReadIni("disable", "enableWindowHideControl", "0")));
 
 					// dcon設定
 					Dconnect = Convert.ToBoolean(Convert.ToInt32(ReadIni("checkbox", "dconnect", "0")));
@@ -942,7 +957,8 @@ namespace glc_cs
 							ans,
 							((uint)ans.Capacity),
 							fileName);
-						data[i] = ans.ToString().Replace("\\", "\\\\").Replace("'", "''");
+						// 逐語的文字列リテラルを使用して、replaceやエスケープを省略する
+						data[i] = $@"{ans}";
 					}
 					catch (Exception ex)
 					{
@@ -973,7 +989,7 @@ namespace glc_cs
 						ans,
 						((uint)ans.Capacity),
 						fileName);
-					data = ans.ToString().Replace("\\", "\\\\").Replace("'", "''");
+					data = $@"{ans}";
 				}
 				catch (Exception ex)
 				{
@@ -1005,7 +1021,7 @@ namespace glc_cs
 							ans,
 							((uint)ans.Capacity),
 							fileName);
-						data[i] = ans.ToString().Replace("\\", "\\\\").Replace("'", "''");
+						data[i] = $@"{ans}";
 					}
 					catch (Exception ex)
 					{
@@ -1046,7 +1062,7 @@ namespace glc_cs
 						WritePrivateProfileString(
 										sectionName,
 										keyArray[i].ToString(),
-										valueArray.ToString(),
+										valueArray[i].ToString(),
 										fileName);
 					}
 					catch (Exception ex)
@@ -1663,7 +1679,7 @@ namespace glc_cs
 					{
 						mcn.Open();
 
-						//全ゲーム数取得
+						// 全ゲーム数取得
 						MySqlCommand cm = new MySqlCommand()
 						{
 							CommandType = CommandType.Text,
@@ -1680,7 +1696,7 @@ namespace glc_cs
 						}
 						else
 						{
-							//ゲームが1つもない場合
+							// ゲームが1つもない場合
 							return true;
 						}
 
@@ -1745,14 +1761,18 @@ namespace glc_cs
 						}
 
 					}
-					// 退避ディレクトリを削除する
-					Directory.Delete(baseDir + "_temp_db_bak", true);
+
+					// 退避ディレクトリが存在する場合、削除する
+					if (Directory.Exists(baseDir + "_temp_db_bak"))
+					{
+						Directory.Delete(baseDir + "_temp_db_bak", true);
+					}
 				}
 				catch (Exception ex)
 				{
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "[ダウンロード処理] SaveType:" + saveType + " / MSSQL:" + cn.ConnectionString + " / MySQL:" + mcn.ConnectionString);
 
-					// 退避ディレクトリがある場合、ロールバック
+					// 退避ディレクトリが存在する場合、ロールバック
 					if (Directory.Exists(baseDir + "_temp_db_bak"))
 					{
 						if (Directory.Exists(targetWorkDir))

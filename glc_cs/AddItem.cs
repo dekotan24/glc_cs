@@ -235,15 +235,28 @@ namespace glc_cs
 				// database
 				if (SaveType == "D")
 				{
+					// 接続情報
 					SqlConnection cn = SqlCon;
 					SqlCommand cm;
 					cm = new SqlCommand()
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + game_text.Replace("'", "''").Replace("\\", "\\\\") + "', '" + gamePath.Replace("'", "''").Replace("\\", "\\\\") + "', N'" + executeCmd.Replace("'", "''").Replace("\\", "\\\\") + "', '" + imgPath.Replace("'", "''").Replace("\\", "\\\\") + "', '" + runTime + "', '" + startCount + "', '" + dcon_text.Replace("'", "''").Replace("\\", "\\\\") + "', '" + rate + "', '" + dcon_img.Replace("'", "''").Replace("\\", "\\\\") + "', '', '未プレイ', '" + DBVer + "' )"
+						// SQL文
+						CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( @game_name, @game_path, @execute_cmd, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @dcon_img, '', '未プレイ', @db_version )"
 					};
 					cm.Connection = cn;
+					// パラメータの設定
+					cm.Parameters.AddWithValue("@game_name", game_text);
+					cm.Parameters.AddWithValue("@game_path", gamePath);
+					cm.Parameters.AddWithValue("@execute_cmd", executeCmd);
+					cm.Parameters.AddWithValue("@img_path", imgPath);
+					cm.Parameters.AddWithValue("@uptime", runTime);
+					cm.Parameters.AddWithValue("@run_count", startCount);
+					cm.Parameters.AddWithValue("@dcon_text", dcon_text);
+					cm.Parameters.AddWithValue("@age_flg", rate);
+					cm.Parameters.AddWithValue("@dcon_img", dcon_img);
+					cm.Parameters.AddWithValue("@db_version", DBVer);
 
 					try
 					{
@@ -264,15 +277,28 @@ namespace glc_cs
 				}
 				else
 				{
+					// 接続情報
 					MySqlConnection cn = SqlCon2;
 					MySqlCommand cm;
 					cm = new MySqlCommand()
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + game_text.Replace("'", "''").Replace("\\", "\\\\") + "', '" + gamePath.Replace("'", "''").Replace("\\", "\\\\") + "', '" + executeCmd.Replace("'", "''").Replace("\\", "\\\\") + "', '" + imgPath.Replace("'", "''").Replace("\\", "\\\\") + "', '" + runTime + "', N'" + startCount + "', '" + dcon_text.Replace("'", "''").Replace("\\", "\\\\") + "', '" + rate + "', '" + dcon_img.Replace("'", "''").Replace("\\", "\\\\") + "', '', N'未プレイ', '" + DBVer + "' );"
+						// SQL文
+						CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( @game_name, @game_path, @execute_cmd, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @dcon_img, '', N'未プレイ', @db_version );"
 					};
 					cm.Connection = cn;
+					// パラメータの設定
+					cm.Parameters.AddWithValue("@game_name", game_text);
+					cm.Parameters.AddWithValue("@game_path", gamePath);
+					cm.Parameters.AddWithValue("@execute_cmd", executeCmd);
+					cm.Parameters.AddWithValue("@img_path", imgPath);
+					cm.Parameters.AddWithValue("@uptime", runTime);
+					cm.Parameters.AddWithValue("@run_count", startCount);
+					cm.Parameters.AddWithValue("@dcon_text", dcon_text);
+					cm.Parameters.AddWithValue("@age_flg", rate);
+					cm.Parameters.AddWithValue("@dcon_img", dcon_img);
+					cm.Parameters.AddWithValue("@db_version", DBVer);
 
 					try
 					{

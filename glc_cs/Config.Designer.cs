@@ -47,7 +47,7 @@
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage7 = new System.Windows.Forms.TabPage();
 			this.groupBox16 = new System.Windows.Forms.GroupBox();
-			this.label7 = new System.Windows.Forms.Label();
+			this.enableWindowHideControlCheck = new System.Windows.Forms.CheckBox();
 			this.updateCheckDisableCheck = new System.Windows.Forms.CheckBox();
 			this.groupBox14 = new System.Windows.Forms.GroupBox();
 			this.gridDisableCheck = new System.Windows.Forms.CheckBox();
@@ -210,9 +210,10 @@
 			// dconEnableCheck
 			// 
 			this.dconEnableCheck.AutoSize = true;
+			this.dconEnableCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.dconEnableCheck.Location = new System.Drawing.Point(25, 30);
 			this.dconEnableCheck.Name = "dconEnableCheck";
-			this.dconEnableCheck.Size = new System.Drawing.Size(233, 20);
+			this.dconEnableCheck.Size = new System.Drawing.Size(220, 19);
 			this.dconEnableCheck.TabIndex = 0;
 			this.dconEnableCheck.Text = "Discordに実行中のゲームを表示";
 			this.toolTip1.SetToolTip(this.dconEnableCheck, "「ゲームをトラッキング」が有効の場合のみ動作します");
@@ -356,34 +357,36 @@
 			// 
 			// groupBox16
 			// 
-			this.groupBox16.Controls.Add(this.label7);
+			this.groupBox16.Controls.Add(this.enableWindowHideControlCheck);
 			this.groupBox16.Controls.Add(this.updateCheckDisableCheck);
 			this.groupBox16.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox16.Location = new System.Drawing.Point(6, 168);
 			this.groupBox16.Name = "groupBox16";
-			this.groupBox16.Size = new System.Drawing.Size(469, 78);
+			this.groupBox16.Size = new System.Drawing.Size(469, 85);
 			this.groupBox16.TabIndex = 5;
 			this.groupBox16.TabStop = false;
-			this.groupBox16.Text = "INI／DBアップデートチェック";
+			this.groupBox16.Text = "システム";
 			// 
-			// label7
+			// enableWindowHideControlCheck
 			// 
-			this.label7.AutoSize = true;
-			this.label7.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label7.Location = new System.Drawing.Point(18, 52);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(429, 15);
-			this.label7.TabIndex = 4;
-			this.label7.Text = "※予期せぬ動作を行う可能性があるため、不正に使用しないでください。";
+			this.enableWindowHideControlCheck.AutoSize = true;
+			this.enableWindowHideControlCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.enableWindowHideControlCheck.Location = new System.Drawing.Point(25, 50);
+			this.enableWindowHideControlCheck.Name = "enableWindowHideControlCheck";
+			this.enableWindowHideControlCheck.Size = new System.Drawing.Size(288, 19);
+			this.enableWindowHideControlCheck.TabIndex = 5;
+			this.enableWindowHideControlCheck.Text = "ランチャーウィンドウに最小化ボタンを表示する";
+			this.enableWindowHideControlCheck.UseVisualStyleBackColor = true;
 			// 
 			// updateCheckDisableCheck
 			// 
 			this.updateCheckDisableCheck.AutoSize = true;
+			this.updateCheckDisableCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.updateCheckDisableCheck.Location = new System.Drawing.Point(25, 25);
 			this.updateCheckDisableCheck.Name = "updateCheckDisableCheck";
-			this.updateCheckDisableCheck.Size = new System.Drawing.Size(212, 20);
+			this.updateCheckDisableCheck.Size = new System.Drawing.Size(267, 19);
 			this.updateCheckDisableCheck.TabIndex = 5;
-			this.updateCheckDisableCheck.Text = "次のバージョンまでスキップする";
+			this.updateCheckDisableCheck.Text = "起動時のアップデートチェックをスキップする";
 			this.updateCheckDisableCheck.UseVisualStyleBackColor = true;
 			this.updateCheckDisableCheck.CheckedChanged += new System.EventHandler(this.updateCheckDisableCheck_CheckedChanged);
 			// 
@@ -402,9 +405,10 @@
 			// gridDisableCheck
 			// 
 			this.gridDisableCheck.AutoSize = true;
+			this.gridDisableCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.gridDisableCheck.Location = new System.Drawing.Point(25, 25);
 			this.gridDisableCheck.Name = "gridDisableCheck";
-			this.gridDisableCheck.Size = new System.Drawing.Size(128, 20);
+			this.gridDisableCheck.Size = new System.Drawing.Size(123, 19);
 			this.gridDisableCheck.TabIndex = 3;
 			this.gridDisableCheck.Text = "グリッドを無効化";
 			this.gridDisableCheck.UseVisualStyleBackColor = true;
@@ -611,9 +615,10 @@
 			// RoGCheck
 			// 
 			this.RoGCheck.AutoSize = true;
+			this.RoGCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.RoGCheck.Location = new System.Drawing.Point(25, 57);
 			this.RoGCheck.Name = "RoGCheck";
-			this.RoGCheck.Size = new System.Drawing.Size(169, 20);
+			this.RoGCheck.Size = new System.Drawing.Size(158, 19);
 			this.RoGCheck.TabIndex = 14;
 			this.RoGCheck.Text = "オフラインデータ取得時";
 			this.RoGCheck.UseVisualStyleBackColor = true;
@@ -621,9 +626,10 @@
 			// RoSCheck
 			// 
 			this.RoSCheck.AutoSize = true;
+			this.RoSCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.RoSCheck.Location = new System.Drawing.Point(280, 30);
 			this.RoSCheck.Name = "RoSCheck";
-			this.RoSCheck.Size = new System.Drawing.Size(177, 20);
+			this.RoSCheck.Size = new System.Drawing.Size(167, 19);
 			this.RoSCheck.TabIndex = 13;
 			this.RoSCheck.Text = "ゲーム起動時／終了時";
 			this.RoSCheck.UseVisualStyleBackColor = true;
@@ -631,9 +637,10 @@
 			// RoWCheck
 			// 
 			this.RoWCheck.AutoSize = true;
+			this.RoWCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.RoWCheck.Location = new System.Drawing.Point(25, 30);
 			this.RoWCheck.Name = "RoWCheck";
-			this.RoWCheck.Size = new System.Drawing.Size(198, 20);
+			this.RoWCheck.Size = new System.Drawing.Size(186, 19);
 			this.RoWCheck.TabIndex = 12;
 			this.RoWCheck.Text = "ランチャー起動時／終了時";
 			this.RoWCheck.UseVisualStyleBackColor = true;
@@ -759,9 +766,10 @@
 			// bouyomiEnableCheck
 			// 
 			this.bouyomiEnableCheck.AutoSize = true;
+			this.bouyomiEnableCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.bouyomiEnableCheck.Location = new System.Drawing.Point(25, 30);
 			this.bouyomiEnableCheck.Name = "bouyomiEnableCheck";
-			this.bouyomiEnableCheck.Size = new System.Drawing.Size(192, 20);
+			this.bouyomiEnableCheck.Size = new System.Drawing.Size(180, 19);
 			this.bouyomiEnableCheck.TabIndex = 0;
 			this.bouyomiEnableCheck.Text = "棒読みちゃんで読み上げる";
 			this.bouyomiEnableCheck.UseVisualStyleBackColor = true;
@@ -1705,6 +1713,6 @@
 		private System.Windows.Forms.Label label31;
 		private System.Windows.Forms.GroupBox groupBox16;
 		private System.Windows.Forms.CheckBox updateCheckDisableCheck;
-		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.CheckBox enableWindowHideControlCheck;
 	}
 }

@@ -42,7 +42,12 @@ namespace glc_cs
 
 			// 設定ファイル読込
 			updateComponent();
-			
+
+			if (WindowHideControlFlg)
+			{
+				this.MinimizeBox = true;
+			}
+
 			// アップデートチェック
 			if (!(InitialUpdateCheckSkipFlg && InitialUpdateCheckSkipVer.Equals(AppVer)))
 			{
@@ -754,6 +759,7 @@ namespace glc_cs
 						if (minCheck.Checked == true)
 						{
 							this.WindowState = FormWindowState.Minimized;
+							this.ShowInTaskbar = false;
 							this.notifyIcon1.Visible = true;
 						}
 
@@ -764,6 +770,8 @@ namespace glc_cs
 						// 起動中gifの可視化
 						pictureBox11.Visible = true;
 						startButton.Enabled = false;
+
+						Application.DoEvents();
 
 						// ゲーム実行
 						System.Diagnostics.Process p =
@@ -783,8 +791,9 @@ namespace glc_cs
 
 						if (minCheck.Checked == true)
 						{
-							this.WindowState = FormWindowState.Normal;
 							this.notifyIcon1.Visible = false;
+							this.WindowState = FormWindowState.Normal;
+							this.ShowInTaskbar = true;
 						}
 
 						// 子プロセスの終了
@@ -955,7 +964,6 @@ namespace glc_cs
 									}
 								}
 							}
-
 
 							gameList_SelectedIndexChanged(sender, e);
 						}
@@ -2290,6 +2298,7 @@ namespace glc_cs
 			string beforeWorkDir = BaseDir;
 			string beforeSaveType = SaveType;
 			bool beforeGridEnabled = GridEnable;
+			bool beforeWindowMinimunEnabled = WindowHideControlFlg;
 
 			ConfigForm.StartPosition = FormStartPosition.CenterParent;
 			ConfigForm.ShowDialog(this);
@@ -2298,6 +2307,7 @@ namespace glc_cs
 			string afterWorkDir = BaseDir;
 			string afterSaveType = SaveType;
 			bool afterGridEnabled = GridEnable;
+			bool afterWindowMinimunEnabled = WindowHideControlFlg;
 
 			if (beforeWorkDir != afterWorkDir)
 			{
@@ -2309,7 +2319,7 @@ namespace glc_cs
 				MessageBox.Show("データの保存方法が変更されました。\nGame Launcherを再起動してください。\n\nOKを押してGame Launcherを終了します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				ExitApp(!OfflineSave);
 			}
-			else if (beforeGridEnabled != afterGridEnabled)
+			else if ((beforeGridEnabled != afterGridEnabled) || (beforeWindowMinimunEnabled != afterWindowMinimunEnabled))
 			{
 				MessageBox.Show("UIに関する設定が変更されました。\nGame Launcherを再起動してください。\n\nOKを押してGame Launcherを終了します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				ExitApp(!OfflineSave);
@@ -2585,7 +2595,7 @@ namespace glc_cs
 		{
 			try
 			{
-				process.Kill();
+				process.Close();
 				return true;
 			}
 			catch (Exception ex)
@@ -2666,7 +2676,7 @@ namespace glc_cs
 				Bouyomiage("ゲームランチャーを終了しました。");
 			}
 
-			Environment.Exit(0);
+			Application.Exit();
 		}
 
 		/// <summary>
