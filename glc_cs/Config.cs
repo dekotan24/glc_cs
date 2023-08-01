@@ -49,6 +49,9 @@ namespace glc_cs
 				updateCheckDisableCheck.Checked = false;
 			}
 
+			// 最小化コントロール
+			enableWindowHideControlCheck.Checked = WindowHideControlFlg;
+
 			// Discord設定読み込み
 			bool dconActive = Dconnect;
 			dconAppIDText.Text = DconAppID;
@@ -235,10 +238,11 @@ namespace glc_cs
 			WriteIni("imgd", "bgimg", backgroundImageText.Text.Trim());
 			WriteIni("disable", "grid", gridDisableCheck.Checked ? "1" : "0");
 			WriteIni("disable", "updchk", updateCheckDisableCheck.Checked ? "1" : "0");
-			if (updateCheckDisableCheck.Checked)
+			if (updateCheckDisableCheck.Checked && !InitialUpdateCheckSkipVer.Equals(AppVer))
 			{
 				WriteIni("disable", "updchkVer", AppVer);
 			}
+			WriteIni("disable", "enableWindowHideControl", enableWindowHideControlCheck.Checked ? "1" : "0");
 
 			// 保存方法
 			WriteIni("general", "save", radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I");
@@ -277,6 +281,7 @@ namespace glc_cs
 			{
 				if (radioButton9.Checked || radioButton5.Checked)
 				{
+					string oldButtonText = saveButton.Text;
 					saveButton.Enabled = false;
 					saveButton.Text = "データ取得中…";
 					Application.DoEvents();
@@ -300,7 +305,7 @@ namespace glc_cs
 						WriteIni("list", "dbupdate", "0", 0, LocalPath);
 					}
 					saveButton.Enabled = true;
-					saveButton.Text = "適用して閉じる";
+					saveButton.Text = oldButtonText;
 				}
 			}
 			Close();
@@ -1175,6 +1180,12 @@ namespace glc_cs
 				}
 			}
 
+			// ボタンテキストを反映
+			string oldButtonText = dbBackupButton.Text;
+			dbBackupButton.Text = "取得中…";
+			dbBackupButton.Enabled = false;
+			Application.DoEvents();
+
 			DbUrl = urlText.Text.Trim();
 			DbPort = portText.Text.Trim();
 			DbName = dbText.Text.Trim();
@@ -1183,7 +1194,7 @@ namespace glc_cs
 			DbPass = pwText.Text.Trim();
 			SaveType = radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I";
 
-			string backupPath = (BaseDir.EndsWith("\\") ? BaseDir : BaseDir + "\\") + "database_backup(" + (DateTime.Now).ToString().Replace("/", "_").Replace(":", "_") + ")\\";
+			string backupPath = (BaseDir.EndsWith("\\") ? BaseDir : BaseDir + "\\") + "database_backup(" + (DateTime.Now).ToString().Replace("/", "_").Replace(":", "_").Replace(" ", "_") + ")\\";
 			bool returnVal = downloadDbDataToLocal(backupPath);
 
 			if (returnVal)
@@ -1194,6 +1205,9 @@ namespace glc_cs
 			{
 				MessageBox.Show("エラーが発生しました。\n詳細はエラーログをご覧下さい。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
+
+			dbBackupButton.Text = oldButtonText;
+			dbBackupButton.Enabled = true;
 		}
 
 		private void checkBox8_CheckedChanged(object sender, EventArgs e)
@@ -1558,7 +1572,7 @@ namespace glc_cs
 		{
 			if (updateCheckDisableCheck.Checked && updateCheckDisableCheck.Focused)
 			{
-				MessageBox.Show("これは毎起動時に行われるアップデートチェックによる負荷軽減のための機能です。\n\n※※※警告※※※\n将来バージョンのアップデートをiniファイルの値を直接書き換えて回避する等、本機能を不正に使用した場合に発生する いかなる損害・損失は一切責任を負いません。\n\nこのまま[適用]すると、次のバージョンまでアップデートチェックをスキップします。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("これは毎起動時に行われるアップデートチェックによる負荷軽減のための機能です。\n\n※※※警告※※※\n将来バージョンのアップデートをiniファイルの値を直接書き換えて回避する等、本機能を不正に使用した場合に発生する いかなる損害・損失は一切責任を負いません。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 		}
 	}

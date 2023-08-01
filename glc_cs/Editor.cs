@@ -254,17 +254,27 @@ namespace glc_cs
 					CommandText = @"SELECT GAME_NAME FROM " + DbName + "." + DbTable
 									+ " WHERE ID = " + label9.Text.Trim()
 				};
-
 				cm2.Connection = con;
 
 				cm = new SqlCommand()
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET GAME_NAME = N'" + titleText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', GAME_PATH = N'" + exePathText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', IMG_PATH = N'" + imgPathText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', UPTIME = N'" + runTimeText.Value + "', RUN_COUNT = N'" + startCountText.Value + "', DCON_TEXT = N'" + dconText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', AGE_FLG = N'" + (rateCheck.Checked ? "1" : "0") + "', DCON_IMG = N'" + dconImgText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', EXECUTE_CMD = N'" + executeCmdText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "' "
-									+ "WHERE ID = " + label9.Text.Trim()
+					// SQL文
+					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET GAME_NAME = @game_name, GAME_PATH = @game_path, IMG_PATH = @img_path, UPTIME = @uptime, RUN_COUNT = @run_count, DCON_TEXT = @dcon_text, AGE_FLG = @age_flg, DCON_IMG = @dcon_img, EXECUTE_CMD = @execute_cmd "
+								+ "WHERE ID = @id"
 				};
-
+				// パラメータの設定
+				cm.Parameters.AddWithValue("@game_name", titleText.Text.Trim());
+				cm.Parameters.AddWithValue("@game_path", exePathText.Text.Trim());
+				cm.Parameters.AddWithValue("@img_path", imgPathText.Text.Trim());
+				cm.Parameters.AddWithValue("@uptime", runTimeText.Value);
+				cm.Parameters.AddWithValue("@run_count", startCountText.Value);
+				cm.Parameters.AddWithValue("@dcon_text", dconText.Text.Trim());
+				cm.Parameters.AddWithValue("@age_flg", (rateCheck.Checked ? "1" : "0"));
+				cm.Parameters.AddWithValue("@dcon_img", dconImgText.Text.Trim());
+				cm.Parameters.AddWithValue("@execute_cmd", executeCmdText.Text.Trim());
+				cm.Parameters.AddWithValue("@id", label9.Text.Trim());
 				cm.Connection = con;
 
 				try
@@ -323,9 +333,21 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"UPDATE " + DbTable + " SET GAME_NAME = N'" + titleText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', GAME_PATH = N'" + exePathText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', IMG_PATH = N'" + imgPathText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', UPTIME = N'" + runTimeText.Value + "', RUN_COUNT = N'" + startCountText.Value + "', DCON_TEXT = N'" + dconText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', AGE_FLG = N'" + (rateCheck.Checked ? "1" : "0") + "', DCON_IMG = N'" + dconImgText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "', EXECUTE_CMD = N'" + executeCmdText.Text.Trim().Replace("'", "''").Replace("\\", "\\\\") + "' "
-									+ "WHERE ID = " + label9.Text.Trim()
+					// SQL文
+					CommandText = @"UPDATE " + DbTable + " SET GAME_NAME = @game_name, GAME_PATH = @game_path, IMG_PATH = @img_path, UPTIME = @uptime, RUN_COUNT = @run_count, DCON_TEXT = @dcon_text, AGE_FLG = @age_flg, DCON_IMG = @dcon_img, EXECUTE_CMD = @execute_cmd "
+												+ "WHERE ID = @id"
 				};
+				// パラメータの設定
+				cm.Parameters.AddWithValue("@game_name", titleText.Text.Trim());
+				cm.Parameters.AddWithValue("@game_path", exePathText.Text.Trim());
+				cm.Parameters.AddWithValue("@img_path", imgPathText.Text.Trim());
+				cm.Parameters.AddWithValue("@uptime", runTimeText.Value);
+				cm.Parameters.AddWithValue("@run_count", startCountText.Value);
+				cm.Parameters.AddWithValue("@dcon_text", dconText.Text.Trim());
+				cm.Parameters.AddWithValue("@age_flg", (rateCheck.Checked ? "1" : "0"));
+				cm.Parameters.AddWithValue("@dcon_img", dconImgText.Text.Trim());
+				cm.Parameters.AddWithValue("@execute_cmd", executeCmdText.Text.Trim());
+				cm.Parameters.AddWithValue("@id", label9.Text.Trim());
 
 				cm.Connection = con2;
 

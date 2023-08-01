@@ -157,6 +157,7 @@
 			this.gameTitleLabel.Size = new System.Drawing.Size(105, 13);
 			this.gameTitleLabel.TabIndex = 9;
 			this.gameTitleLabel.Text = "GameTitleLabel";
+			this.gameTitleLabel.UseMnemonic = false;
 			// 
 			// button3
 			// 

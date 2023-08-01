@@ -20,13 +20,14 @@
             base.Dispose(disposing);
         }
 
-        #region Windows フォーム デザイナーで生成されたコード
 
-        /// <summary>
-        /// デザイナー サポートに必要なメソッドです。このメソッドの内容を
-        /// コード エディターで変更しないでください。
-        /// </summary>
-        private void InitializeComponent()
+		#region Windows フォーム デザイナーで生成されたコード
+
+		/// <summary>
+		/// デザイナー サポートに必要なメソッドです。このメソッドの内容を
+		/// コード エディターで変更しないでください。
+		/// </summary>
+		private void InitializeComponent()
         {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(gl));
@@ -158,6 +159,7 @@
 			resources.ApplyResources(this.titleLabel, "titleLabel");
 			this.titleLabel.BackColor = System.Drawing.Color.Transparent;
 			this.titleLabel.Name = "titleLabel";
+			this.titleLabel.UseMnemonic = false;
 			this.titleLabel.DoubleClick += new System.EventHandler(this.copySelectedGameTitle);
 			// 
 			// startButton

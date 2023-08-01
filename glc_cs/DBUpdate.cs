@@ -1262,6 +1262,11 @@ namespace glc_cs
 			if (updateStatus == 1)
 			{
 				// アップデート完了
+				if (InitialUpdateCheckSkipFlg)
+				{
+					WriteIni("disable", "updchkVer", AppVer);
+				}
+
 				MessageBox.Show("アップデートが完了しました！（" + latestVersion + "）", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				this.DialogResult = DialogResult.OK;
 			}

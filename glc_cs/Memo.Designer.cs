@@ -116,6 +116,7 @@
 			this.gameTitleLabel.Size = new System.Drawing.Size(105, 13);
 			this.gameTitleLabel.TabIndex = 28;
 			this.gameTitleLabel.Text = "GameTitleLabel";
+			this.gameTitleLabel.UseMnemonic = false;
 			// 
 			// gameImage
 			// 
