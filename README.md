@@ -1,8 +1,7 @@
-# glc_cs
-Game Launcher C# Edition
+# Game Launcher C# Edition
 
 
-## About
+## 概要
 Game LauncherのC#移植版です。<br>
 趣味と勉強で開発しているので、ガバガバなところもあるかもしれません。<br>
 データベースの設定方法は[Wiki](https://github.com/dekotan24/glc_cs/wiki)をご覧ください。
