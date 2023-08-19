@@ -33,24 +33,31 @@ namespace glc_cs
 			// バージョン取得
 			label10.Text = "Ver." + AppVer + " Build " + AppBuild;
 
+			// [全般]タブ
 			// 背景画像
 			backgroundImageText.Text = BgImg;
-
-			// グリッド
+			// グリッド無効化
 			gridDisableCheck.Checked = !GridEnable;
-
-			// アップデートスキップ
-			if (InitialUpdateCheckSkipVer.Equals(AppVer))
-			{
-				updateCheckDisableCheck.Checked = InitialUpdateCheckSkipFlg;
-			}
-			else
-			{
-				updateCheckDisableCheck.Checked = false;
-			}
-
-			// 最小化コントロール
+			// アップデートフラグ
+			updateCheckDisableCheck.Checked = InitialUpdateCheckSkipFlg;
+			// 最小化コントロール表示フラグ
 			enableWindowHideControlCheck.Checked = WindowHideControlFlg;
+			// グリッドサイズ固定フラグ
+			fixGridSizeCheck.Checked = FixGridSizeFlg;
+			// グリッドサイズ値
+			switch (FixGridSize)
+			{
+				case 8:
+					fixGridSize8.Checked = true;
+					break;
+				case 64:
+					fixGridSize64.Checked = true;
+					break;
+				case 32:
+				default:
+					fixGridSize32.Checked = true;
+					break;
+			}
 
 			// Discord設定読み込み
 			bool dconActive = Dconnect;
@@ -121,7 +128,7 @@ namespace glc_cs
 			RoSCheck.Checked = ByRoS;
 			RoGCheck.Checked = ByRoG;
 
-			// 保存方法
+			// [保存方法]
 			if (SaveType == "I")
 			{
 				radioButton8.Checked = true;
@@ -160,7 +167,8 @@ namespace glc_cs
 			userText.Text = DbUser;
 			pwText.Text = DbPass;
 
-			checkBox8.Checked = OfflineSave;
+			offlineSaveEnableCheck.Checked = OfflineSave;
+			useLocalDBCheck.Checked = UseLocalDB;
 
 			// スーパーモード
 			// ドロップダウン既定値設定
@@ -199,7 +207,7 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void saveButton_Click(object sender, EventArgs e)
 		{
-			string offlineSaveTypeOld = ReadIni("general", "OfflineSave", checkBox8.Checked ? "1" : "0");
+			string offlineSaveTypeOld = ReadIni("general", "OfflineSave", offlineSaveEnableCheck.Checked ? "1" : "0");
 			bool canExit = true;
 			if (radioButton9.Checked || radioButton5.Checked)
 			{
@@ -243,10 +251,13 @@ namespace glc_cs
 				WriteIni("disable", "updchkVer", AppVer);
 			}
 			WriteIni("disable", "enableWindowHideControl", enableWindowHideControlCheck.Checked ? "1" : "0");
+			WriteIni("grid", "fixGridSizeFlg", fixGridSizeCheck.Checked ? "1" : "0");
+			WriteIni("grid", "fixGridSize", (fixGridSize8.Checked ? "8" : (fixGridSize64.Checked ? "64" : "32")));
 
 			// 保存方法
 			WriteIni("general", "save", radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I");
-			WriteIni("general", "OfflineSave", checkBox8.Checked ? "1" : "0");
+			WriteIni("general", "OfflineSave", offlineSaveEnableCheck.Checked ? "1" : "0");
+			WriteIni("general", "UseLocalDB", useLocalDBCheck.Checked ? "1" : "0");
 			WriteIni("connect", "DBURL", urlText.Text.Trim());
 			WriteIni("connect", "DBPort", portText.Text.Trim());
 			WriteIni("connect", "DbName", dbText.Text.Trim());
@@ -277,7 +288,7 @@ namespace glc_cs
 			WriteIni("connect", "byRoG", RoGCheck.Checked ? "1" : "0");
 
 			// データベースをローカルにINIで保存する
-			if (checkBox8.Checked)
+			if (offlineSaveEnableCheck.Checked && saveWithDownloadCheck.Checked)
 			{
 				if (radioButton9.Checked || radioButton5.Checked)
 				{
@@ -817,12 +828,15 @@ namespace glc_cs
 			label22.Enabled = !controlVal;
 			pwText.Enabled = !controlVal;
 			createTableButton.Enabled = !controlVal;
-			checkBox8.Enabled = !controlVal;
+			offlineSaveEnableCheck.Enabled = !controlVal;
+			useLocalDBCheck.Enabled = !controlVal;
+			saveWithDownloadCheck.Enabled = !controlVal;
 			dbBackupButton.Enabled = !controlVal;
 
 			groupBox7.Enabled = controlVal;
 			groupBox12.Enabled = !controlVal;
 			dbOverflowFixButton.Enabled = !controlVal;
+			saveWithDownloadCheck.Enabled = !controlVal;
 		}
 
 		private void iniAutoNumberingFixButton_Click(object sender, EventArgs e)
@@ -1212,10 +1226,19 @@ namespace glc_cs
 
 		private void checkBox8_CheckedChanged(object sender, EventArgs e)
 		{
-			if (checkBox8.Checked && checkBox8.Focused)
+			if (offlineSaveEnableCheck.Checked && offlineSaveEnableCheck.Focused)
 			{
 				// オフライン保存有効時にダイアログを表示
-				MessageBox.Show("[オフラインに保存]を有効にすると、以下のタイミングで自動的にDBのバックアップが取得されます。\n\n・設定画面の[適用して閉じる]を押した時\n・アプリケーションを終了する時\n\nバックアップの保存先：" + BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\" + "\n\nまた、バックアップの取得に時間がかかる場合があります。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("[" + offlineSaveEnableCheck.Text + "]を有効にすると、以下のタイミングで自動的にDBのバックアップが取得されます。\n\n・設定画面の[" + saveButton.Text + "]を押した時\n・アプリケーションを終了する時\n\nバックアップの保存先：" + BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\" + "\n\nまた、バックアップの取得に時間がかかる場合があります。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+			if (offlineSaveEnableCheck.Checked)
+			{
+				saveWithDownloadCheck.Visible = true;
+				saveWithDownloadCheck.Checked = true;
+			}
+			else
+			{
+				saveWithDownloadCheck.Visible = false;
 			}
 		}
 
@@ -1573,6 +1596,38 @@ namespace glc_cs
 			if (updateCheckDisableCheck.Checked && updateCheckDisableCheck.Focused)
 			{
 				MessageBox.Show("これは毎起動時に行われるアップデートチェックによる負荷軽減のための機能です。\n\n※※※警告※※※\n将来バージョンのアップデートをiniファイルの値を直接書き換えて回避する等、本機能を不正に使用した場合に発生する いかなる損害・損失は一切責任を負いません。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
+		}
+
+		private void fixGridSize_CheckedChanged(object sender, EventArgs e)
+		{
+			if (fixGridSizeCheck.Checked)
+			{
+				fixGridSize8.Enabled = fixGridSize32.Enabled = fixGridSize64.Enabled = true;
+			}
+			else
+			{
+				fixGridSize8.Enabled = fixGridSize32.Enabled = fixGridSize64.Enabled = false;
+			}
+		}
+
+		private void gridDisableCheck_CheckedChanged(object sender, EventArgs e)
+		{
+			if (gridDisableCheck.Checked)
+			{
+				fixGridSizeCheck.Enabled = false;
+				if (fixGridSizeCheck.Checked)
+				{
+					fixGridSize8.Enabled = fixGridSize32.Enabled = fixGridSize64.Enabled = false;
+				}
+			}
+			else
+			{
+				fixGridSizeCheck.Enabled = true;
+				if (fixGridSizeCheck.Checked)
+				{
+					fixGridSize8.Enabled = fixGridSize32.Enabled = fixGridSize64.Enabled = true;
+				}
 			}
 		}
 	}

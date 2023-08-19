@@ -113,6 +113,8 @@ namespace glc_cs
 								MessageBoxButtons.OK,
 								MessageBoxIcon.Information);
 			}
+
+			IsFirstLoad = false;
 		}
 		/// <summary>
 		/// ゲームリストの読み込み
@@ -123,9 +125,9 @@ namespace glc_cs
 		{
 			gameList.Items.Clear();
 			gameImgList.Items.Clear();
-			imageList0.Images.Clear();
-			imageList1.Images.Clear();
-			imageList2.Images.Clear();
+			imageList8.Images.Clear();
+			imageList32.Images.Clear();
+			imageList64.Images.Clear();
 
 			// 全ゲーム数取得
 			if (File.Exists(GameIni))
@@ -186,9 +188,9 @@ namespace glc_cs
 							lvimg = Properties.Resources.exe;
 						}
 
-						imageList0.Images.Add(count.ToString(), lvimg);
-						imageList1.Images.Add(count.ToString(), lvimg);
-						imageList2.Images.Add(count.ToString(), lvimg);
+						imageList8.Images.Add(count.ToString(), lvimg);
+						imageList32.Images.Add(count.ToString(), lvimg);
+						imageList64.Images.Add(count.ToString(), lvimg);
 
 						lvi = new ListViewItem(IniRead(readini, "game", KeyNames.name, string.Empty));
 						lvi.ImageIndex = (count - 1);
@@ -218,6 +220,13 @@ namespace glc_cs
 				}
 			}
 
+			if (IsFirstLoad)
+			{
+				// グリッド画像最大値の設定
+				setGridImgSizeChangeBar();
+			}
+
+			GC.Collect();
 			Application.DoEvents();
 			return ans;
 		}
@@ -235,9 +244,9 @@ namespace glc_cs
 			gameList.Items.Clear();
 			searchResultList.Items.Clear();
 			gameImgList.Items.Clear();
-			imageList0.Images.Clear();
-			imageList1.Images.Clear();
-			imageList2.Images.Clear();
+			imageList8.Images.Clear();
+			imageList32.Images.Clear();
+			imageList64.Images.Clear();
 
 			searchText.Text = string.Empty;
 			searchingText.Text = string.Empty;
@@ -321,9 +330,9 @@ namespace glc_cs
 								lvimg = Properties.Resources.exe;
 							}
 
-							imageList0.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
-							imageList1.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
-							imageList2.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList8.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList32.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList64.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
 
 							lvi = new ListViewItem(reader["GAME_NAME"].ToString());
 							lvi.ImageIndex = (Convert.ToInt32(reader["ROW_CNT"]) - 1);
@@ -434,6 +443,14 @@ namespace glc_cs
 					}
 				}
 			}
+
+			if (IsFirstLoad)
+			{
+				// グリッド画像最大値の設定
+				setGridImgSizeChangeBar();
+			}
+
+			GC.Collect();
 			Application.DoEvents();
 			return ans;
 		}
@@ -451,9 +468,9 @@ namespace glc_cs
 			gameList.Items.Clear();
 			searchResultList.Items.Clear();
 			gameImgList.Items.Clear();
-			imageList0.Images.Clear();
-			imageList1.Images.Clear();
-			imageList2.Images.Clear();
+			imageList8.Images.Clear();
+			imageList32.Images.Clear();
+			imageList64.Images.Clear();
 
 			searchText.Text = string.Empty;
 			searchingText.Text = string.Empty;
@@ -537,9 +554,9 @@ namespace glc_cs
 								lvimg = Properties.Resources.exe;
 							}
 
-							imageList0.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
-							imageList1.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
-							imageList2.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList8.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList32.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList64.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
 
 							lvi = new ListViewItem(reader["GAME_NAME"].ToString());
 							lvi.ImageIndex = (Convert.ToInt32(reader["ROW_CNT"]) - 1);
@@ -650,8 +667,47 @@ namespace glc_cs
 					}
 				}
 			}
+
+			if (IsFirstLoad)
+			{
+				// グリッド画像最大値の設定
+				setGridImgSizeChangeBar();
+			}
+
+			GC.Collect();
 			Application.DoEvents();
 			return ans;
+		}
+
+		/// <summary>
+		/// グリッドの画像サイズ変更バーの最大値を設定します。
+		/// </summary>
+		private void setGridImgSizeChangeBar()
+		{
+			if (GridEnable && FixGridSizeFlg)
+			{
+				trackBar1.Visible = false;
+				gameImgList.Height = 420;
+
+				switch (FixGridSize)
+				{
+					case 8:
+						gameImgList.LargeImageList = imageList8;
+						imageList32.Images.Clear();
+						imageList64.Images.Clear();
+						break;
+					case 32:
+						gameImgList.LargeImageList = imageList32;
+						imageList8.Images.Clear();
+						imageList64.Images.Clear();
+						break;
+					case 64:
+						gameImgList.LargeImageList = imageList64;
+						imageList8.Images.Clear();
+						imageList32.Images.Clear();
+						break;
+				}
+			}
 		}
 
 		/// <summary>
@@ -1068,193 +1124,6 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void addButton_Click(object sender, EventArgs e)
 		{
-			/*
-			String exeans = "", imgans = "", ratedata = "";
-			openFileDialog1.Title = "追加する実行ファイルを選択";
-			openFileDialog1.Filter = "実行ファイル (*.exe)|*.exe|すべてのファイル (*.*)|*.*";
-			openFileDialog1.FileName = "";
-			if (openFileDialog1.ShowDialog() == DialogResult.OK)
-			{
-				exeans = openFileDialog1.FileName;
-			}
-			else
-			{
-				return;
-			}
-
-			openFileDialog1.Title = "実行ファイルの画像を選択";
-			openFileDialog1.Filter = "画像ファイル (*.png;*.jpg;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif";
-			openFileDialog1.FileName = Path.GetFileNameWithoutExtension(exeans).ToString() + ".png";
-			if (openFileDialog1.ShowDialog() == DialogResult.OK)
-			{
-				imgans = openFileDialog1.FileName;
-			}
-			else
-			{
-				imgans = "";
-			}
-
-			String filename = Path.GetFileNameWithoutExtension(exeans);
-			string appname_ans = Interaction.InputBox(
-				"アプリ名を設定", AppName, filename, -1, -1);
-
-			String gfilepass = "";
-
-			DialogResult rate = MessageBox.Show("成人向け(R-18)ゲームですか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-			if (rate == DialogResult.Yes)
-			{
-				ratedata = "1";
-			}
-			else
-			{
-				ratedata = "0";
-			}
-
-			if (SaveType == "I" || SaveType == "T")
-			{
-				// ini
-				if (File.Exists(GameIni))
-				{
-					fileSystemWatcher1.EnableRaisingEvents = false;
-
-					int newmaxval = GameMax + 1;
-
-					gfilepass = GameDir + "\\" + newmaxval + ".ini";
-
-					if (!(File.Exists(gfilepass)))
-					{
-						IniWrite(gfilepass, "game", "name", appname_ans);
-						IniWrite(gfilepass, "game", "imgpass", imgans);
-						IniWrite(gfilepass, "game", "pass", exeans);
-						IniWrite(gfilepass, "game", "time", "0");
-						IniWrite(gfilepass, "game", "start", "0");
-						IniWrite(gfilepass, "game", "stat", string.Empty);
-						IniWrite(gfilepass, "game", "dcon_img", string.Empty);
-						IniWrite(gfilepass, "game", "memo", string.Empty);
-						IniWrite(gfilepass, "game", "status", "未プレイ");
-						IniWrite(gfilepass, "game", "ini_version", DBVer);
-						IniWrite(gfilepass, "game", "rating", ratedata);
-						IniWrite(GameIni, "list", "game", newmaxval.ToString());
-
-						// 次回DB接続時に更新するフラグを立てる
-						if (SaveType == "T")
-						{
-							IniWrite(GameIni, "list", "dbupdate", "1");
-						}
-					}
-					else
-					{
-						String dup = IniRead(gfilepass, "game", "name", "unknown");
-						DialogResult dialogResult = MessageBox.Show("既にiniファイルが存在します！（通常は有り得ません）\n" + gfilepass + "\n[" + dup + "]\n上書きしますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-						if (dialogResult == DialogResult.Yes)
-						{
-							IniWrite(gfilepass, "game", "name", appname_ans);
-							IniWrite(gfilepass, "game", "imgpass", imgans);
-							IniWrite(gfilepass, "game", "pass", exeans);
-							IniWrite(gfilepass, "game", "time", "0");
-							IniWrite(gfilepass, "game", "start", "0");
-							IniWrite(gfilepass, "game", "stat", string.Empty);
-							IniWrite(gfilepass, "game", "dcon_img", string.Empty);
-							IniWrite(gfilepass, "game", "memo", string.Empty);
-							IniWrite(gfilepass, "game", "status", "未プレイ");
-							IniWrite(gfilepass, "game", "ini_version", DBVer);
-							IniWrite(gfilepass, "game", "rating", ratedata);
-							IniWrite(GameIni, "list", "game", newmaxval.ToString());
-
-							// 次回DB接続時に更新するフラグを立てる
-							if (SaveType == "T")
-							{
-								IniWrite(GameIni, "list", "dbupdate", "1");
-							}
-						}
-						else if (dialogResult == DialogResult.No)
-						{
-							MessageBox.Show("新規のゲームを追加せずに処理を中断します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-						}
-						else
-						{
-							resolveError(MethodBase.GetCurrentMethod().Name, "不明な結果です。\n実行を中断します。", 0, false);
-						}
-						return;
-					}
-
-					if (reloadCheck.Checked)
-					{
-						fileSystemWatcher1.EnableRaisingEvents = true;
-					}
-				}
-				else
-				{
-					resolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報統括管理ファイルが見つかりません！", 0, false);
-					return;
-				}
-			}
-			else
-			{
-				// database
-				if (SaveType == "D")
-				{
-					SqlConnection cn = SqlCon;
-					SqlCommand cm;
-					cm = new SqlCommand()
-					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( N'" + appname_ans + "', N'" + exeans + "', N'" + imgans + "', '0', '0','', '" + ratedata + "', NULL, '', N'未プレイ', N'" + DBVer + "' )"
-					};
-					cm.Connection = cn;
-
-					try
-					{
-						cn.Open();
-						cm.ExecuteNonQuery();
-					}
-					catch (Exception ex)
-					{
-						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
-						resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
-					}
-					finally
-					{
-						if (cn.State == ConnectionState.Open)
-						{
-							cn.Close();
-						}
-					}
-				}
-				else
-				{
-					MySqlConnection cn = SqlCon2;
-					MySqlCommand cm;
-					cm = new MySqlCommand()
-					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + appname_ans.Replace("'", "''").Replace("\\", "\\\\") + "', '" + exeans.Replace("'", "''").Replace("\\", "\\\\") + "', '" + imgans.Replace("'", "''").Replace("\\", "\\\\") + "', '0', '0','', '" + ratedata + "', NULL, '', '未プレイ', '" + DBVer + "' );"
-					};
-					cm.Connection = cn;
-
-					try
-					{
-						cn.Open();
-						cm.ExecuteNonQuery();
-					}
-					catch (Exception ex)
-					{
-						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
-						resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
-					}
-					finally
-					{
-						if (cn.State == ConnectionState.Open)
-						{
-							cn.Close();
-						}
-					}
-				}
-			}
-			*/
-
 			if (SaveType == "D")
 			{
 				SqlConnection cn = SqlCon;
@@ -2270,21 +2139,28 @@ namespace glc_cs
 
 		}
 
+		/// <summary>
+		/// グリッドの画像サイズ変更イベント
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void trackBar1_Scroll(object sender, EventArgs e)
 		{
+			// ImageSizeを変更する
 			switch (trackBar1.Value)
 			{
 				case 0:
-
-					gameImgList.LargeImageList = imageList0;
+					gameImgList.LargeImageList = imageList8;
 					break;
 				case 1:
-					gameImgList.LargeImageList = imageList1;
+					gameImgList.LargeImageList = imageList32;
 					break;
 				case 2:
-					gameImgList.LargeImageList = imageList2;
+					gameImgList.LargeImageList = imageList64;
 					break;
 			}
+
+			GC.Collect();
 		}
 
 		/// <summary>
@@ -2741,6 +2617,12 @@ namespace glc_cs
 
 				ocButton.Text = "<<";
 				GridMax = true;
+			}
+
+			if (GridEnable)
+			{
+				// グリッドと同期
+				gameImgList.EnsureVisible(gameList.SelectedIndex);
 			}
 		}
 

@@ -91,7 +91,6 @@
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.trackBar1 = new System.Windows.Forms.TrackBar();
 			this.gameImgList = new System.Windows.Forms.ListView();
-			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.searchResultList = new System.Windows.Forms.ListBox();
 			this.lastOrderDrop = new System.Windows.Forms.ComboBox();
@@ -100,14 +99,15 @@
 			this.searchTargetDropDown = new System.Windows.Forms.ComboBox();
 			this.searchButton = new System.Windows.Forms.Button();
 			this.searchText = new System.Windows.Forms.TextBox();
-			this.imageList2 = new System.Windows.Forms.ImageList(this.components);
-			this.imageList0 = new System.Windows.Forms.ImageList(this.components);
+			this.imageList8 = new System.Windows.Forms.ImageList(this.components);
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.launchFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
 			this.dconImgText = new System.Windows.Forms.TextBox();
 			this.statusCombo = new System.Windows.Forms.ComboBox();
 			this.gameStatusFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
 			this.executeCmdText = new System.Windows.Forms.TextBox();
+			this.imageList32 = new System.Windows.Forms.ImageList(this.components);
+			this.imageList64 = new System.Windows.Forms.ImageList(this.components);
 			this.statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dconImgPictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
@@ -595,19 +595,13 @@
 			// gameImgList
 			// 
 			this.gameImgList.HideSelection = false;
-			this.gameImgList.LargeImageList = this.imageList1;
+			this.gameImgList.LargeImageList = this.imageList32;
 			resources.ApplyResources(this.gameImgList, "gameImgList");
 			this.gameImgList.MultiSelect = false;
 			this.gameImgList.Name = "gameImgList";
 			this.gameImgList.UseCompatibleStateImageBehavior = false;
 			this.gameImgList.SelectedIndexChanged += new System.EventHandler(this.gameImgList_SelectedIndexChanged);
 			this.gameImgList.DoubleClick += new System.EventHandler(this.startButton_Click);
-			// 
-			// imageList1
-			// 
-			this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth16Bit;
-			resources.ApplyResources(this.imageList1, "imageList1");
-			this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
 			// 
 			// tabPage3
 			// 
@@ -698,17 +692,11 @@
 			resources.ApplyResources(this.searchText, "searchText");
 			this.searchText.Name = "searchText";
 			// 
-			// imageList2
+			// imageList8
 			// 
-			this.imageList2.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-			resources.ApplyResources(this.imageList2, "imageList2");
-			this.imageList2.TransparentColor = System.Drawing.Color.Transparent;
-			// 
-			// imageList0
-			// 
-			this.imageList0.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-			resources.ApplyResources(this.imageList0, "imageList0");
-			this.imageList0.TransparentColor = System.Drawing.Color.Transparent;
+			this.imageList8.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+			resources.ApplyResources(this.imageList8, "imageList8");
+			this.imageList8.TransparentColor = System.Drawing.Color.Transparent;
 			// 
 			// flowLayoutPanel1
 			// 
@@ -789,6 +777,18 @@
 			resources.ApplyResources(this.executeCmdText, "executeCmdText");
 			this.executeCmdText.Name = "executeCmdText";
 			this.executeCmdText.ReadOnly = true;
+			// 
+			// imageList32
+			// 
+			this.imageList32.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+			resources.ApplyResources(this.imageList32, "imageList32");
+			this.imageList32.TransparentColor = System.Drawing.Color.Transparent;
+			// 
+			// imageList64
+			// 
+			this.imageList64.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+			resources.ApplyResources(this.imageList64, "imageList64");
+			this.imageList64.TransparentColor = System.Drawing.Color.Transparent;
 			// 
 			// gl
 			// 
@@ -904,10 +904,8 @@
 		private System.Windows.Forms.TabPage tabPage1;
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.ListView gameImgList;
-		private System.Windows.Forms.ImageList imageList1;
 		private System.Windows.Forms.TrackBar trackBar1;
-		private System.Windows.Forms.ImageList imageList2;
-		private System.Windows.Forms.ImageList imageList0;
+		private System.Windows.Forms.ImageList imageList8;
 		private System.Windows.Forms.Button cleanButton;
 		private System.Windows.Forms.Button ocButton;
 		private System.Windows.Forms.TabPage tabPage3;
@@ -928,6 +926,8 @@
 		private System.Windows.Forms.ComboBox statusCombo;
 		private System.Windows.Forms.FlowLayoutPanel gameStatusFlowLayoutPanel;
 		private System.Windows.Forms.TextBox executeCmdText;
+		private System.Windows.Forms.ImageList imageList32;
+		private System.Windows.Forms.ImageList imageList64;
 	}
 }
 

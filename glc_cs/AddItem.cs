@@ -16,6 +16,8 @@ namespace glc_cs
 		string genSaveType = string.Empty;
 		string iniPath = string.Empty;
 
+		DLsite dlSearchForm = new DLsite();
+
 		/// <summary>
 		/// MSSQL用
 		/// </summary>
@@ -45,6 +47,7 @@ namespace glc_cs
 
 			con = cn;
 			genSaveType = saveType;
+			rateCheck.Checked = Convert.ToBoolean(Rate);
 		}
 
 		/// <summary>
@@ -76,6 +79,7 @@ namespace glc_cs
 
 			con2 = cn;
 			genSaveType = saveType;
+			rateCheck.Checked = Convert.ToBoolean(Rate);
 		}
 
 		/// <summary>
@@ -100,6 +104,7 @@ namespace glc_cs
 					break;
 			}
 			genSaveType = saveType;
+			rateCheck.Checked = Convert.ToBoolean(Rate);
 		}
 
 		/// <summary>
@@ -118,6 +123,11 @@ namespace glc_cs
 			autoComplete(targetFile);
 		}
 
+		/// <summary>
+		/// マウスポインタのアイコンを変更します。
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void AddItem_DragEnter(object sender, DragEventArgs e)
 		{
 			// マウスポインター形状変更
@@ -167,8 +177,14 @@ namespace glc_cs
 			string startCount = startCountText.Value.ToString();
 			string rate = rateCheck.Checked ? "1" : "0";
 
-			if (game_text.Length == 0 || gamePath.Length == 0)
+			if (game_text.Length == 0)
 			{
+				titleText.Focus();
+				return;
+			}
+			else if (gamePath.Length == 0)
+			{
+				exePathText.Focus();
 				return;
 			}
 
@@ -359,6 +375,50 @@ namespace glc_cs
 			startCountText.Value = 0;
 		}
 
+		/// <summary>
+		/// DLsiteから作品名を取得します。
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void getInfoButton_Click(object sender, EventArgs e)
+		{
+			// dlsiteからデータを取得します。
+			dlSearchForm.ShowDialog();
+
+			// 反映
+			if (!string.IsNullOrEmpty(dlSearchForm.resultText))
+			{
+				titleText.Text = dlSearchForm.resultText;
+				if (!string.IsNullOrEmpty(dlSearchForm.resultImagePath))
+				{
+					imgPathText.Text = dlSearchForm.resultImagePath;
+				}
+
+				// フォーカス移動
+				if (string.IsNullOrEmpty(exePathText.Text))
+				{
+					exePathText.Focus();
+				}
+				else if (string.IsNullOrEmpty(imgPathText.Text))
+				{
+					imgPathText.Focus();
+				}
+				else
+				{
+					AddButton.Focus();
+				}
+			}
+			else
+			{
+				titleText.Focus();
+			}
+		}
+
+		/// <summary>
+		/// 実行アプリケーションを参照します。
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void exePathButton_Click(object sender, EventArgs e)
 		{
 			openFileDialog1.Title = "追加する実行ファイルを選択";
@@ -374,6 +434,11 @@ namespace glc_cs
 			}
 		}
 
+		/// <summary>
+		/// アプリケーションアイコンを参照します。
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void imgPathButton_Click(object sender, EventArgs e)
 		{
 			openFileDialog1.Title = "実行ファイルの画像を選択";
@@ -389,6 +454,11 @@ namespace glc_cs
 			}
 		}
 
+		/// <summary>
+		/// 実行アプリケーションが指定された場合に、自動的にアプリケーションアイコンを取得します。
+		/// </summary>
+		/// <param name="targetFile"></param>
+		/// <param name="targetType"></param>
 		private void autoComplete(string targetFile, string targetType = "")
 		{
 			// ファイルタイプが指定されていない場合に自動判別
@@ -409,7 +479,10 @@ namespace glc_cs
 			if (targetType == "exe")
 			{
 				// タイトル自動補填（ファイル名）
-				titleText.Text = Path.GetFileNameWithoutExtension(targetFile);
+				if (string.IsNullOrEmpty(titleText.Text.Trim()))
+				{
+					titleText.Text = Path.GetFileNameWithoutExtension(targetFile);
+				}
 
 				// 実行ファイルパス自動補填（ファイルフルパス）
 				exePathText.Text = targetFile;

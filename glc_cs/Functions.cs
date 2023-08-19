@@ -42,17 +42,22 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static readonly string appVer = "1.09b";
+			protected static readonly string appVer = "1.10";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appBuild = "39.23.08.01";
+			protected static readonly string appBuild = "40.23.08.xx";
 
 			/// <summary>
 			/// データベースバージョン
 			/// </summary>
 			protected static readonly string dbVer = "1.3";
+
+			/// <summary>
+			/// 初回ロードフラグ
+			/// </summary>
+			protected static bool isFirstLoad = true;
 
 			/// <summary>
 			/// ウィンドウ最小化ボタン表示フラグ
@@ -145,6 +150,16 @@ namespace glc_cs
 			/// オフラインセーブフラグ
 			/// </summary>
 			protected static bool offlineSave = false;
+
+			/// <summary>
+			/// ローカルDB構築フラグ
+			/// </summary>
+			protected static bool useLocalDB = false;
+
+			/// <summary>
+			/// ローカルDB
+			/// </summary>
+			protected static DataTable localDB = null;
 
 			/// <summary>
 			/// データベースのURL
@@ -268,6 +283,16 @@ namespace glc_cs
 			protected static string defaultStatusValueOfPlaying = "プレイ中";
 
 			/// <summary>
+			/// グリッドのイメージサイズ固定フラグ
+			/// </summary>
+			protected static bool fixGridSizeFlg = false;
+
+			/// <summary>
+			/// グリッドのイメージサイズ
+			/// </summary>
+			protected static int fixGridSize = 32;
+
+			/// <summary>
 			/// INIファイルに書き込む際に使用可能なキー名一覧
 			/// </summary>
 			public enum KeyNames
@@ -318,6 +343,15 @@ namespace glc_cs
 			public static string DBVer
 			{
 				get { return dbVer; }
+			}
+
+			/// <summary>
+			/// 初回ロードフラグ
+			/// </summary>
+			public static bool IsFirstLoad
+			{
+				get { return isFirstLoad; }
+				set { isFirstLoad = value; }
 			}
 
 			/// <summary>
@@ -476,6 +510,24 @@ namespace glc_cs
 			{
 				get { return offlineSave; }
 				set { offlineSave = value; }
+			}
+
+			/// <summary>
+			/// ローカルDB構築フラグ
+			/// </summary>
+			public static bool UseLocalDB
+			{
+				get { return useLocalDB; }
+				set { useLocalDB = value; }
+			}
+
+			/// <summary>
+			/// ローカルDB
+			/// </summary>
+			public static DataTable LocalDB
+			{
+				get { return localDB; }
+				set { localDB = value; }
 			}
 
 			/// <summary>
@@ -764,6 +816,24 @@ namespace glc_cs
 			}
 
 			/// <summary>
+			/// グリッドのイメージサイズ固定フラグ
+			/// </summary>
+			public static bool FixGridSizeFlg
+			{
+				get { return fixGridSizeFlg; }
+				set { fixGridSizeFlg = value; }
+			}
+
+			/// <summary>
+			/// グリッドのイメージサイズ
+			/// </summary>
+			public static int FixGridSize
+			{
+				get { return fixGridSize; }
+				set { fixGridSize = (value == 8 || value == 32 || value == 64) ? value : 32; }
+			}
+
+			/// <summary>
 			/// システム変数をロードします
 			/// </summary>
 			/// <returns></returns>
@@ -786,6 +856,7 @@ namespace glc_cs
 
 					SaveType = ReadIni("general", "save", "I");
 					OfflineSave = Convert.ToBoolean(Convert.ToInt32(ReadIni("general", "OfflineSave", "0")));
+					UseLocalDB = Convert.ToBoolean(Convert.ToInt32(ReadIni("general", "UseLocalDB", "0")));
 					DbUrl = ReadIni("connect", "DBURL", string.Empty);
 					DbPort = ReadIni("connect", "DBPort", string.Empty);
 					DbName = ReadIni("connect", "DBName", string.Empty);
@@ -895,6 +966,8 @@ namespace glc_cs
 					InitialUpdateCheckSkipFlg = Convert.ToBoolean(Convert.ToInt32(ReadIni("disable", "updchk", "0")));
 					InitialUpdateCheckSkipVer = ReadIni("disable", "updchkVer", string.Empty);
 					WindowHideControlFlg = Convert.ToBoolean(Convert.ToInt32(ReadIni("disable", "enableWindowHideControl", "0")));
+					FixGridSizeFlg = Convert.ToBoolean(Convert.ToInt32(ReadIni("grid", "fixGridSizeFlg", "0")));
+					FixGridSize = Convert.ToInt32(ReadIni("grid", "fixGridSize", "0"));
 
 					// dcon設定
 					Dconnect = Convert.ToBoolean(Convert.ToInt32(ReadIni("checkbox", "dconnect", "0")));

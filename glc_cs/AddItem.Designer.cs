@@ -60,6 +60,7 @@
 			this.bioText = new System.Windows.Forms.Label();
 			this.executeCmdText = new System.Windows.Forms.TextBox();
 			this.label9 = new System.Windows.Forms.Label();
+			this.getInfoButton = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.imgPictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.runTimeText)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.startCountText)).BeginInit();
@@ -87,8 +88,8 @@
 			this.exePathText.Location = new System.Drawing.Point(213, 110);
 			this.exePathText.MaxLength = 500;
 			this.exePathText.Name = "exePathText";
-			this.exePathText.Size = new System.Drawing.Size(214, 19);
-			this.exePathText.TabIndex = 2;
+			this.exePathText.Size = new System.Drawing.Size(271, 19);
+			this.exePathText.TabIndex = 5;
 			// 
 			// label2
 			// 
@@ -101,20 +102,20 @@
 			// 
 			// exePathButton
 			// 
-			this.exePathButton.Location = new System.Drawing.Point(433, 108);
+			this.exePathButton.Location = new System.Drawing.Point(490, 108);
 			this.exePathButton.Name = "exePathButton";
 			this.exePathButton.Size = new System.Drawing.Size(20, 23);
-			this.exePathButton.TabIndex = 3;
+			this.exePathButton.TabIndex = 6;
 			this.exePathButton.Text = "..";
 			this.exePathButton.UseVisualStyleBackColor = true;
 			this.exePathButton.Click += new System.EventHandler(this.exePathButton_Click);
 			// 
 			// imgPathButton
 			// 
-			this.imgPathButton.Location = new System.Drawing.Point(433, 158);
+			this.imgPathButton.Location = new System.Drawing.Point(490, 158);
 			this.imgPathButton.Name = "imgPathButton";
 			this.imgPathButton.Size = new System.Drawing.Size(20, 23);
-			this.imgPathButton.TabIndex = 6;
+			this.imgPathButton.TabIndex = 16;
 			this.imgPathButton.Text = "..";
 			this.imgPathButton.UseVisualStyleBackColor = true;
 			this.imgPathButton.Click += new System.EventHandler(this.imgPathButton_Click);
@@ -124,8 +125,8 @@
 			this.imgPathText.Location = new System.Drawing.Point(213, 160);
 			this.imgPathText.MaxLength = 500;
 			this.imgPathText.Name = "imgPathText";
-			this.imgPathText.Size = new System.Drawing.Size(214, 19);
-			this.imgPathText.TabIndex = 5;
+			this.imgPathText.Size = new System.Drawing.Size(271, 19);
+			this.imgPathText.TabIndex = 15;
 			this.imgPathText.TextChanged += new System.EventHandler(this.applyPictureBox);
 			// 
 			// label3
@@ -144,17 +145,17 @@
 			this.imgPictureBox.Location = new System.Drawing.Point(12, 12);
 			this.imgPictureBox.Name = "imgPictureBox";
 			this.imgPictureBox.Size = new System.Drawing.Size(100, 100);
-			this.imgPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.imgPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.imgPictureBox.TabIndex = 8;
 			this.imgPictureBox.TabStop = false;
 			this.imgPictureBox.WaitOnLoad = true;
 			// 
 			// runTimeResetButton
 			// 
-			this.runTimeResetButton.Location = new System.Drawing.Point(284, 244);
+			this.runTimeResetButton.Location = new System.Drawing.Point(318, 241);
 			this.runTimeResetButton.Name = "runTimeResetButton";
 			this.runTimeResetButton.Size = new System.Drawing.Size(20, 19);
-			this.runTimeResetButton.TabIndex = 10;
+			this.runTimeResetButton.TabIndex = 31;
 			this.runTimeResetButton.Text = "0";
 			this.runTimeResetButton.UseVisualStyleBackColor = true;
 			this.runTimeResetButton.Click += new System.EventHandler(this.runTimeResetButton_Click);
@@ -164,8 +165,8 @@
 			this.dconText.Location = new System.Drawing.Point(213, 188);
 			this.dconText.MaxLength = 50;
 			this.dconText.Name = "dconText";
-			this.dconText.Size = new System.Drawing.Size(240, 19);
-			this.dconText.TabIndex = 7;
+			this.dconText.Size = new System.Drawing.Size(297, 19);
+			this.dconText.TabIndex = 20;
 			// 
 			// label5
 			// 
@@ -179,7 +180,7 @@
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(154, 246);
+			this.label6.Location = new System.Drawing.Point(154, 244);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(53, 12);
 			this.label6.TabIndex = 13;
@@ -188,7 +189,7 @@
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(320, 246);
+			this.label7.Location = new System.Drawing.Point(361, 244);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(53, 12);
 			this.label7.TabIndex = 16;
@@ -196,30 +197,30 @@
 			// 
 			// startCountResetButton
 			// 
-			this.startCountResetButton.Location = new System.Drawing.Point(433, 244);
+			this.startCountResetButton.Location = new System.Drawing.Point(490, 241);
 			this.startCountResetButton.Name = "startCountResetButton";
 			this.startCountResetButton.Size = new System.Drawing.Size(20, 19);
-			this.startCountResetButton.TabIndex = 12;
+			this.startCountResetButton.TabIndex = 36;
 			this.startCountResetButton.Text = "0";
 			this.startCountResetButton.UseVisualStyleBackColor = true;
 			this.startCountResetButton.Click += new System.EventHandler(this.startCountResetButton_Click);
 			// 
 			// AddButton
 			// 
-			this.AddButton.Location = new System.Drawing.Point(96, 306);
+			this.AddButton.Location = new System.Drawing.Point(118, 306);
 			this.AddButton.Name = "AddButton";
 			this.AddButton.Size = new System.Drawing.Size(122, 33);
-			this.AddButton.TabIndex = 14;
+			this.AddButton.TabIndex = 45;
 			this.AddButton.Text = "追加";
 			this.AddButton.UseVisualStyleBackColor = true;
 			this.AddButton.Click += new System.EventHandler(this.ApplyButton_Click);
 			// 
 			// CloseButton
 			// 
-			this.CloseButton.Location = new System.Drawing.Point(250, 306);
+			this.CloseButton.Location = new System.Drawing.Point(296, 306);
 			this.CloseButton.Name = "CloseButton";
 			this.CloseButton.Size = new System.Drawing.Size(122, 33);
-			this.CloseButton.TabIndex = 15;
+			this.CloseButton.TabIndex = 50;
 			this.CloseButton.Text = "キャンセル";
 			this.CloseButton.UseVisualStyleBackColor = true;
 			this.CloseButton.Click += new System.EventHandler(this.CancelButton_Click);
@@ -260,17 +261,17 @@
 			// rateCheck
 			// 
 			this.rateCheck.AutoSize = true;
-			this.rateCheck.Location = new System.Drawing.Point(213, 272);
+			this.rateCheck.Location = new System.Drawing.Point(213, 266);
 			this.rateCheck.Name = "rateCheck";
-			this.rateCheck.Size = new System.Drawing.Size(125, 16);
-			this.rateCheck.TabIndex = 13;
-			this.rateCheck.Text = "X-Rated（成人向け）";
+			this.rateCheck.Size = new System.Drawing.Size(108, 16);
+			this.rateCheck.TabIndex = 40;
+			this.rateCheck.Text = "成人向け（R-18）";
 			this.rateCheck.UseVisualStyleBackColor = true;
 			// 
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(177, 273);
+			this.label8.Location = new System.Drawing.Point(177, 267);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(30, 12);
 			this.label8.TabIndex = 27;
@@ -282,35 +283,35 @@
 			// 
 			// runTimeText
 			// 
-			this.runTimeText.Location = new System.Drawing.Point(213, 244);
+			this.runTimeText.Location = new System.Drawing.Point(213, 241);
 			this.runTimeText.Maximum = new decimal(new int[] {
             35791394,
             0,
             0,
             0});
 			this.runTimeText.Name = "runTimeText";
-			this.runTimeText.Size = new System.Drawing.Size(65, 19);
-			this.runTimeText.TabIndex = 9;
+			this.runTimeText.Size = new System.Drawing.Size(99, 19);
+			this.runTimeText.TabIndex = 30;
 			// 
 			// startCountText
 			// 
-			this.startCountText.Location = new System.Drawing.Point(379, 244);
+			this.startCountText.Location = new System.Drawing.Point(420, 241);
 			this.startCountText.Maximum = new decimal(new int[] {
             2147483647,
             0,
             0,
             0});
 			this.startCountText.Name = "startCountText";
-			this.startCountText.Size = new System.Drawing.Size(48, 19);
-			this.startCountText.TabIndex = 11;
+			this.startCountText.Size = new System.Drawing.Size(64, 19);
+			this.startCountText.TabIndex = 35;
 			// 
 			// dconImgText
 			// 
 			this.dconImgText.Location = new System.Drawing.Point(213, 216);
 			this.dconImgText.MaxLength = 50;
 			this.dconImgText.Name = "dconImgText";
-			this.dconImgText.Size = new System.Drawing.Size(240, 19);
-			this.dconImgText.TabIndex = 8;
+			this.dconImgText.Size = new System.Drawing.Size(297, 19);
+			this.dconImgText.TabIndex = 25;
 			// 
 			// label4
 			// 
@@ -324,10 +325,10 @@
 			// disCloseCheck
 			// 
 			this.disCloseCheck.AutoSize = true;
-			this.disCloseCheck.Location = new System.Drawing.Point(301, 350);
+			this.disCloseCheck.Location = new System.Drawing.Point(353, 353);
 			this.disCloseCheck.Name = "disCloseCheck";
 			this.disCloseCheck.Size = new System.Drawing.Size(162, 16);
-			this.disCloseCheck.TabIndex = 30;
+			this.disCloseCheck.TabIndex = 55;
 			this.disCloseCheck.Text = "追加後にウィンドウを閉じない";
 			this.disCloseCheck.UseVisualStyleBackColor = true;
 			// 
@@ -345,8 +346,8 @@
 			this.executeCmdText.Location = new System.Drawing.Point(213, 135);
 			this.executeCmdText.MaxLength = 255;
 			this.executeCmdText.Name = "executeCmdText";
-			this.executeCmdText.Size = new System.Drawing.Size(240, 19);
-			this.executeCmdText.TabIndex = 4;
+			this.executeCmdText.Size = new System.Drawing.Size(297, 19);
+			this.executeCmdText.TabIndex = 10;
 			// 
 			// label9
 			// 
@@ -357,12 +358,23 @@
 			this.label9.TabIndex = 32;
 			this.label9.Text = "実行パラメータ";
 			// 
+			// getInfoButton
+			// 
+			this.getInfoButton.Location = new System.Drawing.Point(459, 80);
+			this.getInfoButton.Name = "getInfoButton";
+			this.getInfoButton.Size = new System.Drawing.Size(51, 23);
+			this.getInfoButton.TabIndex = 2;
+			this.getInfoButton.Text = "DLsite";
+			this.getInfoButton.UseVisualStyleBackColor = true;
+			this.getInfoButton.Click += new System.EventHandler(this.getInfoButton_Click);
+			// 
 			// AddItem
 			// 
 			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(467, 373);
+			this.ClientSize = new System.Drawing.Size(519, 373);
+			this.Controls.Add(this.getInfoButton);
 			this.Controls.Add(this.executeCmdText);
 			this.Controls.Add(this.label9);
 			this.Controls.Add(this.bioText);
@@ -442,5 +454,6 @@
 		private System.Windows.Forms.Label bioText;
 		private System.Windows.Forms.TextBox executeCmdText;
 		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.Button getInfoButton;
 	}
 }

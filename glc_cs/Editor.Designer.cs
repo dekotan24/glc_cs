@@ -143,7 +143,7 @@
 			this.pictureBox1.Location = new System.Drawing.Point(12, 12);
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.Size = new System.Drawing.Size(100, 100);
-			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.pictureBox1.TabIndex = 8;
 			this.pictureBox1.TabStop = false;
 			this.pictureBox1.WaitOnLoad = true;
@@ -282,9 +282,9 @@
 			this.rateCheck.AutoSize = true;
 			this.rateCheck.Location = new System.Drawing.Point(97, 299);
 			this.rateCheck.Name = "rateCheck";
-			this.rateCheck.Size = new System.Drawing.Size(125, 16);
+			this.rateCheck.Size = new System.Drawing.Size(108, 16);
 			this.rateCheck.TabIndex = 13;
-			this.rateCheck.Text = "X-Rated (成人向け)";
+			this.rateCheck.Text = "成人向け（R-18）";
 			this.rateCheck.UseVisualStyleBackColor = true;
 			// 
 			// label8
