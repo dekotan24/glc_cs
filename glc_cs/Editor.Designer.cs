@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Editor));
 			this.label1 = new System.Windows.Forms.Label();
 			this.titleText = new System.Windows.Forms.TextBox();
@@ -60,9 +61,11 @@
 			this.label4 = new System.Windows.Forms.Label();
 			this.executeCmdText = new System.Windows.Forms.TextBox();
 			this.executeCmdTextLabel = new System.Windows.Forms.Label();
+			this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.runTimeText)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.startCountText)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// label1
@@ -358,6 +361,10 @@
 			this.executeCmdTextLabel.TabIndex = 30;
 			this.executeCmdTextLabel.Text = "実行パラメータ";
 			// 
+			// errorProvider1
+			// 
+			this.errorProvider1.ContainerControl = this;
+			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -402,6 +409,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.runTimeText)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.startCountText)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -440,5 +448,6 @@
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.TextBox executeCmdText;
 		private System.Windows.Forms.Label executeCmdTextLabel;
+		private System.Windows.Forms.ErrorProvider errorProvider1;
 	}
 }

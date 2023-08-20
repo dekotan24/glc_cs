@@ -2,6 +2,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -830,8 +831,7 @@ namespace glc_cs
 						Application.DoEvents();
 
 						// ゲーム実行
-						System.Diagnostics.Process p =
-						System.Diagnostics.Process.Start(exePathText.Text.Trim(), executeCmdText.Text.Trim());
+						Process p = Process.Start(exePathText.Text.Trim(), executeCmdText.Text.Trim());
 
 						// 棒読み上げ
 						if (ByRoS)
@@ -874,7 +874,7 @@ namespace glc_cs
 						if (anss < 15)
 						{
 							// 15秒以内に終了した場合、確認を行う
-							DialogResult dr = MessageBox.Show("起動時間が短いようです。\n今回：" + anss + "秒 ｜ しきい値：15秒\n\n今回の起動を無効にしますか？\n※起動時間、起動回数を更新しません", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+							DialogResult dr = MessageBox.Show("起動時間が短いようです。\n今回：" + anss + "秒 ｜ しきい値：15秒\n\n今回の記録を破棄しますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 							if (dr == DialogResult.Yes)
 							{
 								// 時間更新を行わずに終了
@@ -2466,12 +2466,12 @@ namespace glc_cs
 		/// <summary>
 		/// 子プロセスを終了します
 		/// </summary>
-		/// <param name="process"></param>
-		bool KillChildProcess(System.Diagnostics.Process process)
+		/// <param name="process">プロセス</param>
+		bool KillChildProcess(Process process)
 		{
 			try
 			{
-				process.Close();
+				process.Kill();
 				return true;
 			}
 			catch (Exception ex)
