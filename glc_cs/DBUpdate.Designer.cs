@@ -33,7 +33,7 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.glVersionLabel = new System.Windows.Forms.Label();
 			this.currentDBVersionLabel = new System.Windows.Forms.Label();
-			this.label5 = new System.Windows.Forms.Label();
+			this.updateTargetLabel = new System.Windows.Forms.Label();
 			this.updateProgress = new System.Windows.Forms.ProgressBar();
 			this.label6 = new System.Windows.Forms.Label();
 			this.latestDBVersionLabel = new System.Windows.Forms.Label();
@@ -56,7 +56,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Font = new System.Drawing.Font("ＭＳ 明朝", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label2.Font = new System.Drawing.Font("ＭＳ ゴシック", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.label2.Location = new System.Drawing.Point(451, 49);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(135, 15);
@@ -83,15 +83,15 @@
 			this.currentDBVersionLabel.TabIndex = 4;
 			this.currentDBVersionLabel.Text = "old";
 			// 
-			// label5
+			// updateTargetLabel
 			// 
-			this.label5.AutoSize = true;
-			this.label5.Font = new System.Drawing.Font("ＭＳ 明朝", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label5.Location = new System.Drawing.Point(96, 92);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(202, 24);
-			this.label5.TabIndex = 3;
-			this.label5.Text = "Database Version";
+			this.updateTargetLabel.AutoSize = true;
+			this.updateTargetLabel.Font = new System.Drawing.Font("ＭＳ 明朝", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.updateTargetLabel.Location = new System.Drawing.Point(96, 92);
+			this.updateTargetLabel.Name = "updateTargetLabel";
+			this.updateTargetLabel.Size = new System.Drawing.Size(202, 24);
+			this.updateTargetLabel.TabIndex = 3;
+			this.updateTargetLabel.Text = "Database Version";
 			// 
 			// updateProgress
 			// 
@@ -176,7 +176,7 @@
 			this.Controls.Add(this.label6);
 			this.Controls.Add(this.updateProgress);
 			this.Controls.Add(this.currentDBVersionLabel);
-			this.Controls.Add(this.label5);
+			this.Controls.Add(this.updateTargetLabel);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.glVersionLabel);
 			this.Controls.Add(this.label2);
@@ -184,7 +184,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "DBUpdate";
-			this.Text = "Database Updator";
+			this.Text = "Database Updater";
 			this.Load += new System.EventHandler(this.DBUpdate_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -197,7 +197,7 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label glVersionLabel;
 		private System.Windows.Forms.Label currentDBVersionLabel;
-		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Label updateTargetLabel;
 		private System.Windows.Forms.ProgressBar updateProgress;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Label latestDBVersionLabel;

@@ -61,6 +61,8 @@
 			this.executeCmdText = new System.Windows.Forms.TextBox();
 			this.label9 = new System.Windows.Forms.Label();
 			this.getInfoButton = new System.Windows.Forms.Button();
+			this.extractToolCombo = new System.Windows.Forms.ComboBox();
+			this.label10 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.imgPictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.runTimeText)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.startCountText)).BeginInit();
@@ -207,7 +209,7 @@
 			// 
 			// AddButton
 			// 
-			this.AddButton.Location = new System.Drawing.Point(118, 306);
+			this.AddButton.Location = new System.Drawing.Point(113, 332);
 			this.AddButton.Name = "AddButton";
 			this.AddButton.Size = new System.Drawing.Size(122, 33);
 			this.AddButton.TabIndex = 45;
@@ -217,7 +219,7 @@
 			// 
 			// CloseButton
 			// 
-			this.CloseButton.Location = new System.Drawing.Point(296, 306);
+			this.CloseButton.Location = new System.Drawing.Point(291, 332);
 			this.CloseButton.Name = "CloseButton";
 			this.CloseButton.Size = new System.Drawing.Size(122, 33);
 			this.CloseButton.TabIndex = 50;
@@ -325,7 +327,7 @@
 			// disCloseCheck
 			// 
 			this.disCloseCheck.AutoSize = true;
-			this.disCloseCheck.Location = new System.Drawing.Point(353, 353);
+			this.disCloseCheck.Location = new System.Drawing.Point(348, 379);
 			this.disCloseCheck.Name = "disCloseCheck";
 			this.disCloseCheck.Size = new System.Drawing.Size(162, 16);
 			this.disCloseCheck.TabIndex = 55;
@@ -368,12 +370,41 @@
 			this.getInfoButton.UseVisualStyleBackColor = true;
 			this.getInfoButton.Click += new System.EventHandler(this.getInfoButton_Click);
 			// 
+			// extractToolCombo
+			// 
+			this.extractToolCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.extractToolCombo.FormattingEnabled = true;
+			this.extractToolCombo.Items.AddRange(new object[] {
+            "",
+            "krkr",
+            "krkrz",
+            "krkrDump",
+            "カスタム1",
+            "カスタム2"});
+			this.extractToolCombo.Location = new System.Drawing.Point(213, 286);
+			this.extractToolCombo.Name = "extractToolCombo";
+			this.extractToolCombo.Size = new System.Drawing.Size(121, 20);
+			this.extractToolCombo.TabIndex = 57;
+			this.extractToolCombo.Visible = false;
+			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
+			this.label10.Location = new System.Drawing.Point(178, 289);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(29, 12);
+			this.label10.TabIndex = 58;
+			this.label10.Text = "抽出";
+			this.label10.Visible = false;
+			// 
 			// AddItem
 			// 
 			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(519, 373);
+			this.ClientSize = new System.Drawing.Size(519, 407);
+			this.Controls.Add(this.extractToolCombo);
+			this.Controls.Add(this.label10);
 			this.Controls.Add(this.getInfoButton);
 			this.Controls.Add(this.executeCmdText);
 			this.Controls.Add(this.label9);
@@ -455,5 +486,7 @@
 		private System.Windows.Forms.TextBox executeCmdText;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Button getInfoButton;
+		private System.Windows.Forms.ComboBox extractToolCombo;
+		private System.Windows.Forms.Label label10;
 	}
 }

@@ -62,6 +62,9 @@
 			this.executeCmdText = new System.Windows.Forms.TextBox();
 			this.executeCmdTextLabel = new System.Windows.Forms.Label();
 			this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+			this.label10 = new System.Windows.Forms.Label();
+			this.extractToolCombo = new System.Windows.Forms.ComboBox();
+			this.getInfoButton = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.runTimeText)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.startCountText)).BeginInit();
@@ -82,7 +85,7 @@
 			this.titleText.Location = new System.Drawing.Point(97, 124);
 			this.titleText.MaxLength = 255;
 			this.titleText.Name = "titleText";
-			this.titleText.Size = new System.Drawing.Size(358, 19);
+			this.titleText.Size = new System.Drawing.Size(301, 19);
 			this.titleText.TabIndex = 1;
 			// 
 			// exePathText
@@ -219,20 +222,20 @@
 			// 
 			// ApplyButton
 			// 
-			this.ApplyButton.Location = new System.Drawing.Point(97, 325);
+			this.ApplyButton.Location = new System.Drawing.Point(97, 358);
 			this.ApplyButton.Name = "ApplyButton";
 			this.ApplyButton.Size = new System.Drawing.Size(122, 33);
-			this.ApplyButton.TabIndex = 14;
+			this.ApplyButton.TabIndex = 16;
 			this.ApplyButton.Text = "適用";
 			this.ApplyButton.UseVisualStyleBackColor = true;
 			this.ApplyButton.Click += new System.EventHandler(this.ApplyButton_Click);
 			// 
 			// CloseButton
 			// 
-			this.CloseButton.Location = new System.Drawing.Point(251, 325);
+			this.CloseButton.Location = new System.Drawing.Point(251, 358);
 			this.CloseButton.Name = "CloseButton";
 			this.CloseButton.Size = new System.Drawing.Size(122, 33);
-			this.CloseButton.TabIndex = 15;
+			this.CloseButton.TabIndex = 17;
 			this.CloseButton.Text = "キャンセル";
 			this.CloseButton.UseVisualStyleBackColor = true;
 			this.CloseButton.Click += new System.EventHandler(this.CancelButton_Click);
@@ -365,11 +368,51 @@
 			// 
 			this.errorProvider1.ContainerControl = this;
 			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
+			this.label10.Location = new System.Drawing.Point(61, 322);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(29, 12);
+			this.label10.TabIndex = 32;
+			this.label10.Text = "抽出";
+			this.label10.Visible = false;
+			// 
+			// extractToolCombo
+			// 
+			this.extractToolCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.extractToolCombo.FormattingEnabled = true;
+			this.extractToolCombo.Items.AddRange(new object[] {
+            "",
+            "krkr",
+            "krkrz",
+            "krkrDump",
+            "カスタム1",
+            "カスタム2"});
+			this.extractToolCombo.Location = new System.Drawing.Point(96, 319);
+			this.extractToolCombo.Name = "extractToolCombo";
+			this.extractToolCombo.Size = new System.Drawing.Size(121, 20);
+			this.extractToolCombo.TabIndex = 15;
+			this.extractToolCombo.Visible = false;
+			// 
+			// getInfoButton
+			// 
+			this.getInfoButton.Location = new System.Drawing.Point(404, 122);
+			this.getInfoButton.Name = "getInfoButton";
+			this.getInfoButton.Size = new System.Drawing.Size(51, 23);
+			this.getInfoButton.TabIndex = 33;
+			this.getInfoButton.Text = "DLsite";
+			this.getInfoButton.UseVisualStyleBackColor = true;
+			this.getInfoButton.Click += new System.EventHandler(this.getInfoButton_Click);
+			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(467, 374);
+			this.ClientSize = new System.Drawing.Size(467, 408);
+			this.Controls.Add(this.getInfoButton);
+			this.Controls.Add(this.extractToolCombo);
+			this.Controls.Add(this.label10);
 			this.Controls.Add(this.executeCmdText);
 			this.Controls.Add(this.executeCmdTextLabel);
 			this.Controls.Add(this.dconImgText);
@@ -449,5 +492,8 @@
 		private System.Windows.Forms.TextBox executeCmdText;
 		private System.Windows.Forms.Label executeCmdTextLabel;
 		private System.Windows.Forms.ErrorProvider errorProvider1;
+		private System.Windows.Forms.ComboBox extractToolCombo;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Button getInfoButton;
 	}
 }

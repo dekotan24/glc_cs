@@ -44,11 +44,11 @@
 			this.startCountText = new System.Windows.Forms.TextBox();
 			this.infoButton = new System.Windows.Forms.Button();
 			this.reloadButton = new System.Windows.Forms.Button();
-			this.minCheck = new System.Windows.Forms.CheckBox();
+			this.extractCheck = new System.Windows.Forms.CheckBox();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
-			this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+			this.editINIStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
 			this.label2 = new System.Windows.Forms.Label();
@@ -62,20 +62,20 @@
 			this.configButton = new System.Windows.Forms.Button();
 			this.editButton = new System.Windows.Forms.Button();
 			this.dconImgPictureBox = new System.Windows.Forms.PictureBox();
-			this.pictureBox8 = new System.Windows.Forms.PictureBox();
-			this.pictureBox9 = new System.Windows.Forms.PictureBox();
-			this.pictureBox7 = new System.Windows.Forms.PictureBox();
-			this.pictureBox5 = new System.Windows.Forms.PictureBox();
-			this.pictureBox2 = new System.Windows.Forms.PictureBox();
+			this.gameStartCountPictureBox = new System.Windows.Forms.PictureBox();
+			this.gameRunningTimePictureBox = new System.Windows.Forms.PictureBox();
+			this.gameImgPictureBox = new System.Windows.Forms.PictureBox();
+			this.gamePathPictureBox = new System.Windows.Forms.PictureBox();
+			this.gameTitlePictureBox = new System.Windows.Forms.PictureBox();
 			this.testCheck = new System.Windows.Forms.CheckBox();
 			this.cleanButton = new System.Windows.Forms.Button();
 			this.ocButton = new System.Windows.Forms.Button();
 			this.dconTextPictureBox = new System.Windows.Forms.PictureBox();
-			this.pictureBox14 = new System.Windows.Forms.PictureBox();
-			this.pictureBox13 = new System.Windows.Forms.PictureBox();
-			this.pictureBox6 = new System.Windows.Forms.PictureBox();
-			this.pictureBox4 = new System.Windows.Forms.PictureBox();
-			this.pictureBox3 = new System.Windows.Forms.PictureBox();
+			this.gameImgOpenPictureBox = new System.Windows.Forms.PictureBox();
+			this.gamePathOpenPictureBox = new System.Windows.Forms.PictureBox();
+			this.gameImgCopyPictureBox = new System.Windows.Forms.PictureBox();
+			this.gamePathCopyPictureBox = new System.Windows.Forms.PictureBox();
+			this.gameTitleCopyPictureBox = new System.Windows.Forms.PictureBox();
 			this.searchingText = new System.Windows.Forms.TextBox();
 			this.upButton = new System.Windows.Forms.Button();
 			this.downButton = new System.Windows.Forms.Button();
@@ -84,13 +84,14 @@
 			this.ratedRadio = new System.Windows.Forms.RadioButton();
 			this.normalRadio = new System.Windows.Forms.RadioButton();
 			this.useDconCheck = new System.Windows.Forms.CheckBox();
-			this.pictureBox11 = new System.Windows.Forms.PictureBox();
+			this.runningPicture = new System.Windows.Forms.PictureBox();
 			this.gameIcon = new System.Windows.Forms.PictureBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.trackBar1 = new System.Windows.Forms.TrackBar();
 			this.gameImgList = new System.Windows.Forms.ListView();
+			this.imageList32 = new System.Windows.Forms.ImageList(this.components);
 			this.tabPage3 = new System.Windows.Forms.TabPage();
 			this.searchResultList = new System.Windows.Forms.ListBox();
 			this.lastOrderDrop = new System.Windows.Forms.ComboBox();
@@ -106,23 +107,22 @@
 			this.statusCombo = new System.Windows.Forms.ComboBox();
 			this.gameStatusFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
 			this.executeCmdText = new System.Windows.Forms.TextBox();
-			this.imageList32 = new System.Windows.Forms.ImageList(this.components);
 			this.imageList64 = new System.Windows.Forms.ImageList(this.components);
 			this.statusStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dconImgPictureBox)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.gameStartCountPictureBox)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.gameRunningTimePictureBox)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.gameImgPictureBox)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.gamePathPictureBox)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.gameTitlePictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dconTextPictureBox)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.gameImgOpenPictureBox)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.gamePathOpenPictureBox)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.gameImgCopyPictureBox)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.gamePathCopyPictureBox)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.gameTitleCopyPictureBox)).BeginInit();
 			this.dconConnectGroupBox.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.runningPicture)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.gameIcon)).BeginInit();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
@@ -230,14 +230,14 @@
 			this.reloadButton.UseVisualStyleBackColor = true;
 			this.reloadButton.Click += new System.EventHandler(this.reloadButton_Click);
 			// 
-			// minCheck
+			// extractCheck
 			// 
-			resources.ApplyResources(this.minCheck, "minCheck");
-			this.minCheck.BackColor = System.Drawing.Color.Transparent;
-			this.minCheck.Name = "minCheck";
-			this.toolTip1.SetToolTip(this.minCheck, resources.GetString("minCheck.ToolTip"));
-			this.minCheck.UseVisualStyleBackColor = false;
-			this.minCheck.CheckedChanged += new System.EventHandler(this.minCheck_CheckedChanged);
+			resources.ApplyResources(this.extractCheck, "extractCheck");
+			this.extractCheck.BackColor = System.Drawing.Color.Transparent;
+			this.extractCheck.Name = "extractCheck";
+			this.toolTip1.SetToolTip(this.extractCheck, resources.GetString("extractCheck.ToolTip"));
+			this.extractCheck.UseVisualStyleBackColor = false;
+			this.extractCheck.CheckedChanged += new System.EventHandler(this.extractCheck_CheckedChanged);
 			// 
 			// statusStrip1
 			// 
@@ -245,7 +245,7 @@
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.toolStripProgressBar1,
-            this.toolStripStatusLabel3,
+            this.editINIStatusLabel,
             this.toolStripStatusLabel2});
 			resources.ApplyResources(this.statusStrip1, "statusStrip1");
 			this.statusStrip1.Name = "statusStrip1";
@@ -261,12 +261,12 @@
 			this.toolStripProgressBar1.Name = "toolStripProgressBar1";
 			resources.ApplyResources(this.toolStripProgressBar1, "toolStripProgressBar1");
 			// 
-			// toolStripStatusLabel3
+			// editINIStatusLabel
 			// 
-			this.toolStripStatusLabel3.BackColor = System.Drawing.Color.Silver;
-			this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-			resources.ApplyResources(this.toolStripStatusLabel3, "toolStripStatusLabel3");
-			this.toolStripStatusLabel3.Click += new System.EventHandler(this.toolStripStatusLabel3_Click);
+			this.editINIStatusLabel.BackColor = System.Drawing.Color.Silver;
+			this.editINIStatusLabel.Name = "editINIStatusLabel";
+			resources.ApplyResources(this.editINIStatusLabel, "editINIStatusLabel");
+			this.editINIStatusLabel.Click += new System.EventHandler(this.editINIStatusLabel_Click);
 			// 
 			// toolStripStatusLabel2
 			// 
@@ -348,51 +348,51 @@
 			this.dconImgPictureBox.TabStop = false;
 			this.toolTip1.SetToolTip(this.dconImgPictureBox, resources.GetString("dconImgPictureBox.ToolTip"));
 			// 
-			// pictureBox8
+			// gameStartCountPictureBox
 			// 
-			this.pictureBox8.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox8.Image = global::glc_cs.Properties.Resources.play;
-			resources.ApplyResources(this.pictureBox8, "pictureBox8");
-			this.pictureBox8.Name = "pictureBox8";
-			this.pictureBox8.TabStop = false;
-			this.toolTip1.SetToolTip(this.pictureBox8, resources.GetString("pictureBox8.ToolTip"));
+			this.gameStartCountPictureBox.BackColor = System.Drawing.Color.Transparent;
+			this.gameStartCountPictureBox.Image = global::glc_cs.Properties.Resources.play;
+			resources.ApplyResources(this.gameStartCountPictureBox, "gameStartCountPictureBox");
+			this.gameStartCountPictureBox.Name = "gameStartCountPictureBox";
+			this.gameStartCountPictureBox.TabStop = false;
+			this.toolTip1.SetToolTip(this.gameStartCountPictureBox, resources.GetString("gameStartCountPictureBox.ToolTip"));
 			// 
-			// pictureBox9
+			// gameRunningTimePictureBox
 			// 
-			resources.ApplyResources(this.pictureBox9, "pictureBox9");
-			this.pictureBox9.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox9.Image = global::glc_cs.Properties.Resources.tim;
-			this.pictureBox9.Name = "pictureBox9";
-			this.pictureBox9.TabStop = false;
-			this.toolTip1.SetToolTip(this.pictureBox9, resources.GetString("pictureBox9.ToolTip"));
-			this.pictureBox9.Click += new System.EventHandler(this.pictureBox9_Click);
+			resources.ApplyResources(this.gameRunningTimePictureBox, "gameRunningTimePictureBox");
+			this.gameRunningTimePictureBox.BackColor = System.Drawing.Color.Transparent;
+			this.gameRunningTimePictureBox.Image = global::glc_cs.Properties.Resources.tim;
+			this.gameRunningTimePictureBox.Name = "gameRunningTimePictureBox";
+			this.gameRunningTimePictureBox.TabStop = false;
+			this.toolTip1.SetToolTip(this.gameRunningTimePictureBox, resources.GetString("gameRunningTimePictureBox.ToolTip"));
+			this.gameRunningTimePictureBox.Click += new System.EventHandler(this.pictureBox9_Click);
 			// 
-			// pictureBox7
+			// gameImgPictureBox
 			// 
-			this.pictureBox7.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox7.Image = global::glc_cs.Properties.Resources.img;
-			resources.ApplyResources(this.pictureBox7, "pictureBox7");
-			this.pictureBox7.Name = "pictureBox7";
-			this.pictureBox7.TabStop = false;
-			this.toolTip1.SetToolTip(this.pictureBox7, resources.GetString("pictureBox7.ToolTip"));
+			this.gameImgPictureBox.BackColor = System.Drawing.Color.Transparent;
+			this.gameImgPictureBox.Image = global::glc_cs.Properties.Resources.img;
+			resources.ApplyResources(this.gameImgPictureBox, "gameImgPictureBox");
+			this.gameImgPictureBox.Name = "gameImgPictureBox";
+			this.gameImgPictureBox.TabStop = false;
+			this.toolTip1.SetToolTip(this.gameImgPictureBox, resources.GetString("gameImgPictureBox.ToolTip"));
 			// 
-			// pictureBox5
+			// gamePathPictureBox
 			// 
-			this.pictureBox5.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox5.Image = global::glc_cs.Properties.Resources.exe;
-			resources.ApplyResources(this.pictureBox5, "pictureBox5");
-			this.pictureBox5.Name = "pictureBox5";
-			this.pictureBox5.TabStop = false;
-			this.toolTip1.SetToolTip(this.pictureBox5, resources.GetString("pictureBox5.ToolTip"));
+			this.gamePathPictureBox.BackColor = System.Drawing.Color.Transparent;
+			this.gamePathPictureBox.Image = global::glc_cs.Properties.Resources.exe;
+			resources.ApplyResources(this.gamePathPictureBox, "gamePathPictureBox");
+			this.gamePathPictureBox.Name = "gamePathPictureBox";
+			this.gamePathPictureBox.TabStop = false;
+			this.toolTip1.SetToolTip(this.gamePathPictureBox, resources.GetString("gamePathPictureBox.ToolTip"));
 			// 
-			// pictureBox2
+			// gameTitlePictureBox
 			// 
-			this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox2.Image = global::glc_cs.Properties.Resources.fn;
-			resources.ApplyResources(this.pictureBox2, "pictureBox2");
-			this.pictureBox2.Name = "pictureBox2";
-			this.pictureBox2.TabStop = false;
-			this.toolTip1.SetToolTip(this.pictureBox2, resources.GetString("pictureBox2.ToolTip"));
+			this.gameTitlePictureBox.BackColor = System.Drawing.Color.Transparent;
+			this.gameTitlePictureBox.Image = global::glc_cs.Properties.Resources.fn;
+			resources.ApplyResources(this.gameTitlePictureBox, "gameTitlePictureBox");
+			this.gameTitlePictureBox.Name = "gameTitlePictureBox";
+			this.gameTitlePictureBox.TabStop = false;
+			this.toolTip1.SetToolTip(this.gameTitlePictureBox, resources.GetString("gameTitlePictureBox.ToolTip"));
 			// 
 			// testCheck
 			// 
@@ -427,55 +427,55 @@
 			this.dconTextPictureBox.TabStop = false;
 			this.toolTip1.SetToolTip(this.dconTextPictureBox, resources.GetString("dconTextPictureBox.ToolTip"));
 			// 
-			// pictureBox14
+			// gameImgOpenPictureBox
 			// 
-			this.pictureBox14.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox14.Image = global::glc_cs.Properties.Resources.exp;
-			resources.ApplyResources(this.pictureBox14, "pictureBox14");
-			this.pictureBox14.Name = "pictureBox14";
-			this.pictureBox14.TabStop = false;
-			this.toolTip1.SetToolTip(this.pictureBox14, resources.GetString("pictureBox14.ToolTip"));
-			this.pictureBox14.Click += new System.EventHandler(this.pictureBox14_Click);
+			this.gameImgOpenPictureBox.BackColor = System.Drawing.Color.Transparent;
+			this.gameImgOpenPictureBox.Image = global::glc_cs.Properties.Resources.exp;
+			resources.ApplyResources(this.gameImgOpenPictureBox, "gameImgOpenPictureBox");
+			this.gameImgOpenPictureBox.Name = "gameImgOpenPictureBox";
+			this.gameImgOpenPictureBox.TabStop = false;
+			this.toolTip1.SetToolTip(this.gameImgOpenPictureBox, resources.GetString("gameImgOpenPictureBox.ToolTip"));
+			this.gameImgOpenPictureBox.Click += new System.EventHandler(this.pictureBox14_Click);
 			// 
-			// pictureBox13
+			// gamePathOpenPictureBox
 			// 
-			this.pictureBox13.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox13.Image = global::glc_cs.Properties.Resources.exp;
-			resources.ApplyResources(this.pictureBox13, "pictureBox13");
-			this.pictureBox13.Name = "pictureBox13";
-			this.pictureBox13.TabStop = false;
-			this.toolTip1.SetToolTip(this.pictureBox13, resources.GetString("pictureBox13.ToolTip"));
-			this.pictureBox13.Click += new System.EventHandler(this.pictureBox13_Click);
+			this.gamePathOpenPictureBox.BackColor = System.Drawing.Color.Transparent;
+			this.gamePathOpenPictureBox.Image = global::glc_cs.Properties.Resources.exp;
+			resources.ApplyResources(this.gamePathOpenPictureBox, "gamePathOpenPictureBox");
+			this.gamePathOpenPictureBox.Name = "gamePathOpenPictureBox";
+			this.gamePathOpenPictureBox.TabStop = false;
+			this.toolTip1.SetToolTip(this.gamePathOpenPictureBox, resources.GetString("gamePathOpenPictureBox.ToolTip"));
+			this.gamePathOpenPictureBox.Click += new System.EventHandler(this.pictureBox13_Click);
 			// 
-			// pictureBox6
+			// gameImgCopyPictureBox
 			// 
-			this.pictureBox6.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox6.Image = global::glc_cs.Properties.Resources.copy;
-			resources.ApplyResources(this.pictureBox6, "pictureBox6");
-			this.pictureBox6.Name = "pictureBox6";
-			this.pictureBox6.TabStop = false;
-			this.toolTip1.SetToolTip(this.pictureBox6, resources.GetString("pictureBox6.ToolTip"));
-			this.pictureBox6.Click += new System.EventHandler(this.pictureBox6_Click);
+			this.gameImgCopyPictureBox.BackColor = System.Drawing.Color.Transparent;
+			this.gameImgCopyPictureBox.Image = global::glc_cs.Properties.Resources.copy;
+			resources.ApplyResources(this.gameImgCopyPictureBox, "gameImgCopyPictureBox");
+			this.gameImgCopyPictureBox.Name = "gameImgCopyPictureBox";
+			this.gameImgCopyPictureBox.TabStop = false;
+			this.toolTip1.SetToolTip(this.gameImgCopyPictureBox, resources.GetString("gameImgCopyPictureBox.ToolTip"));
+			this.gameImgCopyPictureBox.Click += new System.EventHandler(this.pictureBox6_Click);
 			// 
-			// pictureBox4
+			// gamePathCopyPictureBox
 			// 
-			this.pictureBox4.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox4.Image = global::glc_cs.Properties.Resources.copy;
-			resources.ApplyResources(this.pictureBox4, "pictureBox4");
-			this.pictureBox4.Name = "pictureBox4";
-			this.pictureBox4.TabStop = false;
-			this.toolTip1.SetToolTip(this.pictureBox4, resources.GetString("pictureBox4.ToolTip"));
-			this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
+			this.gamePathCopyPictureBox.BackColor = System.Drawing.Color.Transparent;
+			this.gamePathCopyPictureBox.Image = global::glc_cs.Properties.Resources.copy;
+			resources.ApplyResources(this.gamePathCopyPictureBox, "gamePathCopyPictureBox");
+			this.gamePathCopyPictureBox.Name = "gamePathCopyPictureBox";
+			this.gamePathCopyPictureBox.TabStop = false;
+			this.toolTip1.SetToolTip(this.gamePathCopyPictureBox, resources.GetString("gamePathCopyPictureBox.ToolTip"));
+			this.gamePathCopyPictureBox.Click += new System.EventHandler(this.pictureBox4_Click);
 			// 
-			// pictureBox3
+			// gameTitleCopyPictureBox
 			// 
-			this.pictureBox3.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox3.Image = global::glc_cs.Properties.Resources.copy;
-			resources.ApplyResources(this.pictureBox3, "pictureBox3");
-			this.pictureBox3.Name = "pictureBox3";
-			this.pictureBox3.TabStop = false;
-			this.toolTip1.SetToolTip(this.pictureBox3, resources.GetString("pictureBox3.ToolTip"));
-			this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
+			this.gameTitleCopyPictureBox.BackColor = System.Drawing.Color.Transparent;
+			this.gameTitleCopyPictureBox.Image = global::glc_cs.Properties.Resources.copy;
+			resources.ApplyResources(this.gameTitleCopyPictureBox, "gameTitleCopyPictureBox");
+			this.gameTitleCopyPictureBox.Name = "gameTitleCopyPictureBox";
+			this.gameTitleCopyPictureBox.TabStop = false;
+			this.toolTip1.SetToolTip(this.gameTitleCopyPictureBox, resources.GetString("gameTitleCopyPictureBox.ToolTip"));
+			this.gameTitleCopyPictureBox.Click += new System.EventHandler(this.pictureBox3_Click);
 			// 
 			// searchingText
 			// 
@@ -540,14 +540,14 @@
 			this.useDconCheck.UseVisualStyleBackColor = true;
 			this.useDconCheck.CheckedChanged += new System.EventHandler(this.useDconCheck_CheckedChanged);
 			// 
-			// pictureBox11
+			// runningPicture
 			// 
-			this.pictureBox11.BackColor = System.Drawing.Color.White;
-			resources.ApplyResources(this.pictureBox11, "pictureBox11");
-			this.pictureBox11.Image = global::glc_cs.Properties.Resources.load;
-			this.pictureBox11.Name = "pictureBox11";
-			this.pictureBox11.TabStop = false;
-			this.pictureBox11.UseWaitCursor = true;
+			this.runningPicture.BackColor = System.Drawing.Color.White;
+			resources.ApplyResources(this.runningPicture, "runningPicture");
+			this.runningPicture.Image = global::glc_cs.Properties.Resources.load;
+			this.runningPicture.Name = "runningPicture";
+			this.runningPicture.TabStop = false;
+			this.runningPicture.UseWaitCursor = true;
 			// 
 			// gameIcon
 			// 
@@ -602,6 +602,12 @@
 			this.gameImgList.UseCompatibleStateImageBehavior = false;
 			this.gameImgList.SelectedIndexChanged += new System.EventHandler(this.gameImgList_SelectedIndexChanged);
 			this.gameImgList.DoubleClick += new System.EventHandler(this.startButton_Click);
+			// 
+			// imageList32
+			// 
+			this.imageList32.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+			resources.ApplyResources(this.imageList32, "imageList32");
+			this.imageList32.TransparentColor = System.Drawing.Color.Transparent;
 			// 
 			// tabPage3
 			// 
@@ -684,13 +690,14 @@
 			resources.ApplyResources(this.searchButton, "searchButton");
 			this.searchButton.Name = "searchButton";
 			this.searchButton.UseVisualStyleBackColor = true;
-			this.searchButton.Click += new System.EventHandler(this.button13_Click);
+			this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
 			this.searchButton.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.searchText_KeyPress);
 			// 
 			// searchText
 			// 
 			resources.ApplyResources(this.searchText, "searchText");
 			this.searchText.Name = "searchText";
+			this.searchText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.searchText_KeyPress);
 			// 
 			// imageList8
 			// 
@@ -715,8 +722,8 @@
 			this.launchFlowLayoutPanel.BackColor = System.Drawing.Color.Transparent;
 			this.launchFlowLayoutPanel.Controls.Add(this.trackCheck);
 			this.launchFlowLayoutPanel.Controls.Add(this.testCheck);
-			this.launchFlowLayoutPanel.Controls.Add(this.minCheck);
 			this.launchFlowLayoutPanel.Controls.Add(this.sensCheck);
+			this.launchFlowLayoutPanel.Controls.Add(this.extractCheck);
 			resources.ApplyResources(this.launchFlowLayoutPanel, "launchFlowLayoutPanel");
 			this.launchFlowLayoutPanel.Name = "launchFlowLayoutPanel";
 			// 
@@ -744,22 +751,22 @@
 			// gameStatusFlowLayoutPanel
 			// 
 			this.gameStatusFlowLayoutPanel.BackColor = System.Drawing.Color.Transparent;
-			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox2);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.gameTitlePictureBox);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.nameText);
-			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox3);
-			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox5);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.gameTitleCopyPictureBox);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.gamePathPictureBox);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.exePathText);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.executeCmdText);
-			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox4);
-			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox13);
-			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox7);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.gamePathCopyPictureBox);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.gamePathOpenPictureBox);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.gameImgPictureBox);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.imgPathText);
-			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox6);
-			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox14);
-			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox9);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.gameImgCopyPictureBox);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.gameImgOpenPictureBox);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.gameRunningTimePictureBox);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.runTimeText);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.label2);
-			this.gameStatusFlowLayoutPanel.Controls.Add(this.pictureBox8);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.gameStartCountPictureBox);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.startCountText);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.label3);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.statusCombo);
@@ -778,12 +785,6 @@
 			this.executeCmdText.Name = "executeCmdText";
 			this.executeCmdText.ReadOnly = true;
 			// 
-			// imageList32
-			// 
-			this.imageList32.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-			resources.ApplyResources(this.imageList32, "imageList32");
-			this.imageList32.TransparentColor = System.Drawing.Color.Transparent;
-			// 
 			// imageList64
 			// 
 			this.imageList64.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
@@ -794,12 +795,12 @@
 			// 
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.runningPicture);
 			this.Controls.Add(this.ocButton);
 			this.Controls.Add(this.tabControl1);
 			this.Controls.Add(this.dconConnectGroupBox);
 			this.Controls.Add(this.downButton);
 			this.Controls.Add(this.upButton);
-			this.Controls.Add(this.pictureBox11);
 			this.Controls.Add(this.delButton);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.randomButton);
@@ -819,20 +820,20 @@
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dconImgPictureBox)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.gameStartCountPictureBox)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.gameRunningTimePictureBox)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.gameImgPictureBox)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.gamePathPictureBox)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.gameTitlePictureBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.dconTextPictureBox)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.gameImgOpenPictureBox)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.gamePathOpenPictureBox)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.gameImgCopyPictureBox)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.gamePathCopyPictureBox)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.gameTitleCopyPictureBox)).EndInit();
 			this.dconConnectGroupBox.ResumeLayout(false);
 			this.dconConnectGroupBox.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.runningPicture)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.gameIcon)).EndInit();
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
@@ -856,24 +857,24 @@
         private System.Windows.Forms.PictureBox gameIcon;
         private System.Windows.Forms.Button startButton;
         private System.Windows.Forms.Button randomButton;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox gameTitlePictureBox;
         private System.Windows.Forms.TextBox nameText;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.PictureBox gameTitleCopyPictureBox;
+        private System.Windows.Forms.PictureBox gamePathCopyPictureBox;
         private System.Windows.Forms.TextBox exePathText;
-        private System.Windows.Forms.PictureBox pictureBox5;
-        private System.Windows.Forms.PictureBox pictureBox6;
+        private System.Windows.Forms.PictureBox gamePathPictureBox;
+        private System.Windows.Forms.PictureBox gameImgCopyPictureBox;
         private System.Windows.Forms.TextBox imgPathText;
-        private System.Windows.Forms.PictureBox pictureBox7;
-        private System.Windows.Forms.PictureBox pictureBox8;
+        private System.Windows.Forms.PictureBox gameImgPictureBox;
+        private System.Windows.Forms.PictureBox gameStartCountPictureBox;
         private System.Windows.Forms.TextBox runTimeText;
-        private System.Windows.Forms.PictureBox pictureBox9;
+        private System.Windows.Forms.PictureBox gameRunningTimePictureBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox startCountText;
         private System.Windows.Forms.Button infoButton;
         private System.Windows.Forms.Button reloadButton;
         public System.Windows.Forms.ListBox gameList;
-        private System.Windows.Forms.CheckBox minCheck;
+        private System.Windows.Forms.CheckBox extractCheck;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
@@ -885,11 +886,11 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.Button delButton;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
-        private System.Windows.Forms.PictureBox pictureBox11;
+        private System.Windows.Forms.PictureBox runningPicture;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button editButton;
         private System.Windows.Forms.CheckBox sensCheck;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
+        private System.Windows.Forms.ToolStripStatusLabel editINIStatusLabel;
         private System.Windows.Forms.Button configButton;
         private System.Windows.Forms.Button downButton;
         private System.Windows.Forms.Button upButton;
@@ -897,8 +898,8 @@
         private System.Windows.Forms.CheckBox useDconCheck;
         private System.Windows.Forms.RadioButton ratedRadio;
         private System.Windows.Forms.RadioButton normalRadio;
-        private System.Windows.Forms.PictureBox pictureBox14;
-        private System.Windows.Forms.PictureBox pictureBox13;
+        private System.Windows.Forms.PictureBox gameImgOpenPictureBox;
+        private System.Windows.Forms.PictureBox gamePathOpenPictureBox;
         private System.Windows.Forms.CheckBox testCheck;
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tabPage1;

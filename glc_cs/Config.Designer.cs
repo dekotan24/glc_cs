@@ -139,6 +139,25 @@
 			this.queryClearButton = new System.Windows.Forms.Button();
 			this.queryExecuteButton = new System.Windows.Forms.Button();
 			this.queryText = new System.Windows.Forms.RichTextBox();
+			this.tabPage9 = new System.Windows.Forms.TabPage();
+			this.groupBox18 = new System.Windows.Forms.GroupBox();
+			this.extractCurrentDirCheck = new System.Windows.Forms.CheckBox();
+			this.label35 = new System.Windows.Forms.Label();
+			this.extractSaveButton = new System.Windows.Forms.Button();
+			this.extractToolSelectCombo = new System.Windows.Forms.ComboBox();
+			this.label34 = new System.Windows.Forms.Label();
+			this.calcExecPlanButton = new System.Windows.Forms.Button();
+			this.extractExecPlanText = new System.Windows.Forms.TextBox();
+			this.addGameArgCheck = new System.Windows.Forms.CheckBox();
+			this.extractToolArgText = new System.Windows.Forms.TextBox();
+			this.label32 = new System.Windows.Forms.Label();
+			this.extractToolSelectButton = new System.Windows.Forms.Button();
+			this.extractToolPathText = new System.Windows.Forms.TextBox();
+			this.label26 = new System.Windows.Forms.Label();
+			this.label33 = new System.Windows.Forms.Label();
+			this.groupBox17 = new System.Windows.Forms.GroupBox();
+			this.label7 = new System.Windows.Forms.Label();
+			this.enableExtractCheck = new System.Windows.Forms.CheckBox();
 			this.TabPage3 = new System.Windows.Forms.TabPage();
 			this.label31 = new System.Windows.Forms.Label();
 			this.checkBox1 = new System.Windows.Forms.CheckBox();
@@ -159,6 +178,7 @@
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.label15 = new System.Windows.Forms.Label();
 			this.saveWithDownloadCheck = new System.Windows.Forms.CheckBox();
+			this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage7.SuspendLayout();
@@ -185,6 +205,9 @@
 			this.tabPage8.SuspendLayout();
 			this.groupBox15.SuspendLayout();
 			this.ExecuteModeGroup.SuspendLayout();
+			this.tabPage9.SuspendLayout();
+			this.groupBox18.SuspendLayout();
+			this.groupBox17.SuspendLayout();
 			this.TabPage3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
 			this.SuspendLayout();
@@ -435,7 +458,7 @@
 			this.groupBox16.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox16.Location = new System.Drawing.Point(6, 177);
 			this.groupBox16.Name = "groupBox16";
-			this.groupBox16.Size = new System.Drawing.Size(469, 76);
+			this.groupBox16.Size = new System.Drawing.Size(469, 74);
 			this.groupBox16.TabIndex = 5;
 			this.groupBox16.TabStop = false;
 			this.groupBox16.Text = "システム";
@@ -1122,6 +1145,7 @@
 			// 
 			this.tabControl2.Controls.Add(this.tabPage5);
 			this.tabControl2.Controls.Add(this.tabPage8);
+			this.tabControl2.Controls.Add(this.tabPage9);
 			this.tabControl2.Location = new System.Drawing.Point(2, 2);
 			this.tabControl2.Name = "tabControl2";
 			this.tabControl2.SelectedIndex = 0;
@@ -1415,6 +1439,204 @@
 			this.queryText.TabIndex = 5;
 			this.queryText.Text = "";
 			// 
+			// tabPage9
+			// 
+			this.tabPage9.Controls.Add(this.groupBox18);
+			this.tabPage9.Controls.Add(this.groupBox17);
+			this.tabPage9.Location = new System.Drawing.Point(4, 22);
+			this.tabPage9.Name = "tabPage9";
+			this.tabPage9.Size = new System.Drawing.Size(472, 291);
+			this.tabPage9.TabIndex = 2;
+			this.tabPage9.Text = "抽出";
+			this.tabPage9.UseVisualStyleBackColor = true;
+			// 
+			// groupBox18
+			// 
+			this.groupBox18.Controls.Add(this.extractCurrentDirCheck);
+			this.groupBox18.Controls.Add(this.label35);
+			this.groupBox18.Controls.Add(this.extractSaveButton);
+			this.groupBox18.Controls.Add(this.extractToolSelectCombo);
+			this.groupBox18.Controls.Add(this.label34);
+			this.groupBox18.Controls.Add(this.calcExecPlanButton);
+			this.groupBox18.Controls.Add(this.extractExecPlanText);
+			this.groupBox18.Controls.Add(this.addGameArgCheck);
+			this.groupBox18.Controls.Add(this.extractToolArgText);
+			this.groupBox18.Controls.Add(this.label32);
+			this.groupBox18.Controls.Add(this.extractToolSelectButton);
+			this.groupBox18.Controls.Add(this.extractToolPathText);
+			this.groupBox18.Controls.Add(this.label26);
+			this.groupBox18.Controls.Add(this.label33);
+			this.groupBox18.Location = new System.Drawing.Point(4, 53);
+			this.groupBox18.Name = "groupBox18";
+			this.groupBox18.Size = new System.Drawing.Size(465, 235);
+			this.groupBox18.TabIndex = 2;
+			this.groupBox18.TabStop = false;
+			this.groupBox18.Text = "抽出ツール";
+			// 
+			// extractCurrentDirCheck
+			// 
+			this.extractCurrentDirCheck.AutoSize = true;
+			this.extractCurrentDirCheck.Location = new System.Drawing.Point(192, 136);
+			this.extractCurrentDirCheck.Name = "extractCurrentDirCheck";
+			this.extractCurrentDirCheck.Size = new System.Drawing.Size(257, 16);
+			this.extractCurrentDirCheck.TabIndex = 21;
+			this.extractCurrentDirCheck.Text = "カレントディレクトリを抽出ツールのディレクトリにする";
+			this.extractCurrentDirCheck.UseVisualStyleBackColor = true;
+			// 
+			// label35
+			// 
+			this.label35.AutoSize = true;
+			this.label35.Location = new System.Drawing.Point(214, 21);
+			this.label35.Name = "label35";
+			this.label35.Size = new System.Drawing.Size(247, 12);
+			this.label35.TabIndex = 20;
+			this.label35.Text = "※変更を保存するには「保存」ボタンを押してください";
+			// 
+			// extractSaveButton
+			// 
+			this.extractSaveButton.Location = new System.Drawing.Point(149, 16);
+			this.extractSaveButton.Name = "extractSaveButton";
+			this.extractSaveButton.Size = new System.Drawing.Size(59, 23);
+			this.extractSaveButton.TabIndex = 19;
+			this.extractSaveButton.Text = "保存";
+			this.extractSaveButton.UseVisualStyleBackColor = true;
+			this.extractSaveButton.Click += new System.EventHandler(this.extractSaveButton_Click);
+			// 
+			// extractToolSelectCombo
+			// 
+			this.extractToolSelectCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.extractToolSelectCombo.FormattingEnabled = true;
+			this.extractToolSelectCombo.Items.AddRange(new object[] {
+            "",
+            "krkr",
+            "krkrz",
+            "krkrDump",
+            "カスタム1",
+            "カスタム2"});
+			this.extractToolSelectCombo.Location = new System.Drawing.Point(6, 18);
+			this.extractToolSelectCombo.Name = "extractToolSelectCombo";
+			this.extractToolSelectCombo.Size = new System.Drawing.Size(137, 20);
+			this.extractToolSelectCombo.TabIndex = 18;
+			this.extractToolSelectCombo.SelectedIndexChanged += new System.EventHandler(this.extractToolSelectCombo_SelectedIndexChanged);
+			// 
+			// label34
+			// 
+			this.label34.AutoSize = true;
+			this.label34.Location = new System.Drawing.Point(6, 172);
+			this.label34.Name = "label34";
+			this.label34.Size = new System.Drawing.Size(114, 12);
+			this.label34.TabIndex = 17;
+			this.label34.Text = "実行予定コマンドライン";
+			// 
+			// calcExecPlanButton
+			// 
+			this.calcExecPlanButton.Location = new System.Drawing.Point(416, 185);
+			this.calcExecPlanButton.Name = "calcExecPlanButton";
+			this.calcExecPlanButton.Size = new System.Drawing.Size(43, 23);
+			this.calcExecPlanButton.TabIndex = 16;
+			this.calcExecPlanButton.Text = "検証";
+			this.calcExecPlanButton.UseVisualStyleBackColor = true;
+			this.calcExecPlanButton.Click += new System.EventHandler(this.calcExecPlanButton_Click);
+			// 
+			// extractExecPlanText
+			// 
+			this.extractExecPlanText.Location = new System.Drawing.Point(32, 187);
+			this.extractExecPlanText.Name = "extractExecPlanText";
+			this.extractExecPlanText.ReadOnly = true;
+			this.extractExecPlanText.Size = new System.Drawing.Size(378, 19);
+			this.extractExecPlanText.TabIndex = 15;
+			// 
+			// addGameArgCheck
+			// 
+			this.addGameArgCheck.AutoSize = true;
+			this.addGameArgCheck.Location = new System.Drawing.Point(32, 136);
+			this.addGameArgCheck.Name = "addGameArgCheck";
+			this.addGameArgCheck.Size = new System.Drawing.Size(154, 16);
+			this.addGameArgCheck.TabIndex = 14;
+			this.addGameArgCheck.Text = "ゲーム実行引数を追加する";
+			this.addGameArgCheck.UseVisualStyleBackColor = true;
+			// 
+			// extractToolArgText
+			// 
+			this.extractToolArgText.Location = new System.Drawing.Point(32, 111);
+			this.extractToolArgText.Name = "extractToolArgText";
+			this.extractToolArgText.Size = new System.Drawing.Size(427, 19);
+			this.extractToolArgText.TabIndex = 13;
+			// 
+			// label32
+			// 
+			this.label32.AutoSize = true;
+			this.label32.Location = new System.Drawing.Point(6, 96);
+			this.label32.Name = "label32";
+			this.label32.Size = new System.Drawing.Size(29, 12);
+			this.label32.TabIndex = 12;
+			this.label32.Text = "引数";
+			// 
+			// extractToolSelectButton
+			// 
+			this.extractToolSelectButton.Location = new System.Drawing.Point(435, 62);
+			this.extractToolSelectButton.Name = "extractToolSelectButton";
+			this.extractToolSelectButton.Size = new System.Drawing.Size(24, 23);
+			this.extractToolSelectButton.TabIndex = 11;
+			this.extractToolSelectButton.Text = "..";
+			this.extractToolSelectButton.UseVisualStyleBackColor = true;
+			this.extractToolSelectButton.Click += new System.EventHandler(this.extractToolSelectButton_Click);
+			// 
+			// extractToolPathText
+			// 
+			this.extractToolPathText.Location = new System.Drawing.Point(32, 64);
+			this.extractToolPathText.Name = "extractToolPathText";
+			this.extractToolPathText.Size = new System.Drawing.Size(397, 19);
+			this.extractToolPathText.TabIndex = 10;
+			// 
+			// label26
+			// 
+			this.label26.AutoSize = true;
+			this.label26.Location = new System.Drawing.Point(6, 49);
+			this.label26.Name = "label26";
+			this.label26.Size = new System.Drawing.Size(77, 12);
+			this.label26.TabIndex = 9;
+			this.label26.Text = "抽出ツールパス";
+			// 
+			// label33
+			// 
+			this.label33.AutoSize = true;
+			this.label33.Location = new System.Drawing.Point(30, 215);
+			this.label33.Name = "label33";
+			this.label33.Size = new System.Drawing.Size(422, 12);
+			this.label33.TabIndex = 3;
+			this.label33.Text = "※引数の最後にゲームの実行パスが追加されます。検証の反映には「保存」が必要です。\r\n";
+			// 
+			// groupBox17
+			// 
+			this.groupBox17.Controls.Add(this.label7);
+			this.groupBox17.Controls.Add(this.enableExtractCheck);
+			this.groupBox17.Location = new System.Drawing.Point(4, 4);
+			this.groupBox17.Name = "groupBox17";
+			this.groupBox17.Size = new System.Drawing.Size(465, 42);
+			this.groupBox17.TabIndex = 1;
+			this.groupBox17.TabStop = false;
+			this.groupBox17.Text = "機能有効化";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(162, 19);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(295, 12);
+			this.label7.TabIndex = 1;
+			this.label7.Text = "※ランチャーに抽出モード有効化チェックボックスが表示されます";
+			// 
+			// enableExtractCheck
+			// 
+			this.enableExtractCheck.AutoSize = true;
+			this.enableExtractCheck.Location = new System.Drawing.Point(6, 18);
+			this.enableExtractCheck.Name = "enableExtractCheck";
+			this.enableExtractCheck.Size = new System.Drawing.Size(137, 16);
+			this.enableExtractCheck.TabIndex = 0;
+			this.enableExtractCheck.Text = "抽出モードを有効にする";
+			this.enableExtractCheck.UseVisualStyleBackColor = true;
+			// 
 			// TabPage3
 			// 
 			this.TabPage3.Controls.Add(this.label31);
@@ -1605,6 +1827,10 @@
 			this.saveWithDownloadCheck.Text = "保存と同時にDL";
 			this.saveWithDownloadCheck.UseVisualStyleBackColor = true;
 			// 
+			// openFileDialog2
+			// 
+			this.openFileDialog2.FileName = "openFileDialog2";
+			// 
 			// Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1663,6 +1889,11 @@
 			this.groupBox15.ResumeLayout(false);
 			this.ExecuteModeGroup.ResumeLayout(false);
 			this.ExecuteModeGroup.PerformLayout();
+			this.tabPage9.ResumeLayout(false);
+			this.groupBox18.ResumeLayout(false);
+			this.groupBox18.PerformLayout();
+			this.groupBox17.ResumeLayout(false);
+			this.groupBox17.PerformLayout();
 			this.TabPage3.ResumeLayout(false);
 			this.TabPage3.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
@@ -1801,5 +2032,25 @@
 		private System.Windows.Forms.RadioButton fixGridSize8;
 		private System.Windows.Forms.CheckBox saveWithDownloadCheck;
 		private System.Windows.Forms.CheckBox useLocalDBCheck;
+		private System.Windows.Forms.TabPage tabPage9;
+		private System.Windows.Forms.GroupBox groupBox18;
+		private System.Windows.Forms.Label label33;
+		private System.Windows.Forms.GroupBox groupBox17;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.CheckBox enableExtractCheck;
+		private System.Windows.Forms.ComboBox extractToolSelectCombo;
+		private System.Windows.Forms.Label label34;
+		private System.Windows.Forms.Button calcExecPlanButton;
+		private System.Windows.Forms.TextBox extractExecPlanText;
+		private System.Windows.Forms.CheckBox addGameArgCheck;
+		private System.Windows.Forms.TextBox extractToolArgText;
+		private System.Windows.Forms.Label label32;
+		private System.Windows.Forms.Button extractToolSelectButton;
+		private System.Windows.Forms.TextBox extractToolPathText;
+		private System.Windows.Forms.Label label26;
+		private System.Windows.Forms.OpenFileDialog openFileDialog2;
+		private System.Windows.Forms.Label label35;
+		private System.Windows.Forms.Button extractSaveButton;
+		private System.Windows.Forms.CheckBox extractCurrentDirCheck;
 	}
 }

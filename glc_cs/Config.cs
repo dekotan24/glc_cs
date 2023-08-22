@@ -198,6 +198,14 @@ namespace glc_cs
 					iniText.Text = tmpRawGameDir;
 				}
 			}
+
+			// [ツール]タブ
+			enableExtractCheck.Checked = ExtractEnable;
+			extractToolSelectCombo.SelectedIndex = 0;
+			extractToolPathText.Text = string.Empty;
+			extractToolArgText.Text = string.Empty;
+			addGameArgCheck.Checked = false;
+			extractCurrentDirCheck.Checked = false;
 		}
 
 		/// <summary>
@@ -250,6 +258,10 @@ namespace glc_cs
 			{
 				WriteIni("disable", "updchkVer", AppVer);
 			}
+			else
+			{
+				WriteIni("disable", "updchkVer", "0.0");
+			}
 			WriteIni("disable", "enableWindowHideControl", enableWindowHideControlCheck.Checked ? "1" : "0");
 			WriteIni("grid", "fixGridSizeFlg", fixGridSizeCheck.Checked ? "1" : "0");
 			WriteIni("grid", "fixGridSize", (fixGridSize8.Checked ? "8" : (fixGridSize64.Checked ? "64" : "32")));
@@ -286,6 +298,9 @@ namespace glc_cs
 			WriteIni("connect", "byRoW", RoWCheck.Checked ? "1" : "0");
 			WriteIni("connect", "byRoS", RoSCheck.Checked ? "1" : "0");
 			WriteIni("connect", "byRoG", RoGCheck.Checked ? "1" : "0");
+
+			// 抽出
+			WriteIni("Extract", "Enabled", (Convert.ToInt32(enableExtractCheck.Checked)).ToString());
 
 			// データベースをローカルにINIで保存する
 			if (offlineSaveEnableCheck.Checked && saveWithDownloadCheck.Checked)
@@ -1629,6 +1644,151 @@ namespace glc_cs
 					fixGridSize8.Enabled = fixGridSize32.Enabled = fixGridSize64.Enabled = true;
 				}
 			}
+		}
+
+		private void calcExecPlanButton_Click(object sender, EventArgs e)
+		{
+			if (GenerateExtractCmd(extractToolSelectCombo.SelectedIndex, "[ゲーム実行パス]", "[ゲーム実行引数]", out string extractAppPath, out string extractAppArgs))
+			{
+				extractExecPlanText.Text = extractAppPath + " " + extractAppArgs;
+			}
+			else
+			{
+				extractExecPlanText.Text = string.Empty;
+			}
+
+			return;
+		}
+
+		private void extractToolSelectButton_Click(object sender, EventArgs e)
+		{
+			openFileDialog2.Title = "抽出ツールを選択";
+			openFileDialog2.Filter = "実行ファイル(*.exe)|*.exe|すべてのファイル(*.*)|*.*";
+			openFileDialog2.FileName = "";
+			if (openFileDialog2.ShowDialog() == DialogResult.OK)
+			{
+				extractToolPathText.Text = openFileDialog2.FileName;
+			}
+
+			return;
+		}
+
+		private void extractToolSelectCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			extractExecPlanText.Text = string.Empty;
+			switch (extractToolSelectCombo.SelectedIndex)
+			{
+				case 1: // krkr
+					extractToolPathText.Text = ExtractKrkrPath;
+					extractToolArgText.Text = ExtractKrkrArg;
+					addGameArgCheck.Checked = ExtractKrkrAddGameArg;
+					extractCurrentDirCheck.Checked = ExtractKrkrCurDir;
+					break;
+				case 2: // krkrz
+					extractToolPathText.Text = ExtractKrkrzPath;
+					extractToolArgText.Text = ExtractKrkrzArg;
+					addGameArgCheck.Checked = ExtractKrkrzAddGameArg;
+					extractCurrentDirCheck.Checked = ExtractKrkrzCurDir;
+					break;
+				case 3: // krkrDump
+					extractToolPathText.Text = ExtractKrkrDumpPath;
+					extractToolArgText.Text = ExtractKrkrDumpArg;
+					addGameArgCheck.Checked = ExtractKrkrDumpAddGameArg;
+					extractCurrentDirCheck.Checked = ExtractKrkrDumpCurDir;
+					break;
+				case 4: // カスタム1
+					extractToolPathText.Text = ExtractCustom1Path;
+					extractToolArgText.Text = ExtractCustom1Arg;
+					addGameArgCheck.Checked = ExtractCustom1AddGameArg;
+					extractCurrentDirCheck.Checked = ExtractCustom1CurDir;
+					break;
+				case 5: // カスタム2
+					extractToolPathText.Text = ExtractCustom2Path;
+					extractToolArgText.Text = ExtractCustom2Arg;
+					addGameArgCheck.Checked = ExtractCustom2AddGameArg;
+					extractCurrentDirCheck.Checked = ExtractCustom2CurDir;
+					break;
+				default:
+					extractToolPathText.Text = string.Empty;
+					extractToolArgText.Text = string.Empty;
+					addGameArgCheck.Checked = false;
+					extractCurrentDirCheck.Checked = false;
+					break;
+			}
+		}
+
+		private void extractSaveButton_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				switch (extractToolSelectCombo.SelectedIndex)
+				{
+					case 1: // krkr
+						WriteIni("Extract", "krkrPath", extractToolPathText.Text.Trim());
+						WriteIni("Extract", "krkrArg", extractToolArgText.Text.Trim());
+						WriteIni("Extract", "krkrAddGameArg", addGameArgCheck.Checked ? "1" : "0");
+						WriteIni("Extract", "krkrCurDir", extractCurrentDirCheck.Checked ? "1" : "0");
+						ExtractKrkrPath = extractToolPathText.Text.Trim();
+						ExtractKrkrArg = extractToolArgText.Text.Trim();
+						ExtractKrkrAddGameArg = Convert.ToBoolean(Convert.ToInt32(addGameArgCheck.Checked ? "1" : "0"));
+						ExtractKrkrCurDir = Convert.ToBoolean(Convert.ToInt32(extractCurrentDirCheck.Checked ? "1" : "0"));
+						break;
+					case 2: // krkrz
+						WriteIni("Extract", "krkrzPath", extractToolPathText.Text.Trim());
+						WriteIni("Extract", "krkrzArg", extractToolArgText.Text.Trim());
+						WriteIni("Extract", "krkrzAddGameArg", addGameArgCheck.Checked ? "1" : "0");
+						WriteIni("Extract", "krkrzCurDir", extractCurrentDirCheck.Checked ? "1" : "0");
+						ExtractKrkrzPath = extractToolPathText.Text.Trim();
+						ExtractKrkrzArg = extractToolArgText.Text.Trim();
+						ExtractKrkrzCurDir = Convert.ToBoolean(Convert.ToInt32(extractCurrentDirCheck.Checked ? "1" : "0"));
+						break;
+					case 3: // krkrDump
+						WriteIni("Extract", "krkrDumpPath", extractToolPathText.Text.Trim());
+						WriteIni("Extract", "krkrDumpArg", extractToolArgText.Text.Trim());
+						WriteIni("Extract", "krkrDumpAddGameArg", addGameArgCheck.Checked ? "1" : "0");
+						WriteIni("Extract", "krkrDumpCurDir", extractCurrentDirCheck.Checked ? "1" : "0");
+						ExtractKrkrDumpPath = extractToolPathText.Text.Trim();
+						ExtractKrkrDumpArg = extractToolArgText.Text.Trim();
+						ExtractKrkrDumpAddGameArg = Convert.ToBoolean(Convert.ToInt32(addGameArgCheck.Checked ? "1" : "0"));
+						ExtractKrkrDumpCurDir = Convert.ToBoolean(Convert.ToInt32(extractCurrentDirCheck.Checked ? "1" : "0"));
+						break;
+					case 4: // カスタム1
+						WriteIni("Extract", "Custom1Path", extractToolPathText.Text.Trim());
+						WriteIni("Extract", "Custom1Arg", extractToolArgText.Text.Trim());
+						WriteIni("Extract", "Custom1AddGameArg", addGameArgCheck.Checked ? "1" : "0");
+						WriteIni("Extract", "Custom1CurDir", extractCurrentDirCheck.Checked ? "1" : "0");
+						ExtractCustom1Path = extractToolPathText.Text.Trim();
+						ExtractCustom1Arg = extractToolArgText.Text.Trim();
+						ExtractCustom1AddGameArg = Convert.ToBoolean(Convert.ToInt32(addGameArgCheck.Checked ? "1" : "0"));
+						ExtractCustom1CurDir = Convert.ToBoolean(Convert.ToInt32(extractCurrentDirCheck.Checked ? "1" : "0"));
+						break;
+					case 5: // カスタム2
+						WriteIni("Extract", "Custom2Path", extractToolPathText.Text.Trim());
+						WriteIni("Extract", "Custom2Arg", extractToolArgText.Text.Trim());
+						WriteIni("Extract", "Custom2AddGameArg", addGameArgCheck.Checked ? "1" : "0");
+						WriteIni("Extract", "Custom2CurDir", extractCurrentDirCheck.Checked ? "1" : "0");
+						ExtractCustom2Path = extractToolPathText.Text.Trim();
+						ExtractCustom2Arg = extractToolArgText.Text.Trim();
+						ExtractCustom2AddGameArg = Convert.ToBoolean(Convert.ToInt32(addGameArgCheck.Checked ? "1" : "0"));
+						ExtractCustom2CurDir = Convert.ToBoolean(Convert.ToInt32(extractCurrentDirCheck.Checked ? "1" : "0"));
+						break;
+				}
+				System.Media.SystemSounds.Beep.Play();
+			}
+			catch (Exception ex)
+			{
+				StringBuilder sb = new StringBuilder();
+				sb.Append("SelectedIndex:").Append(extractToolSelectCombo.SelectedIndex).Append(" / ");
+				sb.Append("PathText:").Append(extractToolPathText.Text.Trim()).Append(" / ");
+				sb.Append("ArgText:").Append(extractToolArgText.Text.Trim()).Append(" / ");
+				sb.Append("AddGameArg:").Append(addGameArgCheck.Checked ? "1" : "0");
+
+				WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, sb.ToString());
+
+				MessageBox.Show(ex.Message, AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+
+			return;
 		}
 	}
 }

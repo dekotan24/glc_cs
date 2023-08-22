@@ -47,12 +47,12 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appBuild = "40.23.08.xx";
+			protected static readonly string appBuild = "40.23.08.22";
 
 			/// <summary>
 			/// データベースバージョン
 			/// </summary>
-			protected static readonly string dbVer = "1.3";
+			protected static readonly string dbVer = "1.4";
 
 			/// <summary>
 			/// 初回ロードフラグ
@@ -293,6 +293,117 @@ namespace glc_cs
 			protected static int fixGridSize = 32;
 
 			/// <summary>
+			/// 抽出機能使用可否フラグ
+			/// </summary>
+			protected static bool extractEnable = false;
+
+			/// <summary>
+			/// 抽出ツールのID
+			/// </summary>
+			protected static int currentExtractTool = 0;
+
+			/// <summary>
+			/// krkrツールパス
+			/// </summary>
+			protected static string extractKrkrPath = string.Empty;
+
+			/// <summary>
+			/// krkr引数
+			/// </summary>
+			protected static string extractKrkrArg = string.Empty;
+
+			/// <summary>
+			/// krkrゲーム引数追加フラグ
+			/// </summary>
+			protected static bool extractKrkrAddGameArg = false;
+
+			/// <summary>
+			/// krkrツールをカレントディレクトリにするフラグ
+			/// </summary>
+			protected static bool extractKrkrCurDir = false;
+
+			/// <summary>
+			/// krkrzツールパス
+			/// </summary>
+			protected static string extractKrkrzPath = string.Empty;
+
+			/// <summary>
+			/// krkrz引数
+			/// </summary>
+			protected static string extractKrkrzArg = string.Empty;
+
+			/// <summary>
+			/// krkrzゲーム引数追加フラグ
+			/// </summary>
+			protected static bool extractKrkrzAddGameArg = false;
+
+			/// <summary>
+			/// krkrzツールをカレントディレクトリにするフラグ
+			/// </summary>
+			protected static bool extractKrkrzCurDir = false;
+
+			/// <summary>
+			/// krkrDumpツールパス
+			/// </summary>
+			protected static string extractKrkrDumpPath = string.Empty;
+
+			/// <summary>
+			/// krkrDump引数
+			/// </summary>
+			protected static string extractKrkrDumpArg = string.Empty;
+
+			/// <summary>
+			/// krkrDumpゲーム引数追加フラグ
+			/// </summary>
+			protected static bool extractKrkrDumpAddGameArg = false;
+
+			/// <summary>
+			/// krkrDumpツールをカレントディレクトリにするフラグ
+			/// </summary>
+			protected static bool extractKrkrDumpCurDir = false;
+
+			/// <summary>
+			/// カスタム1ツールパス
+			/// </summary>
+			protected static string extractCustom1Path = string.Empty;
+
+			/// <summary>
+			/// カスタム1引数
+			/// </summary>
+			protected static string extractCustom1Arg = string.Empty;
+
+			/// <summary>
+			/// カスタム1ゲーム引数追加フラグ
+			/// </summary>
+			protected static bool extractCustom1AddGameArg = false;
+
+			/// <summary>
+			/// カスタム1ツールをカレントディレクトリにするフラグ
+			/// </summary>
+			protected static bool extractCustom1CurDir = false;
+
+			/// <summary>
+			/// カスタム2ツールパス
+			/// </summary>
+			protected static string extractCustom2Path = string.Empty;
+
+			/// <summary>
+			/// カスタム2引数
+			/// </summary>
+			protected static string extractCustom2Arg = string.Empty;
+
+			/// <summary>
+			/// カスタム2ゲーム引数追加フラグ
+			/// </summary>
+			protected static bool extractCustom2AddGameArg = false;
+
+			/// <summary>
+			/// カスタム2ツールをカレントディレクトリにするフラグ
+			/// </summary>
+			protected static bool extractCustom2CurDir = false;
+
+
+			/// <summary>
 			/// INIファイルに書き込む際に使用可能なキー名一覧
 			/// </summary>
 			public enum KeyNames
@@ -311,6 +422,7 @@ namespace glc_cs
 				, lastrun
 				, temp1
 				, execute_cmd
+				, extract_tool
 			}
 
 			/// <summary>
@@ -834,6 +946,204 @@ namespace glc_cs
 			}
 
 			/// <summary>
+			/// 抽出ツールID
+			/// </summary>
+			public static int CurrentExtractTool
+			{
+				get { return currentExtractTool; }
+				set { currentExtractTool = value; }
+			}
+
+			/// <summary>
+			/// 抽出機能使用可否フラグ
+			/// </summary>
+			public static bool ExtractEnable
+			{
+				get { return extractEnable; }
+				set { extractEnable = value; }
+			}
+
+			/// <summary>
+			/// krkrツールパス
+			/// </summary>
+			public static string ExtractKrkrPath
+			{
+				get { return extractKrkrPath; }
+				set { extractKrkrPath = value; }
+			}
+
+			/// <summary>
+			/// krkr引数
+			/// </summary>
+			public static string ExtractKrkrArg
+			{
+				get { return extractKrkrArg; }
+				set { extractKrkrArg = value; }
+			}
+
+			/// <summary>
+			/// krkrゲーム引数追加フラグ
+			/// </summary>
+			public static bool ExtractKrkrAddGameArg
+			{
+				get { return extractKrkrAddGameArg; }
+				set { extractKrkrAddGameArg = value; }
+			}
+
+			/// <summary>
+			/// krkrツールをカレントディレクトリにするフラグ
+			/// </summary>
+			public static bool ExtractKrkrCurDir
+			{
+				get { return extractKrkrCurDir; }
+				set { extractKrkrCurDir = value; }
+			}
+
+			/// <summary>
+			/// krkrzツールパス
+			/// </summary>
+			public static string ExtractKrkrzPath
+			{
+				get { return extractKrkrzPath; }
+				set { extractKrkrzPath = value; }
+			}
+
+			/// <summary>
+			/// krkrz引数
+			/// </summary>
+			public static string ExtractKrkrzArg
+			{
+				get { return extractKrkrzArg; }
+				set { extractKrkrzArg = value; }
+			}
+
+			/// <summary>
+			/// krkrzゲーム引数追加フラグ
+			/// </summary>
+			public static bool ExtractKrkrzAddGameArg
+			{
+				get { return extractKrkrzAddGameArg; }
+				set { extractKrkrzAddGameArg = value; }
+			}
+
+			/// <summary>
+			/// krkrzツールをカレントディレクトリにするフラグ
+			/// </summary>
+			public static bool ExtractKrkrzCurDir
+			{
+				get { return extractKrkrzCurDir; }
+				set { extractKrkrzCurDir = value; }
+			}
+
+			/// <summary>
+			/// krkrDumpツールパス
+			/// </summary>
+			public static string ExtractKrkrDumpPath
+			{
+				get { return extractKrkrDumpPath; }
+				set { extractKrkrDumpPath = value; }
+			}
+
+			/// <summary>
+			/// krkrDump引数
+			/// </summary>
+			public static string ExtractKrkrDumpArg
+			{
+				get { return extractKrkrDumpArg; }
+				set { extractKrkrDumpArg = value; }
+			}
+
+			/// <summary>
+			/// krkrDumpゲーム引数追加フラグ
+			/// </summary>
+			public static bool ExtractKrkrDumpAddGameArg
+			{
+				get { return extractKrkrDumpAddGameArg; }
+				set { extractKrkrDumpAddGameArg = value; }
+			}
+
+			/// <summary>
+			/// krkrDumpツールをカレントディレクトリにするフラグ
+			/// </summary>
+			public static bool ExtractKrkrDumpCurDir
+			{
+				get { return extractKrkrDumpCurDir; }
+				set { extractKrkrDumpCurDir = value; }
+			}
+
+			/// <summary>
+			/// Custom1ツールパス
+			/// </summary>
+			public static string ExtractCustom1Path
+			{
+				get { return extractCustom1Path; }
+				set { extractCustom1Path = value; }
+			}
+
+			/// <summary>
+			/// Custom1引数
+			/// </summary>
+			public static string ExtractCustom1Arg
+			{
+				get { return extractCustom1Arg; }
+				set { extractCustom1Arg = value; }
+			}
+
+			/// <summary>
+			/// Custom1ゲーム引数追加フラグ
+			/// </summary>
+			public static bool ExtractCustom1AddGameArg
+			{
+				get { return extractCustom1AddGameArg; }
+				set { extractCustom1AddGameArg = value; }
+			}
+
+			/// <summary>
+			/// Custom1ツールをカレントディレクトリにするフラグ
+			/// </summary>
+			public static bool ExtractCustom1CurDir
+			{
+				get { return extractCustom1CurDir; }
+				set { extractCustom1CurDir = value; }
+			}
+
+			/// <summary>
+			/// Custom2ツールパス
+			/// </summary>
+			public static string ExtractCustom2Path
+			{
+				get { return extractCustom2Path; }
+				set { extractCustom2Path = value; }
+			}
+
+			/// <summary>
+			/// Custom2引数
+			/// </summary>
+			public static string ExtractCustom2Arg
+			{
+				get { return extractCustom2Arg; }
+				set { extractCustom2Arg = value; }
+			}
+
+			/// <summary>
+			/// Custom2ゲーム引数追加フラグ
+			/// </summary>
+			public static bool ExtractCustom2AddGameArg
+			{
+				get { return extractCustom2AddGameArg; }
+				set { extractCustom2AddGameArg = value; }
+			}
+
+			/// <summary>
+			/// Custom2ツールをカレントディレクトリにするフラグ
+			/// </summary>
+			public static bool ExtractCustom2CurDir
+			{
+				get { return extractCustom2CurDir; }
+				set { extractCustom2CurDir = value; }
+			}
+
+			/// <summary>
 			/// システム変数をロードします
 			/// </summary>
 			/// <returns></returns>
@@ -973,6 +1283,34 @@ namespace glc_cs
 					Dconnect = Convert.ToBoolean(Convert.ToInt32(ReadIni("checkbox", "dconnect", "0")));
 					DconAppID = ReadIni("connect", "dconappid", string.Empty);
 					Rate = Convert.ToInt32(ReadIni("checkbox", "rate", "0"));
+
+					// 抽出
+					ExtractEnable = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Enabled", "0")));
+
+					ExtractKrkrPath = ReadIni("Extract", "krkrPath", string.Empty);
+					ExtractKrkrArg = ReadIni("Extract", "krkrArg", string.Empty);
+					ExtractKrkrAddGameArg = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrAddGameArg", "0")));
+					ExtractKrkrCurDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrCurDir", "0")));
+
+					ExtractKrkrzPath = ReadIni("Extract", "krkrzPath", string.Empty);
+					ExtractKrkrzArg = ReadIni("Extract", "krkrzArg", string.Empty);
+					ExtractKrkrzAddGameArg = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrzAddGameArg", "0")));
+					ExtractKrkrzCurDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrzCurDir", "0")));
+
+					ExtractKrkrDumpPath = ReadIni("Extract", "krkrDumpPath", string.Empty);
+					ExtractKrkrDumpArg = ReadIni("Extract", "krkrDumpArg", string.Empty);
+					ExtractKrkrDumpAddGameArg = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrDumpAddGameArg", "0")));
+					ExtractKrkrDumpCurDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrDumpCurDir", "0")));
+
+					ExtractCustom1Path = ReadIni("Extract", "Custom1Path", string.Empty);
+					ExtractCustom1Arg = ReadIni("Extract", "Custom1Arg", string.Empty);
+					ExtractCustom1AddGameArg = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Custom1AddGameArg", "0")));
+					ExtractCustom1CurDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Custom1CurDir", "0")));
+
+					ExtractCustom2Path = ReadIni("Extract", "Custom2Path", string.Empty);
+					ExtractCustom2Arg = ReadIni("Extract", "Custom2Arg", string.Empty);
+					ExtractCustom2AddGameArg = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Custom2AddGameArg", "0")));
+					ExtractCustom2CurDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Custom2CurDir", "0")));
 				}
 				else
 				{
@@ -2377,6 +2715,125 @@ namespace glc_cs
 					}
 				}
 				return ans;
+			}
+
+
+			public static bool GenerateExtractCmd(int extractID, string gamePath, string gameArgs, out string extractAppPath, out string extractAppArgs)
+			{
+				StringBuilder appPath = new StringBuilder();
+				StringBuilder appArgs = new StringBuilder();
+				extractAppPath = string.Empty;
+				extractAppArgs = string.Empty;
+
+				// Indexが0の場合はツール未選択なので返す
+				if (extractID == 0)
+				{
+					return false;
+				}
+
+				switch (extractID)
+				{
+					case 1: // krkr
+						appPath.Append(ExtractKrkrPath);
+						if (ExtractKrkrArg.Length != 0)
+						{
+							appArgs.Append(ExtractKrkrArg);
+							appArgs.Append(ExtractKrkrArg).Append(" ");
+						}
+						if (ExtractKrkrAddGameArg)
+						{
+							appArgs.Append("\"");
+						}
+						break;
+					case 2: // krkrz
+						appPath.Append(ExtractKrkrzPath);
+						if (ExtractKrkrzArg.Length != 0)
+						{
+							appArgs.Append(ExtractKrkrzArg);
+							appArgs.Append(ExtractKrkrzArg).Append(" ");
+						}
+						if (ExtractKrkrzAddGameArg)
+						{
+							appArgs.Append("\"");
+						}
+						break;
+					case 3: // krkrDump
+						appPath.Append(ExtractKrkrDumpPath);
+						if (ExtractKrkrDumpArg.Length != 0)
+						{
+							appArgs.Append(ExtractKrkrDumpArg);
+							appArgs.Append(ExtractKrkrDumpArg).Append(" ");
+						}
+						if (ExtractKrkrDumpAddGameArg)
+						{
+							appArgs.Append("\"");
+						}
+						break;
+					case 4: // Custom1
+						appPath.Append(ExtractCustom1Path);
+						if (ExtractCustom1Arg.Length != 0)
+						{
+							appArgs.Append(ExtractCustom1Arg);
+							appArgs.Append(ExtractCustom1Arg).Append(" ");
+						}
+						if (ExtractCustom1AddGameArg)
+						{
+							appArgs.Append("\"");
+						}
+						break;
+					case 5: // Custom2
+						appPath.Append(ExtractCustom2Path);
+						if (ExtractCustom2Arg.Length != 0)
+						{
+							appArgs.Append(ExtractCustom2Arg);
+							appArgs.Append(ExtractCustom2Arg).Append(" ");
+						}
+						if (ExtractCustom2AddGameArg)
+						{
+							appArgs.Append("\"");
+						}
+						break;
+				}
+				appArgs.Append("\"").Append(gamePath);
+				switch (extractID)
+				{
+					case 1: // krkr
+						if (ExtractKrkrAddGameArg)
+						{
+							appArgs.Append(" ").Append(gameArgs).Append("\"");
+						}
+						break;
+					case 2: // krkrz
+						if (ExtractKrkrzAddGameArg)
+						{
+							appArgs.Append(" ").Append(gameArgs).Append("\"");
+						}
+						break;
+					case 3: // krkrDump
+						if (ExtractKrkrDumpAddGameArg)
+						{
+							appArgs.Append(" ").Append(gameArgs).Append("\"");
+						}
+						break;
+					case 4: // Custom1
+						if (ExtractCustom1AddGameArg)
+						{
+							appArgs.Append(" ").Append(gameArgs).Append("\"");
+						}
+						break;
+					case 5: // Custom2
+						if (ExtractCustom2AddGameArg)
+						{
+							appArgs.Append(" ").Append(gameArgs).Append("\"");
+						}
+						break;
+				}
+				//appArgs.Append("\"");
+
+				extractAppPath = appPath.ToString();
+				extractAppArgs = appArgs.ToString();
+
+				return true;
 			}
 
 		}
