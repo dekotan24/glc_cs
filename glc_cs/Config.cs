@@ -6,6 +6,9 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Forms;
 using static glc_cs.General.Var;
 
@@ -1144,26 +1147,6 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void logoPictureBox_Click(object sender, EventArgs e)
 		{
-			Random r1 = new System.Random();
-			int rand = r1.Next(0, 5);
-			switch (rand)
-			{
-				case 0:
-					System.Media.SystemSounds.Beep.Play();
-					break;
-				case 1:
-					System.Media.SystemSounds.Asterisk.Play();
-					break;
-				case 2:
-					System.Media.SystemSounds.Exclamation.Play();
-					break;
-				case 3:
-					System.Media.SystemSounds.Hand.Play();
-					break;
-				case 4:
-					System.Media.SystemSounds.Question.Play();
-					break;
-			}
 		}
 
 		/// <summary>

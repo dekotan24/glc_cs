@@ -24,10 +24,19 @@ namespace glc_cs
 			InitializeComponent();
 		}
 
+		/// <summary>
+		/// 初期起動時イベント
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void gl_Load(object sender, EventArgs e)
 		{
 			// スプラッシュ画面表示
 			SplashForm.Show();
+
+			// ステータス変更
+			UpdateSplashInfo(1, "準備中…");
+
 			Application.DoEvents();
 
 			// スタイル設定
@@ -41,22 +50,35 @@ namespace glc_cs
 			// 実行ボタンカバーを表示
 			runningPicture.Visible = true;
 
+			// ステータス変更
+			UpdateSplashInfo(2, "設定の読み込み中…");
+
 			// 設定ファイル読込
 			updateComponent();
+
+			// アップデートチェック
+			if (!(InitialUpdateCheckSkipFlg && InitialUpdateCheckSkipVer.Equals(AppVer)))
+			{
+				// ステータス変更
+				UpdateSplashInfo(3, "アップデートのチェック中…");
+
+				checkItemUpdate();
+			}
+
+			// ステータス変更
+			UpdateSplashInfo(4, "ゲームリストのロード中…");
+
+			// アイテム読込
+			string item = SaveType == "I" ? LoadItem(GameDir) : SaveType == "D" ? LoadItem2(SqlCon, true) : LoadItem3(SqlCon2, true);
+
+			// ステータス変更
+			UpdateSplashInfo(5, "UIの読み込み中…");
 
 			if (WindowHideControlFlg)
 			{
 				this.MinimizeBox = true;
 			}
 
-			// アップデートチェック
-			if (!(InitialUpdateCheckSkipFlg && InitialUpdateCheckSkipVer.Equals(AppVer)))
-			{
-				checkItemUpdate();
-			}
-
-			// アイテム読込
-			string item = SaveType == "I" ? LoadItem(GameDir) : SaveType == "D" ? LoadItem2(SqlCon, true) : LoadItem3(SqlCon2, true);
 			tabControl1.SelectedIndex = 1;
 			tabControl1.SelectedIndex = 0;
 
@@ -72,6 +94,9 @@ namespace glc_cs
 
 			// 実行ボタン読込中画像を非表示
 			runningPicture.Visible = false;
+
+			// ステータス変更
+			UpdateSplashInfo(6, "最終処理中…");
 
 			// メインフォーム表示
 			this.Show();
@@ -117,6 +142,17 @@ namespace glc_cs
 
 			IsFirstLoad = false;
 		}
+
+		/// <summary>
+		/// スプラッシュスクリーンのステータス変更
+		/// </summary>
+		/// <param name="value">進捗率</param>
+		/// <param name="message">メッセージ</param>
+		private void UpdateSplashInfo(int value, string message)
+		{
+			SplashForm.SetProgress(value, message);
+		}
+
 		/// <summary>
 		/// ゲームリストの読み込み
 		/// </summary>
@@ -1139,38 +1175,38 @@ namespace glc_cs
 		/// <returns></returns>
 		private string JudgeCurrentDir(int CurrentExtractTool, string originAppPath, string newAppPath)
 		{
-			string resultCurDirPath = newAppPath;
+			string resultCurDirPath = originAppPath;
 
 			switch (CurrentExtractTool)
 			{
 				case 1: // krkr
 					if (ExtractKrkrCurDir)
 					{
-						resultCurDirPath = originAppPath;
+						resultCurDirPath = newAppPath;
 					}
 					break;
 				case 2: // krkrz
 					if (ExtractKrkrzCurDir)
 					{
-						resultCurDirPath = originAppPath;
+						resultCurDirPath = newAppPath;
 					}
 					break;
 				case 3: // krkrDump
 					if (ExtractKrkrDumpCurDir)
 					{
-						resultCurDirPath = originAppPath;
+						resultCurDirPath = newAppPath;
 					}
 					break;
 				case 4: // Custom1
 					if (ExtractCustom1CurDir)
 					{
-						resultCurDirPath = originAppPath;
+						resultCurDirPath = newAppPath;
 					}
 					break;
 				case 5: // Custom2
 					if (ExtractCustom2CurDir)
 					{
-						resultCurDirPath = originAppPath;
+						resultCurDirPath = newAppPath;
 					}
 					break;
 			}

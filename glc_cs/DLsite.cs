@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DLsiteInfoGetter;
+using System;
 using System.Net;
 using System.Windows.Forms;
 using static glc_cs.General.Var;
@@ -15,69 +16,57 @@ namespace glc_cs
 			InitializeComponent();
 		}
 
-		private void cancelButton_Click(object sender, EventArgs e)
+		private void CancelButton_Click(object sender, EventArgs e)
 		{
 			resultText = string.Empty;
 			resultImagePath = string.Empty;
 			this.Hide();
 		}
 
-		private void saveButton_Click(object sender, EventArgs e)
+		private void SaveButton_Click(object sender, EventArgs e)
 		{
-			if (!string.IsNullOrEmpty(searchResultText.Text.Trim()))
+			if (!string.IsNullOrEmpty(SearchResultText.Text.Trim()))
 			{
-				resultText = searchResultText.Text.Trim();
+				resultText = SearchResultText.Text.Trim();
 				this.Hide();
 			}
 			else
 			{
-				searchTargetText.Focus();
+				SearchTargetText.Focus();
 			}
 		}
 
-		private void searchButton_Click(object sender, EventArgs e)
+		private void SearchButton_Click(object sender, EventArgs e)
 		{
-			searchResultText.Text = string.Empty;
+			SearchResultText.Text = string.Empty;
 			resultText = string.Empty;
 			resultImagePath = string.Empty;
 
-			var main = new DLsiteInfoGetter.Main();
-
-			if (!string.IsNullOrEmpty(searchTargetText.Text.Trim()))
+			if (!string.IsNullOrEmpty(SearchTargetText.Text.Trim()))
 			{
-				bool result = main.GetInfo(searchTargetText.Text.Trim(), out string prodID, out string searchResult, out string circle, out string prodType, out string imageUrl, out string errMsg);
+				try
+				{
+					DLsiteInfo result = DLsiteInfo.GetInfo(SearchTargetText.Text.Trim());
 
-				if (!string.IsNullOrEmpty(errMsg))
-				{
-					MessageBox.Show(errMsg, AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-					searchButton.Focus();
-					return;
+					resultText = result.Title;
+					SearchResultText.Text = result.Title;
+					ImageText.Text = result.ImageUrl;
+					ImageBox.ImageLocation = result.ImageUrl;
 				}
-				// 結果がtrueの場合、結果を格納する。
-				if (result)
+				catch (Exception ex)
 				{
-					resultText = searchResult;
-					searchResultText.Text = searchResult;
-					imageText.Text = imageUrl;
-					try
-					{
-						imageBox.ImageLocation = imageUrl;
-					}
-					catch (Exception ex)
-					{
-						imageBox.ImageLocation = null;
-						MessageBox.Show(ex.Message, AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-					}
-					saveButton.Focus();
+					ImageBox.ImageLocation = null;
+					MessageBox.Show(ex.Message, AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
+				SaveButton.Focus();
 			}
 			else
 			{
-				searchTargetText.Focus();
+				SearchTargetText.Focus();
 			}
 		}
 
-		private void saveImageButton_Click(object sender, EventArgs e)
+		private void SaveImageButton_Click(object sender, EventArgs e)
 		{
 			saveFileDialog1 = new SaveFileDialog();
 			saveFileDialog1.FileName = "thumb.jpg";
@@ -88,7 +77,7 @@ namespace glc_cs
 				try
 				{
 					WebClient wc = new WebClient();
-					wc.DownloadFile(imageText.Text, saveFileDialog1.FileName);
+					wc.DownloadFile(ImageText.Text, saveFileDialog1.FileName);
 					resultImagePath = saveFileDialog1.FileName;
 					wc.Dispose();
 					System.Media.SystemSounds.Beep.Play();

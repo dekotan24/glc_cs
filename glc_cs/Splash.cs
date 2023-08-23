@@ -19,11 +19,19 @@ namespace glc_cs
 			label3.Text = "MD5: " + ComputeFileHash(Application.ExecutablePath);
 		}
 
-		public static string ComputeFileHash(string filePath)
+		private static string ComputeFileHash(string filePath)
 		{
 			var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 			var bs = hashProvider.ComputeHash(fs);
+			fs.Close();
 			return BitConverter.ToString(bs).ToLower().Replace("-", "");
+		}
+
+		public void SetProgress(int value, string message)
+		{
+			progressBar1.Value = value;
+			statusLabel.Text = message + " (" + value.ToString() + " / " + progressBar1.Maximum + ")";
+			Application.DoEvents();
 		}
 	}
 }
