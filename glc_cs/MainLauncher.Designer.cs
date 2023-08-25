@@ -141,9 +141,9 @@
 			this.gameList.ForeColor = System.Drawing.SystemColors.WindowText;
 			this.gameList.FormattingEnabled = true;
 			this.gameList.Name = "gameList";
-			this.gameList.Click += new System.EventHandler(this.gameList_SelectedIndexChanged);
-			this.gameList.SelectedIndexChanged += new System.EventHandler(this.gameList_SelectedIndexChanged);
-			this.gameList.DoubleClick += new System.EventHandler(this.startButton_Click);
+			this.gameList.Click += new System.EventHandler(this.GameList_SelectedIndexChanged);
+			this.gameList.SelectedIndexChanged += new System.EventHandler(this.GameList_SelectedIndexChanged);
+			this.gameList.DoubleClick += new System.EventHandler(this.StartButton_Click);
 			// 
 			// trackCheck
 			// 
@@ -152,7 +152,7 @@
 			this.trackCheck.Name = "trackCheck";
 			this.toolTip1.SetToolTip(this.trackCheck, resources.GetString("trackCheck.ToolTip"));
 			this.trackCheck.UseVisualStyleBackColor = false;
-			this.trackCheck.CheckedChanged += new System.EventHandler(this.trackCheck_CheckedChanged);
+			this.trackCheck.CheckedChanged += new System.EventHandler(this.TrackCheck_CheckedChanged);
 			// 
 			// titleLabel
 			// 
@@ -160,7 +160,7 @@
 			this.titleLabel.BackColor = System.Drawing.Color.Transparent;
 			this.titleLabel.Name = "titleLabel";
 			this.titleLabel.UseMnemonic = false;
-			this.titleLabel.DoubleClick += new System.EventHandler(this.copySelectedGameTitle);
+			this.titleLabel.DoubleClick += new System.EventHandler(this.CopySelectedGameTitle);
 			// 
 			// startButton
 			// 
@@ -168,7 +168,7 @@
 			this.startButton.Name = "startButton";
 			this.toolTip1.SetToolTip(this.startButton, resources.GetString("startButton.ToolTip"));
 			this.startButton.UseVisualStyleBackColor = true;
-			this.startButton.Click += new System.EventHandler(this.startButton_Click);
+			this.startButton.Click += new System.EventHandler(this.StartButton_Click);
 			// 
 			// randomButton
 			// 
@@ -176,7 +176,7 @@
 			this.randomButton.Name = "randomButton";
 			this.toolTip1.SetToolTip(this.randomButton, resources.GetString("randomButton.ToolTip"));
 			this.randomButton.UseVisualStyleBackColor = true;
-			this.randomButton.Click += new System.EventHandler(this.randomButton_Click);
+			this.randomButton.Click += new System.EventHandler(this.RandomButton_Click);
 			// 
 			// nameText
 			// 
@@ -220,7 +220,7 @@
 			this.infoButton.Name = "infoButton";
 			this.toolTip1.SetToolTip(this.infoButton, resources.GetString("infoButton.ToolTip"));
 			this.infoButton.UseVisualStyleBackColor = true;
-			this.infoButton.Click += new System.EventHandler(this.infoButton_Click);
+			this.infoButton.Click += new System.EventHandler(this.InfoButton_Click);
 			// 
 			// reloadButton
 			// 
@@ -228,7 +228,7 @@
 			this.reloadButton.Name = "reloadButton";
 			this.toolTip1.SetToolTip(this.reloadButton, resources.GetString("reloadButton.ToolTip"));
 			this.reloadButton.UseVisualStyleBackColor = true;
-			this.reloadButton.Click += new System.EventHandler(this.reloadButton_Click);
+			this.reloadButton.Click += new System.EventHandler(this.ReloadButton_Click);
 			// 
 			// extractCheck
 			// 
@@ -237,7 +237,7 @@
 			this.extractCheck.Name = "extractCheck";
 			this.toolTip1.SetToolTip(this.extractCheck, resources.GetString("extractCheck.ToolTip"));
 			this.extractCheck.UseVisualStyleBackColor = false;
-			this.extractCheck.CheckedChanged += new System.EventHandler(this.extractCheck_CheckedChanged);
+			this.extractCheck.CheckedChanged += new System.EventHandler(this.ExtractCheck_CheckedChanged);
 			// 
 			// statusStrip1
 			// 
@@ -266,7 +266,7 @@
 			this.editINIStatusLabel.BackColor = System.Drawing.Color.Silver;
 			this.editINIStatusLabel.Name = "editINIStatusLabel";
 			resources.ApplyResources(this.editINIStatusLabel, "editINIStatusLabel");
-			this.editINIStatusLabel.Click += new System.EventHandler(this.editINIStatusLabel_Click);
+			this.editINIStatusLabel.Click += new System.EventHandler(this.EditINIStatusLabel_Click);
 			// 
 			// toolStripStatusLabel2
 			// 
@@ -300,7 +300,7 @@
 			this.addButton.Name = "addButton";
 			this.toolTip1.SetToolTip(this.addButton, resources.GetString("addButton.ToolTip"));
 			this.addButton.UseVisualStyleBackColor = true;
-			this.addButton.Click += new System.EventHandler(this.addButton_Click);
+			this.addButton.Click += new System.EventHandler(this.AddButton_Click);
 			// 
 			// openFileDialog1
 			// 
@@ -312,7 +312,7 @@
 			this.delButton.Name = "delButton";
 			this.toolTip1.SetToolTip(this.delButton, resources.GetString("delButton.ToolTip"));
 			this.delButton.UseVisualStyleBackColor = true;
-			this.delButton.Click += new System.EventHandler(this.delButton_Click);
+			this.delButton.Click += new System.EventHandler(this.DelButton_Click);
 			// 
 			// sensCheck
 			// 
@@ -321,7 +321,7 @@
 			this.sensCheck.Name = "sensCheck";
 			this.toolTip1.SetToolTip(this.sensCheck, resources.GetString("sensCheck.ToolTip"));
 			this.sensCheck.UseVisualStyleBackColor = true;
-			this.sensCheck.CheckedChanged += new System.EventHandler(this.sensCheck_CheckedChanged);
+			this.sensCheck.CheckedChanged += new System.EventHandler(this.SensCheck_CheckedChanged);
 			// 
 			// configButton
 			// 
@@ -329,7 +329,7 @@
 			this.configButton.Name = "configButton";
 			this.toolTip1.SetToolTip(this.configButton, resources.GetString("configButton.ToolTip"));
 			this.configButton.UseVisualStyleBackColor = true;
-			this.configButton.Click += new System.EventHandler(this.configButton_Click);
+			this.configButton.Click += new System.EventHandler(this.ConfigButton_Click);
 			// 
 			// editButton
 			// 
@@ -337,7 +337,7 @@
 			this.editButton.Name = "editButton";
 			this.toolTip1.SetToolTip(this.editButton, resources.GetString("editButton.ToolTip"));
 			this.editButton.UseVisualStyleBackColor = true;
-			this.editButton.Click += new System.EventHandler(this.editButton_Click);
+			this.editButton.Click += new System.EventHandler(this.EditButton_Click);
 			// 
 			// dconImgPictureBox
 			// 
@@ -365,7 +365,7 @@
 			this.gameRunningTimePictureBox.Name = "gameRunningTimePictureBox";
 			this.gameRunningTimePictureBox.TabStop = false;
 			this.toolTip1.SetToolTip(this.gameRunningTimePictureBox, resources.GetString("gameRunningTimePictureBox.ToolTip"));
-			this.gameRunningTimePictureBox.Click += new System.EventHandler(this.pictureBox9_Click);
+			this.gameRunningTimePictureBox.Click += new System.EventHandler(this.GameRunningTimePictureBox_Click);
 			// 
 			// gameImgPictureBox
 			// 
@@ -408,7 +408,7 @@
 			this.cleanButton.Name = "cleanButton";
 			this.toolTip1.SetToolTip(this.cleanButton, resources.GetString("cleanButton.ToolTip"));
 			this.cleanButton.UseVisualStyleBackColor = true;
-			this.cleanButton.Click += new System.EventHandler(this.cleanButton_Click);
+			this.cleanButton.Click += new System.EventHandler(this.CleanButton_Click);
 			// 
 			// ocButton
 			// 
@@ -416,7 +416,7 @@
 			this.ocButton.Name = "ocButton";
 			this.toolTip1.SetToolTip(this.ocButton, resources.GetString("ocButton.ToolTip"));
 			this.ocButton.UseVisualStyleBackColor = true;
-			this.ocButton.Click += new System.EventHandler(this.ocButton_Click);
+			this.ocButton.Click += new System.EventHandler(this.OcButton_Click);
 			// 
 			// dconTextPictureBox
 			// 
@@ -435,7 +435,7 @@
 			this.gameImgOpenPictureBox.Name = "gameImgOpenPictureBox";
 			this.gameImgOpenPictureBox.TabStop = false;
 			this.toolTip1.SetToolTip(this.gameImgOpenPictureBox, resources.GetString("gameImgOpenPictureBox.ToolTip"));
-			this.gameImgOpenPictureBox.Click += new System.EventHandler(this.pictureBox14_Click);
+			this.gameImgOpenPictureBox.Click += new System.EventHandler(this.GameImgOpenPictureBox_Click);
 			// 
 			// gamePathOpenPictureBox
 			// 
@@ -445,7 +445,7 @@
 			this.gamePathOpenPictureBox.Name = "gamePathOpenPictureBox";
 			this.gamePathOpenPictureBox.TabStop = false;
 			this.toolTip1.SetToolTip(this.gamePathOpenPictureBox, resources.GetString("gamePathOpenPictureBox.ToolTip"));
-			this.gamePathOpenPictureBox.Click += new System.EventHandler(this.pictureBox13_Click);
+			this.gamePathOpenPictureBox.Click += new System.EventHandler(this.GamePathOpenPictureBox_Click);
 			// 
 			// gameImgCopyPictureBox
 			// 
@@ -455,7 +455,7 @@
 			this.gameImgCopyPictureBox.Name = "gameImgCopyPictureBox";
 			this.gameImgCopyPictureBox.TabStop = false;
 			this.toolTip1.SetToolTip(this.gameImgCopyPictureBox, resources.GetString("gameImgCopyPictureBox.ToolTip"));
-			this.gameImgCopyPictureBox.Click += new System.EventHandler(this.pictureBox6_Click);
+			this.gameImgCopyPictureBox.Click += new System.EventHandler(this.GameImgCopyPictureBox_Click);
 			// 
 			// gamePathCopyPictureBox
 			// 
@@ -465,7 +465,7 @@
 			this.gamePathCopyPictureBox.Name = "gamePathCopyPictureBox";
 			this.gamePathCopyPictureBox.TabStop = false;
 			this.toolTip1.SetToolTip(this.gamePathCopyPictureBox, resources.GetString("gamePathCopyPictureBox.ToolTip"));
-			this.gamePathCopyPictureBox.Click += new System.EventHandler(this.pictureBox4_Click);
+			this.gamePathCopyPictureBox.Click += new System.EventHandler(this.GamePathCopyPictureBox_Click);
 			// 
 			// gameTitleCopyPictureBox
 			// 
@@ -475,7 +475,7 @@
 			this.gameTitleCopyPictureBox.Name = "gameTitleCopyPictureBox";
 			this.gameTitleCopyPictureBox.TabStop = false;
 			this.toolTip1.SetToolTip(this.gameTitleCopyPictureBox, resources.GetString("gameTitleCopyPictureBox.ToolTip"));
-			this.gameTitleCopyPictureBox.Click += new System.EventHandler(this.pictureBox3_Click);
+			this.gameTitleCopyPictureBox.Click += new System.EventHandler(this.GameTitleCopyPictureBox_Click);
 			// 
 			// searchingText
 			// 
@@ -490,7 +490,7 @@
 			this.upButton.Name = "upButton";
 			this.toolTip1.SetToolTip(this.upButton, resources.GetString("upButton.ToolTip"));
 			this.upButton.UseVisualStyleBackColor = true;
-			this.upButton.Click += new System.EventHandler(this.upButton_Click);
+			this.upButton.Click += new System.EventHandler(this.UpButton_Click);
 			// 
 			// downButton
 			// 
@@ -498,7 +498,7 @@
 			this.downButton.Name = "downButton";
 			this.toolTip1.SetToolTip(this.downButton, resources.GetString("downButton.ToolTip"));
 			this.downButton.UseVisualStyleBackColor = true;
-			this.downButton.Click += new System.EventHandler(this.downButton_Click);
+			this.downButton.Click += new System.EventHandler(this.DownButton_Click);
 			// 
 			// memoButton
 			// 
@@ -506,7 +506,7 @@
 			this.memoButton.Name = "memoButton";
 			this.toolTip1.SetToolTip(this.memoButton, resources.GetString("memoButton.ToolTip"));
 			this.memoButton.UseVisualStyleBackColor = true;
-			this.memoButton.Click += new System.EventHandler(this.memoButton_Click);
+			this.memoButton.Click += new System.EventHandler(this.MemoButton_Click);
 			// 
 			// dconConnectGroupBox
 			// 
@@ -538,7 +538,7 @@
 			resources.ApplyResources(this.useDconCheck, "useDconCheck");
 			this.useDconCheck.Name = "useDconCheck";
 			this.useDconCheck.UseVisualStyleBackColor = true;
-			this.useDconCheck.CheckedChanged += new System.EventHandler(this.useDconCheck_CheckedChanged);
+			this.useDconCheck.CheckedChanged += new System.EventHandler(this.UseDconCheck_CheckedChanged);
 			// 
 			// runningPicture
 			// 
@@ -556,7 +556,7 @@
 			this.gameIcon.InitialImage = global::glc_cs.Properties.Resources.load;
 			this.gameIcon.Name = "gameIcon";
 			this.gameIcon.TabStop = false;
-			this.gameIcon.Click += new System.EventHandler(this.pictureBox1_Click);
+			this.gameIcon.Click += new System.EventHandler(this.GameIcon_Click);
 			// 
 			// tabControl1
 			// 
@@ -590,7 +590,7 @@
 			this.trackBar1.Maximum = 2;
 			this.trackBar1.Name = "trackBar1";
 			this.trackBar1.Value = 1;
-			this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+			this.trackBar1.Scroll += new System.EventHandler(this.TrackBar1_Scroll);
 			// 
 			// gameImgList
 			// 
@@ -600,8 +600,8 @@
 			this.gameImgList.MultiSelect = false;
 			this.gameImgList.Name = "gameImgList";
 			this.gameImgList.UseCompatibleStateImageBehavior = false;
-			this.gameImgList.SelectedIndexChanged += new System.EventHandler(this.gameImgList_SelectedIndexChanged);
-			this.gameImgList.DoubleClick += new System.EventHandler(this.startButton_Click);
+			this.gameImgList.SelectedIndexChanged += new System.EventHandler(this.GameImgList_SelectedIndexChanged);
+			this.gameImgList.DoubleClick += new System.EventHandler(this.StartButton_Click);
 			// 
 			// imageList32
 			// 
@@ -628,8 +628,8 @@
 			resources.ApplyResources(this.searchResultList, "searchResultList");
 			this.searchResultList.FormattingEnabled = true;
 			this.searchResultList.Name = "searchResultList";
-			this.searchResultList.SelectedIndexChanged += new System.EventHandler(this.searchResultList_SelectedIndexChanged);
-			this.searchResultList.DoubleClick += new System.EventHandler(this.startButton_Click);
+			this.searchResultList.SelectedIndexChanged += new System.EventHandler(this.SearchResultList_SelectedIndexChanged);
+			this.searchResultList.DoubleClick += new System.EventHandler(this.StartButton_Click);
 			// 
 			// lastOrderDrop
 			// 
@@ -683,21 +683,21 @@
             resources.GetString("searchTargetDropDown.Items4")});
 			resources.ApplyResources(this.searchTargetDropDown, "searchTargetDropDown");
 			this.searchTargetDropDown.Name = "searchTargetDropDown";
-			this.searchTargetDropDown.SelectedIndexChanged += new System.EventHandler(this.searchTargetDropDown_SelectedIndexChanged);
+			this.searchTargetDropDown.SelectedIndexChanged += new System.EventHandler(this.SearchTargetDropDown_SelectedIndexChanged);
 			// 
 			// searchButton
 			// 
 			resources.ApplyResources(this.searchButton, "searchButton");
 			this.searchButton.Name = "searchButton";
 			this.searchButton.UseVisualStyleBackColor = true;
-			this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
-			this.searchButton.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.searchText_KeyPress);
+			this.searchButton.Click += new System.EventHandler(this.SearchButton_Click);
+			this.searchButton.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SearchText_KeyPress);
 			// 
 			// searchText
 			// 
 			resources.ApplyResources(this.searchText, "searchText");
 			this.searchText.Name = "searchText";
-			this.searchText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.searchText_KeyPress);
+			this.searchText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SearchText_KeyPress);
 			// 
 			// imageList8
 			// 
@@ -746,7 +746,7 @@
             resources.GetString("statusCombo.Items4"),
             resources.GetString("statusCombo.Items5")});
 			this.statusCombo.Name = "statusCombo";
-			this.statusCombo.SelectedIndexChanged += new System.EventHandler(this.statusCombo_SelectedIndexChanged);
+			this.statusCombo.SelectedIndexChanged += new System.EventHandler(this.StatusCombo_SelectedIndexChanged);
 			// 
 			// gameStatusFlowLayoutPanel
 			// 

@@ -47,7 +47,7 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appBuild = "40.23.08.22";
+			protected static readonly string appBuild = "40.23.08.25";
 
 			/// <summary>
 			/// データベースバージョン
