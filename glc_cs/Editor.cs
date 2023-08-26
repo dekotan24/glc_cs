@@ -139,11 +139,11 @@ namespace glc_cs
 					extractToolCombo.SelectedIndex = Convert.ToInt32(reader["EXTRACT_TOOL"].ToString());
 					if (File.Exists(imgPathText.Text))
 					{
-						pictureBox1.ImageLocation = imgPathText.Text;
+						iconImage.ImageLocation = imgPathText.Text;
 					}
 					else
 					{
-						pictureBox1.ImageLocation = string.Empty;
+						iconImage.ImageLocation = string.Empty;
 					}
 				}
 
@@ -185,11 +185,11 @@ namespace glc_cs
 					extractToolCombo.SelectedIndex = Convert.ToInt32(reader["EXTRACT_TOOL"].ToString());
 					if (File.Exists(imgPathText.Text))
 					{
-						pictureBox1.ImageLocation = imgPathText.Text;
+						iconImage.ImageLocation = imgPathText.Text;
 					}
 					else
 					{
-						pictureBox1.ImageLocation = string.Empty;
+						iconImage.ImageLocation = string.Empty;
 					}
 				}
 
@@ -234,11 +234,11 @@ namespace glc_cs
 					extractToolCombo.SelectedIndex = Convert.ToInt32(resultValues[9]);
 					if (File.Exists(imgPathText.Text))
 					{
-						pictureBox1.ImageLocation = imgPathText.Text;
+						iconImage.ImageLocation = imgPathText.Text;
 					}
 					else
 					{
-						pictureBox1.ImageLocation = string.Empty;
+						iconImage.ImageLocation = string.Empty;
 					}
 				}
 
@@ -470,15 +470,17 @@ namespace glc_cs
 		private void getInfoButton_Click(object sender, EventArgs e)
 		{
 			// dlsiteからデータを取得します。
+			dlSearchForm.StartPosition = FormStartPosition.CenterParent;
 			dlSearchForm.ShowDialog();
 
 			// 反映
 			if (!string.IsNullOrEmpty(dlSearchForm.resultText))
 			{
 				titleText.Text = dlSearchForm.resultText;
-				if (!string.IsNullOrEmpty(dlSearchForm.resultImagePath))
+				if (dlSearchForm.resultImageSaved && !string.IsNullOrEmpty(dlSearchForm.resultImagePath) && File.Exists(dlSearchForm.resultImagePath))
 				{
 					imgPathText.Text = dlSearchForm.resultImagePath;
+					iconImage.ImageLocation = dlSearchForm.resultImagePath;
 				}
 
 				// フォーカス移動

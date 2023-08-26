@@ -535,7 +535,7 @@
     <value>154, 19</value>
   </data>
   <data name="extractCheck.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
+    <value>21</value>
   </data>
   <data name="extractCheck.Text" xml:space="preserve">
     <value>抽出ツールを起動</value>
@@ -2707,7 +2707,7 @@
     <value>170, 19</value>
   </data>
   <data name="sensCheck.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
+    <value>20</value>
   </data>
   <data name="sensCheck.Text" xml:space="preserve">
     <value>センシティブモード</value>

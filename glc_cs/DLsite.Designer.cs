@@ -41,6 +41,7 @@
 			this.SaveImageButton = new System.Windows.Forms.Button();
 			this.ImageBox = new System.Windows.Forms.PictureBox();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+			this.imageSavedCheck = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.ImageBox)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -60,6 +61,7 @@
 			this.SearchTargetText.Name = "SearchTargetText";
 			this.SearchTargetText.Size = new System.Drawing.Size(294, 19);
 			this.SearchTargetText.TabIndex = 1;
+			this.SearchTargetText.Click += new System.EventHandler(this.SearchButton_Click);
 			// 
 			// SearchButton
 			// 
@@ -86,7 +88,7 @@
 			this.SaveButton.Location = new System.Drawing.Point(183, 128);
 			this.SaveButton.Name = "SaveButton";
 			this.SaveButton.Size = new System.Drawing.Size(139, 37);
-			this.SaveButton.TabIndex = 4;
+			this.SaveButton.TabIndex = 7;
 			this.SaveButton.Text = "決定";
 			this.SaveButton.UseVisualStyleBackColor = true;
 			this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
@@ -97,7 +99,7 @@
 			this.CancelButton.Location = new System.Drawing.Point(363, 128);
 			this.CancelButton.Name = "CancelButton";
 			this.CancelButton.Size = new System.Drawing.Size(139, 37);
-			this.CancelButton.TabIndex = 5;
+			this.CancelButton.TabIndex = 8;
 			this.CancelButton.Text = "キャンセル";
 			this.CancelButton.UseVisualStyleBackColor = true;
 			this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
@@ -126,7 +128,7 @@
 			this.ImageText.MaxLength = 500;
 			this.ImageText.Name = "ImageText";
 			this.ImageText.Size = new System.Drawing.Size(294, 19);
-			this.ImageText.TabIndex = 7;
+			this.ImageText.TabIndex = 4;
 			// 
 			// SaveImageButton
 			// 
@@ -134,7 +136,7 @@
 			this.SaveImageButton.Location = new System.Drawing.Point(508, 78);
 			this.SaveImageButton.Name = "SaveImageButton";
 			this.SaveImageButton.Size = new System.Drawing.Size(62, 23);
-			this.SaveImageButton.TabIndex = 9;
+			this.SaveImageButton.TabIndex = 5;
 			this.SaveImageButton.Text = "保存";
 			this.SaveImageButton.UseVisualStyleBackColor = true;
 			this.SaveImageButton.Click += new System.EventHandler(this.SaveImageButton_Click);
@@ -148,11 +150,23 @@
 			this.ImageBox.TabIndex = 10;
 			this.ImageBox.TabStop = false;
 			// 
+			// imageSavedCheck
+			// 
+			this.imageSavedCheck.AutoSize = true;
+			this.imageSavedCheck.Enabled = false;
+			this.imageSavedCheck.Location = new System.Drawing.Point(508, 107);
+			this.imageSavedCheck.Name = "imageSavedCheck";
+			this.imageSavedCheck.Size = new System.Drawing.Size(55, 16);
+			this.imageSavedCheck.TabIndex = 6;
+			this.imageSavedCheck.Text = "Saved";
+			this.imageSavedCheck.UseVisualStyleBackColor = true;
+			// 
 			// DLsite
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(580, 177);
+			this.Controls.Add(this.imageSavedCheck);
 			this.Controls.Add(this.ImageBox);
 			this.Controls.Add(this.SaveImageButton);
 			this.Controls.Add(this.label3);
@@ -191,5 +205,6 @@
 		private System.Windows.Forms.Button SaveImageButton;
 		private System.Windows.Forms.PictureBox ImageBox;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+		private System.Windows.Forms.CheckBox imageSavedCheck;
 	}
 }

@@ -404,13 +404,14 @@ namespace glc_cs
 		private void getInfoButton_Click(object sender, EventArgs e)
 		{
 			// dlsiteからデータを取得します。
+			dlSearchForm.StartPosition = FormStartPosition.CenterParent;
 			dlSearchForm.ShowDialog();
 
 			// 反映
 			if (!string.IsNullOrEmpty(dlSearchForm.resultText))
 			{
 				titleText.Text = dlSearchForm.resultText;
-				if (!string.IsNullOrEmpty(dlSearchForm.resultImagePath))
+				if (dlSearchForm.resultImageSaved && !string.IsNullOrEmpty(dlSearchForm.resultImagePath) && File.Exists(dlSearchForm.resultImagePath))
 				{
 					imgPathText.Text = dlSearchForm.resultImagePath;
 				}

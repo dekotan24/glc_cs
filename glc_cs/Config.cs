@@ -6,9 +6,6 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Forms;
 using static glc_cs.General.Var;
 
@@ -34,7 +31,7 @@ namespace glc_cs
 			}
 
 			// バージョン取得
-			label10.Text = "Ver." + AppVer + " Build " + AppBuild;
+			verLabel.Text = "Ver." + AppVer + " Build " + AppBuild;
 
 			// [全般]タブ
 			// 背景画像
@@ -134,17 +131,17 @@ namespace glc_cs
 			// [保存方法]
 			if (SaveType == "I")
 			{
-				radioButton8.Checked = true;
+				iniRadio.Checked = true;
 				setDirectoryControl(true);
 			}
 			else if (SaveType == "D")   // MSSQL
 			{
-				radioButton9.Checked = true;
+				mssqlRadio.Checked = true;
 				setDirectoryControl(false);
 			}
 			else if (SaveType == "M")   // MySQL
 			{
-				radioButton5.Checked = true;
+				mysqlRadio.Checked = true;
 				setDirectoryControl(false);
 			}
 			else
@@ -152,13 +149,13 @@ namespace glc_cs
 				switch (ReadIni("general", "save", "I"))
 				{
 					case "I":
-						radioButton8.Checked = true;
+						iniRadio.Checked = true;
 						break;
 					case "D":
-						radioButton9.Checked = true;
+						mssqlRadio.Checked = true;
 						break;
 					case "M":
-						radioButton5.Checked = true;
+						mysqlRadio.Checked = true;
 						break;
 				}
 			}
@@ -220,7 +217,7 @@ namespace glc_cs
 		{
 			string offlineSaveTypeOld = ReadIni("general", "OfflineSave", offlineSaveEnableCheck.Checked ? "1" : "0");
 			bool canExit = true;
-			if (radioButton9.Checked || radioButton5.Checked)
+			if (mssqlRadio.Checked || mysqlRadio.Checked)
 			{
 				if (urlText.Text.Trim().Length <= 0)
 				{
@@ -257,9 +254,12 @@ namespace glc_cs
 			WriteIni("imgd", "bgimg", backgroundImageText.Text.Trim());
 			WriteIni("disable", "grid", gridDisableCheck.Checked ? "1" : "0");
 			WriteIni("disable", "updchk", updateCheckDisableCheck.Checked ? "1" : "0");
-			if (updateCheckDisableCheck.Checked && !InitialUpdateCheckSkipVer.Equals(AppVer))
+			if (updateCheckDisableCheck.Checked)
 			{
-				WriteIni("disable", "updchkVer", AppVer);
+				if (!InitialUpdateCheckSkipVer.Equals(AppVer))
+				{
+					WriteIni("disable", "updchkVer", AppVer);
+				}
 			}
 			else
 			{
@@ -270,7 +270,7 @@ namespace glc_cs
 			WriteIni("grid", "fixGridSize", (fixGridSize8.Checked ? "8" : (fixGridSize64.Checked ? "64" : "32")));
 
 			// 保存方法
-			WriteIni("general", "save", radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I");
+			WriteIni("general", "save", mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I");
 			WriteIni("general", "OfflineSave", offlineSaveEnableCheck.Checked ? "1" : "0");
 			WriteIni("general", "UseLocalDB", useLocalDBCheck.Checked ? "1" : "0");
 			WriteIni("connect", "DBURL", urlText.Text.Trim());
@@ -308,7 +308,7 @@ namespace glc_cs
 			// データベースをローカルにINIで保存する
 			if (offlineSaveEnableCheck.Checked && saveWithDownloadCheck.Checked)
 			{
-				if (radioButton9.Checked || radioButton5.Checked)
+				if (mssqlRadio.Checked || mysqlRadio.Checked)
 				{
 					string oldButtonText = saveButton.Text;
 					saveButton.Enabled = false;
@@ -368,18 +368,18 @@ namespace glc_cs
 
 		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			this.linkLabel1.LinkVisited = true;
+			this.webLinkLabel.LinkVisited = true;
 			System.Diagnostics.Process.Start("https://fanet.work");
 		}
 
 		private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			this.linkLabel2.LinkVisited = true;
+			this.mailLinkLabel.LinkVisited = true;
 			Clipboard.SetText("support@fanet.work");
 		}
 		private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			this.linkLabel3.LinkVisited = true;
+			this.githubLinkLabel.LinkVisited = true;
 			System.Diagnostics.Process.Start("https://github.com/dekotan24/glc_cs");
 		}
 
@@ -401,11 +401,11 @@ namespace glc_cs
 			ByHost = textBox4.Text;
 			ByPort = Convert.ToInt32(textBox5.Text);
 
-			Bouyomi_Connectchk(ByHost, ByPort, ByType);
+			Bouyomi_Connectchk();
 		}
 
 
-		private void checkBox2_CheckedChanged(object sender, EventArgs e)
+		private void bouyomiEnableCheck_CheckedChanged(object sender, EventArgs e)
 		{
 			if (bouyomiEnableCheck.Checked)
 			{
@@ -488,7 +488,7 @@ namespace glc_cs
 			}
 
 			// MySQLだけDatabaseも補填していないとエラーとする
-			if (radioButton5.Checked)
+			if (mysqlRadio.Checked)
 			{
 				if (dbText.Text.Trim().Length < 1)
 				{
@@ -504,7 +504,7 @@ namespace glc_cs
 			DbTable = tableText.Text.Trim();
 			DbUser = userText.Text.Trim();
 			DbPass = pwText.Text.Trim();
-			SaveType = radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I";
+			SaveType = mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I";
 
 			if (string.IsNullOrEmpty(DbTable))
 			{
@@ -755,7 +755,7 @@ namespace glc_cs
 			int sCount = 0;
 			int fCount = 0;
 
-			if (radioButton8.Checked)
+			if (iniRadio.Checked)
 			{
 				return;
 			}
@@ -770,7 +770,7 @@ namespace glc_cs
 			DbTable = tableText.Text.Trim();
 			DbUser = userText.Text.Trim();
 			DbPass = pwText.Text.Trim();
-			SaveType = radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I";
+			SaveType = mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I";
 
 			bool deleteAllRecodes = checkBox6.Checked;
 			bool forceCommit = checkBox7.Checked;
@@ -953,7 +953,7 @@ namespace glc_cs
 			}
 
 			// MySQLだけDatabaseも補填していないとエラーとする
-			if (radioButton5.Checked)
+			if (mysqlRadio.Checked)
 			{
 				if (dbText.Text.Trim().Length < 1)
 				{
@@ -969,7 +969,7 @@ namespace glc_cs
 			DbTable = tableText.Text.Trim();
 			DbUser = userText.Text.Trim();
 			DbPass = pwText.Text.Trim();
-			SaveType = radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I";
+			SaveType = mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I";
 
 			// 修正
 			SqlConnection cn = SqlCon;
@@ -1182,7 +1182,7 @@ namespace glc_cs
 			}
 
 			// MySQLだけDatabaseも補填していないとエラーとする
-			if (radioButton5.Checked)
+			if (mysqlRadio.Checked)
 			{
 				if (dbText.Text.Trim().Length < 1)
 				{
@@ -1204,7 +1204,7 @@ namespace glc_cs
 			DbTable = tableText.Text.Trim();
 			DbUser = userText.Text.Trim();
 			DbPass = pwText.Text.Trim();
-			SaveType = radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I";
+			SaveType = mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I";
 
 			string backupPath = (BaseDir.EndsWith("\\") ? BaseDir : BaseDir + "\\") + "database_backup(" + (DateTime.Now).ToString().Replace("/", "_").Replace(":", "_").Replace(" ", "_") + ")\\";
 			bool returnVal = downloadDbDataToLocal(backupPath);
@@ -1386,7 +1386,7 @@ namespace glc_cs
 				}
 
 				// MySQLだけDatabaseも補填していないとエラーとする
-				if (radioButton5.Checked)
+				if (mysqlRadio.Checked)
 				{
 					if (dbText.Text.Trim().Length < 1)
 					{
@@ -1403,7 +1403,7 @@ namespace glc_cs
 				DbTable = tableText.Text.Trim();
 				DbUser = userText.Text.Trim();
 				DbPass = pwText.Text.Trim();
-				SaveType = radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I";
+				SaveType = mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I";
 
 				// 修正
 				SqlConnection cn = SqlCon;

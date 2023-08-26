@@ -21,7 +21,7 @@ namespace glc_cs
 
 		private static string ComputeFileHash(string filePath)
 		{
-			var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+			var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
 			var bs = hashProvider.ComputeHash(fs);
 			fs.Close();
 			return BitConverter.ToString(bs).ToLower().Replace("-", "");

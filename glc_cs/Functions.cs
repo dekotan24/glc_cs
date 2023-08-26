@@ -1670,9 +1670,9 @@ namespace glc_cs
 				{
 					TcpClient tc;
 
-					if (Convert.ToInt32(ReadIni("connect", "byType", "0")) == 1)
+					if (ByType == 1)
 					{
-						string url = "http://localhost:" + ReadIni("connect", "byPort", "50080") + "/talk";
+						string url = "http://127.0.0.1:" + ByPort + "/talk";
 						System.Net.WebClient wc = new System.Net.WebClient();
 						//NameValueCollectionの作成
 						System.Collections.Specialized.NameValueCollection ps =
@@ -1684,8 +1684,9 @@ namespace glc_cs
 						{
 							wc.UploadValues(url, ps);
 						}
-						catch (Exception)
+						catch (Exception ex)
 						{
+							WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, url);
 							DialogResult dr = MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。\n\n今回のみ接続しないようにしますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 							if (dr == DialogResult.Yes)
 							{
@@ -1703,8 +1704,9 @@ namespace glc_cs
 						{
 							tc = TC;
 						}
-						catch (Exception)
+						catch (Exception ex)
 						{
+							WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "");
 							DialogResult dr = MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。\n\n今回のみ接続しないようにしますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 							if (dr == DialogResult.Yes)
 							{
@@ -1717,14 +1719,14 @@ namespace glc_cs
 						{
 							using (BinaryWriter bw = new BinaryWriter(ns))
 							{
-								bw.Write(ByCmd);    //コマンド（ 0:メッセージ読み上げ）
-								bw.Write(BySpd);    //速度    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByTone);   //音程    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByVol);    //音量    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByVoice);  //声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
-								bw.Write(ByCode);   //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
-								bw.Write(ByLength); //文字列のbyte配列の長さ
-								bw.Write(BybMsg);   //文字列のbyte配列
+								bw.Write(ByCmd);	// コマンド（ 0:メッセージ読み上げ）
+								bw.Write(BySpd);	// 速度    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByTone);	// 音程    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByVol);	// 音量    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByVoice);	// 声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
+								bw.Write(ByCode);	// 文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
+								bw.Write(ByLength);	// 文字列のbyte配列の長さ
+								bw.Write(BybMsg);	// 文字列のbyte配列
 							}
 						}
 						tc.Close();
@@ -1733,13 +1735,13 @@ namespace glc_cs
 				return;
 			}
 
-			public static void Bouyomi_Connectchk(string byHost, int byPort, int byType, bool showDialog = true)
+			public static void Bouyomi_Connectchk(bool showDialog = true)
 			{
 				BysMsg = "ゲームランチャーとの接続テストに成功しました。";
 
-				if (byType == 1)
+				if (ByType == 1)
 				{
-					string url = "http://localhost:" + byPort + "/talk";
+					string url = "http://127.0.0.1:" + ByPort + "/talk";
 					System.Net.WebClient wc = new System.Net.WebClient();
 					//NameValueCollectionの作成
 					System.Collections.Specialized.NameValueCollection ps =
@@ -1751,8 +1753,9 @@ namespace glc_cs
 					{
 						wc.UploadValues(url, ps);
 					}
-					catch (Exception)
+					catch (Exception ex)
 					{
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, url);
 						if (showDialog)
 						{
 							MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -1776,19 +1779,20 @@ namespace glc_cs
 						{
 							using (BinaryWriter bw = new BinaryWriter(ns))
 							{
-								bw.Write(ByCmd);    //コマンド（ 0:メッセージ読み上げ）
-								bw.Write(BySpd);    //速度    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByTone);   //音程    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByVol);    //音量    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByVoice);  //声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
-								bw.Write(ByCode);   //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
-								bw.Write(ByLength); //文字列のbyte配列の長さ
-								bw.Write(BybMsg);   //文字列のbyte配列
+								bw.Write(ByCmd);	// コマンド（ 0:メッセージ読み上げ）
+								bw.Write(BySpd);	// 速度    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByTone);	// 音程    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByVol);	// 音量    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByVoice);	// 声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
+								bw.Write(ByCode);	// 文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
+								bw.Write(ByLength);	// 文字列のbyte配列の長さ
+								bw.Write(BybMsg);	// 文字列のbyte配列
 							}
 						}
 					}
-					catch (Exception)
+					catch (Exception ex)
 					{
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "");
 						if (showDialog)
 						{
 							MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -2031,7 +2035,7 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 60,
-							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION "
+							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, EXTRACT_TOOL, DB_VERSION "
 										+ " FROM " + dbName + "." + dbTable
 						};
 						cm2.Connection = cn;
@@ -2060,6 +2064,7 @@ namespace glc_cs
 										KeyNames.dcon_img,
 										KeyNames.memo,
 										KeyNames.status,
+										KeyNames.extract_tool,
 										KeyNames.ini_version
 									};
 									string[] keys =
@@ -2077,6 +2082,7 @@ namespace glc_cs
 										reader["DCON_IMG"].ToString(),
 										reader["MEMO"].ToString(),
 										reader["STATUS"].ToString(),
+										reader["EXTRACT_TOOL"].ToString(),
 										reader["DB_VERSION"].ToString()
 									};
 									IniWrite(saveLocalIniPath, "game", colNames, keys);
@@ -2116,7 +2122,7 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 60,
-							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION "
+							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, EXTRACT_TOOL, DB_VERSION "
 										+ " FROM " + dbTable
 						};
 						cm2.Connection = mcn;
@@ -2145,6 +2151,7 @@ namespace glc_cs
 										KeyNames.dcon_img,
 										KeyNames.memo,
 										KeyNames.status,
+										KeyNames.extract_tool,
 										KeyNames.ini_version
 									};
 									string[] keys =
@@ -2162,6 +2169,7 @@ namespace glc_cs
 										reader["DCON_IMG"].ToString(),
 										reader["MEMO"].ToString(),
 										reader["STATUS"].ToString(),
+										reader["EXTRACT_TOOL"].ToString(),
 										reader["DB_VERSION"].ToString()
 									};
 									IniWrite(saveLocalIniPath, "game", colNames, keys);
@@ -2302,7 +2310,8 @@ namespace glc_cs
 									KeyNames.memo,			// 10
 									KeyNames.status,		// 11
 									KeyNames.ini_version,	// 12
-									KeyNames.execute_cmd	// 13
+									KeyNames.execute_cmd,	// 13
+									KeyNames.extract_tool	// 14
 								};
 								string[] failedVal =
 								{
@@ -2319,7 +2328,8 @@ namespace glc_cs
 									"",
 									"未プレイ",
 									DBVer,
-									""
+									"",
+									"0"
 								};
 								string[] returnVal = new string[keyName.Length];
 
@@ -2340,7 +2350,7 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "' )"
+									CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "', '" + returnVal[14] + "' )"
 								};
 								cm2.Connection = cn1;
 								cm2.Transaction = tran1;
@@ -2406,7 +2416,8 @@ namespace glc_cs
 									KeyNames.memo,			// 10
 									KeyNames.status,		// 11
 									KeyNames.ini_version,	// 12
-									KeyNames.execute_cmd	// 13
+									KeyNames.execute_cmd,	// 13
+									KeyNames.extract_tool	// 14
 								};
 								string[] failedVal =
 								{
@@ -2423,7 +2434,8 @@ namespace glc_cs
 									"",
 									"未プレイ",
 									DBVer,
-									""
+									"",
+									"0"
 								};
 								string[] returnVal = new string[keyName.Length];
 
@@ -2444,7 +2456,7 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "', '" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "' );"
+									CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "', '" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "', '" + returnVal[14] + "' );"
 								};
 								mcm2.Connection = mcn1;
 								mcm2.Transaction = mtran1;
@@ -2563,7 +2575,8 @@ namespace glc_cs
 									KeyNames.memo,			// 10
 									KeyNames.status,		// 11
 									KeyNames.ini_version,	// 12
-									KeyNames.execute_cmd	// 13
+									KeyNames.execute_cmd,	// 13
+									KeyNames.extract_tool	// 14
 								};
 							string[] failedVal =
 							{
@@ -2580,7 +2593,8 @@ namespace glc_cs
 									"",
 									"未プレイ",
 									DBVer,
-									""
+									"",
+									"0"
 								};
 							string[] returnVal = new string[keyName.Length];
 
@@ -2612,7 +2626,7 @@ namespace glc_cs
 							{
 								CommandType = CommandType.Text,
 								CommandTimeout = 30,
-								CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "' )"
+								CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "', '" + returnVal[14] + "' )"
 							};
 							cm2.Connection = cn1;
 
@@ -2644,7 +2658,8 @@ namespace glc_cs
 									KeyNames.memo,			// 10
 									KeyNames.status,		// 11
 									KeyNames.ini_version,	// 12
-									KeyNames.execute_cmd	// 13
+									KeyNames.execute_cmd,	// 13
+									KeyNames.extract_tool	// 14
 								};
 							string[] failedVal =
 							{
@@ -2661,7 +2676,8 @@ namespace glc_cs
 									"",
 									"未プレイ",
 									DBVer,
-									""
+									"",
+									"0"
 								};
 							string[] returnVal = new string[keyName.Length];
 
@@ -2693,7 +2709,7 @@ namespace glc_cs
 							{
 								CommandType = CommandType.Text,
 								CommandTimeout = 30,
-								CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "' )"
+								CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "', '" + returnVal[14] + "' )"
 							};
 							mcm2.Connection = mcn1;
 
@@ -2800,35 +2816,35 @@ namespace glc_cs
 					case 1: // krkr
 						if (ExtractKrkrAddGameArg)
 						{
-							appArgs.Append(" ").Append(gameArgs).Append("\"");
+							appArgs.Append(" ").Append(gameArgs);
 						}
 						break;
 					case 2: // krkrz
 						if (ExtractKrkrzAddGameArg)
 						{
-							appArgs.Append(" ").Append(gameArgs).Append("\"");
+							appArgs.Append(" ").Append(gameArgs);
 						}
 						break;
 					case 3: // krkrDump
 						if (ExtractKrkrDumpAddGameArg)
 						{
-							appArgs.Append(" ").Append(gameArgs).Append("\"");
+							appArgs.Append(" ").Append(gameArgs);
 						}
 						break;
 					case 4: // Custom1
 						if (ExtractCustom1AddGameArg)
 						{
-							appArgs.Append(" ").Append(gameArgs).Append("\"");
+							appArgs.Append(" ").Append(gameArgs);
 						}
 						break;
 					case 5: // Custom2
 						if (ExtractCustom2AddGameArg)
 						{
-							appArgs.Append(" ").Append(gameArgs).Append("\"");
+							appArgs.Append(" ").Append(gameArgs);
 						}
 						break;
 				}
-				//appArgs.Append("\"");
+				appArgs.Append("\"");
 
 				extractAppPath = appPath.ToString();
 				extractAppArgs = appArgs.ToString();

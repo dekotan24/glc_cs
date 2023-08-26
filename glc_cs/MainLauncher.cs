@@ -17,7 +17,6 @@ namespace glc_cs
 		// 設定フォーム宣言
 		Config ConfigForm = new Config();
 		Splash SplashForm = new Splash();
-		IconView IconViewForm = new IconView(null);
 
 		public gl()
 		{
@@ -51,17 +50,16 @@ namespace glc_cs
 			runningPicture.Visible = true;
 
 			// ステータス変更
-			UpdateSplashInfo(2, "設定の読み込み中…");
+			UpdateSplashInfo(2, "設定を読み込み中…");
 
 			// 設定ファイル読込
 			UpdateComponent();
 
+			// ステータス変更
+			UpdateSplashInfo(3, "アップデートのチェック中…");
 			// アップデートチェック
 			if (!(InitialUpdateCheckSkipFlg && InitialUpdateCheckSkipVer.Equals(AppVer)))
 			{
-				// ステータス変更
-				UpdateSplashInfo(3, "アップデートのチェック中…");
-
 				CheckItemUpdate();
 			}
 
@@ -158,7 +156,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="gameDirname">iniファイルが格納されているフォルダ</param>
 		/// <returns>異常なら"_none_game_data"を返します。正常に処理した場合は空欄が返されます。</returns>
-		public string LoadItem(String gameDirname)
+		public string LoadItem(string gameDirname)
 		{
 			gameList.Items.Clear();
 			gameImgList.Items.Clear();
@@ -196,8 +194,8 @@ namespace glc_cs
 
 
 			int count;
-			String readini;
-			String ans = "";
+			string readini;
+			string ans = "";
 			Image lvimg;
 			ListViewItem lvi = new ListViewItem();
 
@@ -764,7 +762,7 @@ namespace glc_cs
 				ResolveError(MethodBase.GetCurrentMethod().Name, "ゲームリストが空です。", 0, false);
 				return;
 			}
-			String selectedtext = gameList.SelectedItem.ToString();
+			string selectedtext = gameList.SelectedItem.ToString();
 
 			// 共通部分を保存
 			string[] columnNames = { "track", "sens" };
@@ -777,7 +775,7 @@ namespace glc_cs
 			{
 				// iniの場合、ステータス状態を書き込み
 				// Discordカスタムステータス、各種チェックボックス、ラジオの保存
-				String path = GameDir + (gameList.SelectedIndex + 1) + ".ini";
+				string path = GameDir + (gameList.SelectedIndex + 1) + ".ini";
 				if (File.Exists(path))
 				{
 					KeyNames[] keyNames = { KeyNames.stat, KeyNames.dcon_img, KeyNames.rating };
@@ -801,8 +799,10 @@ namespace glc_cs
 
 			if (File.Exists(exePathText.Text))
 			{
+				// トラッキングあり
 				if (trackCheck.Checked)
 				{
+					// 通常トラッキング実行
 					if (!testCheck.Checked)
 					{
 						// 現在時刻取得
@@ -816,7 +816,7 @@ namespace glc_cs
 							if (File.Exists(DconPath))
 							{
 								// propertiesファイル書き込み
-								String propertiesfile = Path.GetDirectoryName(DconPath) + "\\run.properties";
+								string propertiesfile = Path.GetDirectoryName(DconPath) + "\\run.properties";
 								Encoding enc = Encoding.GetEncoding("Shift-JIS");
 								StreamWriter writer = new StreamWriter(propertiesfile, false, enc);
 
@@ -871,6 +871,9 @@ namespace glc_cs
 						runningPicture.Visible = true;
 						startButton.Enabled = false;
 
+						// ウィンドウ最小化
+						this.WindowState = FormWindowState.Minimized;
+
 						Application.DoEvents();
 
 						// ゲーム実行
@@ -885,8 +888,15 @@ namespace glc_cs
 						// ゲーム終了まで待機
 						p.WaitForExit();
 
-						// ゲーム終了
+						// 終了時刻取得
+						string time = (sucExit ? p.ExitTime : DateTime.Now).ToString("yyyy/MM/dd HH:mm:ss");
+						DateTime endtime = Convert.ToDateTime(time);
+
+						// 作業ディレクトリ復元
 						Environment.CurrentDirectory = BaseDir;
+
+						// ウィンドウ通常表示化
+						this.WindowState = FormWindowState.Normal;
 
 						// 子プロセスの終了
 						if (useDconCheck.Checked)
@@ -894,12 +904,8 @@ namespace glc_cs
 							sucExit = KillChildProcess(drunp);
 						}
 
-						// 終了時刻取得
-						String time = (sucExit ? p.ExitTime : DateTime.Now).ToString("yyyy/MM/dd HH:mm:ss");
-						DateTime endtime = Convert.ToDateTime(time);
-
 						// 起動時間計算
-						String temp = (endtime - starttime).ToString();
+						string temp = (endtime - starttime).ToString();
 						int anss = Convert.ToInt32(TimeSpan.Parse(temp).TotalSeconds);
 
 						if (ByActive && ByRoS)
@@ -924,7 +930,7 @@ namespace glc_cs
 						{
 							// ini
 							int selecteditem = gameList.SelectedIndex + 1;
-							String readini = GameDir + selecteditem + ".ini";
+							string readini = GameDir + selecteditem + ".ini";
 
 							if (File.Exists(readini))
 							{
@@ -1071,6 +1077,7 @@ namespace glc_cs
 							}
 						}
 					}
+					// テスト起動モード
 					else
 					{
 						// checkBox6.Checked
@@ -1100,6 +1107,9 @@ namespace glc_cs
 						runningPicture.Visible = true;
 						startButton.Enabled = false;
 
+						// ウィンドウ最小化
+						this.WindowState = FormWindowState.Minimized;
+
 						// ゲーム実行
 						Process p = Process.Start(executeAppPath, executeAppArg);
 
@@ -1122,6 +1132,9 @@ namespace glc_cs
 						runningPicture.Visible = false;
 						startButton.Enabled = true;
 
+						// ウィンドウ通常表示化
+						this.WindowState = FormWindowState.Normal;
+
 						// 終了検出後
 						DialogResult dr = MessageBox.Show("実行終了を検出しました。\n開始日時：" + startTime.ToString("yyyy/MM/dd HH:mm:ss") + "\n終了日時：" + endTime.ToString("yyyy/MM/dd HH:mm:ss") + "\n\nゲームを正しくトラッキングできていますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 						if (dr == DialogResult.Yes)
@@ -1135,6 +1148,7 @@ namespace glc_cs
 
 					}
 				}
+				// トラッキングなしで実行
 				else
 				{
 					// 既定ディレクトリの取得
@@ -1607,8 +1621,8 @@ namespace glc_cs
 			if (!(runTimeText.Text.Equals("")))
 			{
 				int total = Convert.ToInt32(runTimeText.Text);
-				String hour = (total / 60).ToString();
-				String min = (total % 60).ToString();
+				string hour = (total / 60).ToString();
+				string min = (total % 60).ToString();
 				int sTotal = (Convert.ToInt32(startCountText.Text) == 0 ? 1 : Convert.ToInt32(startCountText.Text));
 				string sMin = (total / sTotal).ToString();
 				string sHour = (Convert.ToInt32(sMin) / 60).ToString();
@@ -1705,7 +1719,7 @@ namespace glc_cs
 			{
 				int ckv0 = Convert.ToInt32(ReadIni("checkbox", "track", "0"));
 
-				String bgimg = BgImg;
+				string bgimg = BgImg;
 				sensCheck.Checked = Convert.ToBoolean(Convert.ToInt32(ReadIni("checkbox", "sens", "0")));
 				useDconCheck.Checked = Dconnect;
 				if (useDconCheck.Checked)
@@ -1739,7 +1753,7 @@ namespace glc_cs
 				{
 					if (ByRoW)
 					{
-						BouyomiConfigLoad();
+						Bouyomi_Connectchk();
 					}
 				}
 
@@ -1870,7 +1884,7 @@ namespace glc_cs
 				LoadItem(GameDir);
 				if (gameList.Items.Count != 0)
 				{
-					String selectedtext = gameList.SelectedItem.ToString();
+					string selectedtext = gameList.SelectedItem.ToString();
 					if (gameList.Items.Contains(selectedtext))
 					{
 						gameList.SelectedIndex = gameList.Items.IndexOf(selectedtext);
@@ -1959,7 +1973,7 @@ namespace glc_cs
 			// 選択中のゲーム保管ファイルを削除
 			runningPicture.Visible = true;
 			int delval = gameList.SelectedIndex + 1;
-			String delname = nameText.Text;
+			string delname = nameText.Text;
 			if (SaveType == "I" || SaveType == "T")
 			{
 				// ini
@@ -1988,7 +2002,7 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void EditButton_Click(object sender, EventArgs e)
 		{
-			String selectedListCount = (gameList.SelectedIndex + 1).ToString();
+			string selectedListCount = (gameList.SelectedIndex + 1).ToString();
 
 			if (gameList.SelectedIndex == -1)
 			{
@@ -2039,7 +2053,7 @@ namespace glc_cs
 			else
 			{
 				// iniの場合
-				String path = GameDir + (gameList.SelectedIndex + 1) + ".ini";
+				string path = GameDir + (gameList.SelectedIndex + 1) + ".ini";
 				if (File.Exists(path))
 				{
 					Editor form5 = new Editor(SaveType, selectedListCount, new SqlConnection(), new SqlCommand());
@@ -2069,7 +2083,7 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void MemoButton_Click(object sender, EventArgs e)
 		{
-			String selectedListCount = (gameList.SelectedIndex + 1).ToString();
+			string selectedListCount = (gameList.SelectedIndex + 1).ToString();
 
 			if (gameList.SelectedIndex == -1)
 			{
@@ -2121,7 +2135,7 @@ namespace glc_cs
 			}
 
 			// INIの場合
-			String path = GameDir + (gameList.SelectedIndex + 1) + ".ini";
+			string path = GameDir + (gameList.SelectedIndex + 1) + ".ini";
 			if (File.Exists(path))
 			{
 				Memo memoForm = new Memo(SaveType, selectedListCount, new SqlConnection(), new SqlCommand());
@@ -2152,7 +2166,7 @@ namespace glc_cs
 			}
 
 			// ini読込
-			String rawdata = GameDir + ((gameList.SelectedIndex + 1).ToString()) + ".ini";
+			string rawdata = GameDir + ((gameList.SelectedIndex + 1).ToString()) + ".ini";
 
 			if (File.Exists(rawdata))
 			{
@@ -2179,9 +2193,9 @@ namespace glc_cs
 				{
 					selected++;
 					int target = selected - 1;
-					String before = GameDir + (selected.ToString()) + ".ini";
-					String temp = GameDir + (target.ToString()) + "_.ini";
-					String after = GameDir + (target.ToString()) + ".ini";
+					string before = GameDir + (selected.ToString()) + ".ini";
+					string temp = GameDir + (target.ToString()) + "_.ini";
+					string after = GameDir + (target.ToString()) + ".ini";
 					if (File.Exists(before) && File.Exists(after))
 					{
 						File.Move(after, temp);
@@ -2230,9 +2244,9 @@ namespace glc_cs
 				{
 					selected++;
 					int target = selected + 1;
-					String before = GameDir + (selected.ToString()) + ".ini";
-					String temp = GameDir + (target.ToString()) + "_.ini";
-					String after = GameDir + (target.ToString()) + ".ini";
+					string before = GameDir + (selected.ToString()) + ".ini";
+					string temp = GameDir + (target.ToString()) + "_.ini";
+					string after = GameDir + (target.ToString()) + ".ini";
 					if (File.Exists(before) && File.Exists(after))
 					{
 						File.Move(after, temp);
@@ -2276,7 +2290,7 @@ namespace glc_cs
 		{
 			if (exePathText.Text != "")
 			{
-				String opendir = Path.GetDirectoryName(exePathText.Text);
+				string opendir = Path.GetDirectoryName(exePathText.Text);
 				if (Directory.Exists(opendir))
 				{
 					Process.Start(opendir);
@@ -2293,7 +2307,7 @@ namespace glc_cs
 		{
 			if (exePathText.Text != "")
 			{
-				String opendir = Path.GetDirectoryName(exePathText.Text);
+				string opendir = Path.GetDirectoryName(exePathText.Text);
 				if (Directory.Exists(opendir))
 				{
 					Process.Start(opendir);
@@ -2378,7 +2392,7 @@ namespace glc_cs
 			}
 			else if (beforeSaveType != afterSaveType)
 			{
-				WriteIni("disable", "updchkVer", "0.0");
+				// WriteIni("disable", "updchkVer", "0.0");
 				MessageBox.Show("データの保存方法が変更されました。\nGame Launcherを再起動してください。\n\nOKを押してGame Launcherを終了します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				ExitApp(!OfflineSave);
 			}
@@ -2397,7 +2411,7 @@ namespace glc_cs
 		/// </summary>
 		private void Message()
 		{
-			String ans = "";
+			string ans = "";
 			int tmp;
 			Random r = new Random();
 			tmp = r.Next(1, 3);
@@ -2425,7 +2439,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="delfileval"></param>
 		/// <param name="delfilename"></param>
-		private void DelIniItem(int delfileval, String delfilename)
+		private void DelIniItem(int delfileval, string delfilename)
 		{
 			int nextval;
 			string nextfile;
@@ -2682,17 +2696,6 @@ namespace glc_cs
 		}
 
 		/// <summary>
-		/// 棒読みちゃんの設定を読み込みます
-		/// </summary>
-		private void BouyomiConfigLoad()
-		{
-			ByHost = ReadIni("connect", "byHost", "127.0.0.1");
-			ByPort = Convert.ToInt32(ReadIni("connect", "byPort", "50001"));
-			Bouyomi_Connectchk(ByHost, ByPort, ByType, false);
-			return;
-		}
-
-		/// <summary>
 		/// エラーダイアログを表示します。
 		/// </summary>
 		/// <param name="methodName">関数名</param>
@@ -2751,6 +2754,8 @@ namespace glc_cs
 				Bouyomiage("ゲームランチャーを終了しました。");
 			}
 
+			GC.Collect();
+			this.Dispose();
 			Application.Exit();
 		}
 
@@ -3423,7 +3428,7 @@ namespace glc_cs
 			// INI
 			else
 			{
-				String readini = GameDir + (gameList.SelectedIndex + 1) + ".ini";
+				string readini = GameDir + (gameList.SelectedIndex + 1) + ".ini";
 				IniWrite(readini, "game", "status", statusCombo.SelectedItem.ToString());
 			}
 		}

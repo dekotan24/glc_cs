@@ -34,7 +34,7 @@
 			this.getDconButton = new System.Windows.Forms.Button();
 			this.dconEnableCheck = new System.Windows.Forms.CheckBox();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-			this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+			this.mailLinkLabel = new System.Windows.Forms.LinkLabel();
 			this.dconAppIDText = new System.Windows.Forms.TextBox();
 			this.portText = new System.Windows.Forms.TextBox();
 			this.dbBackupButton = new System.Windows.Forms.Button();
@@ -44,10 +44,10 @@
 			this.iniAllEditButton = new System.Windows.Forms.Button();
 			this.executeNonQueryRadio = new System.Windows.Forms.RadioButton();
 			this.executeScalerRadio = new System.Windows.Forms.RadioButton();
-			this.radioButton5 = new System.Windows.Forms.RadioButton();
+			this.mysqlRadio = new System.Windows.Forms.RadioButton();
 			this.offlineSaveEnableCheck = new System.Windows.Forms.CheckBox();
-			this.radioButton9 = new System.Windows.Forms.RadioButton();
-			this.radioButton8 = new System.Windows.Forms.RadioButton();
+			this.mssqlRadio = new System.Windows.Forms.RadioButton();
+			this.iniRadio = new System.Windows.Forms.RadioButton();
 			this.useLocalDBCheck = new System.Windows.Forms.CheckBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage7 = new System.Windows.Forms.TabPage();
@@ -60,7 +60,6 @@
 			this.fixGridSize8 = new System.Windows.Forms.RadioButton();
 			this.fixGridSizeCheck = new System.Windows.Forms.CheckBox();
 			this.gridDisableCheck = new System.Windows.Forms.CheckBox();
-			this.label30 = new System.Windows.Forms.Label();
 			this.groupBox11 = new System.Windows.Forms.GroupBox();
 			this.backgroundImageSelectButton = new System.Windows.Forms.Button();
 			this.backgroundImageText = new System.Windows.Forms.TextBox();
@@ -156,22 +155,20 @@
 			this.label26 = new System.Windows.Forms.Label();
 			this.label33 = new System.Windows.Forms.Label();
 			this.groupBox17 = new System.Windows.Forms.GroupBox();
-			this.label7 = new System.Windows.Forms.Label();
 			this.enableExtractCheck = new System.Windows.Forms.CheckBox();
 			this.TabPage3 = new System.Windows.Forms.TabPage();
-			this.label31 = new System.Windows.Forms.Label();
-			this.checkBox1 = new System.Windows.Forms.CheckBox();
+			this.authorLabel = new System.Windows.Forms.Label();
 			this.logoPictureBox = new System.Windows.Forms.PictureBox();
 			this.updchkButton = new System.Windows.Forms.Button();
-			this.label10 = new System.Windows.Forms.Label();
-			this.linkLabel3 = new System.Windows.Forms.LinkLabel();
-			this.label8 = new System.Windows.Forms.Label();
-			this.label6 = new System.Windows.Forms.Label();
-			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-			this.label5 = new System.Windows.Forms.Label();
-			this.label4 = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
+			this.verLabel = new System.Windows.Forms.Label();
+			this.githubLinkLabel = new System.Windows.Forms.LinkLabel();
+			this.githubHeadLabel = new System.Windows.Forms.Label();
+			this.copyrightLabel = new System.Windows.Forms.Label();
+			this.webLinkLabel = new System.Windows.Forms.LinkLabel();
+			this.webHeadLabel = new System.Windows.Forms.Label();
+			this.mailHeadLabel = new System.Windows.Forms.Label();
+			this.authorHeadLabel = new System.Windows.Forms.Label();
+			this.appNameLabel = new System.Windows.Forms.Label();
 			this.saveButton = new System.Windows.Forms.Button();
 			this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
 			this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
@@ -179,6 +176,7 @@
 			this.label15 = new System.Windows.Forms.Label();
 			this.saveWithDownloadCheck = new System.Windows.Forms.CheckBox();
 			this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
+			this.disclaimerLabel = new System.Windows.Forms.Label();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage7.SuspendLayout();
@@ -216,7 +214,7 @@
 			// 
 			this.groupBox1.Controls.Add(this.getDconButton);
 			this.groupBox1.Controls.Add(this.dconEnableCheck);
-			this.groupBox1.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox1.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox1.Location = new System.Drawing.Point(6, 6);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(469, 60);
@@ -226,39 +224,41 @@
 			// 
 			// getDconButton
 			// 
-			this.getDconButton.Font = new System.Drawing.Font("ＭＳ ゴシック", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.getDconButton.Location = new System.Drawing.Point(368, 22);
+			this.getDconButton.Font = new System.Drawing.Font("メイリオ", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.getDconButton.Location = new System.Drawing.Point(367, 19);
 			this.getDconButton.Name = "getDconButton";
-			this.getDconButton.Size = new System.Drawing.Size(95, 29);
+			this.getDconButton.Size = new System.Drawing.Size(96, 29);
 			this.getDconButton.TabIndex = 1;
 			this.getDconButton.Text = "Get dcon";
+			this.toolTip1.SetToolTip(this.getDconButton, "Discord Connectorを取得します。");
 			this.getDconButton.UseVisualStyleBackColor = true;
 			this.getDconButton.Click += new System.EventHandler(this.getDconButton_Click);
 			// 
 			// dconEnableCheck
 			// 
 			this.dconEnableCheck.AutoSize = true;
-			this.dconEnableCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.dconEnableCheck.Location = new System.Drawing.Point(25, 30);
+			this.dconEnableCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.dconEnableCheck.Location = new System.Drawing.Point(25, 26);
 			this.dconEnableCheck.Name = "dconEnableCheck";
-			this.dconEnableCheck.Size = new System.Drawing.Size(220, 19);
+			this.dconEnableCheck.Size = new System.Drawing.Size(202, 22);
 			this.dconEnableCheck.TabIndex = 0;
 			this.dconEnableCheck.Text = "Discordに実行中のゲームを表示";
-			this.toolTip1.SetToolTip(this.dconEnableCheck, "「ゲームをトラッキング」が有効の場合のみ動作します");
+			this.toolTip1.SetToolTip(this.dconEnableCheck, "Discord Connector機能を使用可能にします。");
 			this.dconEnableCheck.UseVisualStyleBackColor = true;
 			this.dconEnableCheck.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
 			// 
-			// linkLabel2
+			// mailLinkLabel
 			// 
-			this.linkLabel2.AutoSize = true;
-			this.linkLabel2.Location = new System.Drawing.Point(171, 178);
-			this.linkLabel2.Name = "linkLabel2";
-			this.linkLabel2.Size = new System.Drawing.Size(103, 12);
-			this.linkLabel2.TabIndex = 12;
-			this.linkLabel2.TabStop = true;
-			this.linkLabel2.Text = "support@fanet.work";
-			this.toolTip1.SetToolTip(this.linkLabel2, "メールアドレスをコピーします");
-			this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+			this.mailLinkLabel.AutoSize = true;
+			this.mailLinkLabel.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.mailLinkLabel.Location = new System.Drawing.Point(159, 173);
+			this.mailLinkLabel.Name = "mailLinkLabel";
+			this.mailLinkLabel.Size = new System.Drawing.Size(127, 18);
+			this.mailLinkLabel.TabIndex = 12;
+			this.mailLinkLabel.TabStop = true;
+			this.mailLinkLabel.Text = "support@fanet.work";
+			this.toolTip1.SetToolTip(this.mailLinkLabel, "メールアドレスをコピーします");
+			this.mailLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
 			// 
 			// dconAppIDText
 			// 
@@ -266,7 +266,7 @@
 			this.dconAppIDText.Location = new System.Drawing.Point(6, 22);
 			this.dconAppIDText.MaxLength = 20;
 			this.dconAppIDText.Name = "dconAppIDText";
-			this.dconAppIDText.Size = new System.Drawing.Size(384, 23);
+			this.dconAppIDText.Size = new System.Drawing.Size(402, 27);
 			this.dconAppIDText.TabIndex = 0;
 			this.toolTip1.SetToolTip(this.dconAppIDText, "ご自身で管理しているApplicationに切替できます。");
 			// 
@@ -274,20 +274,20 @@
 			// 
 			this.portText.Enabled = false;
 			this.portText.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.portText.Location = new System.Drawing.Point(332, 69);
+			this.portText.Location = new System.Drawing.Point(332, 65);
 			this.portText.Name = "portText";
-			this.portText.Size = new System.Drawing.Size(59, 23);
+			this.portText.Size = new System.Drawing.Size(59, 27);
 			this.portText.TabIndex = 10;
 			this.toolTip1.SetToolTip(this.portText, "MSSQLの既定【1433】\r\nMySQLの既定【3306】");
 			// 
 			// dbBackupButton
 			// 
-			this.dbBackupButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.dbBackupButton.Location = new System.Drawing.Point(397, 127);
+			this.dbBackupButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.dbBackupButton.Location = new System.Drawing.Point(397, 123);
 			this.dbBackupButton.Name = "dbBackupButton";
-			this.dbBackupButton.Size = new System.Drawing.Size(64, 23);
+			this.dbBackupButton.Size = new System.Drawing.Size(64, 27);
 			this.dbBackupButton.TabIndex = 16;
-			this.dbBackupButton.Text = "バックアップ";
+			this.dbBackupButton.Text = "Backup";
 			this.toolTip1.SetToolTip(this.dbBackupButton, "データベースをバックアップします");
 			this.dbBackupButton.UseVisualStyleBackColor = true;
 			this.dbBackupButton.Click += new System.EventHandler(this.dbBackupButton_Click);
@@ -300,9 +300,9 @@
 			this.checkBox7.Enabled = false;
 			this.checkBox7.Location = new System.Drawing.Point(13, 49);
 			this.checkBox7.Name = "checkBox7";
-			this.checkBox7.Size = new System.Drawing.Size(248, 16);
+			this.checkBox7.Size = new System.Drawing.Size(280, 21);
 			this.checkBox7.TabIndex = 11;
-			this.checkBox7.Text = "エラー発生時は該当データをスキップする（強制）";
+			this.checkBox7.Text = "エラー発生時に該当データをスキップする（強制）";
 			this.toolTip1.SetToolTip(this.checkBox7, "取込処理中にエラーが発生した場合、エラー発生直前までに取り込んだデータをコミットします");
 			this.checkBox7.UseVisualStyleBackColor = true;
 			// 
@@ -310,7 +310,7 @@
 			// 
 			this.textBox9.Location = new System.Drawing.Point(174, 41);
 			this.textBox9.Name = "textBox9";
-			this.textBox9.Size = new System.Drawing.Size(141, 19);
+			this.textBox9.Size = new System.Drawing.Size(141, 24);
 			this.textBox9.TabIndex = 8;
 			this.toolTip1.SetToolTip(this.textBox9, "変更後のキーワード");
 			// 
@@ -318,7 +318,7 @@
 			// 
 			this.textBox8.Location = new System.Drawing.Point(6, 41);
 			this.textBox8.Name = "textBox8";
-			this.textBox8.Size = new System.Drawing.Size(142, 19);
+			this.textBox8.Size = new System.Drawing.Size(142, 24);
 			this.textBox8.TabIndex = 7;
 			this.toolTip1.SetToolTip(this.textBox8, "変更前のキーワード");
 			// 
@@ -337,9 +337,9 @@
 			// 
 			this.executeNonQueryRadio.AutoSize = true;
 			this.executeNonQueryRadio.Checked = true;
-			this.executeNonQueryRadio.Location = new System.Drawing.Point(84, 18);
+			this.executeNonQueryRadio.Location = new System.Drawing.Point(84, 14);
 			this.executeNonQueryRadio.Name = "executeNonQueryRadio";
-			this.executeNonQueryRadio.Size = new System.Drawing.Size(114, 16);
+			this.executeNonQueryRadio.Size = new System.Drawing.Size(122, 21);
 			this.executeNonQueryRadio.TabIndex = 10;
 			this.executeNonQueryRadio.TabStop = true;
 			this.executeNonQueryRadio.Text = "ExecuteNonQuery";
@@ -349,76 +349,77 @@
 			// executeScalerRadio
 			// 
 			this.executeScalerRadio.AutoSize = true;
-			this.executeScalerRadio.Location = new System.Drawing.Point(275, 18);
+			this.executeScalerRadio.Location = new System.Drawing.Point(275, 14);
 			this.executeScalerRadio.Name = "executeScalerRadio";
-			this.executeScalerRadio.Size = new System.Drawing.Size(96, 16);
+			this.executeScalerRadio.Size = new System.Drawing.Size(101, 21);
 			this.executeScalerRadio.TabIndex = 11;
 			this.executeScalerRadio.Text = "ExecuteScaler";
 			this.toolTip1.SetToolTip(this.executeScalerRadio, "結果セットの一番最初の値を返します。");
 			this.executeScalerRadio.UseVisualStyleBackColor = true;
 			// 
-			// radioButton5
+			// mysqlRadio
 			// 
-			this.radioButton5.AutoSize = true;
-			this.radioButton5.Location = new System.Drawing.Point(311, 25);
-			this.radioButton5.Name = "radioButton5";
-			this.radioButton5.Size = new System.Drawing.Size(111, 20);
-			this.radioButton5.TabIndex = 4;
-			this.radioButton5.Text = "DB（MySQL）";
-			this.toolTip1.SetToolTip(this.radioButton5, "MySQLに接続します。");
-			this.radioButton5.UseVisualStyleBackColor = true;
-			this.radioButton5.CheckedChanged += new System.EventHandler(this.radioButton5_CheckedChanged);
+			this.mysqlRadio.AutoSize = true;
+			this.mysqlRadio.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.mysqlRadio.Location = new System.Drawing.Point(311, 23);
+			this.mysqlRadio.Name = "mysqlRadio";
+			this.mysqlRadio.Size = new System.Drawing.Size(115, 24);
+			this.mysqlRadio.TabIndex = 4;
+			this.mysqlRadio.Text = "DB（MySQL）";
+			this.toolTip1.SetToolTip(this.mysqlRadio, "MySQLに接続します。");
+			this.mysqlRadio.UseVisualStyleBackColor = true;
+			this.mysqlRadio.CheckedChanged += new System.EventHandler(this.radioButton5_CheckedChanged);
 			// 
 			// offlineSaveEnableCheck
 			// 
 			this.offlineSaveEnableCheck.AutoSize = true;
-			this.offlineSaveEnableCheck.Font = new System.Drawing.Font("MS UI Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.offlineSaveEnableCheck.Location = new System.Drawing.Point(353, 50);
+			this.offlineSaveEnableCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.offlineSaveEnableCheck.Location = new System.Drawing.Point(350, 50);
 			this.offlineSaveEnableCheck.Name = "offlineSaveEnableCheck";
-			this.offlineSaveEnableCheck.Size = new System.Drawing.Size(109, 17);
+			this.offlineSaveEnableCheck.Size = new System.Drawing.Size(111, 22);
 			this.offlineSaveEnableCheck.TabIndex = 6;
-			this.offlineSaveEnableCheck.Text = "オフラインに保存";
+			this.offlineSaveEnableCheck.Text = "オフライン保存";
 			this.toolTip1.SetToolTip(this.offlineSaveEnableCheck, "DBのデータをローカルにINIファイルとして保存します。\r\n次回起動時にDBに接続できない場合、ローカルに保存したINIファイルを使用できます。\r\nデータの同期（" +
         "アップロード）はDB接続時に行います。");
 			this.offlineSaveEnableCheck.UseVisualStyleBackColor = true;
 			this.offlineSaveEnableCheck.CheckedChanged += new System.EventHandler(this.checkBox8_CheckedChanged);
 			// 
-			// radioButton9
+			// mssqlRadio
 			// 
-			this.radioButton9.AutoSize = true;
-			this.radioButton9.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.radioButton9.Location = new System.Drawing.Point(168, 25);
-			this.radioButton9.Name = "radioButton9";
-			this.radioButton9.Size = new System.Drawing.Size(113, 20);
-			this.radioButton9.TabIndex = 1;
-			this.radioButton9.Text = "DB（MSSQL）";
-			this.toolTip1.SetToolTip(this.radioButton9, "MSSQL（SQL Server）に接続します。");
-			this.radioButton9.UseVisualStyleBackColor = true;
-			this.radioButton9.CheckedChanged += new System.EventHandler(this.radioButton9_CheckedChanged);
+			this.mssqlRadio.AutoSize = true;
+			this.mssqlRadio.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.mssqlRadio.Location = new System.Drawing.Point(175, 23);
+			this.mssqlRadio.Name = "mssqlRadio";
+			this.mssqlRadio.Size = new System.Drawing.Size(116, 24);
+			this.mssqlRadio.TabIndex = 1;
+			this.mssqlRadio.Text = "DB（MSSQL）";
+			this.toolTip1.SetToolTip(this.mssqlRadio, "MSSQL（SQL Server）に接続します。");
+			this.mssqlRadio.UseVisualStyleBackColor = true;
+			this.mssqlRadio.CheckedChanged += new System.EventHandler(this.radioButton9_CheckedChanged);
 			// 
-			// radioButton8
+			// iniRadio
 			// 
-			this.radioButton8.AutoSize = true;
-			this.radioButton8.Checked = true;
-			this.radioButton8.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.radioButton8.Location = new System.Drawing.Point(48, 25);
-			this.radioButton8.Name = "radioButton8";
-			this.radioButton8.Size = new System.Drawing.Size(88, 20);
-			this.radioButton8.TabIndex = 0;
-			this.radioButton8.TabStop = true;
-			this.radioButton8.Text = "INIファイル";
-			this.toolTip1.SetToolTip(this.radioButton8, "ローカルのINIUファイルを使用します。");
-			this.radioButton8.UseVisualStyleBackColor = true;
-			this.radioButton8.CheckedChanged += new System.EventHandler(this.radioButton8_CheckedChanged);
+			this.iniRadio.AutoSize = true;
+			this.iniRadio.Checked = true;
+			this.iniRadio.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.iniRadio.Location = new System.Drawing.Point(48, 23);
+			this.iniRadio.Name = "iniRadio";
+			this.iniRadio.Size = new System.Drawing.Size(99, 24);
+			this.iniRadio.TabIndex = 0;
+			this.iniRadio.TabStop = true;
+			this.iniRadio.Text = "INIファイル";
+			this.toolTip1.SetToolTip(this.iniRadio, "ローカルのINIUファイルを使用します。");
+			this.iniRadio.UseVisualStyleBackColor = true;
+			this.iniRadio.CheckedChanged += new System.EventHandler(this.radioButton8_CheckedChanged);
 			// 
 			// useLocalDBCheck
 			// 
 			this.useLocalDBCheck.AutoSize = true;
 			this.useLocalDBCheck.Enabled = false;
-			this.useLocalDBCheck.Font = new System.Drawing.Font("MS UI Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.useLocalDBCheck.Location = new System.Drawing.Point(205, 50);
+			this.useLocalDBCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.useLocalDBCheck.Location = new System.Drawing.Point(197, 50);
 			this.useLocalDBCheck.Name = "useLocalDBCheck";
-			this.useLocalDBCheck.Size = new System.Drawing.Size(142, 17);
+			this.useLocalDBCheck.Size = new System.Drawing.Size(147, 22);
 			this.useLocalDBCheck.TabIndex = 5;
 			this.useLocalDBCheck.Text = "変数内にデータを保持";
 			this.toolTip1.SetToolTip(this.useLocalDBCheck, "アプリケーション内にDBの値を保持します。\r\nゲームの情報を都度DBに問い合わせなくなります。");
@@ -455,10 +456,10 @@
 			// 
 			this.groupBox16.Controls.Add(this.enableWindowHideControlCheck);
 			this.groupBox16.Controls.Add(this.updateCheckDisableCheck);
-			this.groupBox16.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox16.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox16.Location = new System.Drawing.Point(6, 177);
 			this.groupBox16.Name = "groupBox16";
-			this.groupBox16.Size = new System.Drawing.Size(469, 74);
+			this.groupBox16.Size = new System.Drawing.Size(469, 79);
 			this.groupBox16.TabIndex = 5;
 			this.groupBox16.TabStop = false;
 			this.groupBox16.Text = "システム";
@@ -466,23 +467,25 @@
 			// enableWindowHideControlCheck
 			// 
 			this.enableWindowHideControlCheck.AutoSize = true;
-			this.enableWindowHideControlCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.enableWindowHideControlCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.enableWindowHideControlCheck.Location = new System.Drawing.Point(15, 47);
 			this.enableWindowHideControlCheck.Name = "enableWindowHideControlCheck";
-			this.enableWindowHideControlCheck.Size = new System.Drawing.Size(288, 19);
+			this.enableWindowHideControlCheck.Size = new System.Drawing.Size(159, 22);
 			this.enableWindowHideControlCheck.TabIndex = 5;
-			this.enableWindowHideControlCheck.Text = "ランチャーウィンドウに最小化ボタンを表示する";
+			this.enableWindowHideControlCheck.Text = "最小化ボタンを表示する";
+			this.toolTip1.SetToolTip(this.enableWindowHideControlCheck, "ウィンドウのコントロールに最小化ボタンを追加します。");
 			this.enableWindowHideControlCheck.UseVisualStyleBackColor = true;
 			// 
 			// updateCheckDisableCheck
 			// 
 			this.updateCheckDisableCheck.AutoSize = true;
-			this.updateCheckDisableCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.updateCheckDisableCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.updateCheckDisableCheck.Location = new System.Drawing.Point(15, 22);
 			this.updateCheckDisableCheck.Name = "updateCheckDisableCheck";
-			this.updateCheckDisableCheck.Size = new System.Drawing.Size(267, 19);
+			this.updateCheckDisableCheck.Size = new System.Drawing.Size(279, 22);
 			this.updateCheckDisableCheck.TabIndex = 5;
 			this.updateCheckDisableCheck.Text = "起動時のアップデートチェックをスキップする";
+			this.toolTip1.SetToolTip(this.updateCheckDisableCheck, "各バージョンの2回目以降の起動時のアップデートチェックを無効にします。");
 			this.updateCheckDisableCheck.UseVisualStyleBackColor = true;
 			this.updateCheckDisableCheck.CheckedChanged += new System.EventHandler(this.updateCheckDisableCheck_CheckedChanged);
 			// 
@@ -493,8 +496,7 @@
 			this.groupBox14.Controls.Add(this.fixGridSize8);
 			this.groupBox14.Controls.Add(this.fixGridSizeCheck);
 			this.groupBox14.Controls.Add(this.gridDisableCheck);
-			this.groupBox14.Controls.Add(this.label30);
-			this.groupBox14.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox14.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox14.Location = new System.Drawing.Point(6, 68);
 			this.groupBox14.Name = "groupBox14";
 			this.groupBox14.Size = new System.Drawing.Size(469, 103);
@@ -506,10 +508,10 @@
 			// 
 			this.fixGridSize64.AutoSize = true;
 			this.fixGridSize64.Enabled = false;
-			this.fixGridSize64.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.fixGridSize64.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.fixGridSize64.Location = new System.Drawing.Point(283, 72);
 			this.fixGridSize64.Name = "fixGridSize64";
-			this.fixGridSize64.Size = new System.Drawing.Size(110, 19);
+			this.fixGridSize64.Size = new System.Drawing.Size(109, 22);
 			this.fixGridSize64.TabIndex = 7;
 			this.fixGridSize64.Text = "最大（64x64）";
 			this.fixGridSize64.UseVisualStyleBackColor = true;
@@ -519,10 +521,10 @@
 			this.fixGridSize32.AutoSize = true;
 			this.fixGridSize32.Checked = true;
 			this.fixGridSize32.Enabled = false;
-			this.fixGridSize32.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.fixGridSize32.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.fixGridSize32.Location = new System.Drawing.Point(167, 72);
 			this.fixGridSize32.Name = "fixGridSize32";
-			this.fixGridSize32.Size = new System.Drawing.Size(110, 19);
+			this.fixGridSize32.Size = new System.Drawing.Size(109, 22);
 			this.fixGridSize32.TabIndex = 6;
 			this.fixGridSize32.TabStop = true;
 			this.fixGridSize32.Text = "通常（32x32）";
@@ -532,10 +534,10 @@
 			// 
 			this.fixGridSize8.AutoSize = true;
 			this.fixGridSize8.Enabled = false;
-			this.fixGridSize8.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.fixGridSize8.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.fixGridSize8.Location = new System.Drawing.Point(67, 72);
 			this.fixGridSize8.Name = "fixGridSize8";
-			this.fixGridSize8.Size = new System.Drawing.Size(94, 19);
+			this.fixGridSize8.Size = new System.Drawing.Size(95, 22);
 			this.fixGridSize8.TabIndex = 5;
 			this.fixGridSize8.Text = "最小（8x8）";
 			this.fixGridSize8.UseVisualStyleBackColor = true;
@@ -543,42 +545,34 @@
 			// fixGridSizeCheck
 			// 
 			this.fixGridSizeCheck.AutoSize = true;
-			this.fixGridSizeCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.fixGridSizeCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.fixGridSizeCheck.Location = new System.Drawing.Point(15, 47);
 			this.fixGridSizeCheck.Name = "fixGridSizeCheck";
-			this.fixGridSizeCheck.Size = new System.Drawing.Size(213, 19);
+			this.fixGridSizeCheck.Size = new System.Drawing.Size(219, 22);
 			this.fixGridSizeCheck.TabIndex = 4;
 			this.fixGridSizeCheck.Text = "グリッドのアイコンサイズを固定化";
+			this.toolTip1.SetToolTip(this.fixGridSizeCheck, "イメージグリッドの画像サイズを固定化します。\r\n他のサイズの画像を保持しなくなるので、消費メモリが減る可能性があります。");
 			this.fixGridSizeCheck.UseVisualStyleBackColor = true;
 			this.fixGridSizeCheck.CheckedChanged += new System.EventHandler(this.fixGridSize_CheckedChanged);
 			// 
 			// gridDisableCheck
 			// 
 			this.gridDisableCheck.AutoSize = true;
-			this.gridDisableCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.gridDisableCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.gridDisableCheck.Location = new System.Drawing.Point(15, 22);
 			this.gridDisableCheck.Name = "gridDisableCheck";
-			this.gridDisableCheck.Size = new System.Drawing.Size(123, 19);
+			this.gridDisableCheck.Size = new System.Drawing.Size(123, 22);
 			this.gridDisableCheck.TabIndex = 3;
 			this.gridDisableCheck.Text = "グリッドを無効化";
+			this.toolTip1.SetToolTip(this.gridDisableCheck, "イメージグリッドを無効にします。\r\n起動時のロード時間、消費メモリが改善する場合があります。");
 			this.gridDisableCheck.UseVisualStyleBackColor = true;
 			this.gridDisableCheck.CheckedChanged += new System.EventHandler(this.gridDisableCheck_CheckedChanged);
-			// 
-			// label30
-			// 
-			this.label30.AutoSize = true;
-			this.label30.Font = new System.Drawing.Font("MS UI Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label30.Location = new System.Drawing.Point(138, 25);
-			this.label30.Name = "label30";
-			this.label30.Size = new System.Drawing.Size(285, 13);
-			this.label30.TabIndex = 2;
-			this.label30.Text = "※ロード時間／消費メモリが改善する場合があります。";
 			// 
 			// groupBox11
 			// 
 			this.groupBox11.Controls.Add(this.backgroundImageSelectButton);
 			this.groupBox11.Controls.Add(this.backgroundImageText);
-			this.groupBox11.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox11.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox11.Location = new System.Drawing.Point(6, 6);
 			this.groupBox11.Name = "groupBox11";
 			this.groupBox11.Size = new System.Drawing.Size(469, 56);
@@ -600,7 +594,7 @@
 			// 
 			this.backgroundImageText.Location = new System.Drawing.Point(6, 22);
 			this.backgroundImageText.Name = "backgroundImageText";
-			this.backgroundImageText.Size = new System.Drawing.Size(428, 23);
+			this.backgroundImageText.Size = new System.Drawing.Size(428, 27);
 			this.backgroundImageText.TabIndex = 0;
 			// 
 			// tabPage1
@@ -621,7 +615,7 @@
 			this.groupBox13.Controls.Add(this.label27);
 			this.groupBox13.Controls.Add(this.dconAppIDClearButton);
 			this.groupBox13.Controls.Add(this.dconAppIDText);
-			this.groupBox13.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox13.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox13.Location = new System.Drawing.Point(6, 199);
 			this.groupBox13.Name = "groupBox13";
 			this.groupBox13.Size = new System.Drawing.Size(469, 112);
@@ -632,20 +626,20 @@
 			// label27
 			// 
 			this.label27.AutoSize = true;
-			this.label27.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label27.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.label27.Location = new System.Drawing.Point(19, 56);
 			this.label27.Name = "label27";
-			this.label27.Size = new System.Drawing.Size(434, 45);
+			this.label27.Size = new System.Drawing.Size(414, 54);
 			this.label27.TabIndex = 2;
 			this.label27.Text = "Discord RPCを実行する際のApplication IDを任意の値に変更できます。\r\nランチャー画面の [Discord RPC イメージID] がイメー" +
     "ジキーになります。\r\n初期値はブランクです。理解できた方のみご利用ください。";
 			// 
 			// dconAppIDClearButton
 			// 
-			this.dconAppIDClearButton.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.dconAppIDClearButton.Location = new System.Drawing.Point(402, 22);
+			this.dconAppIDClearButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.dconAppIDClearButton.Location = new System.Drawing.Point(414, 22);
 			this.dconAppIDClearButton.Name = "dconAppIDClearButton";
-			this.dconAppIDClearButton.Size = new System.Drawing.Size(61, 23);
+			this.dconAppIDClearButton.Size = new System.Drawing.Size(49, 23);
 			this.dconAppIDClearButton.TabIndex = 1;
 			this.dconAppIDClearButton.Text = "クリア";
 			this.dconAppIDClearButton.UseVisualStyleBackColor = true;
@@ -656,7 +650,7 @@
 			this.groupBox6.Controls.Add(this.label11);
 			this.groupBox6.Controls.Add(this.dconSearchButton);
 			this.groupBox6.Controls.Add(this.dconText);
-			this.groupBox6.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox6.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox6.Location = new System.Drawing.Point(6, 134);
 			this.groupBox6.Name = "groupBox6";
 			this.groupBox6.Size = new System.Drawing.Size(469, 59);
@@ -670,7 +664,7 @@
 			this.label11.ForeColor = System.Drawing.Color.ForestGreen;
 			this.label11.Location = new System.Drawing.Point(399, 25);
 			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(66, 16);
+			this.label11.Size = new System.Drawing.Size(68, 20);
 			this.label11.TabIndex = 2;
 			this.label11.Text = "Unknown";
 			// 
@@ -681,6 +675,7 @@
 			this.dconSearchButton.Size = new System.Drawing.Size(23, 23);
 			this.dconSearchButton.TabIndex = 1;
 			this.dconSearchButton.Text = "..";
+			this.toolTip1.SetToolTip(this.dconSearchButton, "Discord Connectorのパスを設定します。");
 			this.dconSearchButton.UseVisualStyleBackColor = true;
 			this.dconSearchButton.Click += new System.EventHandler(this.dconSearchButton_Click);
 			// 
@@ -689,14 +684,14 @@
 			this.dconText.Location = new System.Drawing.Point(6, 22);
 			this.dconText.Name = "dconText";
 			this.dconText.ReadOnly = true;
-			this.dconText.Size = new System.Drawing.Size(355, 23);
+			this.dconText.Size = new System.Drawing.Size(355, 27);
 			this.dconText.TabIndex = 0;
 			// 
 			// groupBox2
 			// 
 			this.groupBox2.Controls.Add(this.dconRatingRadio2);
 			this.groupBox2.Controls.Add(this.dconRatingRadio1);
-			this.groupBox2.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox2.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox2.Location = new System.Drawing.Point(6, 72);
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.Size = new System.Drawing.Size(469, 56);
@@ -707,9 +702,10 @@
 			// dconRatingRadio2
 			// 
 			this.dconRatingRadio2.AutoSize = true;
-			this.dconRatingRadio2.Location = new System.Drawing.Point(296, 23);
+			this.dconRatingRadio2.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.dconRatingRadio2.Location = new System.Drawing.Point(253, 26);
 			this.dconRatingRadio2.Name = "dconRatingRadio2";
-			this.dconRatingRadio2.Size = new System.Drawing.Size(146, 20);
+			this.dconRatingRadio2.Size = new System.Drawing.Size(137, 22);
 			this.dconRatingRadio2.TabIndex = 1;
 			this.dconRatingRadio2.TabStop = true;
 			this.dconRatingRadio2.Text = "成人ゲーム（R-18）";
@@ -718,9 +714,10 @@
 			// dconRatingRadio1
 			// 
 			this.dconRatingRadio1.AutoSize = true;
-			this.dconRatingRadio1.Location = new System.Drawing.Point(25, 23);
+			this.dconRatingRadio1.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.dconRatingRadio1.Location = new System.Drawing.Point(66, 26);
 			this.dconRatingRadio1.Name = "dconRatingRadio1";
-			this.dconRatingRadio1.Size = new System.Drawing.Size(160, 20);
+			this.dconRatingRadio1.Size = new System.Drawing.Size(146, 22);
 			this.dconRatingRadio1.TabIndex = 0;
 			this.dconRatingRadio1.TabStop = true;
 			this.dconRatingRadio1.Text = "一般ゲーム（全年齢）";
@@ -744,10 +741,10 @@
 			this.groupBox5.Controls.Add(this.RoSCheck);
 			this.groupBox5.Controls.Add(this.RoWCheck);
 			this.groupBox5.Enabled = false;
-			this.groupBox5.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox5.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox5.Location = new System.Drawing.Point(6, 198);
 			this.groupBox5.Name = "groupBox5";
-			this.groupBox5.Size = new System.Drawing.Size(470, 119);
+			this.groupBox5.Size = new System.Drawing.Size(470, 96);
 			this.groupBox5.TabIndex = 2;
 			this.groupBox5.TabStop = false;
 			this.groupBox5.Text = "読み上げのタイミング";
@@ -755,10 +752,10 @@
 			// RoGCheck
 			// 
 			this.RoGCheck.AutoSize = true;
-			this.RoGCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.RoGCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.RoGCheck.Location = new System.Drawing.Point(25, 57);
 			this.RoGCheck.Name = "RoGCheck";
-			this.RoGCheck.Size = new System.Drawing.Size(158, 19);
+			this.RoGCheck.Size = new System.Drawing.Size(159, 22);
 			this.RoGCheck.TabIndex = 14;
 			this.RoGCheck.Text = "オフラインデータ取得時";
 			this.RoGCheck.UseVisualStyleBackColor = true;
@@ -766,10 +763,10 @@
 			// RoSCheck
 			// 
 			this.RoSCheck.AutoSize = true;
-			this.RoSCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.RoSCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.RoSCheck.Location = new System.Drawing.Point(280, 30);
 			this.RoSCheck.Name = "RoSCheck";
-			this.RoSCheck.Size = new System.Drawing.Size(167, 19);
+			this.RoSCheck.Size = new System.Drawing.Size(147, 22);
 			this.RoSCheck.TabIndex = 13;
 			this.RoSCheck.Text = "ゲーム起動時／終了時";
 			this.RoSCheck.UseVisualStyleBackColor = true;
@@ -777,10 +774,10 @@
 			// RoWCheck
 			// 
 			this.RoWCheck.AutoSize = true;
-			this.RoWCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.RoWCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.RoWCheck.Location = new System.Drawing.Point(25, 30);
 			this.RoWCheck.Name = "RoWCheck";
-			this.RoWCheck.Size = new System.Drawing.Size(186, 19);
+			this.RoWCheck.Size = new System.Drawing.Size(171, 22);
 			this.RoWCheck.TabIndex = 12;
 			this.RoWCheck.Text = "ランチャー起動時／終了時";
 			this.RoWCheck.UseVisualStyleBackColor = true;
@@ -797,7 +794,7 @@
 			this.groupBox4.Controls.Add(this.radioButton4);
 			this.groupBox4.Controls.Add(this.radioButton3);
 			this.groupBox4.Enabled = false;
-			this.groupBox4.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox4.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox4.Location = new System.Drawing.Point(6, 73);
 			this.groupBox4.Name = "groupBox4";
 			this.groupBox4.Size = new System.Drawing.Size(470, 119);
@@ -808,15 +805,17 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
+			this.label1.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.label1.Location = new System.Drawing.Point(293, 21);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(164, 16);
+			this.label1.Size = new System.Drawing.Size(142, 18);
 			this.label1.TabIndex = 12;
 			this.label1.Text = "※HTTPは127.0.0.1固定";
 			// 
 			// byResetButton
 			// 
-			this.byResetButton.Location = new System.Drawing.Point(81, 85);
+			this.byResetButton.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.byResetButton.Location = new System.Drawing.Point(258, 86);
 			this.byResetButton.Name = "byResetButton";
 			this.byResetButton.Size = new System.Drawing.Size(126, 23);
 			this.byResetButton.TabIndex = 10;
@@ -826,7 +825,8 @@
 			// 
 			// byConnectionTestButton
 			// 
-			this.byConnectionTestButton.Location = new System.Drawing.Point(280, 85);
+			this.byConnectionTestButton.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.byConnectionTestButton.Location = new System.Drawing.Point(93, 86);
 			this.byConnectionTestButton.Name = "byConnectionTestButton";
 			this.byConnectionTestButton.Size = new System.Drawing.Size(91, 23);
 			this.byConnectionTestButton.TabIndex = 11;
@@ -840,40 +840,43 @@
 			this.textBox5.Location = new System.Drawing.Point(344, 53);
 			this.textBox5.MaxLength = 5;
 			this.textBox5.Name = "textBox5";
-			this.textBox5.Size = new System.Drawing.Size(94, 23);
+			this.textBox5.Size = new System.Drawing.Size(94, 27);
 			this.textBox5.TabIndex = 9;
 			// 
 			// textBox4
 			// 
 			this.textBox4.Location = new System.Drawing.Point(67, 53);
 			this.textBox4.Name = "textBox4";
-			this.textBox4.Size = new System.Drawing.Size(211, 23);
+			this.textBox4.Size = new System.Drawing.Size(211, 27);
 			this.textBox4.TabIndex = 8;
 			// 
 			// label14
 			// 
 			this.label14.AutoSize = true;
+			this.label14.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.label14.Location = new System.Drawing.Point(300, 56);
 			this.label14.Name = "label14";
-			this.label14.Size = new System.Drawing.Size(37, 16);
+			this.label14.Size = new System.Drawing.Size(32, 18);
 			this.label14.TabIndex = 5;
 			this.label14.Text = "Port";
 			// 
 			// label13
 			// 
 			this.label13.AutoSize = true;
+			this.label13.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.label13.Location = new System.Drawing.Point(8, 56);
 			this.label13.Name = "label13";
-			this.label13.Size = new System.Drawing.Size(38, 16);
+			this.label13.Size = new System.Drawing.Size(35, 18);
 			this.label13.TabIndex = 4;
 			this.label13.Text = "Host";
 			// 
 			// radioButton4
 			// 
 			this.radioButton4.AutoSize = true;
+			this.radioButton4.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.radioButton4.Location = new System.Drawing.Point(158, 20);
 			this.radioButton4.Name = "radioButton4";
-			this.radioButton4.Size = new System.Drawing.Size(63, 20);
+			this.radioButton4.Size = new System.Drawing.Size(58, 22);
 			this.radioButton4.TabIndex = 1;
 			this.radioButton4.Text = "HTTP";
 			this.radioButton4.UseVisualStyleBackColor = true;
@@ -883,9 +886,10 @@
 			// 
 			this.radioButton3.AutoSize = true;
 			this.radioButton3.Checked = true;
-			this.radioButton3.Location = new System.Drawing.Point(37, 20);
+			this.radioButton3.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.radioButton3.Location = new System.Drawing.Point(67, 20);
 			this.radioButton3.Name = "radioButton3";
-			this.radioButton3.Size = new System.Drawing.Size(72, 20);
+			this.radioButton3.Size = new System.Drawing.Size(66, 22);
 			this.radioButton3.TabIndex = 0;
 			this.radioButton3.TabStop = true;
 			this.radioButton3.Text = "Socket";
@@ -895,7 +899,7 @@
 			// groupBox3
 			// 
 			this.groupBox3.Controls.Add(this.bouyomiEnableCheck);
-			this.groupBox3.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox3.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox3.Location = new System.Drawing.Point(6, 6);
 			this.groupBox3.Name = "groupBox3";
 			this.groupBox3.Size = new System.Drawing.Size(470, 60);
@@ -906,14 +910,14 @@
 			// bouyomiEnableCheck
 			// 
 			this.bouyomiEnableCheck.AutoSize = true;
-			this.bouyomiEnableCheck.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.bouyomiEnableCheck.Location = new System.Drawing.Point(25, 30);
+			this.bouyomiEnableCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.bouyomiEnableCheck.Location = new System.Drawing.Point(25, 26);
 			this.bouyomiEnableCheck.Name = "bouyomiEnableCheck";
-			this.bouyomiEnableCheck.Size = new System.Drawing.Size(180, 19);
+			this.bouyomiEnableCheck.Size = new System.Drawing.Size(171, 22);
 			this.bouyomiEnableCheck.TabIndex = 0;
 			this.bouyomiEnableCheck.Text = "棒読みちゃんで読み上げる";
 			this.bouyomiEnableCheck.UseVisualStyleBackColor = true;
-			this.bouyomiEnableCheck.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+			this.bouyomiEnableCheck.CheckedChanged += new System.EventHandler(this.bouyomiEnableCheck_CheckedChanged);
 			// 
 			// tabPage4
 			// 
@@ -947,7 +951,7 @@
 			this.groupBox10.Controls.Add(this.label9);
 			this.groupBox10.Controls.Add(this.iniText);
 			this.groupBox10.Controls.Add(this.iniFolderSelectButton);
-			this.groupBox10.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox10.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox10.Location = new System.Drawing.Point(6, 109);
 			this.groupBox10.Name = "groupBox10";
 			this.groupBox10.Size = new System.Drawing.Size(467, 208);
@@ -959,31 +963,32 @@
 			// 
 			this.label29.AutoSize = true;
 			this.label29.Enabled = false;
-			this.label29.Location = new System.Drawing.Point(289, 72);
+			this.label29.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label29.Location = new System.Drawing.Point(294, 69);
 			this.label29.Name = "label29";
-			this.label29.Size = new System.Drawing.Size(37, 16);
+			this.label29.Size = new System.Drawing.Size(32, 18);
 			this.label29.TabIndex = 18;
 			this.label29.Text = "Port";
 			// 
 			// label28
 			// 
 			this.label28.AutoSize = true;
-			this.label28.Font = new System.Drawing.Font("MS UI Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label28.Location = new System.Drawing.Point(28, 161);
+			this.label28.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label28.Location = new System.Drawing.Point(50, 153);
 			this.label28.Name = "label28";
-			this.label28.Size = new System.Drawing.Size(406, 39);
+			this.label28.Size = new System.Drawing.Size(374, 51);
 			this.label28.TabIndex = 16;
-			this.label28.Text = "DB/Table自動作成を行う場合、URL、Port、User、Passを入力してください。\r\nMySQLを使用する場合、上記に加えてDBも入力してください。\r\n" +
-    "対象のDBへのフルアクセス権（GRANT ALL PRIVILEGES）が必要です。";
+			this.label28.Text = "DB/Table自動作成を行う場合、URL、Port、User、Passは必須です。\r\nMySQLを使用する場合、上記に加えてDBも入力してください。\r\n対象のD" +
+    "Bへのフルアクセス権（GRANT ALL PRIVILEGES）が必要です。";
 			// 
 			// createTableButton
 			// 
-			this.createTableButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.createTableButton.Location = new System.Drawing.Point(397, 69);
+			this.createTableButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.createTableButton.Location = new System.Drawing.Point(397, 63);
 			this.createTableButton.Name = "createTableButton";
 			this.createTableButton.Size = new System.Drawing.Size(64, 52);
 			this.createTableButton.TabIndex = 15;
-			this.createTableButton.Text = "DB/Table自動作成";
+			this.createTableButton.Text = "DB/Table\r\n自動作成";
 			this.createTableButton.UseVisualStyleBackColor = true;
 			this.createTableButton.Click += new System.EventHandler(this.createTableButton_Click);
 			// 
@@ -991,99 +996,105 @@
 			// 
 			this.label24.AutoSize = true;
 			this.label24.Enabled = false;
-			this.label24.Location = new System.Drawing.Point(192, 101);
+			this.label24.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label24.Location = new System.Drawing.Point(194, 98);
 			this.label24.Name = "label24";
-			this.label24.Size = new System.Drawing.Size(43, 16);
+			this.label24.Size = new System.Drawing.Size(39, 18);
 			this.label24.TabIndex = 14;
 			this.label24.Text = "Table";
 			// 
 			// tableText
 			// 
 			this.tableText.Enabled = false;
-			this.tableText.Location = new System.Drawing.Point(239, 98);
+			this.tableText.Location = new System.Drawing.Point(239, 94);
 			this.tableText.Name = "tableText";
-			this.tableText.Size = new System.Drawing.Size(152, 23);
+			this.tableText.Size = new System.Drawing.Size(152, 27);
 			this.tableText.TabIndex = 12;
 			// 
 			// label23
 			// 
 			this.label23.AutoSize = true;
 			this.label23.Enabled = false;
-			this.label23.Location = new System.Drawing.Point(6, 101);
+			this.label23.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label23.Location = new System.Drawing.Point(7, 98);
 			this.label23.Name = "label23";
-			this.label23.Size = new System.Drawing.Size(27, 16);
+			this.label23.Size = new System.Drawing.Size(25, 18);
 			this.label23.TabIndex = 12;
 			this.label23.Text = "DB";
 			// 
 			// dbText
 			// 
 			this.dbText.Enabled = false;
-			this.dbText.Location = new System.Drawing.Point(48, 98);
+			this.dbText.Location = new System.Drawing.Point(48, 94);
 			this.dbText.Name = "dbText";
-			this.dbText.Size = new System.Drawing.Size(135, 23);
+			this.dbText.Size = new System.Drawing.Size(135, 27);
 			this.dbText.TabIndex = 11;
 			// 
 			// label22
 			// 
 			this.label22.AutoSize = true;
 			this.label22.Enabled = false;
-			this.label22.Location = new System.Drawing.Point(193, 130);
+			this.label22.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label22.Location = new System.Drawing.Point(194, 127);
 			this.label22.Name = "label22";
-			this.label22.Size = new System.Drawing.Size(39, 16);
+			this.label22.Size = new System.Drawing.Size(34, 18);
 			this.label22.TabIndex = 10;
 			this.label22.Text = "Pass";
 			// 
 			// pwText
 			// 
 			this.pwText.Enabled = false;
-			this.pwText.Location = new System.Drawing.Point(239, 127);
+			this.pwText.Location = new System.Drawing.Point(239, 123);
 			this.pwText.Name = "pwText";
 			this.pwText.PasswordChar = '*';
-			this.pwText.Size = new System.Drawing.Size(152, 23);
+			this.pwText.Size = new System.Drawing.Size(152, 27);
 			this.pwText.TabIndex = 14;
 			// 
 			// label18
 			// 
 			this.label18.AutoSize = true;
 			this.label18.Enabled = false;
-			this.label18.Location = new System.Drawing.Point(6, 130);
+			this.label18.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label18.Location = new System.Drawing.Point(7, 127);
 			this.label18.Name = "label18";
-			this.label18.Size = new System.Drawing.Size(38, 16);
+			this.label18.Size = new System.Drawing.Size(35, 18);
 			this.label18.TabIndex = 8;
 			this.label18.Text = "User";
 			// 
 			// userText
 			// 
 			this.userText.Enabled = false;
-			this.userText.Location = new System.Drawing.Point(48, 127);
+			this.userText.Location = new System.Drawing.Point(48, 123);
 			this.userText.Name = "userText";
-			this.userText.Size = new System.Drawing.Size(135, 23);
+			this.userText.Size = new System.Drawing.Size(135, 27);
 			this.userText.TabIndex = 13;
 			// 
 			// label16
 			// 
 			this.label16.AutoSize = true;
 			this.label16.Enabled = false;
-			this.label16.Location = new System.Drawing.Point(6, 72);
+			this.label16.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label16.Location = new System.Drawing.Point(7, 69);
 			this.label16.Name = "label16";
-			this.label16.Size = new System.Drawing.Size(36, 16);
+			this.label16.Size = new System.Drawing.Size(32, 18);
 			this.label16.TabIndex = 6;
 			this.label16.Text = "URL";
 			// 
 			// urlText
 			// 
 			this.urlText.Enabled = false;
-			this.urlText.Location = new System.Drawing.Point(48, 69);
+			this.urlText.Location = new System.Drawing.Point(48, 65);
 			this.urlText.Name = "urlText";
-			this.urlText.Size = new System.Drawing.Size(227, 23);
+			this.urlText.Size = new System.Drawing.Size(227, 27);
 			this.urlText.TabIndex = 9;
 			// 
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(6, 28);
+			this.label9.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label9.Location = new System.Drawing.Point(7, 29);
 			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(25, 16);
+			this.label9.Size = new System.Drawing.Size(27, 18);
 			this.label9.TabIndex = 3;
 			this.label9.Text = "INI";
 			// 
@@ -1091,12 +1102,12 @@
 			// 
 			this.iniText.Location = new System.Drawing.Point(48, 25);
 			this.iniText.Name = "iniText";
-			this.iniText.Size = new System.Drawing.Size(343, 23);
+			this.iniText.Size = new System.Drawing.Size(343, 27);
 			this.iniText.TabIndex = 7;
 			// 
 			// iniFolderSelectButton
 			// 
-			this.iniFolderSelectButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.iniFolderSelectButton.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.iniFolderSelectButton.Location = new System.Drawing.Point(397, 25);
 			this.iniFolderSelectButton.Name = "iniFolderSelectButton";
 			this.iniFolderSelectButton.Size = new System.Drawing.Size(64, 23);
@@ -1109,11 +1120,11 @@
 			// 
 			this.groupBox9.Controls.Add(this.useLocalDBCheck);
 			this.groupBox9.Controls.Add(this.label12);
-			this.groupBox9.Controls.Add(this.radioButton5);
+			this.groupBox9.Controls.Add(this.mysqlRadio);
 			this.groupBox9.Controls.Add(this.offlineSaveEnableCheck);
-			this.groupBox9.Controls.Add(this.radioButton9);
-			this.groupBox9.Controls.Add(this.radioButton8);
-			this.groupBox9.Font = new System.Drawing.Font("MS UI Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox9.Controls.Add(this.mssqlRadio);
+			this.groupBox9.Controls.Add(this.iniRadio);
+			this.groupBox9.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox9.Location = new System.Drawing.Point(6, 6);
 			this.groupBox9.Name = "groupBox9";
 			this.groupBox9.Size = new System.Drawing.Size(467, 97);
@@ -1124,10 +1135,10 @@
 			// label12
 			// 
 			this.label12.AutoSize = true;
-			this.label12.Font = new System.Drawing.Font("MS UI Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label12.Location = new System.Drawing.Point(13, 75);
+			this.label12.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label12.Location = new System.Drawing.Point(28, 75);
 			this.label12.Name = "label12";
-			this.label12.Size = new System.Drawing.Size(438, 15);
+			this.label12.Size = new System.Drawing.Size(416, 18);
 			this.label12.TabIndex = 5;
 			this.label12.Text = "※読込方法を変更すると、現在使用しているリストとは別環境になります。";
 			// 
@@ -1169,6 +1180,7 @@
 			// 
 			this.groupBox8.Controls.Add(this.iniAutoNumberingFixButton);
 			this.groupBox8.Controls.Add(this.dbOverflowFixButton);
+			this.groupBox8.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox8.Location = new System.Drawing.Point(1, 209);
 			this.groupBox8.Name = "groupBox8";
 			this.groupBox8.Size = new System.Drawing.Size(470, 78);
@@ -1178,7 +1190,7 @@
 			// 
 			// iniAutoNumberingFixButton
 			// 
-			this.iniAutoNumberingFixButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.iniAutoNumberingFixButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.iniAutoNumberingFixButton.Location = new System.Drawing.Point(6, 18);
 			this.iniAutoNumberingFixButton.Name = "iniAutoNumberingFixButton";
 			this.iniAutoNumberingFixButton.Size = new System.Drawing.Size(458, 24);
@@ -1189,7 +1201,7 @@
 			// 
 			// dbOverflowFixButton
 			// 
-			this.dbOverflowFixButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.dbOverflowFixButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.dbOverflowFixButton.Location = new System.Drawing.Point(6, 48);
 			this.dbOverflowFixButton.Name = "dbOverflowFixButton";
 			this.dbOverflowFixButton.Size = new System.Drawing.Size(458, 24);
@@ -1204,6 +1216,7 @@
 			this.groupBox12.Controls.Add(this.checkBox7);
 			this.groupBox12.Controls.Add(this.importIniToDbButton);
 			this.groupBox12.Controls.Add(this.checkBox6);
+			this.groupBox12.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox12.Location = new System.Drawing.Point(1, 99);
 			this.groupBox12.Name = "groupBox12";
 			this.groupBox12.Size = new System.Drawing.Size(470, 104);
@@ -1216,18 +1229,18 @@
 			this.label25.AutoSize = true;
 			this.label25.Location = new System.Drawing.Point(37, 79);
 			this.label25.Name = "label25";
-			this.label25.Size = new System.Drawing.Size(391, 12);
+			this.label25.Size = new System.Drawing.Size(397, 17);
 			this.label25.TabIndex = 3;
 			this.label25.Text = "ゲーム管理方法が [DB] で、DB接続の各情報が入力されている場合に取込可能";
 			// 
 			// importIniToDbButton
 			// 
-			this.importIniToDbButton.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.importIniToDbButton.Location = new System.Drawing.Point(264, 18);
+			this.importIniToDbButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.importIniToDbButton.Location = new System.Drawing.Point(306, 23);
 			this.importIniToDbButton.Name = "importIniToDbButton";
-			this.importIniToDbButton.Size = new System.Drawing.Size(200, 47);
+			this.importIniToDbButton.Size = new System.Drawing.Size(158, 47);
 			this.importIniToDbButton.TabIndex = 12;
-			this.importIniToDbButton.Text = "INIファイルのデータをDBに取込";
+			this.importIniToDbButton.Text = "INI→DB取込";
 			this.importIniToDbButton.UseVisualStyleBackColor = true;
 			this.importIniToDbButton.Click += new System.EventHandler(this.importIniToDbButton_Click);
 			// 
@@ -1239,7 +1252,7 @@
 			this.checkBox6.Enabled = false;
 			this.checkBox6.Location = new System.Drawing.Point(13, 25);
 			this.checkBox6.Name = "checkBox6";
-			this.checkBox6.Size = new System.Drawing.Size(235, 16);
+			this.checkBox6.Size = new System.Drawing.Size(269, 21);
 			this.checkBox6.TabIndex = 10;
 			this.checkBox6.Text = "テーブルのすべてのレコードを削除する（強制）";
 			this.checkBox6.UseVisualStyleBackColor = true;
@@ -1255,6 +1268,7 @@
 			this.groupBox7.Controls.Add(this.textBox9);
 			this.groupBox7.Controls.Add(this.textBox8);
 			this.groupBox7.Controls.Add(this.iniAllEditButton);
+			this.groupBox7.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox7.Location = new System.Drawing.Point(1, 3);
 			this.groupBox7.Name = "groupBox7";
 			this.groupBox7.Size = new System.Drawing.Size(470, 90);
@@ -1267,7 +1281,7 @@
 			this.label17.AutoSize = true;
 			this.label17.Location = new System.Drawing.Point(303, 70);
 			this.label17.Name = "label17";
-			this.label17.Size = new System.Drawing.Size(161, 12);
+			this.label17.Size = new System.Drawing.Size(162, 17);
 			this.label17.TabIndex = 8;
 			this.label17.Text = "※大文字小文字が区別されます";
 			// 
@@ -1276,7 +1290,7 @@
 			this.label21.AutoSize = true;
 			this.label21.Location = new System.Drawing.Point(321, 19);
 			this.label21.Name = "label21";
-			this.label21.Size = new System.Drawing.Size(23, 12);
+			this.label21.Size = new System.Drawing.Size(30, 17);
 			this.label21.TabIndex = 7;
 			this.label21.Text = "の、";
 			// 
@@ -1285,7 +1299,7 @@
 			this.checkBox5.AutoSize = true;
 			this.checkBox5.Location = new System.Drawing.Point(174, 18);
 			this.checkBox5.Name = "checkBox5";
-			this.checkBox5.Size = new System.Drawing.Size(131, 16);
+			this.checkBox5.Size = new System.Drawing.Size(148, 21);
 			this.checkBox5.TabIndex = 6;
 			this.checkBox5.Text = "ゲーム画像ファイルパス";
 			this.checkBox5.UseVisualStyleBackColor = true;
@@ -1295,7 +1309,7 @@
 			this.checkBox3.AutoSize = true;
 			this.checkBox3.Location = new System.Drawing.Point(13, 18);
 			this.checkBox3.Name = "checkBox3";
-			this.checkBox3.Size = new System.Drawing.Size(131, 16);
+			this.checkBox3.Size = new System.Drawing.Size(148, 21);
 			this.checkBox3.TabIndex = 5;
 			this.checkBox3.Text = "ゲーム実行ファイルパス";
 			this.checkBox3.UseVisualStyleBackColor = true;
@@ -1305,7 +1319,7 @@
 			this.label20.AutoSize = true;
 			this.label20.Location = new System.Drawing.Point(321, 44);
 			this.label20.Name = "label20";
-			this.label20.Size = new System.Drawing.Size(14, 12);
+			this.label20.Size = new System.Drawing.Size(19, 17);
 			this.label20.TabIndex = 4;
 			this.label20.Text = "に";
 			// 
@@ -1314,7 +1328,7 @@
 			this.label19.AutoSize = true;
 			this.label19.Location = new System.Drawing.Point(154, 44);
 			this.label19.Name = "label19";
-			this.label19.Size = new System.Drawing.Size(14, 12);
+			this.label19.Size = new System.Drawing.Size(19, 17);
 			this.label19.TabIndex = 3;
 			this.label19.Text = "を";
 			// 
@@ -1339,9 +1353,10 @@
 			this.groupBox15.Controls.Add(this.insertColumnButton);
 			this.groupBox15.Controls.Add(this.insertTableNameButton);
 			this.groupBox15.Controls.Add(this.insertDatabaseNameButton);
-			this.groupBox15.Location = new System.Drawing.Point(3, 166);
+			this.groupBox15.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox15.Location = new System.Drawing.Point(3, 153);
 			this.groupBox15.Name = "groupBox15";
-			this.groupBox15.Size = new System.Drawing.Size(466, 45);
+			this.groupBox15.Size = new System.Drawing.Size(466, 56);
 			this.groupBox15.TabIndex = 8;
 			this.groupBox15.TabStop = false;
 			this.groupBox15.Text = "ショートカット・ツールボックス";
@@ -1350,7 +1365,7 @@
 			// 
 			this.insertColumnsDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.insertColumnsDropDown.FormattingEnabled = true;
-			this.insertColumnsDropDown.ItemHeight = 12;
+			this.insertColumnsDropDown.ItemHeight = 17;
 			this.insertColumnsDropDown.Items.AddRange(new object[] {
             "ID（システム）",
             "ゲームタイトル",
@@ -1365,14 +1380,14 @@
             "メモ",
             "ステータス",
             "DBバージョン（システム）"});
-			this.insertColumnsDropDown.Location = new System.Drawing.Point(255, 18);
+			this.insertColumnsDropDown.Location = new System.Drawing.Point(255, 21);
 			this.insertColumnsDropDown.Name = "insertColumnsDropDown";
-			this.insertColumnsDropDown.Size = new System.Drawing.Size(149, 20);
+			this.insertColumnsDropDown.Size = new System.Drawing.Size(149, 25);
 			this.insertColumnsDropDown.TabIndex = 8;
 			// 
 			// insertColumnButton
 			// 
-			this.insertColumnButton.Location = new System.Drawing.Point(410, 16);
+			this.insertColumnButton.Location = new System.Drawing.Point(410, 23);
 			this.insertColumnButton.Name = "insertColumnButton";
 			this.insertColumnButton.Size = new System.Drawing.Size(50, 23);
 			this.insertColumnButton.TabIndex = 9;
@@ -1382,7 +1397,7 @@
 			// 
 			// insertTableNameButton
 			// 
-			this.insertTableNameButton.Location = new System.Drawing.Point(6, 16);
+			this.insertTableNameButton.Location = new System.Drawing.Point(16, 23);
 			this.insertTableNameButton.Name = "insertTableNameButton";
 			this.insertTableNameButton.Size = new System.Drawing.Size(87, 23);
 			this.insertTableNameButton.TabIndex = 6;
@@ -1392,9 +1407,9 @@
 			// 
 			// insertDatabaseNameButton
 			// 
-			this.insertDatabaseNameButton.Location = new System.Drawing.Point(99, 16);
+			this.insertDatabaseNameButton.Location = new System.Drawing.Point(112, 23);
 			this.insertDatabaseNameButton.Name = "insertDatabaseNameButton";
-			this.insertDatabaseNameButton.Size = new System.Drawing.Size(87, 23);
+			this.insertDatabaseNameButton.Size = new System.Drawing.Size(97, 23);
 			this.insertDatabaseNameButton.TabIndex = 7;
 			this.insertDatabaseNameButton.Text = "データベース名";
 			this.insertDatabaseNameButton.UseVisualStyleBackColor = true;
@@ -1404,15 +1419,17 @@
 			// 
 			this.ExecuteModeGroup.Controls.Add(this.executeScalerRadio);
 			this.ExecuteModeGroup.Controls.Add(this.executeNonQueryRadio);
-			this.ExecuteModeGroup.Location = new System.Drawing.Point(3, 217);
+			this.ExecuteModeGroup.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.ExecuteModeGroup.Location = new System.Drawing.Point(3, 215);
 			this.ExecuteModeGroup.Name = "ExecuteModeGroup";
-			this.ExecuteModeGroup.Size = new System.Drawing.Size(466, 40);
+			this.ExecuteModeGroup.Size = new System.Drawing.Size(466, 42);
 			this.ExecuteModeGroup.TabIndex = 3;
 			this.ExecuteModeGroup.TabStop = false;
 			this.ExecuteModeGroup.Text = "実行方法";
 			// 
 			// queryClearButton
 			// 
+			this.queryClearButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.queryClearButton.Location = new System.Drawing.Point(278, 263);
 			this.queryClearButton.Name = "queryClearButton";
 			this.queryClearButton.Size = new System.Drawing.Size(191, 24);
@@ -1423,6 +1440,7 @@
 			// 
 			// queryExecuteButton
 			// 
+			this.queryExecuteButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.queryExecuteButton.Location = new System.Drawing.Point(3, 263);
 			this.queryExecuteButton.Name = "queryExecuteButton";
 			this.queryExecuteButton.Size = new System.Drawing.Size(255, 24);
@@ -1435,7 +1453,7 @@
 			// 
 			this.queryText.Location = new System.Drawing.Point(3, 3);
 			this.queryText.Name = "queryText";
-			this.queryText.Size = new System.Drawing.Size(466, 157);
+			this.queryText.Size = new System.Drawing.Size(466, 144);
 			this.queryText.TabIndex = 5;
 			this.queryText.Text = "";
 			// 
@@ -1466,6 +1484,7 @@
 			this.groupBox18.Controls.Add(this.extractToolPathText);
 			this.groupBox18.Controls.Add(this.label26);
 			this.groupBox18.Controls.Add(this.label33);
+			this.groupBox18.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox18.Location = new System.Drawing.Point(4, 53);
 			this.groupBox18.Name = "groupBox18";
 			this.groupBox18.Size = new System.Drawing.Size(465, 235);
@@ -1476,11 +1495,12 @@
 			// extractCurrentDirCheck
 			// 
 			this.extractCurrentDirCheck.AutoSize = true;
-			this.extractCurrentDirCheck.Location = new System.Drawing.Point(192, 136);
+			this.extractCurrentDirCheck.Location = new System.Drawing.Point(193, 141);
 			this.extractCurrentDirCheck.Name = "extractCurrentDirCheck";
-			this.extractCurrentDirCheck.Size = new System.Drawing.Size(257, 16);
+			this.extractCurrentDirCheck.Size = new System.Drawing.Size(269, 21);
 			this.extractCurrentDirCheck.TabIndex = 21;
-			this.extractCurrentDirCheck.Text = "カレントディレクトリを抽出ツールのディレクトリにする";
+			this.extractCurrentDirCheck.Text = "抽出ツールのパスをカレントディレクトリにする";
+			this.toolTip1.SetToolTip(this.extractCurrentDirCheck, "ゲーム実行時のカレントパスを抽出ツールのあるパスにします。\r\n一部のエンジンを使用しているゲームでエラーになる可能性があります。");
 			this.extractCurrentDirCheck.UseVisualStyleBackColor = true;
 			// 
 			// label35
@@ -1488,17 +1508,18 @@
 			this.label35.AutoSize = true;
 			this.label35.Location = new System.Drawing.Point(214, 21);
 			this.label35.Name = "label35";
-			this.label35.Size = new System.Drawing.Size(247, 12);
+			this.label35.Size = new System.Drawing.Size(162, 17);
 			this.label35.TabIndex = 20;
-			this.label35.Text = "※変更を保存するには「保存」ボタンを押してください";
+			this.label35.Text = "※「保存」ボタンで変更を保存";
 			// 
 			// extractSaveButton
 			// 
 			this.extractSaveButton.Location = new System.Drawing.Point(149, 16);
 			this.extractSaveButton.Name = "extractSaveButton";
-			this.extractSaveButton.Size = new System.Drawing.Size(59, 23);
+			this.extractSaveButton.Size = new System.Drawing.Size(59, 27);
 			this.extractSaveButton.TabIndex = 19;
 			this.extractSaveButton.Text = "保存";
+			this.toolTip1.SetToolTip(this.extractSaveButton, "抽出ツールの変更を保存します。");
 			this.extractSaveButton.UseVisualStyleBackColor = true;
 			this.extractSaveButton.Click += new System.EventHandler(this.extractSaveButton_Click);
 			// 
@@ -1515,16 +1536,16 @@
             "カスタム2"});
 			this.extractToolSelectCombo.Location = new System.Drawing.Point(6, 18);
 			this.extractToolSelectCombo.Name = "extractToolSelectCombo";
-			this.extractToolSelectCombo.Size = new System.Drawing.Size(137, 20);
+			this.extractToolSelectCombo.Size = new System.Drawing.Size(137, 25);
 			this.extractToolSelectCombo.TabIndex = 18;
 			this.extractToolSelectCombo.SelectedIndexChanged += new System.EventHandler(this.extractToolSelectCombo_SelectedIndexChanged);
 			// 
 			// label34
 			// 
 			this.label34.AutoSize = true;
-			this.label34.Location = new System.Drawing.Point(6, 172);
+			this.label34.Location = new System.Drawing.Point(6, 167);
 			this.label34.Name = "label34";
-			this.label34.Size = new System.Drawing.Size(114, 12);
+			this.label34.Size = new System.Drawing.Size(129, 17);
 			this.label34.TabIndex = 17;
 			this.label34.Text = "実行予定コマンドライン";
 			// 
@@ -1535,40 +1556,43 @@
 			this.calcExecPlanButton.Size = new System.Drawing.Size(43, 23);
 			this.calcExecPlanButton.TabIndex = 16;
 			this.calcExecPlanButton.Text = "検証";
+			this.toolTip1.SetToolTip(this.calcExecPlanButton, "抽出モード有効時に実行されるコマンドラインです。");
 			this.calcExecPlanButton.UseVisualStyleBackColor = true;
 			this.calcExecPlanButton.Click += new System.EventHandler(this.calcExecPlanButton_Click);
 			// 
 			// extractExecPlanText
 			// 
-			this.extractExecPlanText.Location = new System.Drawing.Point(32, 187);
+			this.extractExecPlanText.Location = new System.Drawing.Point(20, 187);
 			this.extractExecPlanText.Name = "extractExecPlanText";
 			this.extractExecPlanText.ReadOnly = true;
-			this.extractExecPlanText.Size = new System.Drawing.Size(378, 19);
+			this.extractExecPlanText.Size = new System.Drawing.Size(390, 24);
 			this.extractExecPlanText.TabIndex = 15;
 			// 
 			// addGameArgCheck
 			// 
 			this.addGameArgCheck.AutoSize = true;
-			this.addGameArgCheck.Location = new System.Drawing.Point(32, 136);
+			this.addGameArgCheck.Location = new System.Drawing.Point(27, 141);
 			this.addGameArgCheck.Name = "addGameArgCheck";
-			this.addGameArgCheck.Size = new System.Drawing.Size(154, 16);
+			this.addGameArgCheck.Size = new System.Drawing.Size(159, 21);
 			this.addGameArgCheck.TabIndex = 14;
 			this.addGameArgCheck.Text = "ゲーム実行引数を追加する";
+			this.toolTip1.SetToolTip(this.addGameArgCheck, "抽出モードで実行時にゲームの引数も追加します。");
 			this.addGameArgCheck.UseVisualStyleBackColor = true;
 			// 
 			// extractToolArgText
 			// 
-			this.extractToolArgText.Location = new System.Drawing.Point(32, 111);
+			this.extractToolArgText.Location = new System.Drawing.Point(20, 111);
 			this.extractToolArgText.Name = "extractToolArgText";
-			this.extractToolArgText.Size = new System.Drawing.Size(427, 19);
+			this.extractToolArgText.Size = new System.Drawing.Size(439, 24);
 			this.extractToolArgText.TabIndex = 13;
+			this.toolTip1.SetToolTip(this.extractToolArgText, "抽出ツールを実行する際の引数です。");
 			// 
 			// label32
 			// 
 			this.label32.AutoSize = true;
 			this.label32.Location = new System.Drawing.Point(6, 96);
 			this.label32.Name = "label32";
-			this.label32.Size = new System.Drawing.Size(29, 12);
+			this.label32.Size = new System.Drawing.Size(30, 17);
 			this.label32.TabIndex = 12;
 			this.label32.Text = "引数";
 			// 
@@ -1576,17 +1600,18 @@
 			// 
 			this.extractToolSelectButton.Location = new System.Drawing.Point(435, 62);
 			this.extractToolSelectButton.Name = "extractToolSelectButton";
-			this.extractToolSelectButton.Size = new System.Drawing.Size(24, 23);
+			this.extractToolSelectButton.Size = new System.Drawing.Size(24, 26);
 			this.extractToolSelectButton.TabIndex = 11;
 			this.extractToolSelectButton.Text = "..";
+			this.toolTip1.SetToolTip(this.extractToolSelectButton, "抽出ツールの場所を選択します。");
 			this.extractToolSelectButton.UseVisualStyleBackColor = true;
 			this.extractToolSelectButton.Click += new System.EventHandler(this.extractToolSelectButton_Click);
 			// 
 			// extractToolPathText
 			// 
-			this.extractToolPathText.Location = new System.Drawing.Point(32, 64);
+			this.extractToolPathText.Location = new System.Drawing.Point(20, 64);
 			this.extractToolPathText.Name = "extractToolPathText";
-			this.extractToolPathText.Size = new System.Drawing.Size(397, 19);
+			this.extractToolPathText.Size = new System.Drawing.Size(409, 24);
 			this.extractToolPathText.TabIndex = 10;
 			// 
 			// label26
@@ -1594,23 +1619,23 @@
 			this.label26.AutoSize = true;
 			this.label26.Location = new System.Drawing.Point(6, 49);
 			this.label26.Name = "label26";
-			this.label26.Size = new System.Drawing.Size(77, 12);
+			this.label26.Size = new System.Drawing.Size(85, 17);
 			this.label26.TabIndex = 9;
 			this.label26.Text = "抽出ツールパス";
 			// 
 			// label33
 			// 
 			this.label33.AutoSize = true;
-			this.label33.Location = new System.Drawing.Point(30, 215);
+			this.label33.Location = new System.Drawing.Point(17, 215);
 			this.label33.Name = "label33";
-			this.label33.Size = new System.Drawing.Size(422, 12);
+			this.label33.Size = new System.Drawing.Size(448, 17);
 			this.label33.TabIndex = 3;
-			this.label33.Text = "※引数の最後にゲームの実行パスが追加されます。検証の反映には「保存」が必要です。\r\n";
+			this.label33.Text = "※引数の最後にゲームの実行パスが追加されます。設定の反映には「保存」が必要です。\r\n";
 			// 
 			// groupBox17
 			// 
-			this.groupBox17.Controls.Add(this.label7);
 			this.groupBox17.Controls.Add(this.enableExtractCheck);
+			this.groupBox17.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox17.Location = new System.Drawing.Point(4, 4);
 			this.groupBox17.Name = "groupBox17";
 			this.groupBox17.Size = new System.Drawing.Size(465, 42);
@@ -1618,41 +1643,33 @@
 			this.groupBox17.TabStop = false;
 			this.groupBox17.Text = "機能有効化";
 			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(162, 19);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(295, 12);
-			this.label7.TabIndex = 1;
-			this.label7.Text = "※ランチャーに抽出モード有効化チェックボックスが表示されます";
-			// 
 			// enableExtractCheck
 			// 
 			this.enableExtractCheck.AutoSize = true;
-			this.enableExtractCheck.Location = new System.Drawing.Point(6, 18);
+			this.enableExtractCheck.Location = new System.Drawing.Point(20, 16);
 			this.enableExtractCheck.Name = "enableExtractCheck";
-			this.enableExtractCheck.Size = new System.Drawing.Size(137, 16);
+			this.enableExtractCheck.Size = new System.Drawing.Size(170, 21);
 			this.enableExtractCheck.TabIndex = 0;
-			this.enableExtractCheck.Text = "抽出モードを有効にする";
+			this.enableExtractCheck.Text = "抽出モードを使用可能にする";
+			this.toolTip1.SetToolTip(this.enableExtractCheck, "抽出モードを有効にするチェックボックスがランチャー画面に表示されます。");
 			this.enableExtractCheck.UseVisualStyleBackColor = true;
 			// 
 			// TabPage3
 			// 
-			this.TabPage3.Controls.Add(this.label31);
-			this.TabPage3.Controls.Add(this.checkBox1);
+			this.TabPage3.Controls.Add(this.disclaimerLabel);
+			this.TabPage3.Controls.Add(this.authorLabel);
 			this.TabPage3.Controls.Add(this.logoPictureBox);
 			this.TabPage3.Controls.Add(this.updchkButton);
-			this.TabPage3.Controls.Add(this.label10);
-			this.TabPage3.Controls.Add(this.linkLabel3);
-			this.TabPage3.Controls.Add(this.label8);
-			this.TabPage3.Controls.Add(this.label6);
-			this.TabPage3.Controls.Add(this.linkLabel2);
-			this.TabPage3.Controls.Add(this.linkLabel1);
-			this.TabPage3.Controls.Add(this.label5);
-			this.TabPage3.Controls.Add(this.label4);
-			this.TabPage3.Controls.Add(this.label3);
-			this.TabPage3.Controls.Add(this.label2);
+			this.TabPage3.Controls.Add(this.verLabel);
+			this.TabPage3.Controls.Add(this.githubLinkLabel);
+			this.TabPage3.Controls.Add(this.githubHeadLabel);
+			this.TabPage3.Controls.Add(this.copyrightLabel);
+			this.TabPage3.Controls.Add(this.mailLinkLabel);
+			this.TabPage3.Controls.Add(this.webLinkLabel);
+			this.TabPage3.Controls.Add(this.webHeadLabel);
+			this.TabPage3.Controls.Add(this.mailHeadLabel);
+			this.TabPage3.Controls.Add(this.authorHeadLabel);
+			this.TabPage3.Controls.Add(this.appNameLabel);
 			this.TabPage3.Location = new System.Drawing.Point(4, 22);
 			this.TabPage3.Name = "TabPage3";
 			this.TabPage3.Size = new System.Drawing.Size(483, 320);
@@ -1660,26 +1677,15 @@
 			this.TabPage3.Text = "バージョン情報";
 			this.TabPage3.UseVisualStyleBackColor = true;
 			// 
-			// label31
+			// authorLabel
 			// 
-			this.label31.AutoSize = true;
-			this.label31.Location = new System.Drawing.Point(171, 150);
-			this.label31.Name = "label31";
-			this.label31.Size = new System.Drawing.Size(109, 12);
-			this.label31.TabIndex = 14;
-			this.label31.Text = "小倉照孤（dekosoft）";
-			// 
-			// checkBox1
-			// 
-			this.checkBox1.AutoSize = true;
-			this.checkBox1.Enabled = false;
-			this.checkBox1.Location = new System.Drawing.Point(368, 105);
-			this.checkBox1.Name = "checkBox1";
-			this.checkBox1.Size = new System.Drawing.Size(92, 16);
-			this.checkBox1.TabIndex = 11;
-			this.checkBox1.Text = "ベータを含める";
-			this.checkBox1.UseVisualStyleBackColor = true;
-			this.checkBox1.Visible = false;
+			this.authorLabel.AutoSize = true;
+			this.authorLabel.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.authorLabel.Location = new System.Drawing.Point(159, 145);
+			this.authorLabel.Name = "authorLabel";
+			this.authorLabel.Size = new System.Drawing.Size(130, 18);
+			this.authorLabel.TabIndex = 14;
+			this.authorLabel.Text = "小倉照孤（dekosoft）";
 			// 
 			// logoPictureBox
 			// 
@@ -1703,100 +1709,105 @@
 			this.updchkButton.UseVisualStyleBackColor = true;
 			this.updchkButton.Click += new System.EventHandler(this.updchkButton_Click);
 			// 
-			// label10
+			// verLabel
 			// 
-			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(333, 55);
-			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(39, 12);
-			this.label10.TabIndex = 10;
-			this.label10.Text = "Ver.x.x";
+			this.verLabel.AutoSize = true;
+			this.verLabel.Location = new System.Drawing.Point(333, 55);
+			this.verLabel.Name = "verLabel";
+			this.verLabel.Size = new System.Drawing.Size(39, 12);
+			this.verLabel.TabIndex = 10;
+			this.verLabel.Text = "Ver.x.x";
 			// 
-			// linkLabel3
+			// githubLinkLabel
 			// 
-			this.linkLabel3.AutoSize = true;
-			this.linkLabel3.Location = new System.Drawing.Point(171, 233);
-			this.linkLabel3.Name = "linkLabel3";
-			this.linkLabel3.Size = new System.Drawing.Size(200, 12);
-			this.linkLabel3.TabIndex = 14;
-			this.linkLabel3.TabStop = true;
-			this.linkLabel3.Text = "https://github.com/dekotan24/glc_cs/";
-			this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
+			this.githubLinkLabel.AutoSize = true;
+			this.githubLinkLabel.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.githubLinkLabel.Location = new System.Drawing.Point(159, 228);
+			this.githubLinkLabel.Name = "githubLinkLabel";
+			this.githubLinkLabel.Size = new System.Drawing.Size(231, 18);
+			this.githubLinkLabel.TabIndex = 14;
+			this.githubLinkLabel.TabStop = true;
+			this.githubLinkLabel.Text = "https://github.com/dekotan24/glc_cs/";
+			this.githubLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
 			// 
-			// label8
+			// githubHeadLabel
 			// 
-			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(118, 233);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(46, 12);
-			this.label8.TabIndex = 8;
-			this.label8.Text = "GitHub：";
+			this.githubHeadLabel.AutoSize = true;
+			this.githubHeadLabel.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.githubHeadLabel.Location = new System.Drawing.Point(93, 228);
+			this.githubHeadLabel.Name = "githubHeadLabel";
+			this.githubHeadLabel.Size = new System.Drawing.Size(60, 18);
+			this.githubHeadLabel.TabIndex = 8;
+			this.githubHeadLabel.Text = "GitHub：";
 			// 
-			// label6
+			// copyrightLabel
 			// 
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(78, 296);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(335, 12);
-			this.label6.TabIndex = 6;
-			this.label6.Text = "Copyright (c) Ogura Deko and dekosoft Program rights reserved.";
+			this.copyrightLabel.AutoSize = true;
+			this.copyrightLabel.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.copyrightLabel.Location = new System.Drawing.Point(48, 267);
+			this.copyrightLabel.Name = "copyrightLabel";
+			this.copyrightLabel.Size = new System.Drawing.Size(386, 18);
+			this.copyrightLabel.TabIndex = 6;
+			this.copyrightLabel.Text = "Copyright (c) Ogura Deko and dekosoft Program rights reserved.";
 			// 
-			// linkLabel1
+			// webLinkLabel
 			// 
-			this.linkLabel1.AutoSize = true;
-			this.linkLabel1.Location = new System.Drawing.Point(171, 205);
-			this.linkLabel1.Name = "linkLabel1";
-			this.linkLabel1.Size = new System.Drawing.Size(97, 12);
-			this.linkLabel1.TabIndex = 13;
-			this.linkLabel1.TabStop = true;
-			this.linkLabel1.Text = "https://fanet.work";
-			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+			this.webLinkLabel.AutoSize = true;
+			this.webLinkLabel.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.webLinkLabel.Location = new System.Drawing.Point(159, 200);
+			this.webLinkLabel.Name = "webLinkLabel";
+			this.webLinkLabel.Size = new System.Drawing.Size(116, 18);
+			this.webLinkLabel.TabIndex = 13;
+			this.webLinkLabel.TabStop = true;
+			this.webLinkLabel.Text = "https://fanet.work";
+			this.webLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
 			// 
-			// label5
+			// webHeadLabel
 			// 
-			this.label5.AutoSize = true;
-			this.label5.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label5.Location = new System.Drawing.Point(132, 205);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(32, 12);
-			this.label5.TabIndex = 3;
-			this.label5.Text = "Web：";
+			this.webHeadLabel.AutoSize = true;
+			this.webHeadLabel.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.webHeadLabel.Location = new System.Drawing.Point(108, 200);
+			this.webHeadLabel.Name = "webHeadLabel";
+			this.webHeadLabel.Size = new System.Drawing.Size(45, 18);
+			this.webHeadLabel.TabIndex = 3;
+			this.webHeadLabel.Text = "Web：";
 			// 
-			// label4
+			// mailHeadLabel
 			// 
-			this.label4.AutoSize = true;
-			this.label4.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label4.Location = new System.Drawing.Point(125, 178);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(39, 12);
-			this.label4.TabIndex = 2;
-			this.label4.Text = "メール：";
+			this.mailHeadLabel.AutoSize = true;
+			this.mailHeadLabel.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.mailHeadLabel.Location = new System.Drawing.Point(97, 173);
+			this.mailHeadLabel.Name = "mailHeadLabel";
+			this.mailHeadLabel.Size = new System.Drawing.Size(56, 18);
+			this.mailHeadLabel.TabIndex = 2;
+			this.mailHeadLabel.Text = "メール：";
 			// 
-			// label3
+			// authorHeadLabel
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Font = new System.Drawing.Font("MS UI Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label3.Location = new System.Drawing.Point(129, 150);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(35, 12);
-			this.label3.TabIndex = 1;
-			this.label3.Text = "作者：";
+			this.authorHeadLabel.AutoSize = true;
+			this.authorHeadLabel.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.authorHeadLabel.Location = new System.Drawing.Point(109, 145);
+			this.authorHeadLabel.Name = "authorHeadLabel";
+			this.authorHeadLabel.Size = new System.Drawing.Size(44, 18);
+			this.authorHeadLabel.TabIndex = 1;
+			this.authorHeadLabel.Text = "作者：";
 			// 
-			// label2
+			// appNameLabel
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Font = new System.Drawing.Font("ＭＳ 明朝", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label2.Location = new System.Drawing.Point(130, 19);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(322, 24);
-			this.label2.TabIndex = 0;
-			this.label2.Text = "Game Launcher C# Edition";
+			this.appNameLabel.AutoSize = true;
+			this.appNameLabel.Font = new System.Drawing.Font("ＭＳ 明朝", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.appNameLabel.Location = new System.Drawing.Point(130, 19);
+			this.appNameLabel.Name = "appNameLabel";
+			this.appNameLabel.Size = new System.Drawing.Size(322, 24);
+			this.appNameLabel.TabIndex = 0;
+			this.appNameLabel.Text = "Game Launcher C# Edition";
 			// 
 			// saveButton
 			// 
-			this.saveButton.Location = new System.Drawing.Point(389, 355);
+			this.saveButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.saveButton.Location = new System.Drawing.Point(380, 355);
 			this.saveButton.Name = "saveButton";
-			this.saveButton.Size = new System.Drawing.Size(101, 23);
+			this.saveButton.Size = new System.Drawing.Size(110, 23);
 			this.saveButton.TabIndex = 99;
 			this.saveButton.Text = "適用して閉じる";
 			this.saveButton.UseVisualStyleBackColor = true;
@@ -1820,16 +1831,28 @@
 			this.saveWithDownloadCheck.AutoSize = true;
 			this.saveWithDownloadCheck.Checked = true;
 			this.saveWithDownloadCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.saveWithDownloadCheck.Location = new System.Drawing.Point(280, 359);
+			this.saveWithDownloadCheck.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.saveWithDownloadCheck.Location = new System.Drawing.Point(258, 357);
 			this.saveWithDownloadCheck.Name = "saveWithDownloadCheck";
-			this.saveWithDownloadCheck.Size = new System.Drawing.Size(103, 16);
+			this.saveWithDownloadCheck.Size = new System.Drawing.Size(115, 21);
 			this.saveWithDownloadCheck.TabIndex = 98;
-			this.saveWithDownloadCheck.Text = "保存と同時にDL";
+			this.saveWithDownloadCheck.Text = "適用と同時に取得";
+			this.toolTip1.SetToolTip(this.saveWithDownloadCheck, "適用ボタンを押した際に、オフラインINIデータの取得を行います。");
 			this.saveWithDownloadCheck.UseVisualStyleBackColor = true;
 			// 
 			// openFileDialog2
 			// 
 			this.openFileDialog2.FileName = "openFileDialog2";
+			// 
+			// disclaimerLabel
+			// 
+			this.disclaimerLabel.AutoSize = true;
+			this.disclaimerLabel.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.disclaimerLabel.Location = new System.Drawing.Point(19, 298);
+			this.disclaimerLabel.Name = "disclaimerLabel";
+			this.disclaimerLabel.Size = new System.Drawing.Size(448, 17);
+			this.disclaimerLabel.TabIndex = 15;
+			this.disclaimerLabel.Text = "※予期せぬ不具合が発生する可能性があります。損害・損失等一切の責任を負いません。";
 			// 
 			// Config
 			// 
@@ -1846,7 +1869,7 @@
 			this.MinimizeBox = false;
 			this.Name = "Config";
 			this.ShowIcon = false;
-			this.Text = "GLconfig";
+			this.Text = "config";
 			this.Load += new System.EventHandler(this.Form2_Load);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
@@ -1909,15 +1932,15 @@
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tabPage1;
 		private System.Windows.Forms.TabPage TabPage3;
-		private System.Windows.Forms.LinkLabel linkLabel3;
-		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.LinkLabel linkLabel2;
-		private System.Windows.Forms.LinkLabel linkLabel1;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.Label label4;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.LinkLabel githubLinkLabel;
+		private System.Windows.Forms.Label githubHeadLabel;
+		private System.Windows.Forms.Label copyrightLabel;
+		private System.Windows.Forms.LinkLabel mailLinkLabel;
+		private System.Windows.Forms.LinkLabel webLinkLabel;
+		private System.Windows.Forms.Label webHeadLabel;
+		private System.Windows.Forms.Label mailHeadLabel;
+		private System.Windows.Forms.Label authorHeadLabel;
+		private System.Windows.Forms.Label appNameLabel;
 		private System.Windows.Forms.Button saveButton;
 		private System.Windows.Forms.TabPage tabPage4;
 		private System.Windows.Forms.Button iniFolderSelectButton;
@@ -1939,15 +1962,15 @@
 		private System.Windows.Forms.CheckBox bouyomiEnableCheck;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog2;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Label verLabel;
 		private System.Windows.Forms.GroupBox groupBox6;
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.Button dconSearchButton;
 		private System.Windows.Forms.TextBox dconText;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
 		private System.Windows.Forms.GroupBox groupBox9;
-		private System.Windows.Forms.RadioButton radioButton9;
-		private System.Windows.Forms.RadioButton radioButton8;
+		private System.Windows.Forms.RadioButton mssqlRadio;
+		private System.Windows.Forms.RadioButton iniRadio;
 		private System.Windows.Forms.GroupBox groupBox10;
 		private System.Windows.Forms.Label label16;
 		private System.Windows.Forms.TextBox urlText;
@@ -1982,10 +2005,9 @@
 		private System.Windows.Forms.Label label29;
 		private System.Windows.Forms.TextBox portText;
 		private System.Windows.Forms.Label label12;
-		private System.Windows.Forms.RadioButton radioButton5;
+		private System.Windows.Forms.RadioButton mysqlRadio;
 		private System.Windows.Forms.GroupBox groupBox14;
 		private System.Windows.Forms.CheckBox gridDisableCheck;
-		private System.Windows.Forms.Label label30;
 		private System.Windows.Forms.PictureBox logoPictureBox;
 		private System.Windows.Forms.Button dbBackupButton;
 		private System.Windows.Forms.TabControl tabControl2;
@@ -2021,8 +2043,7 @@
 		private System.Windows.Forms.Button insertTableNameButton;
 		private System.Windows.Forms.Button insertDatabaseNameButton;
 		private System.Windows.Forms.CheckBox RoGCheck;
-		private System.Windows.Forms.CheckBox checkBox1;
-		private System.Windows.Forms.Label label31;
+		private System.Windows.Forms.Label authorLabel;
 		private System.Windows.Forms.GroupBox groupBox16;
 		private System.Windows.Forms.CheckBox updateCheckDisableCheck;
 		private System.Windows.Forms.CheckBox enableWindowHideControlCheck;
@@ -2036,7 +2057,6 @@
 		private System.Windows.Forms.GroupBox groupBox18;
 		private System.Windows.Forms.Label label33;
 		private System.Windows.Forms.GroupBox groupBox17;
-		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.CheckBox enableExtractCheck;
 		private System.Windows.Forms.ComboBox extractToolSelectCombo;
 		private System.Windows.Forms.Label label34;
@@ -2052,5 +2072,6 @@
 		private System.Windows.Forms.Label label35;
 		private System.Windows.Forms.Button extractSaveButton;
 		private System.Windows.Forms.CheckBox extractCurrentDirCheck;
+		private System.Windows.Forms.Label disclaimerLabel;
 	}
 }

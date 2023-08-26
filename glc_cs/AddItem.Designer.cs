@@ -191,7 +191,7 @@
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(361, 244);
+			this.label7.Location = new System.Drawing.Point(352, 243);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(53, 12);
 			this.label7.TabIndex = 16;
@@ -209,20 +209,20 @@
 			// 
 			// AddButton
 			// 
-			this.AddButton.Location = new System.Drawing.Point(113, 332);
+			this.AddButton.Location = new System.Drawing.Point(113, 308);
 			this.AddButton.Name = "AddButton";
 			this.AddButton.Size = new System.Drawing.Size(122, 33);
-			this.AddButton.TabIndex = 45;
+			this.AddButton.TabIndex = 60;
 			this.AddButton.Text = "追加";
 			this.AddButton.UseVisualStyleBackColor = true;
 			this.AddButton.Click += new System.EventHandler(this.ApplyButton_Click);
 			// 
 			// CloseButton
 			// 
-			this.CloseButton.Location = new System.Drawing.Point(291, 332);
+			this.CloseButton.Location = new System.Drawing.Point(291, 308);
 			this.CloseButton.Name = "CloseButton";
 			this.CloseButton.Size = new System.Drawing.Size(122, 33);
-			this.CloseButton.TabIndex = 50;
+			this.CloseButton.TabIndex = 70;
 			this.CloseButton.Text = "キャンセル";
 			this.CloseButton.UseVisualStyleBackColor = true;
 			this.CloseButton.Click += new System.EventHandler(this.CancelButton_Click);
@@ -297,14 +297,14 @@
 			// 
 			// startCountText
 			// 
-			this.startCountText.Location = new System.Drawing.Point(420, 241);
+			this.startCountText.Location = new System.Drawing.Point(411, 241);
 			this.startCountText.Maximum = new decimal(new int[] {
             2147483647,
             0,
             0,
             0});
 			this.startCountText.Name = "startCountText";
-			this.startCountText.Size = new System.Drawing.Size(64, 19);
+			this.startCountText.Size = new System.Drawing.Size(73, 19);
 			this.startCountText.TabIndex = 35;
 			// 
 			// dconImgText
@@ -327,7 +327,7 @@
 			// disCloseCheck
 			// 
 			this.disCloseCheck.AutoSize = true;
-			this.disCloseCheck.Location = new System.Drawing.Point(348, 379);
+			this.disCloseCheck.Location = new System.Drawing.Point(354, 353);
 			this.disCloseCheck.Name = "disCloseCheck";
 			this.disCloseCheck.Size = new System.Drawing.Size(162, 16);
 			this.disCloseCheck.TabIndex = 55;
@@ -381,16 +381,16 @@
             "krkrDump",
             "カスタム1",
             "カスタム2"});
-			this.extractToolCombo.Location = new System.Drawing.Point(213, 286);
+			this.extractToolCombo.Location = new System.Drawing.Point(389, 264);
 			this.extractToolCombo.Name = "extractToolCombo";
 			this.extractToolCombo.Size = new System.Drawing.Size(121, 20);
-			this.extractToolCombo.TabIndex = 57;
+			this.extractToolCombo.TabIndex = 50;
 			this.extractToolCombo.Visible = false;
 			// 
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(178, 289);
+			this.label10.Location = new System.Drawing.Point(354, 267);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(29, 12);
 			this.label10.TabIndex = 58;
@@ -402,7 +402,7 @@
 			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(519, 407);
+			this.ClientSize = new System.Drawing.Size(519, 373);
 			this.Controls.Add(this.extractToolCombo);
 			this.Controls.Add(this.label10);
 			this.Controls.Add(this.getInfoButton);

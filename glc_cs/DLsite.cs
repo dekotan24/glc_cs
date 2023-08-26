@@ -10,7 +10,7 @@ namespace glc_cs
 	{
 		public string resultText = string.Empty;
 		public string resultImagePath = string.Empty;
-
+		public bool resultImageSaved = false;
 		public DLsite()
 		{
 			InitializeComponent();
@@ -28,6 +28,7 @@ namespace glc_cs
 			if (!string.IsNullOrEmpty(SearchResultText.Text.Trim()))
 			{
 				resultText = SearchResultText.Text.Trim();
+				resultImageSaved = imageSavedCheck.Checked;
 				this.Hide();
 			}
 			else
@@ -48,7 +49,6 @@ namespace glc_cs
 				{
 					DLsiteInfo result = DLsiteInfo.GetInfo(SearchTargetText.Text.Trim());
 
-					resultText = result.Title;
 					SearchResultText.Text = result.Title;
 					ImageText.Text = result.ImageUrl;
 					ImageBox.ImageLocation = result.ImageUrl;
@@ -80,11 +80,15 @@ namespace glc_cs
 					wc.DownloadFile(ImageText.Text, saveFileDialog1.FileName);
 					resultImagePath = saveFileDialog1.FileName;
 					wc.Dispose();
+					imageSavedCheck.Checked = true;
+					imageSavedCheck.Enabled = true;
 					System.Media.SystemSounds.Beep.Play();
 				}
 				catch (Exception ex)
 				{
 					resultImagePath = string.Empty;
+					imageSavedCheck.Checked = false;
+					imageSavedCheck.Enabled = false;
 					MessageBox.Show(ex.Message, AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}

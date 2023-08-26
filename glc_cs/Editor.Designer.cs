@@ -38,7 +38,7 @@
 			this.button2 = new System.Windows.Forms.Button();
 			this.imgPathText = new System.Windows.Forms.TextBox();
 			this.label3 = new System.Windows.Forms.Label();
-			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.iconImage = new System.Windows.Forms.PictureBox();
 			this.gameTitleLabel = new System.Windows.Forms.Label();
 			this.button3 = new System.Windows.Forms.Button();
 			this.dconText = new System.Windows.Forms.TextBox();
@@ -65,7 +65,7 @@
 			this.label10 = new System.Windows.Forms.Label();
 			this.extractToolCombo = new System.Windows.Forms.ComboBox();
 			this.getInfoButton = new System.Windows.Forms.Button();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.iconImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.runTimeText)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.startCountText)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
@@ -94,7 +94,7 @@
 			this.exePathText.MaxLength = 500;
 			this.exePathText.Name = "exePathText";
 			this.exePathText.Size = new System.Drawing.Size(332, 19);
-			this.exePathText.TabIndex = 2;
+			this.exePathText.TabIndex = 10;
 			// 
 			// label2
 			// 
@@ -110,7 +110,7 @@
 			this.button1.Location = new System.Drawing.Point(435, 147);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(20, 23);
-			this.button1.TabIndex = 3;
+			this.button1.TabIndex = 11;
 			this.button1.Text = "..";
 			this.button1.UseVisualStyleBackColor = true;
 			this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -120,7 +120,7 @@
 			this.button2.Location = new System.Drawing.Point(435, 197);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(20, 23);
-			this.button2.TabIndex = 6;
+			this.button2.TabIndex = 31;
 			this.button2.Text = "..";
 			this.button2.UseVisualStyleBackColor = true;
 			this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -131,7 +131,7 @@
 			this.imgPathText.MaxLength = 500;
 			this.imgPathText.Name = "imgPathText";
 			this.imgPathText.Size = new System.Drawing.Size(332, 19);
-			this.imgPathText.TabIndex = 5;
+			this.imgPathText.TabIndex = 30;
 			// 
 			// label3
 			// 
@@ -142,17 +142,17 @@
 			this.label3.TabIndex = 5;
 			this.label3.Text = "画像パス";
 			// 
-			// pictureBox1
+			// iconImage
 			// 
-			this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox1.InitialImage = global::glc_cs.Properties.Resources.load;
-			this.pictureBox1.Location = new System.Drawing.Point(12, 12);
-			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(100, 100);
-			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this.pictureBox1.TabIndex = 8;
-			this.pictureBox1.TabStop = false;
-			this.pictureBox1.WaitOnLoad = true;
+			this.iconImage.BackColor = System.Drawing.Color.Transparent;
+			this.iconImage.InitialImage = global::glc_cs.Properties.Resources.load;
+			this.iconImage.Location = new System.Drawing.Point(12, 12);
+			this.iconImage.Name = "iconImage";
+			this.iconImage.Size = new System.Drawing.Size(100, 100);
+			this.iconImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.iconImage.TabIndex = 8;
+			this.iconImage.TabStop = false;
+			this.iconImage.WaitOnLoad = true;
 			// 
 			// gameTitleLabel
 			// 
@@ -170,7 +170,7 @@
 			this.button3.Location = new System.Drawing.Point(213, 274);
 			this.button3.Name = "button3";
 			this.button3.Size = new System.Drawing.Size(20, 19);
-			this.button3.TabIndex = 10;
+			this.button3.TabIndex = 61;
 			this.button3.Text = "0";
 			this.button3.UseVisualStyleBackColor = true;
 			this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -181,7 +181,7 @@
 			this.dconText.MaxLength = 50;
 			this.dconText.Name = "dconText";
 			this.dconText.Size = new System.Drawing.Size(358, 19);
-			this.dconText.TabIndex = 7;
+			this.dconText.TabIndex = 40;
 			// 
 			// label5
 			// 
@@ -215,27 +215,27 @@
 			this.button4.Location = new System.Drawing.Point(435, 274);
 			this.button4.Name = "button4";
 			this.button4.Size = new System.Drawing.Size(20, 19);
-			this.button4.TabIndex = 12;
+			this.button4.TabIndex = 66;
 			this.button4.Text = "0";
 			this.button4.UseVisualStyleBackColor = true;
 			this.button4.Click += new System.EventHandler(this.button4_Click);
 			// 
 			// ApplyButton
 			// 
-			this.ApplyButton.Location = new System.Drawing.Point(97, 358);
+			this.ApplyButton.Location = new System.Drawing.Point(97, 338);
 			this.ApplyButton.Name = "ApplyButton";
 			this.ApplyButton.Size = new System.Drawing.Size(122, 33);
-			this.ApplyButton.TabIndex = 16;
+			this.ApplyButton.TabIndex = 80;
 			this.ApplyButton.Text = "適用";
 			this.ApplyButton.UseVisualStyleBackColor = true;
 			this.ApplyButton.Click += new System.EventHandler(this.ApplyButton_Click);
 			// 
 			// CloseButton
 			// 
-			this.CloseButton.Location = new System.Drawing.Point(251, 358);
+			this.CloseButton.Location = new System.Drawing.Point(251, 338);
 			this.CloseButton.Name = "CloseButton";
 			this.CloseButton.Size = new System.Drawing.Size(122, 33);
-			this.CloseButton.TabIndex = 17;
+			this.CloseButton.TabIndex = 85;
 			this.CloseButton.Text = "キャンセル";
 			this.CloseButton.UseVisualStyleBackColor = true;
 			this.CloseButton.Click += new System.EventHandler(this.CancelButton_Click);
@@ -289,7 +289,7 @@
 			this.rateCheck.Location = new System.Drawing.Point(97, 299);
 			this.rateCheck.Name = "rateCheck";
 			this.rateCheck.Size = new System.Drawing.Size(108, 16);
-			this.rateCheck.TabIndex = 13;
+			this.rateCheck.TabIndex = 70;
 			this.rateCheck.Text = "成人向け（R-18）";
 			this.rateCheck.UseVisualStyleBackColor = true;
 			// 
@@ -316,7 +316,7 @@
             0});
 			this.runTimeText.Name = "runTimeText";
 			this.runTimeText.Size = new System.Drawing.Size(110, 19);
-			this.runTimeText.TabIndex = 9;
+			this.runTimeText.TabIndex = 60;
 			// 
 			// startCountText
 			// 
@@ -328,7 +328,7 @@
             0});
 			this.startCountText.Name = "startCountText";
 			this.startCountText.Size = new System.Drawing.Size(121, 19);
-			this.startCountText.TabIndex = 11;
+			this.startCountText.TabIndex = 65;
 			// 
 			// dconImgText
 			// 
@@ -336,7 +336,7 @@
 			this.dconImgText.MaxLength = 50;
 			this.dconImgText.Name = "dconImgText";
 			this.dconImgText.Size = new System.Drawing.Size(358, 19);
-			this.dconImgText.TabIndex = 8;
+			this.dconImgText.TabIndex = 50;
 			// 
 			// label4
 			// 
@@ -353,7 +353,7 @@
 			this.executeCmdText.MaxLength = 255;
 			this.executeCmdText.Name = "executeCmdText";
 			this.executeCmdText.Size = new System.Drawing.Size(358, 19);
-			this.executeCmdText.TabIndex = 4;
+			this.executeCmdText.TabIndex = 20;
 			// 
 			// executeCmdTextLabel
 			// 
@@ -371,7 +371,7 @@
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(61, 322);
+			this.label10.Location = new System.Drawing.Point(273, 300);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(29, 12);
 			this.label10.TabIndex = 32;
@@ -389,10 +389,10 @@
             "krkrDump",
             "カスタム1",
             "カスタム2"});
-			this.extractToolCombo.Location = new System.Drawing.Point(96, 319);
+			this.extractToolCombo.Location = new System.Drawing.Point(308, 297);
 			this.extractToolCombo.Name = "extractToolCombo";
 			this.extractToolCombo.Size = new System.Drawing.Size(121, 20);
-			this.extractToolCombo.TabIndex = 15;
+			this.extractToolCombo.TabIndex = 75;
 			this.extractToolCombo.Visible = false;
 			// 
 			// getInfoButton
@@ -400,7 +400,7 @@
 			this.getInfoButton.Location = new System.Drawing.Point(404, 122);
 			this.getInfoButton.Name = "getInfoButton";
 			this.getInfoButton.Size = new System.Drawing.Size(51, 23);
-			this.getInfoButton.TabIndex = 33;
+			this.getInfoButton.TabIndex = 5;
 			this.getInfoButton.Text = "DLsite";
 			this.getInfoButton.UseVisualStyleBackColor = true;
 			this.getInfoButton.Click += new System.EventHandler(this.getInfoButton_Click);
@@ -409,7 +409,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(467, 408);
+			this.ClientSize = new System.Drawing.Size(467, 386);
 			this.Controls.Add(this.getInfoButton);
 			this.Controls.Add(this.extractToolCombo);
 			this.Controls.Add(this.label10);
@@ -434,7 +434,7 @@
 			this.Controls.Add(this.dconText);
 			this.Controls.Add(this.label5);
 			this.Controls.Add(this.gameTitleLabel);
-			this.Controls.Add(this.pictureBox1);
+			this.Controls.Add(this.iconImage);
 			this.Controls.Add(this.button2);
 			this.Controls.Add(this.imgPathText);
 			this.Controls.Add(this.label3);
@@ -449,7 +449,7 @@
 			this.MinimizeBox = false;
 			this.Name = "Editor";
 			this.Text = "Editor";
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.iconImage)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.runTimeText)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.startCountText)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
@@ -468,7 +468,7 @@
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.TextBox imgPathText;
 		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.PictureBox pictureBox1;
+		private System.Windows.Forms.PictureBox iconImage;
 		private System.Windows.Forms.Label gameTitleLabel;
 		private System.Windows.Forms.Button button3;
 		private System.Windows.Forms.TextBox dconText;
