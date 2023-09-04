@@ -848,7 +848,17 @@ namespace glc_cs
 
 								writer.Close();
 
+<<<<<<< HEAD
 								drunp = Process.Start(DconPath);	// dcon実行
+=======
+								drunp = Process.Start(DconPath); // dcon実行
+								if (drunp == null)
+								{
+									string dconArgs = "-jar " + DconPath;
+									var startInfo = new ProcessStartInfo("javaw.exe", dconArgs);
+									drunp = Process.Start(startInfo);
+								}
+>>>>>>> 0f9f99a84768caf5125d3d1bfc5c3ea37b621eaa
 							}
 							else
 							{
@@ -2719,13 +2729,20 @@ namespace glc_cs
 		{
 			try
 			{
-				process.Kill();
-				return true;
+				if (process != null)
+				{
+					process.Kill();
+					return true;
+				}
+				else
+				{
+					throw new Exception();
+				}
 			}
 			catch (Exception ex)
 			{
 				WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "processName:" + process.ProcessName + " (" + process.HasExited + ") / exitTime:" + process.ExitTime);
-				MessageBox.Show("既にdcon.jarが終了しています。\n起動時間が正常に記録されない可能性があります。\n\n" + ex.Message, AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("既にdcon.jarが終了しています。\nDiscord RPCが正しく動作しなかった可能性があります。\n\n" + ex.Message, AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return false;
 			}
 		}

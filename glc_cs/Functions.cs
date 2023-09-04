@@ -1968,7 +1968,7 @@ namespace glc_cs
 								imgPathData = imgpassdata.Replace(beforeName, afterName);
 								if (!imgpassdata.Equals(imgPathData))
 								{
-									IniWrite(readini, "game", KeyNames.pass, imgPathData);
+									IniWrite(readini, "game", KeyNames.imgpass, imgPathData);
 									wasChanged = true;
 								}
 							}
