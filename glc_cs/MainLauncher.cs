@@ -848,9 +848,6 @@ namespace glc_cs
 
 								writer.Close();
 
-<<<<<<< HEAD
-								drunp = Process.Start(DconPath);	// dcon実行
-=======
 								drunp = Process.Start(DconPath); // dcon実行
 								if (drunp == null)
 								{
@@ -858,7 +855,6 @@ namespace glc_cs
 									var startInfo = new ProcessStartInfo("javaw.exe", dconArgs);
 									drunp = Process.Start(startInfo);
 								}
->>>>>>> 0f9f99a84768caf5125d3d1bfc5c3ea37b621eaa
 							}
 							else
 							{
