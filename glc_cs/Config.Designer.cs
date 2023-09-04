@@ -49,17 +49,26 @@
 			this.mssqlRadio = new System.Windows.Forms.RadioButton();
 			this.iniRadio = new System.Windows.Forms.RadioButton();
 			this.useLocalDBCheck = new System.Windows.Forms.CheckBox();
+			this.enableWindowHideControlCheck = new System.Windows.Forms.CheckBox();
+			this.updateCheckDisableCheck = new System.Windows.Forms.CheckBox();
+			this.fixGridSizeCheck = new System.Windows.Forms.CheckBox();
+			this.gridDisableCheck = new System.Windows.Forms.CheckBox();
+			this.dconSearchButton = new System.Windows.Forms.Button();
+			this.extractCurrentDirCheck = new System.Windows.Forms.CheckBox();
+			this.extractSaveButton = new System.Windows.Forms.Button();
+			this.calcExecPlanButton = new System.Windows.Forms.Button();
+			this.addGameArgCheck = new System.Windows.Forms.CheckBox();
+			this.extractToolArgText = new System.Windows.Forms.TextBox();
+			this.extractToolSelectButton = new System.Windows.Forms.Button();
+			this.enableExtractCheck = new System.Windows.Forms.CheckBox();
+			this.saveWithDownloadCheck = new System.Windows.Forms.CheckBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage7 = new System.Windows.Forms.TabPage();
 			this.groupBox16 = new System.Windows.Forms.GroupBox();
-			this.enableWindowHideControlCheck = new System.Windows.Forms.CheckBox();
-			this.updateCheckDisableCheck = new System.Windows.Forms.CheckBox();
 			this.groupBox14 = new System.Windows.Forms.GroupBox();
 			this.fixGridSize64 = new System.Windows.Forms.RadioButton();
 			this.fixGridSize32 = new System.Windows.Forms.RadioButton();
 			this.fixGridSize8 = new System.Windows.Forms.RadioButton();
-			this.fixGridSizeCheck = new System.Windows.Forms.CheckBox();
-			this.gridDisableCheck = new System.Windows.Forms.CheckBox();
 			this.groupBox11 = new System.Windows.Forms.GroupBox();
 			this.backgroundImageSelectButton = new System.Windows.Forms.Button();
 			this.backgroundImageText = new System.Windows.Forms.TextBox();
@@ -69,7 +78,6 @@
 			this.dconAppIDClearButton = new System.Windows.Forms.Button();
 			this.groupBox6 = new System.Windows.Forms.GroupBox();
 			this.label11 = new System.Windows.Forms.Label();
-			this.dconSearchButton = new System.Windows.Forms.Button();
 			this.dconText = new System.Windows.Forms.TextBox();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.dconRatingRadio2 = new System.Windows.Forms.RadioButton();
@@ -139,24 +147,17 @@
 			this.queryExecuteButton = new System.Windows.Forms.Button();
 			this.queryText = new System.Windows.Forms.RichTextBox();
 			this.tabPage9 = new System.Windows.Forms.TabPage();
-			this.groupBox18 = new System.Windows.Forms.GroupBox();
-			this.extractCurrentDirCheck = new System.Windows.Forms.CheckBox();
+			this.extractToolsGroup = new System.Windows.Forms.GroupBox();
 			this.label35 = new System.Windows.Forms.Label();
-			this.extractSaveButton = new System.Windows.Forms.Button();
 			this.extractToolSelectCombo = new System.Windows.Forms.ComboBox();
 			this.label34 = new System.Windows.Forms.Label();
-			this.calcExecPlanButton = new System.Windows.Forms.Button();
 			this.extractExecPlanText = new System.Windows.Forms.TextBox();
-			this.addGameArgCheck = new System.Windows.Forms.CheckBox();
-			this.extractToolArgText = new System.Windows.Forms.TextBox();
 			this.label32 = new System.Windows.Forms.Label();
-			this.extractToolSelectButton = new System.Windows.Forms.Button();
 			this.extractToolPathText = new System.Windows.Forms.TextBox();
 			this.label26 = new System.Windows.Forms.Label();
-			this.label33 = new System.Windows.Forms.Label();
 			this.groupBox17 = new System.Windows.Forms.GroupBox();
-			this.enableExtractCheck = new System.Windows.Forms.CheckBox();
 			this.TabPage3 = new System.Windows.Forms.TabPage();
+			this.disclaimerLabel = new System.Windows.Forms.Label();
 			this.authorLabel = new System.Windows.Forms.Label();
 			this.logoPictureBox = new System.Windows.Forms.PictureBox();
 			this.updchkButton = new System.Windows.Forms.Button();
@@ -174,9 +175,8 @@
 			this.folderBrowserDialog2 = new System.Windows.Forms.FolderBrowserDialog();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.label15 = new System.Windows.Forms.Label();
-			this.saveWithDownloadCheck = new System.Windows.Forms.CheckBox();
 			this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
-			this.disclaimerLabel = new System.Windows.Forms.Label();
+			this.addGameDirCheck = new System.Windows.Forms.CheckBox();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage7.SuspendLayout();
@@ -204,7 +204,7 @@
 			this.groupBox15.SuspendLayout();
 			this.ExecuteModeGroup.SuspendLayout();
 			this.tabPage9.SuspendLayout();
-			this.groupBox18.SuspendLayout();
+			this.extractToolsGroup.SuspendLayout();
 			this.groupBox17.SuspendLayout();
 			this.TabPage3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
@@ -343,7 +343,7 @@
 			this.executeNonQueryRadio.TabIndex = 10;
 			this.executeNonQueryRadio.TabStop = true;
 			this.executeNonQueryRadio.Text = "ExecuteNonQuery";
-			this.toolTip1.SetToolTip(this.executeNonQueryRadio, "結果セットを返さない場合に使用します。\r\n影響を受けた行数を返します。");
+			this.toolTip1.SetToolTip(this.executeNonQueryRadio, "結果セットを返さない場合に使用します。\r\n影響を受けた行数を返します。\r\n【どちらを選べばよいか迷った場合はこちらを選択】");
 			this.executeNonQueryRadio.UseVisualStyleBackColor = true;
 			// 
 			// executeScalerRadio
@@ -408,7 +408,7 @@
 			this.iniRadio.TabIndex = 0;
 			this.iniRadio.TabStop = true;
 			this.iniRadio.Text = "INIファイル";
-			this.toolTip1.SetToolTip(this.iniRadio, "ローカルのINIUファイルを使用します。");
+			this.toolTip1.SetToolTip(this.iniRadio, "ローカルのINIファイルを使用します。");
 			this.iniRadio.UseVisualStyleBackColor = true;
 			this.iniRadio.CheckedChanged += new System.EventHandler(this.radioButton8_CheckedChanged);
 			// 
@@ -426,6 +426,157 @@
 			this.useLocalDBCheck.UseVisualStyleBackColor = true;
 			this.useLocalDBCheck.Visible = false;
 			// 
+			// enableWindowHideControlCheck
+			// 
+			this.enableWindowHideControlCheck.AutoSize = true;
+			this.enableWindowHideControlCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.enableWindowHideControlCheck.Location = new System.Drawing.Point(15, 47);
+			this.enableWindowHideControlCheck.Name = "enableWindowHideControlCheck";
+			this.enableWindowHideControlCheck.Size = new System.Drawing.Size(159, 22);
+			this.enableWindowHideControlCheck.TabIndex = 5;
+			this.enableWindowHideControlCheck.Text = "最小化ボタンを表示する";
+			this.toolTip1.SetToolTip(this.enableWindowHideControlCheck, "ウィンドウのコントロールに最小化ボタンを追加します。");
+			this.enableWindowHideControlCheck.UseVisualStyleBackColor = true;
+			// 
+			// updateCheckDisableCheck
+			// 
+			this.updateCheckDisableCheck.AutoSize = true;
+			this.updateCheckDisableCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.updateCheckDisableCheck.Location = new System.Drawing.Point(15, 22);
+			this.updateCheckDisableCheck.Name = "updateCheckDisableCheck";
+			this.updateCheckDisableCheck.Size = new System.Drawing.Size(279, 22);
+			this.updateCheckDisableCheck.TabIndex = 5;
+			this.updateCheckDisableCheck.Text = "起動時のアップデートチェックをスキップする";
+			this.toolTip1.SetToolTip(this.updateCheckDisableCheck, "各バージョンの2回目以降の起動時のアップデートチェックを無効にします。");
+			this.updateCheckDisableCheck.UseVisualStyleBackColor = true;
+			this.updateCheckDisableCheck.CheckedChanged += new System.EventHandler(this.updateCheckDisableCheck_CheckedChanged);
+			// 
+			// fixGridSizeCheck
+			// 
+			this.fixGridSizeCheck.AutoSize = true;
+			this.fixGridSizeCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.fixGridSizeCheck.Location = new System.Drawing.Point(15, 47);
+			this.fixGridSizeCheck.Name = "fixGridSizeCheck";
+			this.fixGridSizeCheck.Size = new System.Drawing.Size(219, 22);
+			this.fixGridSizeCheck.TabIndex = 4;
+			this.fixGridSizeCheck.Text = "グリッドのアイコンサイズを固定化";
+			this.toolTip1.SetToolTip(this.fixGridSizeCheck, "イメージグリッドの画像サイズを固定化します。");
+			this.fixGridSizeCheck.UseVisualStyleBackColor = true;
+			this.fixGridSizeCheck.CheckedChanged += new System.EventHandler(this.fixGridSize_CheckedChanged);
+			// 
+			// gridDisableCheck
+			// 
+			this.gridDisableCheck.AutoSize = true;
+			this.gridDisableCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.gridDisableCheck.Location = new System.Drawing.Point(15, 22);
+			this.gridDisableCheck.Name = "gridDisableCheck";
+			this.gridDisableCheck.Size = new System.Drawing.Size(123, 22);
+			this.gridDisableCheck.TabIndex = 3;
+			this.gridDisableCheck.Text = "グリッドを無効化";
+			this.toolTip1.SetToolTip(this.gridDisableCheck, "イメージグリッドを無効にします。\r\n起動時のロード時間、消費メモリが改善する場合があります。");
+			this.gridDisableCheck.UseVisualStyleBackColor = true;
+			this.gridDisableCheck.CheckedChanged += new System.EventHandler(this.gridDisableCheck_CheckedChanged);
+			// 
+			// dconSearchButton
+			// 
+			this.dconSearchButton.Location = new System.Drawing.Point(367, 22);
+			this.dconSearchButton.Name = "dconSearchButton";
+			this.dconSearchButton.Size = new System.Drawing.Size(23, 23);
+			this.dconSearchButton.TabIndex = 1;
+			this.dconSearchButton.Text = "..";
+			this.toolTip1.SetToolTip(this.dconSearchButton, "Discord Connectorのパスを設定します。");
+			this.dconSearchButton.UseVisualStyleBackColor = true;
+			this.dconSearchButton.Click += new System.EventHandler(this.dconSearchButton_Click);
+			// 
+			// extractCurrentDirCheck
+			// 
+			this.extractCurrentDirCheck.AutoSize = true;
+			this.extractCurrentDirCheck.Location = new System.Drawing.Point(75, 158);
+			this.extractCurrentDirCheck.Name = "extractCurrentDirCheck";
+			this.extractCurrentDirCheck.Size = new System.Drawing.Size(269, 21);
+			this.extractCurrentDirCheck.TabIndex = 21;
+			this.extractCurrentDirCheck.Text = "抽出ツールのパスをカレントディレクトリにする";
+			this.toolTip1.SetToolTip(this.extractCurrentDirCheck, "ゲーム実行時のカレントパスを抽出ツールのあるパスにします。\r\n一部のエンジンを使用しているゲームでエラーになる可能性があります。");
+			this.extractCurrentDirCheck.UseVisualStyleBackColor = true;
+			// 
+			// extractSaveButton
+			// 
+			this.extractSaveButton.Location = new System.Drawing.Point(149, 18);
+			this.extractSaveButton.Name = "extractSaveButton";
+			this.extractSaveButton.Size = new System.Drawing.Size(59, 25);
+			this.extractSaveButton.TabIndex = 19;
+			this.extractSaveButton.Text = "保存";
+			this.toolTip1.SetToolTip(this.extractSaveButton, "抽出ツールの変更を保存します。");
+			this.extractSaveButton.UseVisualStyleBackColor = true;
+			this.extractSaveButton.Click += new System.EventHandler(this.extractSaveButton_Click);
+			// 
+			// calcExecPlanButton
+			// 
+			this.calcExecPlanButton.Location = new System.Drawing.Point(416, 205);
+			this.calcExecPlanButton.Name = "calcExecPlanButton";
+			this.calcExecPlanButton.Size = new System.Drawing.Size(43, 24);
+			this.calcExecPlanButton.TabIndex = 16;
+			this.calcExecPlanButton.Text = "検証";
+			this.toolTip1.SetToolTip(this.calcExecPlanButton, "抽出モード有効時に実行されるコマンドラインです。");
+			this.calcExecPlanButton.UseVisualStyleBackColor = true;
+			this.calcExecPlanButton.Click += new System.EventHandler(this.calcExecPlanButton_Click);
+			// 
+			// addGameArgCheck
+			// 
+			this.addGameArgCheck.AutoSize = true;
+			this.addGameArgCheck.Location = new System.Drawing.Point(75, 131);
+			this.addGameArgCheck.Name = "addGameArgCheck";
+			this.addGameArgCheck.Size = new System.Drawing.Size(159, 21);
+			this.addGameArgCheck.TabIndex = 14;
+			this.addGameArgCheck.Text = "ゲーム実行引数を追加する";
+			this.toolTip1.SetToolTip(this.addGameArgCheck, "抽出モードで実行時にゲームの引数も追加します。");
+			this.addGameArgCheck.UseVisualStyleBackColor = true;
+			// 
+			// extractToolArgText
+			// 
+			this.extractToolArgText.Location = new System.Drawing.Point(75, 94);
+			this.extractToolArgText.Name = "extractToolArgText";
+			this.extractToolArgText.Size = new System.Drawing.Size(384, 24);
+			this.extractToolArgText.TabIndex = 13;
+			this.toolTip1.SetToolTip(this.extractToolArgText, "抽出ツールを実行する際の引数です。");
+			// 
+			// extractToolSelectButton
+			// 
+			this.extractToolSelectButton.Location = new System.Drawing.Point(435, 64);
+			this.extractToolSelectButton.Name = "extractToolSelectButton";
+			this.extractToolSelectButton.Size = new System.Drawing.Size(24, 24);
+			this.extractToolSelectButton.TabIndex = 11;
+			this.extractToolSelectButton.Text = "..";
+			this.toolTip1.SetToolTip(this.extractToolSelectButton, "抽出ツールの場所を選択します。");
+			this.extractToolSelectButton.UseVisualStyleBackColor = true;
+			this.extractToolSelectButton.Click += new System.EventHandler(this.extractToolSelectButton_Click);
+			// 
+			// enableExtractCheck
+			// 
+			this.enableExtractCheck.AutoSize = true;
+			this.enableExtractCheck.Location = new System.Drawing.Point(20, 16);
+			this.enableExtractCheck.Name = "enableExtractCheck";
+			this.enableExtractCheck.Size = new System.Drawing.Size(170, 21);
+			this.enableExtractCheck.TabIndex = 0;
+			this.enableExtractCheck.Text = "抽出モードを使用可能にする";
+			this.toolTip1.SetToolTip(this.enableExtractCheck, "抽出モードを有効にするチェックボックスがランチャー画面に表示されます。");
+			this.enableExtractCheck.UseVisualStyleBackColor = true;
+			this.enableExtractCheck.CheckedChanged += new System.EventHandler(this.enableExtractCheck_CheckedChanged);
+			// 
+			// saveWithDownloadCheck
+			// 
+			this.saveWithDownloadCheck.AutoSize = true;
+			this.saveWithDownloadCheck.Checked = true;
+			this.saveWithDownloadCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.saveWithDownloadCheck.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.saveWithDownloadCheck.Location = new System.Drawing.Point(258, 357);
+			this.saveWithDownloadCheck.Name = "saveWithDownloadCheck";
+			this.saveWithDownloadCheck.Size = new System.Drawing.Size(115, 21);
+			this.saveWithDownloadCheck.TabIndex = 98;
+			this.saveWithDownloadCheck.Text = "適用と同時に取得";
+			this.toolTip1.SetToolTip(this.saveWithDownloadCheck, "適用ボタンを押した際に、オフラインINIデータの取得を行います。");
+			this.saveWithDownloadCheck.UseVisualStyleBackColor = true;
+			// 
 			// tabControl1
 			// 
 			this.tabControl1.Controls.Add(this.tabPage7);
@@ -434,7 +585,7 @@
 			this.tabControl1.Controls.Add(this.tabPage4);
 			this.tabControl1.Controls.Add(this.tabPage6);
 			this.tabControl1.Controls.Add(this.TabPage3);
-			this.tabControl1.Location = new System.Drawing.Point(-1, 3);
+			this.tabControl1.Location = new System.Drawing.Point(2, 3);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
 			this.tabControl1.Size = new System.Drawing.Size(491, 346);
@@ -463,31 +614,6 @@
 			this.groupBox16.TabIndex = 5;
 			this.groupBox16.TabStop = false;
 			this.groupBox16.Text = "システム";
-			// 
-			// enableWindowHideControlCheck
-			// 
-			this.enableWindowHideControlCheck.AutoSize = true;
-			this.enableWindowHideControlCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.enableWindowHideControlCheck.Location = new System.Drawing.Point(15, 47);
-			this.enableWindowHideControlCheck.Name = "enableWindowHideControlCheck";
-			this.enableWindowHideControlCheck.Size = new System.Drawing.Size(159, 22);
-			this.enableWindowHideControlCheck.TabIndex = 5;
-			this.enableWindowHideControlCheck.Text = "最小化ボタンを表示する";
-			this.toolTip1.SetToolTip(this.enableWindowHideControlCheck, "ウィンドウのコントロールに最小化ボタンを追加します。");
-			this.enableWindowHideControlCheck.UseVisualStyleBackColor = true;
-			// 
-			// updateCheckDisableCheck
-			// 
-			this.updateCheckDisableCheck.AutoSize = true;
-			this.updateCheckDisableCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.updateCheckDisableCheck.Location = new System.Drawing.Point(15, 22);
-			this.updateCheckDisableCheck.Name = "updateCheckDisableCheck";
-			this.updateCheckDisableCheck.Size = new System.Drawing.Size(279, 22);
-			this.updateCheckDisableCheck.TabIndex = 5;
-			this.updateCheckDisableCheck.Text = "起動時のアップデートチェックをスキップする";
-			this.toolTip1.SetToolTip(this.updateCheckDisableCheck, "各バージョンの2回目以降の起動時のアップデートチェックを無効にします。");
-			this.updateCheckDisableCheck.UseVisualStyleBackColor = true;
-			this.updateCheckDisableCheck.CheckedChanged += new System.EventHandler(this.updateCheckDisableCheck_CheckedChanged);
 			// 
 			// groupBox14
 			// 
@@ -541,32 +667,6 @@
 			this.fixGridSize8.TabIndex = 5;
 			this.fixGridSize8.Text = "最小（8x8）";
 			this.fixGridSize8.UseVisualStyleBackColor = true;
-			// 
-			// fixGridSizeCheck
-			// 
-			this.fixGridSizeCheck.AutoSize = true;
-			this.fixGridSizeCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.fixGridSizeCheck.Location = new System.Drawing.Point(15, 47);
-			this.fixGridSizeCheck.Name = "fixGridSizeCheck";
-			this.fixGridSizeCheck.Size = new System.Drawing.Size(219, 22);
-			this.fixGridSizeCheck.TabIndex = 4;
-			this.fixGridSizeCheck.Text = "グリッドのアイコンサイズを固定化";
-			this.toolTip1.SetToolTip(this.fixGridSizeCheck, "イメージグリッドの画像サイズを固定化します。\r\n他のサイズの画像を保持しなくなるので、消費メモリが減る可能性があります。");
-			this.fixGridSizeCheck.UseVisualStyleBackColor = true;
-			this.fixGridSizeCheck.CheckedChanged += new System.EventHandler(this.fixGridSize_CheckedChanged);
-			// 
-			// gridDisableCheck
-			// 
-			this.gridDisableCheck.AutoSize = true;
-			this.gridDisableCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.gridDisableCheck.Location = new System.Drawing.Point(15, 22);
-			this.gridDisableCheck.Name = "gridDisableCheck";
-			this.gridDisableCheck.Size = new System.Drawing.Size(123, 22);
-			this.gridDisableCheck.TabIndex = 3;
-			this.gridDisableCheck.Text = "グリッドを無効化";
-			this.toolTip1.SetToolTip(this.gridDisableCheck, "イメージグリッドを無効にします。\r\n起動時のロード時間、消費メモリが改善する場合があります。");
-			this.gridDisableCheck.UseVisualStyleBackColor = true;
-			this.gridDisableCheck.CheckedChanged += new System.EventHandler(this.gridDisableCheck_CheckedChanged);
 			// 
 			// groupBox11
 			// 
@@ -667,17 +767,6 @@
 			this.label11.Size = new System.Drawing.Size(68, 20);
 			this.label11.TabIndex = 2;
 			this.label11.Text = "Unknown";
-			// 
-			// dconSearchButton
-			// 
-			this.dconSearchButton.Location = new System.Drawing.Point(367, 22);
-			this.dconSearchButton.Name = "dconSearchButton";
-			this.dconSearchButton.Size = new System.Drawing.Size(23, 23);
-			this.dconSearchButton.TabIndex = 1;
-			this.dconSearchButton.Text = "..";
-			this.toolTip1.SetToolTip(this.dconSearchButton, "Discord Connectorのパスを設定します。");
-			this.dconSearchButton.UseVisualStyleBackColor = true;
-			this.dconSearchButton.Click += new System.EventHandler(this.dconSearchButton_Click);
 			// 
 			// dconText
 			// 
@@ -1110,7 +1199,7 @@
 			this.iniFolderSelectButton.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.iniFolderSelectButton.Location = new System.Drawing.Point(397, 25);
 			this.iniFolderSelectButton.Name = "iniFolderSelectButton";
-			this.iniFolderSelectButton.Size = new System.Drawing.Size(64, 23);
+			this.iniFolderSelectButton.Size = new System.Drawing.Size(64, 27);
 			this.iniFolderSelectButton.TabIndex = 8;
 			this.iniFolderSelectButton.Text = "変更";
 			this.iniFolderSelectButton.UseVisualStyleBackColor = true;
@@ -1459,7 +1548,7 @@
 			// 
 			// tabPage9
 			// 
-			this.tabPage9.Controls.Add(this.groupBox18);
+			this.tabPage9.Controls.Add(this.extractToolsGroup);
 			this.tabPage9.Controls.Add(this.groupBox17);
 			this.tabPage9.Location = new System.Drawing.Point(4, 22);
 			this.tabPage9.Name = "tabPage9";
@@ -1468,60 +1557,39 @@
 			this.tabPage9.Text = "抽出";
 			this.tabPage9.UseVisualStyleBackColor = true;
 			// 
-			// groupBox18
+			// extractToolsGroup
 			// 
-			this.groupBox18.Controls.Add(this.extractCurrentDirCheck);
-			this.groupBox18.Controls.Add(this.label35);
-			this.groupBox18.Controls.Add(this.extractSaveButton);
-			this.groupBox18.Controls.Add(this.extractToolSelectCombo);
-			this.groupBox18.Controls.Add(this.label34);
-			this.groupBox18.Controls.Add(this.calcExecPlanButton);
-			this.groupBox18.Controls.Add(this.extractExecPlanText);
-			this.groupBox18.Controls.Add(this.addGameArgCheck);
-			this.groupBox18.Controls.Add(this.extractToolArgText);
-			this.groupBox18.Controls.Add(this.label32);
-			this.groupBox18.Controls.Add(this.extractToolSelectButton);
-			this.groupBox18.Controls.Add(this.extractToolPathText);
-			this.groupBox18.Controls.Add(this.label26);
-			this.groupBox18.Controls.Add(this.label33);
-			this.groupBox18.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.groupBox18.Location = new System.Drawing.Point(4, 53);
-			this.groupBox18.Name = "groupBox18";
-			this.groupBox18.Size = new System.Drawing.Size(465, 235);
-			this.groupBox18.TabIndex = 2;
-			this.groupBox18.TabStop = false;
-			this.groupBox18.Text = "抽出ツール";
-			// 
-			// extractCurrentDirCheck
-			// 
-			this.extractCurrentDirCheck.AutoSize = true;
-			this.extractCurrentDirCheck.Location = new System.Drawing.Point(193, 141);
-			this.extractCurrentDirCheck.Name = "extractCurrentDirCheck";
-			this.extractCurrentDirCheck.Size = new System.Drawing.Size(269, 21);
-			this.extractCurrentDirCheck.TabIndex = 21;
-			this.extractCurrentDirCheck.Text = "抽出ツールのパスをカレントディレクトリにする";
-			this.toolTip1.SetToolTip(this.extractCurrentDirCheck, "ゲーム実行時のカレントパスを抽出ツールのあるパスにします。\r\n一部のエンジンを使用しているゲームでエラーになる可能性があります。");
-			this.extractCurrentDirCheck.UseVisualStyleBackColor = true;
+			this.extractToolsGroup.Controls.Add(this.addGameDirCheck);
+			this.extractToolsGroup.Controls.Add(this.extractCurrentDirCheck);
+			this.extractToolsGroup.Controls.Add(this.label35);
+			this.extractToolsGroup.Controls.Add(this.extractSaveButton);
+			this.extractToolsGroup.Controls.Add(this.extractToolSelectCombo);
+			this.extractToolsGroup.Controls.Add(this.label34);
+			this.extractToolsGroup.Controls.Add(this.calcExecPlanButton);
+			this.extractToolsGroup.Controls.Add(this.extractExecPlanText);
+			this.extractToolsGroup.Controls.Add(this.addGameArgCheck);
+			this.extractToolsGroup.Controls.Add(this.extractToolArgText);
+			this.extractToolsGroup.Controls.Add(this.label32);
+			this.extractToolsGroup.Controls.Add(this.extractToolSelectButton);
+			this.extractToolsGroup.Controls.Add(this.extractToolPathText);
+			this.extractToolsGroup.Controls.Add(this.label26);
+			this.extractToolsGroup.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.extractToolsGroup.Location = new System.Drawing.Point(4, 53);
+			this.extractToolsGroup.Name = "extractToolsGroup";
+			this.extractToolsGroup.Size = new System.Drawing.Size(465, 235);
+			this.extractToolsGroup.TabIndex = 2;
+			this.extractToolsGroup.TabStop = false;
+			this.extractToolsGroup.Text = "抽出ツール";
 			// 
 			// label35
 			// 
 			this.label35.AutoSize = true;
+			this.label35.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.label35.Location = new System.Drawing.Point(214, 21);
 			this.label35.Name = "label35";
-			this.label35.Size = new System.Drawing.Size(162, 17);
+			this.label35.Size = new System.Drawing.Size(195, 17);
 			this.label35.TabIndex = 20;
-			this.label35.Text = "※「保存」ボタンで変更を保存";
-			// 
-			// extractSaveButton
-			// 
-			this.extractSaveButton.Location = new System.Drawing.Point(149, 16);
-			this.extractSaveButton.Name = "extractSaveButton";
-			this.extractSaveButton.Size = new System.Drawing.Size(59, 27);
-			this.extractSaveButton.TabIndex = 19;
-			this.extractSaveButton.Text = "保存";
-			this.toolTip1.SetToolTip(this.extractSaveButton, "抽出ツールの変更を保存します。");
-			this.extractSaveButton.UseVisualStyleBackColor = true;
-			this.extractSaveButton.Click += new System.EventHandler(this.extractSaveButton_Click);
+			this.label35.Text = "※「保存」ボタンで変更を保存します";
 			// 
 			// extractToolSelectCombo
 			// 
@@ -1543,94 +1611,44 @@
 			// label34
 			// 
 			this.label34.AutoSize = true;
-			this.label34.Location = new System.Drawing.Point(6, 167);
+			this.label34.Location = new System.Drawing.Point(6, 185);
 			this.label34.Name = "label34";
 			this.label34.Size = new System.Drawing.Size(129, 17);
 			this.label34.TabIndex = 17;
 			this.label34.Text = "実行予定コマンドライン";
 			// 
-			// calcExecPlanButton
-			// 
-			this.calcExecPlanButton.Location = new System.Drawing.Point(416, 185);
-			this.calcExecPlanButton.Name = "calcExecPlanButton";
-			this.calcExecPlanButton.Size = new System.Drawing.Size(43, 23);
-			this.calcExecPlanButton.TabIndex = 16;
-			this.calcExecPlanButton.Text = "検証";
-			this.toolTip1.SetToolTip(this.calcExecPlanButton, "抽出モード有効時に実行されるコマンドラインです。");
-			this.calcExecPlanButton.UseVisualStyleBackColor = true;
-			this.calcExecPlanButton.Click += new System.EventHandler(this.calcExecPlanButton_Click);
-			// 
 			// extractExecPlanText
 			// 
-			this.extractExecPlanText.Location = new System.Drawing.Point(20, 187);
+			this.extractExecPlanText.Location = new System.Drawing.Point(20, 205);
 			this.extractExecPlanText.Name = "extractExecPlanText";
 			this.extractExecPlanText.ReadOnly = true;
 			this.extractExecPlanText.Size = new System.Drawing.Size(390, 24);
 			this.extractExecPlanText.TabIndex = 15;
 			// 
-			// addGameArgCheck
-			// 
-			this.addGameArgCheck.AutoSize = true;
-			this.addGameArgCheck.Location = new System.Drawing.Point(27, 141);
-			this.addGameArgCheck.Name = "addGameArgCheck";
-			this.addGameArgCheck.Size = new System.Drawing.Size(159, 21);
-			this.addGameArgCheck.TabIndex = 14;
-			this.addGameArgCheck.Text = "ゲーム実行引数を追加する";
-			this.toolTip1.SetToolTip(this.addGameArgCheck, "抽出モードで実行時にゲームの引数も追加します。");
-			this.addGameArgCheck.UseVisualStyleBackColor = true;
-			// 
-			// extractToolArgText
-			// 
-			this.extractToolArgText.Location = new System.Drawing.Point(20, 111);
-			this.extractToolArgText.Name = "extractToolArgText";
-			this.extractToolArgText.Size = new System.Drawing.Size(439, 24);
-			this.extractToolArgText.TabIndex = 13;
-			this.toolTip1.SetToolTip(this.extractToolArgText, "抽出ツールを実行する際の引数です。");
-			// 
 			// label32
 			// 
 			this.label32.AutoSize = true;
-			this.label32.Location = new System.Drawing.Point(6, 96);
+			this.label32.Location = new System.Drawing.Point(39, 97);
 			this.label32.Name = "label32";
 			this.label32.Size = new System.Drawing.Size(30, 17);
 			this.label32.TabIndex = 12;
 			this.label32.Text = "引数";
 			// 
-			// extractToolSelectButton
-			// 
-			this.extractToolSelectButton.Location = new System.Drawing.Point(435, 62);
-			this.extractToolSelectButton.Name = "extractToolSelectButton";
-			this.extractToolSelectButton.Size = new System.Drawing.Size(24, 26);
-			this.extractToolSelectButton.TabIndex = 11;
-			this.extractToolSelectButton.Text = "..";
-			this.toolTip1.SetToolTip(this.extractToolSelectButton, "抽出ツールの場所を選択します。");
-			this.extractToolSelectButton.UseVisualStyleBackColor = true;
-			this.extractToolSelectButton.Click += new System.EventHandler(this.extractToolSelectButton_Click);
-			// 
 			// extractToolPathText
 			// 
-			this.extractToolPathText.Location = new System.Drawing.Point(20, 64);
+			this.extractToolPathText.Location = new System.Drawing.Point(75, 64);
 			this.extractToolPathText.Name = "extractToolPathText";
-			this.extractToolPathText.Size = new System.Drawing.Size(409, 24);
+			this.extractToolPathText.Size = new System.Drawing.Size(354, 24);
 			this.extractToolPathText.TabIndex = 10;
 			// 
 			// label26
 			// 
 			this.label26.AutoSize = true;
-			this.label26.Location = new System.Drawing.Point(6, 49);
+			this.label26.Location = new System.Drawing.Point(6, 67);
 			this.label26.Name = "label26";
-			this.label26.Size = new System.Drawing.Size(85, 17);
+			this.label26.Size = new System.Drawing.Size(63, 17);
 			this.label26.TabIndex = 9;
-			this.label26.Text = "抽出ツールパス";
-			// 
-			// label33
-			// 
-			this.label33.AutoSize = true;
-			this.label33.Location = new System.Drawing.Point(17, 215);
-			this.label33.Name = "label33";
-			this.label33.Size = new System.Drawing.Size(448, 17);
-			this.label33.TabIndex = 3;
-			this.label33.Text = "※引数の最後にゲームの実行パスが追加されます。設定の反映には「保存」が必要です。\r\n";
+			this.label26.Text = "抽出ツール";
 			// 
 			// groupBox17
 			// 
@@ -1642,17 +1660,6 @@
 			this.groupBox17.TabIndex = 1;
 			this.groupBox17.TabStop = false;
 			this.groupBox17.Text = "機能有効化";
-			// 
-			// enableExtractCheck
-			// 
-			this.enableExtractCheck.AutoSize = true;
-			this.enableExtractCheck.Location = new System.Drawing.Point(20, 16);
-			this.enableExtractCheck.Name = "enableExtractCheck";
-			this.enableExtractCheck.Size = new System.Drawing.Size(170, 21);
-			this.enableExtractCheck.TabIndex = 0;
-			this.enableExtractCheck.Text = "抽出モードを使用可能にする";
-			this.toolTip1.SetToolTip(this.enableExtractCheck, "抽出モードを有効にするチェックボックスがランチャー画面に表示されます。");
-			this.enableExtractCheck.UseVisualStyleBackColor = true;
 			// 
 			// TabPage3
 			// 
@@ -1676,6 +1683,16 @@
 			this.TabPage3.TabIndex = 1;
 			this.TabPage3.Text = "バージョン情報";
 			this.TabPage3.UseVisualStyleBackColor = true;
+			// 
+			// disclaimerLabel
+			// 
+			this.disclaimerLabel.AutoSize = true;
+			this.disclaimerLabel.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.disclaimerLabel.Location = new System.Drawing.Point(19, 298);
+			this.disclaimerLabel.Name = "disclaimerLabel";
+			this.disclaimerLabel.Size = new System.Drawing.Size(448, 17);
+			this.disclaimerLabel.TabIndex = 15;
+			this.disclaimerLabel.Text = "※予期せぬ不具合が発生する可能性があります。損害・損失等一切の責任を負いません。";
 			// 
 			// authorLabel
 			// 
@@ -1826,33 +1843,22 @@
 			this.label15.TabIndex = 4;
 			this.label15.Text = ":)";
 			// 
-			// saveWithDownloadCheck
-			// 
-			this.saveWithDownloadCheck.AutoSize = true;
-			this.saveWithDownloadCheck.Checked = true;
-			this.saveWithDownloadCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.saveWithDownloadCheck.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.saveWithDownloadCheck.Location = new System.Drawing.Point(258, 357);
-			this.saveWithDownloadCheck.Name = "saveWithDownloadCheck";
-			this.saveWithDownloadCheck.Size = new System.Drawing.Size(115, 21);
-			this.saveWithDownloadCheck.TabIndex = 98;
-			this.saveWithDownloadCheck.Text = "適用と同時に取得";
-			this.toolTip1.SetToolTip(this.saveWithDownloadCheck, "適用ボタンを押した際に、オフラインINIデータの取得を行います。");
-			this.saveWithDownloadCheck.UseVisualStyleBackColor = true;
-			// 
 			// openFileDialog2
 			// 
 			this.openFileDialog2.FileName = "openFileDialog2";
 			// 
-			// disclaimerLabel
+			// addGameDirCheck
 			// 
-			this.disclaimerLabel.AutoSize = true;
-			this.disclaimerLabel.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.disclaimerLabel.Location = new System.Drawing.Point(19, 298);
-			this.disclaimerLabel.Name = "disclaimerLabel";
-			this.disclaimerLabel.Size = new System.Drawing.Size(448, 17);
-			this.disclaimerLabel.TabIndex = 15;
-			this.disclaimerLabel.Text = "※予期せぬ不具合が発生する可能性があります。損害・損失等一切の責任を負いません。";
+			this.addGameDirCheck.AutoSize = true;
+			this.addGameDirCheck.Enabled = false;
+			this.addGameDirCheck.Location = new System.Drawing.Point(245, 131);
+			this.addGameDirCheck.Name = "addGameDirCheck";
+			this.addGameDirCheck.Size = new System.Drawing.Size(214, 21);
+			this.addGameDirCheck.TabIndex = 22;
+			this.addGameDirCheck.Text = "ゲームのディレクトリパスを使用する";
+			this.toolTip1.SetToolTip(this.addGameDirCheck, "ゲームのフルパスではなく、ゲームが存在するディレクトリパスを引数に追加します。");
+			this.addGameDirCheck.UseVisualStyleBackColor = true;
+			this.addGameDirCheck.Visible = false;
 			// 
 			// Config
 			// 
@@ -1913,8 +1919,8 @@
 			this.ExecuteModeGroup.ResumeLayout(false);
 			this.ExecuteModeGroup.PerformLayout();
 			this.tabPage9.ResumeLayout(false);
-			this.groupBox18.ResumeLayout(false);
-			this.groupBox18.PerformLayout();
+			this.extractToolsGroup.ResumeLayout(false);
+			this.extractToolsGroup.PerformLayout();
 			this.groupBox17.ResumeLayout(false);
 			this.groupBox17.PerformLayout();
 			this.TabPage3.ResumeLayout(false);
@@ -2054,8 +2060,7 @@
 		private System.Windows.Forms.CheckBox saveWithDownloadCheck;
 		private System.Windows.Forms.CheckBox useLocalDBCheck;
 		private System.Windows.Forms.TabPage tabPage9;
-		private System.Windows.Forms.GroupBox groupBox18;
-		private System.Windows.Forms.Label label33;
+		private System.Windows.Forms.GroupBox extractToolsGroup;
 		private System.Windows.Forms.GroupBox groupBox17;
 		private System.Windows.Forms.CheckBox enableExtractCheck;
 		private System.Windows.Forms.ComboBox extractToolSelectCombo;
@@ -2073,5 +2078,6 @@
 		private System.Windows.Forms.Button extractSaveButton;
 		private System.Windows.Forms.CheckBox extractCurrentDirCheck;
 		private System.Windows.Forms.Label disclaimerLabel;
+		private System.Windows.Forms.CheckBox addGameDirCheck;
 	}
 }

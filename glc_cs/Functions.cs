@@ -323,6 +323,11 @@ namespace glc_cs
 			protected static bool extractKrkrCurDir = false;
 
 			/// <summary>
+			/// krkrにゲームのディレクトリパスを渡すフラグ
+			/// </summary>
+			protected static bool extractKrkrGameDir = false;
+
+			/// <summary>
 			/// krkrzツールパス
 			/// </summary>
 			protected static string extractKrkrzPath = string.Empty;
@@ -341,6 +346,11 @@ namespace glc_cs
 			/// krkrzツールをカレントディレクトリにするフラグ
 			/// </summary>
 			protected static bool extractKrkrzCurDir = false;
+
+			/// <summary>
+			/// krkrzにゲームのディレクトリパスを渡すフラグ
+			/// </summary>
+			protected static bool extractKrkrzGameDir = false;
 
 			/// <summary>
 			/// krkrDumpツールパス
@@ -363,6 +373,11 @@ namespace glc_cs
 			protected static bool extractKrkrDumpCurDir = false;
 
 			/// <summary>
+			/// krkrDumpにゲームのディレクトリパスを渡すフラグ
+			/// </summary>
+			protected static bool extractKrkrDumpGameDir = false;
+
+			/// <summary>
 			/// カスタム1ツールパス
 			/// </summary>
 			protected static string extractCustom1Path = string.Empty;
@@ -383,6 +398,11 @@ namespace glc_cs
 			protected static bool extractCustom1CurDir = false;
 
 			/// <summary>
+			/// カスタム1にゲームのディレクトリパスを渡すフラグ
+			/// </summary>
+			protected static bool extractCustom1GameDir = false;
+
+			/// <summary>
 			/// カスタム2ツールパス
 			/// </summary>
 			protected static string extractCustom2Path = string.Empty;
@@ -401,6 +421,11 @@ namespace glc_cs
 			/// カスタム2ツールをカレントディレクトリにするフラグ
 			/// </summary>
 			protected static bool extractCustom2CurDir = false;
+
+			/// <summary>
+			/// カスタム2にゲームのディレクトリパスを渡すフラグ
+			/// </summary>
+			protected static bool extractCustom2GameDir = false;
 
 
 			/// <summary>
@@ -1000,6 +1025,15 @@ namespace glc_cs
 			}
 
 			/// <summary>
+			/// krkrにゲームディレクトリを渡すフラグ
+			/// </summary>
+			public static bool ExtractKrkrGameDir
+			{
+				get { return extractKrkrGameDir; }
+				set { extractKrkrGameDir = value; }
+			}
+
+			/// <summary>
 			/// krkrzツールパス
 			/// </summary>
 			public static string ExtractKrkrzPath
@@ -1033,6 +1067,15 @@ namespace glc_cs
 			{
 				get { return extractKrkrzCurDir; }
 				set { extractKrkrzCurDir = value; }
+			}
+
+			/// <summary>
+			/// krkrzにゲームディレクトリを渡すフラグ
+			/// </summary>
+			public static bool ExtractKrkrzGameDir
+			{
+				get { return extractKrkrzGameDir; }
+				set { extractKrkrzGameDir = value; }
 			}
 
 			/// <summary>
@@ -1072,6 +1115,15 @@ namespace glc_cs
 			}
 
 			/// <summary>
+			/// krkrDumpにゲームディレクトリを渡すフラグ
+			/// </summary>
+			public static bool ExtractKrkrDumpGameDir
+			{
+				get { return extractKrkrDumpGameDir; }
+				set { extractKrkrDumpGameDir = value; }
+			}
+
+			/// <summary>
 			/// Custom1ツールパス
 			/// </summary>
 			public static string ExtractCustom1Path
@@ -1108,6 +1160,15 @@ namespace glc_cs
 			}
 
 			/// <summary>
+			/// Custom1にゲームディレクトリを渡すフラグ
+			/// </summary>
+			public static bool ExtractCustom1GameDir
+			{
+				get { return extractCustom1GameDir; }
+				set { extractCustom1GameDir = value; }
+			}
+
+			/// <summary>
 			/// Custom2ツールパス
 			/// </summary>
 			public static string ExtractCustom2Path
@@ -1141,6 +1202,15 @@ namespace glc_cs
 			{
 				get { return extractCustom2CurDir; }
 				set { extractCustom2CurDir = value; }
+			}
+
+			/// <summary>
+			/// Custom1にゲームディレクトリを渡すフラグ
+			/// </summary>
+			public static bool ExtractCustom2GameDir
+			{
+				get { return extractCustom2GameDir; }
+				set { extractCustom2GameDir = value; }
 			}
 
 			/// <summary>
@@ -1291,26 +1361,31 @@ namespace glc_cs
 					ExtractKrkrArg = ReadIni("Extract", "krkrArg", string.Empty);
 					ExtractKrkrAddGameArg = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrAddGameArg", "0")));
 					ExtractKrkrCurDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrCurDir", "0")));
+					ExtractKrkrGameDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrGameDir", "0")));
 
 					ExtractKrkrzPath = ReadIni("Extract", "krkrzPath", string.Empty);
 					ExtractKrkrzArg = ReadIni("Extract", "krkrzArg", string.Empty);
 					ExtractKrkrzAddGameArg = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrzAddGameArg", "0")));
 					ExtractKrkrzCurDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrzCurDir", "0")));
+					ExtractKrkrzGameDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrzGameDir", "0")));
 
 					ExtractKrkrDumpPath = ReadIni("Extract", "krkrDumpPath", string.Empty);
 					ExtractKrkrDumpArg = ReadIni("Extract", "krkrDumpArg", string.Empty);
 					ExtractKrkrDumpAddGameArg = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrDumpAddGameArg", "0")));
 					ExtractKrkrDumpCurDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrDumpCurDir", "0")));
+					ExtractKrkrDumpGameDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrDumpGameDir", "0")));
 
 					ExtractCustom1Path = ReadIni("Extract", "Custom1Path", string.Empty);
 					ExtractCustom1Arg = ReadIni("Extract", "Custom1Arg", string.Empty);
 					ExtractCustom1AddGameArg = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Custom1AddGameArg", "0")));
 					ExtractCustom1CurDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Custom1CurDir", "0")));
+					ExtractCustom1GameDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Custom1GameDir", "0")));
 
 					ExtractCustom2Path = ReadIni("Extract", "Custom2Path", string.Empty);
 					ExtractCustom2Arg = ReadIni("Extract", "Custom2Arg", string.Empty);
 					ExtractCustom2AddGameArg = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Custom2AddGameArg", "0")));
 					ExtractCustom2CurDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Custom2CurDir", "0")));
+					ExtractCustom2GameDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Custom2GameDir", "0")));
 				}
 				else
 				{

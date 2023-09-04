@@ -61,7 +61,7 @@
 			this.SearchTargetText.Name = "SearchTargetText";
 			this.SearchTargetText.Size = new System.Drawing.Size(294, 19);
 			this.SearchTargetText.TabIndex = 1;
-			this.SearchTargetText.Click += new System.EventHandler(this.SearchButton_Click);
+			this.SearchTargetText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SearchButton_KeyPress);
 			// 
 			// SearchButton
 			// 

@@ -55,7 +55,11 @@ namespace glc_cs
 				}
 				catch (Exception ex)
 				{
+					SearchResultText.Text = string.Empty;
+					ImageText.Text = string.Empty;
 					ImageBox.ImageLocation = null;
+					imageSavedCheck.Enabled = false;
+					imageSavedCheck.Checked = false;
 					MessageBox.Show(ex.Message, AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 				SaveButton.Focus();
@@ -91,6 +95,14 @@ namespace glc_cs
 					imageSavedCheck.Enabled = false;
 					MessageBox.Show(ex.Message, AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
+			}
+		}
+
+		private void SearchButton_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (e.KeyChar == (char)Keys.Enter)
+			{
+				SearchButton_Click(sender, e);
 			}
 		}
 	}

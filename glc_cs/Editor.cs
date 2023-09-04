@@ -17,6 +17,7 @@ namespace glc_cs
 		MySqlConnection con2 = new MySqlConnection();
 		string genSaveType = string.Empty;
 		string iniPath = string.Empty;
+		public string newGameName = string.Empty;
 
 		/// <summary>
 		/// MSSQL用
@@ -251,6 +252,7 @@ namespace glc_cs
 
 		private void CancelButton_Click(object sender, EventArgs e)
 		{
+			newGameName = string.Empty;
 			Close();
 		}
 
@@ -423,6 +425,7 @@ namespace glc_cs
 
 			if (!hasError)
 			{
+				newGameName = titleText.Text.Trim();
 				Close();
 			}
 		}

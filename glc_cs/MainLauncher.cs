@@ -139,6 +139,7 @@ namespace glc_cs
 			}
 
 			IsFirstLoad = false;
+			GC.Collect();
 		}
 
 		/// <summary>
@@ -416,17 +417,17 @@ namespace glc_cs
 							upButton.Visible = true;
 							downButton.Visible = true;
 							editButton.Visible = true;
-							ResolveError(MethodBase.GetCurrentMethod().Name, "データベースに接続できなかった為、オフラインモードで起動します。", 0, false);
+							ResolveError(MethodBase.GetCurrentMethod().Name, "データベースに接続できなかった為、オフラインモードで起動します。\nこの問題が一時的なものである場合、再起動で解決する場合があります。", 0, false, errMessage);
 						}
 					}
 					else
 					{
-						ResolveError(MethodBase.GetCurrentMethod().Name, errMessage, 0, false);
+						ResolveError(MethodBase.GetCurrentMethod().Name, errMessage, 0, false, errMessage);
 					}
 				}
 				else
 				{
-					ResolveError(MethodBase.GetCurrentMethod().Name, errMessage, 0, false);
+					ResolveError(MethodBase.GetCurrentMethod().Name, errMessage, 0, false, errMessage);
 				}
 			}
 			else
@@ -640,17 +641,17 @@ namespace glc_cs
 							upButton.Visible = true;
 							downButton.Visible = true;
 							editButton.Visible = true;
-							ResolveError(MethodBase.GetCurrentMethod().Name, "データベースに接続できなかった為、オフラインモードで起動します。", 0, false);
+							ResolveError(MethodBase.GetCurrentMethod().Name, "データベースに接続できなかった為、オフラインモードで起動します。\nこの問題が一時的なものである場合、再起動で解決する場合があります。", 0, false, errMessage);
 						}
 					}
 					else
 					{
-						ResolveError(MethodBase.GetCurrentMethod().Name, errMessage, 0, false);
+						ResolveError(MethodBase.GetCurrentMethod().Name, errMessage, 0, false, errMessage);
 					}
 				}
 				else
 				{
-					ResolveError(MethodBase.GetCurrentMethod().Name, errMessage, 0, false);
+					ResolveError(MethodBase.GetCurrentMethod().Name, errMessage, 0, false, errMessage);
 				}
 			}
 			else
@@ -661,7 +662,7 @@ namespace glc_cs
 					// オフラインモードで変更がなかったかチェック
 					if (ReadIni("list", "dbupdate", "0", 0, LocalPath) == "1")
 					{
-						DialogResult dr = MessageBox.Show("オフラインモード実行時に変更がありました。\nデータベースへアップロードしますか？\n\n接続先：" + DbUrl + ":" + DbPort + " ▶ " + DbName + "." + DbTable + "\n\n※データベースのレコードを全削除し、オフラインのデータを登録します。\n\n[はい]	登録\n[いいえ]	破棄", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+						DialogResult dr = MessageBox.Show("オフラインモード実行時に変更がありました。\nデータベースへアップロードしますか？\n\n接続先：" + DbUrl + ":" + DbPort + " ▶ " + DbName + "." + DbTable + "\n\n※データベースのレコードを全削除し、オフラインのデータを登録します。\n\n[はい]	登録\n[いいえ]	変更を破棄", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 						if (dr == DialogResult.Yes)
 						{
 							int tmpMaxGameCount, sCount, fCount;
@@ -730,16 +731,22 @@ namespace glc_cs
 						gameImgList.LargeImageList = imageList8;
 						imageList32.Images.Clear();
 						imageList64.Images.Clear();
+						imageList32.Dispose();
+						imageList64.Dispose();
 						break;
 					case 32:
 						gameImgList.LargeImageList = imageList32;
 						imageList8.Images.Clear();
 						imageList64.Images.Clear();
+						imageList8.Dispose();
+						imageList64.Dispose();
 						break;
 					case 64:
 						gameImgList.LargeImageList = imageList64;
 						imageList8.Images.Clear();
 						imageList32.Images.Clear();
+						imageList8.Dispose();
+						imageList32.Dispose();
 						break;
 				}
 			}
@@ -841,7 +848,7 @@ namespace glc_cs
 
 								writer.Close();
 
-								drunp = Process.Start(DconPath); // dcon実行
+								drunp = Process.Start(DconPath);	// dcon実行
 							}
 							else
 							{
@@ -1010,7 +1017,7 @@ namespace glc_cs
 										tr.Rollback();
 									}
 									WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
-									ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message + "\n\nエラーログに記載されているSQL文を手動で実行すると更新できます。", 0, false);
+									ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message + "\n\nエラーログに記載されているSQL文を手動で実行すると更新できます。\nSQLエディタを所持していない場合、[設定] > [ツール] > [SQLエディタ] からSQLを実行できます。", 0, false);
 								}
 								finally
 								{
@@ -1052,7 +1059,7 @@ namespace glc_cs
 										tr.Rollback();
 									}
 									WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
-									ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message + "\n\nエラーログに記載されているSQL文を手動で実行すると更新できます。", 0, false);
+									ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message + "\n\nエラーログに記載されているSQL文を手動で実行すると更新できます。\nSQLエディタを所持していない場合、[設定] > [ツール] > [SQLエディタ] からSQLを実行できます。", 0, false);
 								}
 								finally
 								{
@@ -1136,14 +1143,14 @@ namespace glc_cs
 						this.WindowState = FormWindowState.Normal;
 
 						// 終了検出後
-						DialogResult dr = MessageBox.Show("実行終了を検出しました。\n開始日時：" + startTime.ToString("yyyy/MM/dd HH:mm:ss") + "\n終了日時：" + endTime.ToString("yyyy/MM/dd HH:mm:ss") + "\n\nゲームを正しくトラッキングできていますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+						DialogResult dr = MessageBox.Show("実行終了を検出しました。\n開始日時：" + startTime.ToString("yyyy/MM/dd HH:mm:ss") + "\n終了日時：" + endTime.ToString("yyyy/MM/dd HH:mm:ss") + "\n\n正しくトラッキングできていますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 						if (dr == DialogResult.Yes)
 						{
 							MessageBox.Show("正常にトラッキングできています。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 						}
 						else
 						{
-							MessageBox.Show("トラッキングに失敗しています。\n\n以下をご確認ください。\n\n・ランチャーを指定していませんか？\n・GLを管理者権限で起動してみてください。\n・実行パスを英数字のみにしてみてください。\n\nそれでも解決しない場合は、トラッキングできません。ご了承ください。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+							MessageBox.Show("トラッキングに失敗しています。\n以下をご確認ください。\n\n・ランチャーを指定していませんか？\n・GLを管理者権限で起動してみてください。\n・実行パスを英数字のみにしてみてください。\n\nそれでも解決しない場合は、GitHubでIssueを開いてファイルパスやゲームエンジン等を教えてください。可能な限り対応します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 						}
 
 					}
@@ -1190,6 +1197,10 @@ namespace glc_cs
 		private string JudgeCurrentDir(int CurrentExtractTool, string originAppPath, string newAppPath)
 		{
 			string resultCurDirPath = originAppPath;
+			if (newAppPath.Length == 0)
+			{
+				return resultCurDirPath;
+			}
 
 			switch (CurrentExtractTool)
 			{
@@ -1281,7 +1292,7 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void GameList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (!(GameMax >= 1))
+			if (!(GameMax >= 1) || !(gameList.SelectedIndex >= 0))
 			{
 				return;
 			}
@@ -1526,7 +1537,7 @@ namespace glc_cs
 				gameIcon.ImageLocation = "";
 			}
 
-			if ((runTimeText.Text == "35791394") || (startCountText.Text == Int32.MaxValue.ToString()))
+			if ((Convert.ToInt32(runTimeText.Text) >= 35791394) || (Convert.ToInt32(startCountText.Text) >= Int32.MaxValue))
 			{
 				// 最大の場合、実行できないようにする
 				startButton.Enabled = false;
@@ -2004,7 +2015,7 @@ namespace glc_cs
 		{
 			string selectedListCount = (gameList.SelectedIndex + 1).ToString();
 
-			if (gameList.SelectedIndex == -1)
+			if (!(gameList.SelectedIndex >= 0))
 			{
 				MessageBox.Show("ゲームリストが空です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
@@ -2029,6 +2040,14 @@ namespace glc_cs
 				Editor form5 = new Editor(SaveType, selectedListCount, cn, cm);
 				form5.StartPosition = FormStartPosition.CenterParent;
 				form5.ShowDialog(this);
+				if (!string.IsNullOrEmpty(form5.newGameName))
+				{
+					gameList.Items[gameList.SelectedIndex] = form5.newGameName;
+					if (GridEnable)
+					{
+						gameImgList.Items[gameList.SelectedIndex].Text = form5.newGameName;
+					}
+				}
 			}
 			else if (SaveType == "M")
 			{
@@ -2049,6 +2068,14 @@ namespace glc_cs
 				Editor form5 = new Editor(SaveType, selectedListCount, cn, cm);
 				form5.StartPosition = FormStartPosition.CenterParent;
 				form5.ShowDialog(this);
+				if (!string.IsNullOrEmpty(form5.newGameName))
+				{
+					gameList.Items[gameList.SelectedIndex] = form5.newGameName;
+					if (GridEnable)
+					{
+						gameImgList.Items[gameList.SelectedIndex].Text = form5.newGameName;
+					}
+				}
 			}
 			else
 			{
@@ -2059,6 +2086,14 @@ namespace glc_cs
 					Editor form5 = new Editor(SaveType, selectedListCount, new SqlConnection(), new SqlCommand());
 					form5.StartPosition = FormStartPosition.CenterParent;
 					form5.ShowDialog(this);
+					if (!string.IsNullOrEmpty(form5.newGameName))
+					{
+						gameList.Items[gameList.SelectedIndex] = form5.newGameName;
+						if (GridEnable)
+						{
+							gameImgList.Items[gameList.SelectedIndex].Text = form5.newGameName;
+						}
+					}
 				}
 				else
 				{
