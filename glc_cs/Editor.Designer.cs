@@ -65,6 +65,11 @@
 			this.label10 = new System.Windows.Forms.Label();
 			this.extractToolCombo = new System.Windows.Forms.ComboBox();
 			this.getInfoButton = new System.Windows.Forms.Button();
+			this.checkBox4 = new System.Windows.Forms.CheckBox();
+			this.button5 = new System.Windows.Forms.Button();
+			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.label11 = new System.Windows.Forms.Label();
+			this.button6 = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.iconImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.runTimeText)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.startCountText)).BeginInit();
@@ -238,7 +243,7 @@
 			// 
 			// ApplyButton
 			// 
-			this.ApplyButton.Location = new System.Drawing.Point(210, 676);
+			this.ApplyButton.Location = new System.Drawing.Point(210, 706);
 			this.ApplyButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
 			this.ApplyButton.Name = "ApplyButton";
 			this.ApplyButton.Size = new System.Drawing.Size(264, 66);
@@ -249,7 +254,7 @@
 			// 
 			// CloseButton
 			// 
-			this.CloseButton.Location = new System.Drawing.Point(544, 676);
+			this.CloseButton.Location = new System.Drawing.Point(544, 706);
 			this.CloseButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
 			this.CloseButton.Name = "CloseButton";
 			this.CloseButton.Size = new System.Drawing.Size(264, 66);
@@ -401,7 +406,7 @@
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(592, 600);
+			this.label10.Location = new System.Drawing.Point(658, 600);
 			this.label10.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(58, 24);
@@ -420,7 +425,7 @@
             "krkrDump",
             "カスタム1",
             "カスタム2"});
-			this.extractToolCombo.Location = new System.Drawing.Point(667, 594);
+			this.extractToolCombo.Location = new System.Drawing.Point(728, 597);
 			this.extractToolCombo.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
 			this.extractToolCombo.Name = "extractToolCombo";
 			this.extractToolCombo.Size = new System.Drawing.Size(258, 32);
@@ -438,11 +443,76 @@
 			this.getInfoButton.UseVisualStyleBackColor = true;
 			this.getInfoButton.Click += new System.EventHandler(this.getInfoButton_Click);
 			// 
+			// checkBox4
+			// 
+			this.checkBox4.AutoSize = true;
+			this.checkBox4.Enabled = false;
+			this.checkBox4.Location = new System.Drawing.Point(431, 598);
+			this.checkBox4.Margin = new System.Windows.Forms.Padding(6);
+			this.checkBox4.Name = "checkBox4";
+			this.checkBox4.Size = new System.Drawing.Size(205, 28);
+			this.checkBox4.TabIndex = 86;
+			this.checkBox4.Text = "セーブデータ共有";
+			this.checkBox4.UseVisualStyleBackColor = true;
+			this.checkBox4.Visible = false;
+			// 
+			// button5
+			// 
+			this.button5.Enabled = false;
+			this.button5.Location = new System.Drawing.Point(943, 637);
+			this.button5.Margin = new System.Windows.Forms.Padding(6);
+			this.button5.Name = "button5";
+			this.button5.Size = new System.Drawing.Size(43, 46);
+			this.button5.TabIndex = 89;
+			this.button5.Text = "...";
+			this.button5.UseVisualStyleBackColor = true;
+			this.button5.Visible = false;
+			// 
+			// textBox1
+			// 
+			this.textBox1.Enabled = false;
+			this.textBox1.Location = new System.Drawing.Point(214, 645);
+			this.textBox1.Margin = new System.Windows.Forms.Padding(6);
+			this.textBox1.MaxLength = 500;
+			this.textBox1.Name = "textBox1";
+			this.textBox1.Size = new System.Drawing.Size(662, 31);
+			this.textBox1.TabIndex = 88;
+			this.textBox1.Visible = false;
+			// 
+			// label11
+			// 
+			this.label11.AutoSize = true;
+			this.label11.Enabled = false;
+			this.label11.Location = new System.Drawing.Point(67, 648);
+			this.label11.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(125, 24);
+			this.label11.TabIndex = 87;
+			this.label11.Text = "セーブデータ";
+			this.label11.Visible = false;
+			// 
+			// button6
+			// 
+			this.button6.Enabled = false;
+			this.button6.Location = new System.Drawing.Point(888, 637);
+			this.button6.Margin = new System.Windows.Forms.Padding(6);
+			this.button6.Name = "button6";
+			this.button6.Size = new System.Drawing.Size(43, 46);
+			this.button6.TabIndex = 90;
+			this.button6.Text = "..";
+			this.button6.UseVisualStyleBackColor = true;
+			this.button6.Visible = false;
+			// 
 			// Editor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1012, 772);
+			this.ClientSize = new System.Drawing.Size(1012, 802);
+			this.Controls.Add(this.button6);
+			this.Controls.Add(this.button5);
+			this.Controls.Add(this.textBox1);
+			this.Controls.Add(this.label11);
+			this.Controls.Add(this.checkBox4);
 			this.Controls.Add(this.getInfoButton);
 			this.Controls.Add(this.extractToolCombo);
 			this.Controls.Add(this.label10);
@@ -529,5 +599,10 @@
 		private System.Windows.Forms.ComboBox extractToolCombo;
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.Button getInfoButton;
+		private System.Windows.Forms.Button button6;
+		private System.Windows.Forms.Button button5;
+		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.CheckBox checkBox4;
 	}
 }
