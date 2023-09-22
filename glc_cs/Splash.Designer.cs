@@ -33,6 +33,8 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.statusLabel = new System.Windows.Forms.Label();
 			this.progressBar1 = new System.Windows.Forms.ProgressBar();
+			this.MemoryLabel = new System.Windows.Forms.Label();
+			this.progressBar2 = new System.Windows.Forms.ProgressBar();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -41,9 +43,10 @@
 			this.pictureBox1.BackgroundImage = global::glc_cs.Properties.Resources.icon;
 			this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
 			this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pictureBox1.Location = new System.Drawing.Point(10, 10);
+			this.pictureBox1.Location = new System.Drawing.Point(22, 20);
+			this.pictureBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
 			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(100, 100);
+			this.pictureBox1.Size = new System.Drawing.Size(214, 198);
 			this.pictureBox1.TabIndex = 0;
 			this.pictureBox1.TabStop = false;
 			// 
@@ -51,9 +54,10 @@
 			// 
 			this.label1.AutoSize = true;
 			this.label1.Font = new System.Drawing.Font("Meiryo UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label1.Location = new System.Drawing.Point(120, 26);
+			this.label1.Location = new System.Drawing.Point(260, 39);
+			this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(218, 20);
+			this.label1.Size = new System.Drawing.Size(439, 41);
 			this.label1.TabIndex = 1;
 			this.label1.Text = "Game Launcher C# Edition";
 			// 
@@ -63,38 +67,68 @@
 			this.label3.AutoSize = true;
 			this.label3.BackColor = System.Drawing.Color.Transparent;
 			this.label3.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label3.Location = new System.Drawing.Point(116, 97);
+			this.label3.Location = new System.Drawing.Point(251, 194);
+			this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(36, 13);
+			this.label3.Size = new System.Drawing.Size(66, 30);
 			this.label3.TabIndex = 4;
 			this.label3.Text = "Hash:";
 			// 
 			// statusLabel
 			// 
 			this.statusLabel.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.statusLabel.Location = new System.Drawing.Point(122, 63);
+			this.statusLabel.Location = new System.Drawing.Point(242, 109);
+			this.statusLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
 			this.statusLabel.Name = "statusLabel";
-			this.statusLabel.Size = new System.Drawing.Size(216, 26);
+			this.statusLabel.Size = new System.Drawing.Size(501, 33);
 			this.statusLabel.TabIndex = 5;
 			this.statusLabel.Text = "Please wait a moment..";
 			this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// progressBar1
 			// 
-			this.progressBar1.Location = new System.Drawing.Point(12, 115);
+			this.progressBar1.Location = new System.Drawing.Point(26, 230);
+			this.progressBar1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
 			this.progressBar1.Maximum = 6;
 			this.progressBar1.Name = "progressBar1";
-			this.progressBar1.Size = new System.Drawing.Size(326, 10);
+			this.progressBar1.Size = new System.Drawing.Size(706, 20);
 			this.progressBar1.Step = 1;
 			this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.progressBar1.TabIndex = 6;
 			// 
+			// MemoryLabel
+			// 
+			this.MemoryLabel.AutoEllipsis = true;
+			this.MemoryLabel.AutoSize = true;
+			this.MemoryLabel.BackColor = System.Drawing.Color.Transparent;
+			this.MemoryLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.MemoryLabel.Location = new System.Drawing.Point(251, 171);
+			this.MemoryLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+			this.MemoryLabel.Name = "MemoryLabel";
+			this.MemoryLabel.Size = new System.Drawing.Size(202, 30);
+			this.MemoryLabel.TabIndex = 7;
+			this.MemoryLabel.Text = "Memory Use: xxMB";
+			this.MemoryLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+			// 
+			// progressBar2
+			// 
+			this.progressBar2.Location = new System.Drawing.Point(248, 148);
+			this.progressBar2.Margin = new System.Windows.Forms.Padding(6);
+			this.progressBar2.Maximum = 6;
+			this.progressBar2.Name = "progressBar2";
+			this.progressBar2.Size = new System.Drawing.Size(484, 17);
+			this.progressBar2.Step = 1;
+			this.progressBar2.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+			this.progressBar2.TabIndex = 8;
+			// 
 			// Splash
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(350, 129);
+			this.ClientSize = new System.Drawing.Size(758, 258);
 			this.ControlBox = false;
+			this.Controls.Add(this.progressBar2);
+			this.Controls.Add(this.MemoryLabel);
 			this.Controls.Add(this.progressBar1);
 			this.Controls.Add(this.statusLabel);
 			this.Controls.Add(this.label3);
@@ -102,6 +136,7 @@
 			this.Controls.Add(this.pictureBox1);
 			this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+			this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "Splash";
@@ -124,5 +159,7 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label statusLabel;
 		private System.Windows.Forms.ProgressBar progressBar1;
+		private System.Windows.Forms.Label MemoryLabel;
+		private System.Windows.Forms.ProgressBar progressBar2;
 	}
 }
