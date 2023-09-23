@@ -293,6 +293,11 @@ namespace glc_cs
 			protected static int fixGridSize = 32;
 
 			/// <summary>
+			/// 初期起動時ゲームロードカウンタ表示フラグ
+			/// </summary>
+			protected static bool disableInitialLoadCountFlg = true;
+
+			/// <summary>
 			/// 抽出機能使用可否フラグ
 			/// </summary>
 			protected static bool extractEnable = false;
@@ -498,6 +503,15 @@ namespace glc_cs
 			{
 				get { return windowHideControlFlg; }
 				set { windowHideControlFlg = value; }
+			}
+
+			/// <summary>
+			/// 初期起動時にスクラッシュウィンドウにロード中ゲームのカウンタを表示するかのフラグです
+			/// </summary>
+			public static bool DisableInitialLoadCountFlg
+			{
+				get { return disableInitialLoadCountFlg; }
+				set { disableInitialLoadCountFlg = value; }
 			}
 
 			/// <summary>
@@ -1230,6 +1244,7 @@ namespace glc_cs
 					GameIni = GameDir + "game.ini";
 					GameDb = ReadIni("default", "database", string.Empty);
 					DconPath = ReadIni("connect", "dconPath", "-1");
+					disableInitialLoadCountFlg = Convert.ToBoolean(Convert.ToInt32(ReadIni("disable", "DisableInitialLoadCount", "1")));
 
 					SaveType = ReadIni("general", "save", "I");
 					OfflineSave = Convert.ToBoolean(Convert.ToInt32(ReadIni("general", "OfflineSave", "0")));

@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using glc_cs.Properties;
+using MySql.Data.MySqlClient;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -42,6 +43,8 @@ namespace glc_cs
 			this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 			this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
 			this.SetStyle(ControlStyles.UserPaint, true);
+
+			DateTime appStartTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
 
 			// 終了処理設定
 			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
@@ -103,6 +106,13 @@ namespace glc_cs
 			SplashForm.Dispose();
 			Application.DoEvents();
 
+			// 準備所要時間計算
+			DateTime appReadyTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+			string temp = (appReadyTime - appStartTime).ToString();
+			int wakeUpTimes = Convert.ToInt32(TimeSpan.Parse(temp).TotalSeconds);
+
+			Message(AppName + "へようこそ。ランチャーの起動時間は、" + wakeUpTimes + "秒でした。");
+
 			if (ByActive && ByRoW)
 			{
 				Bouyomiage("ゲームランチャーを起動しました");
@@ -147,9 +157,9 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="value">進捗率</param>
 		/// <param name="message">メッセージ</param>
-		private void UpdateSplashInfo(int value, string message)
+		private void UpdateSplashInfo(int value, string message, int value2 = 0, int value3 = 0)
 		{
-			SplashForm.SetProgress(value, message);
+			SplashForm.SetProgress(value, message, value2, value3);
 		}
 
 		/// <summary>
@@ -203,8 +213,18 @@ namespace glc_cs
 			toolStripProgressBar1.Minimum = 0;
 			toolStripProgressBar1.Maximum = GameMax;
 
+			if (IsFirstLoad)
+			{
+				UpdateSplashInfo(-1, "ゲームリストのロード中… [" + GameMax + "件]");
+			}
+
 			for (count = 1; count <= GameMax; count++)
 			{
+				if (IsFirstLoad && !DisableInitialLoadCountFlg)
+				{
+					UpdateSplashInfo(-1, "ゲームリストのロード中", count, GameMax);
+				}
+
 				toolStripProgressBar1.Value = count;
 				// 読込iniファイル名更新
 				readini = gameDirname + "\\" + count + ".ini";
@@ -326,6 +346,11 @@ namespace glc_cs
 					return "_none_game_data";
 				}
 
+				if (IsFirstLoad)
+				{
+					UpdateSplashInfo(-1, "ゲームリストのロード中… [" + GameMax + "件]");
+				}
+
 				if (!(GameMax >= 1)) // ゲーム登録数が1以上でない場合
 				{
 					reloadButton.Enabled = false;
@@ -349,10 +374,18 @@ namespace glc_cs
 				};
 				cm2.Connection = cn;
 
+				int counter = 0;
+
 				using (var reader = cm2.ExecuteReader())
 				{
 					while (reader.Read() == true)
 					{
+						counter++;
+						if (IsFirstLoad && !DisableInitialLoadCountFlg)
+						{
+							UpdateSplashInfo(-1, "ゲームリストのロード中", counter, GameMax);
+						}
+
 						gameList.Items.Add(reader["GAME_NAME"].ToString());
 
 						if (GridEnable)
@@ -550,6 +583,11 @@ namespace glc_cs
 					return "_none_game_data";
 				}
 
+				if (IsFirstLoad)
+				{
+					UpdateSplashInfo(-1, "ゲームリストのロード中… [" + GameMax + "件]");
+				}
+
 				if (!(GameMax >= 1)) // ゲーム登録数が1以上でない場合
 				{
 					reloadButton.Enabled = false;
@@ -573,10 +611,18 @@ namespace glc_cs
 				};
 				cm2.Connection = cn;
 
+				int counter = 0;
+
 				using (var reader = cm2.ExecuteReader())
 				{
 					while (reader.Read() == true)
 					{
+						counter++;
+						if (IsFirstLoad && !DisableInitialLoadCountFlg)
+						{
+							UpdateSplashInfo(-1, "ゲームリストのロード中", counter, GameMax);
+						}
+
 						gameList.Items.Add(reader["GAME_NAME"].ToString());
 
 						if (GridEnable)
@@ -1495,6 +1541,8 @@ namespace glc_cs
 			toolStripStatusLabel1.Text = "[" + selecteditem + "/" + GameMax + "]";
 			toolStripProgressBar1.Value = gameList.SelectedIndex + 1;
 
+			bool startButtonEnable = true;
+
 			if (string.IsNullOrEmpty(execute_cmd))
 			{
 				// 引数テキストボックス非表示
@@ -1517,41 +1565,39 @@ namespace glc_cs
 				ratedRadio.Checked = true;
 			}
 
-			if (File.Exists(passdata))
+			if (!File.Exists(passdata))
 			{
-				startButton.Enabled = true;
-			}
-			else
-			{
-				startButton.Enabled = false;
+				// アプリケーションが存在しない場合、実行できないようにする
+				startButtonEnable = false;
 			}
 
 			if (File.Exists(imgpassdata))
 			{
 				try
 				{
+					gameIcon.Image = null;
 					gameIcon.ImageLocation = imgpassdata;
 				}
 				catch (Exception ex)
 				{
 					gameIcon.ImageLocation = "";
+					gameIcon.Image = Resources.exe;
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, imgpassdata);
 				}
 			}
 			else
 			{
 				gameIcon.ImageLocation = "";
+				gameIcon.Image = Resources.exe;
 			}
 
 			if ((Convert.ToInt32(runTimeText.Text) >= 35791394) || (Convert.ToInt32(startCountText.Text) >= Int32.MaxValue))
 			{
 				// 最大の場合、実行できないようにする
-				startButton.Enabled = false;
+				startButtonEnable = false;
 			}
-			else
-			{
-				startButton.Enabled = true;
-			}
+
+			startButton.Enabled = startButtonEnable;
 
 			return;
 		}
@@ -1778,7 +1824,6 @@ namespace glc_cs
 				{
 					this.BackgroundImage = new Bitmap(bgimg);
 					this.BackgroundImageLayout = ImageLayout.Stretch;
-					toolStripStatusLabel2.Text = "！背景画像が適用されました。環境によっては描画に時間がかかる場合があります。！";
 				}
 				else
 				{
@@ -2450,7 +2495,7 @@ namespace glc_cs
 		/// <summary>
 		/// ステータスバーに表示されるメッセージを選択
 		/// </summary>
-		private void Message()
+		private void Message(string message = null)
 		{
 			string ans = "";
 			int tmp;
@@ -2471,6 +2516,17 @@ namespace glc_cs
 					ans = "＊本ソフトウェアはベータ版です。エラーが発生した場合はご連絡ください。";
 					break;
 			}
+
+			if (IsFirstLoad && !string.IsNullOrEmpty(message))
+			{
+				ans = message;
+			}
+			else if (IsFirstLoad && toolStripStatusLabel2.Text.Trim().Length != 0)
+			{
+				// 初回起動時はメッセージを更新しない
+				return;
+			}
+
 			toolStripStatusLabel2.Text = ans;
 			return;
 		}
@@ -3353,6 +3409,7 @@ namespace glc_cs
 				case 1:
 					// 最終起動
 					searchText.Enabled = false;
+					orderDropDown.SelectedIndex = 1;
 					break;
 				case 2:
 					// dconメモ

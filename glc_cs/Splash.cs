@@ -16,7 +16,7 @@ namespace glc_cs
 
 		private void Form3_Load(object sender, EventArgs e)
 		{
-			label3.Text = "MD5: " + ComputeFileHash(Application.ExecutablePath);
+			// label3.Text = "MD5: " + ComputeFileHash(Application.ExecutablePath);
 		}
 
 		private static string ComputeFileHash(string filePath)
@@ -27,10 +27,33 @@ namespace glc_cs
 			return BitConverter.ToString(bs).ToLower().Replace("-", "");
 		}
 
-		public void SetProgress(int value, string message)
+		public void SetProgress(int value, string message, int value2 = 0, int value3 = 0)
 		{
+			string appendMsg = " [" + value2 + " / " + value3 + "]";
+			if (value == -1 && value3 != 0)
+			{
+				if (!progressBar2.Visible)
+				{
+					progressBar2.Visible = true;
+					progressBar2.Maximum = value3;
+				}
+				value = progressBar1.Value;
+				progressBar2.Value = value2;
+				message = message + appendMsg;
+			}
+			else
+			{
+				progressBar2.Visible = false;
+			}
+
+			if (value == -1)
+			{
+				value = progressBar1.Value;
+			}
+
 			progressBar1.Value = value;
 			statusLabel.Text = message + " (" + value.ToString() + " / " + progressBar1.Maximum + ")";
+			MemoryLabel.Text = "Memory Use: " + (Environment.WorkingSet / 1024 / 1024) + "MB";
 			Application.DoEvents();
 		}
 	}

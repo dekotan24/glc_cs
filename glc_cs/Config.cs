@@ -58,6 +58,7 @@ namespace glc_cs
 					fixGridSize32.Checked = true;
 					break;
 			}
+			DisableInitialLoadCountCheck.Checked = DisableInitialLoadCountFlg;
 
 			// Discord設定読み込み
 			bool dconActive = Dconnect;
@@ -172,6 +173,7 @@ namespace glc_cs
 			offlineSaveEnableCheck.Checked = OfflineSave;
 			useLocalDBCheck.Checked = UseLocalDB;
 
+
 			// スーパーモード
 			// ドロップダウン既定値設定
 			insertColumnsDropDown.SelectedIndex = 0;
@@ -210,6 +212,8 @@ namespace glc_cs
 			addGameArgCheck.Checked = false;
 			extractCurrentDirCheck.Checked = false;
 			addGameDirCheck.Checked = false;
+
+			saveWithDownloadCheck.Visible = OfflineSave;
 		}
 
 		/// <summary>
@@ -270,6 +274,7 @@ namespace glc_cs
 				WriteIni("disable", "updchkVer", "0.0");
 			}
 			WriteIni("disable", "enableWindowHideControl", enableWindowHideControlCheck.Checked ? "1" : "0");
+			WriteIni("disable", "DisableInitialLoadCount", DisableInitialLoadCountCheck.Checked ? "1" : "0");
 			WriteIni("grid", "fixGridSizeFlg", fixGridSizeCheck.Checked ? "1" : "0");
 			WriteIni("grid", "fixGridSize", (fixGridSize8.Checked ? "8" : (fixGridSize64.Checked ? "64" : "32")));
 
@@ -1240,6 +1245,12 @@ namespace glc_cs
 			else if (!offlineSaveEnableCheck.Checked)
 			{
 				saveWithDownloadCheck.Visible = false;
+			}
+
+			if (offlineSaveEnableCheck.Checked && offlineSaveEnableCheck.Focused)
+			{
+				// オフライン保存有効時にダイアログを表示
+				MessageBox.Show("[" + offlineSaveEnableCheck.Text + "]を有効にすると、以下のタイミングで自動的にDBのバックアップが取得されます。\n\n・設定画面の[" + saveButton.Text + "]を押した時\n・アプリケーションを終了する時\n\nバックアップの保存先：" + BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\" + "\n\nまた、バックアップの取得に時間がかかる場合があります。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 		}
 
