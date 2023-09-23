@@ -2849,6 +2849,8 @@ namespace glc_cs
 
 			if ((SaveType == "D" || SaveType == "M") && OfflineSave && downloadDbEnabled)
 			{
+				notifyIcon1.BalloonTipText = "オフラインデータの取得中です。しばらくお待ち下さい。";
+				notifyIcon1.ShowBalloonTip(10);
 				string localPath = BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\";
 				downloadDbDataToLocal(localPath);
 			}

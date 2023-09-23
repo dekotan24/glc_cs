@@ -213,7 +213,7 @@ namespace glc_cs
 			extractCurrentDirCheck.Checked = false;
 			addGameDirCheck.Checked = false;
 
-			saveWithDownloadCheck.Visible = OfflineSave;
+			saveWithDownloadCheck.Visible = OfflineSave && (SaveType == "M" || SaveType == "D");
 		}
 
 		/// <summary>
@@ -1596,6 +1596,12 @@ namespace glc_cs
 					break;
 				case 12:
 					appendText = "DB_VERSION";
+					break;
+				case 13:
+					appendText = "EXECUTE_CMD";
+					break;
+				case 14:
+					appendText = "EXTRACT_TOOL";
 					break;
 			}
 			queryText.AppendText(appendText + " ");
