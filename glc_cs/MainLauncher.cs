@@ -67,7 +67,7 @@ namespace glc_cs
 			UpdateSplashInfo(4, "ゲームリストのロード中…");
 
 			// アイテム読込
-			string item = SaveType == "I" ? LoadItem(GameDir) : SaveType == "D" ? LoadItem2(SqlCon, true) : LoadItem3(SqlCon2, true);
+			string item = SaveType == "I" ? LoadItem(GameDir) : SaveType == "D" ? LoadItem2(SqlCon, IsFirstLoad) : LoadItem3(SqlCon2, IsFirstLoad);
 
 			// ステータス変更
 			UpdateSplashInfo(5, "UIの読み込み中…");
@@ -268,7 +268,7 @@ namespace glc_cs
 		}
 
 		/// <summary>
-		/// データベースからゲーム一覧をロードします
+		/// データベースからゲーム一覧をロードします（MSSQL）
 		/// </summary>
 		/// <param name="cn">SQL Connection</param>
 		/// <returns></returns>

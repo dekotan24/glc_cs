@@ -810,7 +810,6 @@
 			this.Controls.Add(this.flowLayoutPanel1);
 			this.Controls.Add(this.launchFlowLayoutPanel);
 			this.Controls.Add(this.gameStatusFlowLayoutPanel);
-			this.DoubleBuffered = true;
 			this.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;

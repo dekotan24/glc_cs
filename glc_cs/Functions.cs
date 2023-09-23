@@ -1221,10 +1221,7 @@ namespace glc_cs
 			{
 				MyBase64str base64 = new MyBase64str();
 
-				if (SaveType == "T")
-				{
-					return true;
-				}
+				string currentSaveType = SaveType;
 
 				if (File.Exists(ConfigIni))
 				{
@@ -1422,6 +1419,14 @@ namespace glc_cs
 					// dcon設定
 					Dconnect = false;
 					Rate = 0;
+				}
+
+				// 設定ロード前の保存方法がオフラインINIモードの場合、ゲームディレクトリ等を上書きする
+				if (currentSaveType == "T")
+				{
+					SaveType = "T";
+					GameDir = LocalPath;
+					GameIni = LocalIni;
 				}
 
 				return true;
@@ -1794,14 +1799,14 @@ namespace glc_cs
 						{
 							using (BinaryWriter bw = new BinaryWriter(ns))
 							{
-								bw.Write(ByCmd);	// コマンド（ 0:メッセージ読み上げ）
-								bw.Write(BySpd);	// 速度    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByTone);	// 音程    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByVol);	// 音量    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByVoice);	// 声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
-								bw.Write(ByCode);	// 文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
-								bw.Write(ByLength);	// 文字列のbyte配列の長さ
-								bw.Write(BybMsg);	// 文字列のbyte配列
+								bw.Write(ByCmd);    // コマンド（ 0:メッセージ読み上げ）
+								bw.Write(BySpd);    // 速度    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByTone);   // 音程    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByVol);    // 音量    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByVoice);  // 声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
+								bw.Write(ByCode);   // 文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
+								bw.Write(ByLength); // 文字列のbyte配列の長さ
+								bw.Write(BybMsg);   // 文字列のbyte配列
 							}
 						}
 						tc.Close();
@@ -1854,14 +1859,14 @@ namespace glc_cs
 						{
 							using (BinaryWriter bw = new BinaryWriter(ns))
 							{
-								bw.Write(ByCmd);	// コマンド（ 0:メッセージ読み上げ）
-								bw.Write(BySpd);	// 速度    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByTone);	// 音程    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByVol);	// 音量    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByVoice);	// 声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
-								bw.Write(ByCode);	// 文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
-								bw.Write(ByLength);	// 文字列のbyte配列の長さ
-								bw.Write(BybMsg);	// 文字列のbyte配列
+								bw.Write(ByCmd);    // コマンド（ 0:メッセージ読み上げ）
+								bw.Write(BySpd);    // 速度    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByTone);   // 音程    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByVol);    // 音量    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByVoice);  // 声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
+								bw.Write(ByCode);   // 文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
+								bw.Write(ByLength); // 文字列のbyte配列の長さ
+								bw.Write(BybMsg);   // 文字列のbyte配列
 							}
 						}
 					}
@@ -2065,6 +2070,13 @@ namespace glc_cs
 				catch (Exception ex)
 				{
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "[初期退避処理] Path: " + targetWorkDir);
+
+					// ターゲットパスが存在していない場合
+					if (!File.Exists(targetWorkDir))
+					{
+						// 退避ファイルが存在する場合、復元する
+						Directory.Move(baseDir + "_temp_db_bak", targetWorkDir);
+					}
 					return false;
 				}
 

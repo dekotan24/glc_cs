@@ -62,6 +62,7 @@
 			this.extractToolSelectButton = new System.Windows.Forms.Button();
 			this.enableExtractCheck = new System.Windows.Forms.CheckBox();
 			this.saveWithDownloadCheck = new System.Windows.Forms.CheckBox();
+			this.addGameDirCheck = new System.Windows.Forms.CheckBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage7 = new System.Windows.Forms.TabPage();
 			this.groupBox16 = new System.Windows.Forms.GroupBox();
@@ -176,7 +177,6 @@
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.label15 = new System.Windows.Forms.Label();
 			this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
-			this.addGameDirCheck = new System.Windows.Forms.CheckBox();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage7.SuspendLayout();
@@ -324,9 +324,9 @@
 			// 
 			// iniAllEditButton
 			// 
-			this.iniAllEditButton.Location = new System.Drawing.Point(341, 39);
+			this.iniAllEditButton.Location = new System.Drawing.Point(341, 41);
 			this.iniAllEditButton.Name = "iniAllEditButton";
-			this.iniAllEditButton.Size = new System.Drawing.Size(103, 23);
+			this.iniAllEditButton.Size = new System.Drawing.Size(103, 24);
 			this.iniAllEditButton.TabIndex = 9;
 			this.iniAllEditButton.Text = "一括変更";
 			this.toolTip1.SetToolTip(this.iniAllEditButton, "ゲーム管理iniのすべてのパスを置換します。");
@@ -479,9 +479,10 @@
 			// 
 			// dconSearchButton
 			// 
+			this.dconSearchButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.dconSearchButton.Location = new System.Drawing.Point(367, 22);
 			this.dconSearchButton.Name = "dconSearchButton";
-			this.dconSearchButton.Size = new System.Drawing.Size(23, 23);
+			this.dconSearchButton.Size = new System.Drawing.Size(30, 27);
 			this.dconSearchButton.TabIndex = 1;
 			this.dconSearchButton.Text = "..";
 			this.toolTip1.SetToolTip(this.dconSearchButton, "Discord Connectorのパスを設定します。");
@@ -576,6 +577,20 @@
 			this.saveWithDownloadCheck.Text = "適用と同時に取得";
 			this.toolTip1.SetToolTip(this.saveWithDownloadCheck, "適用ボタンを押した際に、オフラインINIデータの取得を行います。");
 			this.saveWithDownloadCheck.UseVisualStyleBackColor = true;
+			this.saveWithDownloadCheck.Visible = false;
+			// 
+			// addGameDirCheck
+			// 
+			this.addGameDirCheck.AutoSize = true;
+			this.addGameDirCheck.Enabled = false;
+			this.addGameDirCheck.Location = new System.Drawing.Point(245, 131);
+			this.addGameDirCheck.Name = "addGameDirCheck";
+			this.addGameDirCheck.Size = new System.Drawing.Size(214, 21);
+			this.addGameDirCheck.TabIndex = 22;
+			this.addGameDirCheck.Text = "ゲームのディレクトリパスを使用する";
+			this.toolTip1.SetToolTip(this.addGameDirCheck, "ゲームのフルパスではなく、ゲームが存在するディレクトリパスを引数に追加します。");
+			this.addGameDirCheck.UseVisualStyleBackColor = true;
+			this.addGameDirCheck.Visible = false;
 			// 
 			// tabControl1
 			// 
@@ -682,9 +697,9 @@
 			// 
 			// backgroundImageSelectButton
 			// 
-			this.backgroundImageSelectButton.Location = new System.Drawing.Point(440, 22);
+			this.backgroundImageSelectButton.Location = new System.Drawing.Point(430, 22);
 			this.backgroundImageSelectButton.Name = "backgroundImageSelectButton";
-			this.backgroundImageSelectButton.Size = new System.Drawing.Size(23, 23);
+			this.backgroundImageSelectButton.Size = new System.Drawing.Size(33, 27);
 			this.backgroundImageSelectButton.TabIndex = 1;
 			this.backgroundImageSelectButton.Text = "..";
 			this.backgroundImageSelectButton.UseVisualStyleBackColor = true;
@@ -694,7 +709,7 @@
 			// 
 			this.backgroundImageText.Location = new System.Drawing.Point(6, 22);
 			this.backgroundImageText.Name = "backgroundImageText";
-			this.backgroundImageText.Size = new System.Drawing.Size(428, 27);
+			this.backgroundImageText.Size = new System.Drawing.Size(418, 27);
 			this.backgroundImageText.TabIndex = 0;
 			// 
 			// tabPage1
@@ -739,7 +754,7 @@
 			this.dconAppIDClearButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.dconAppIDClearButton.Location = new System.Drawing.Point(414, 22);
 			this.dconAppIDClearButton.Name = "dconAppIDClearButton";
-			this.dconAppIDClearButton.Size = new System.Drawing.Size(49, 23);
+			this.dconAppIDClearButton.Size = new System.Drawing.Size(49, 27);
 			this.dconAppIDClearButton.TabIndex = 1;
 			this.dconAppIDClearButton.Text = "クリア";
 			this.dconAppIDClearButton.UseVisualStyleBackColor = true;
@@ -762,11 +777,11 @@
 			// 
 			this.label11.AutoSize = true;
 			this.label11.ForeColor = System.Drawing.Color.ForestGreen;
-			this.label11.Location = new System.Drawing.Point(399, 25);
+			this.label11.Location = new System.Drawing.Point(403, 25);
 			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(68, 20);
+			this.label11.Size = new System.Drawing.Size(34, 20);
 			this.label11.TabIndex = 2;
-			this.label11.Text = "Unknown";
+			this.label11.Text = "N/A";
 			// 
 			// dconText
 			// 
@@ -906,7 +921,7 @@
 			this.byResetButton.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.byResetButton.Location = new System.Drawing.Point(258, 86);
 			this.byResetButton.Name = "byResetButton";
-			this.byResetButton.Size = new System.Drawing.Size(126, 23);
+			this.byResetButton.Size = new System.Drawing.Size(126, 27);
 			this.byResetButton.TabIndex = 10;
 			this.byResetButton.Text = "初期設定に戻す";
 			this.byResetButton.UseVisualStyleBackColor = true;
@@ -917,7 +932,7 @@
 			this.byConnectionTestButton.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.byConnectionTestButton.Location = new System.Drawing.Point(93, 86);
 			this.byConnectionTestButton.Name = "byConnectionTestButton";
-			this.byConnectionTestButton.Size = new System.Drawing.Size(91, 23);
+			this.byConnectionTestButton.Size = new System.Drawing.Size(91, 27);
 			this.byConnectionTestButton.TabIndex = 11;
 			this.byConnectionTestButton.Text = "接続テスト";
 			this.byConnectionTestButton.UseVisualStyleBackColor = true;
@@ -1476,9 +1491,9 @@
 			// 
 			// insertColumnButton
 			// 
-			this.insertColumnButton.Location = new System.Drawing.Point(410, 23);
+			this.insertColumnButton.Location = new System.Drawing.Point(410, 21);
 			this.insertColumnButton.Name = "insertColumnButton";
-			this.insertColumnButton.Size = new System.Drawing.Size(50, 23);
+			this.insertColumnButton.Size = new System.Drawing.Size(50, 25);
 			this.insertColumnButton.TabIndex = 9;
 			this.insertColumnButton.Text = "挿入";
 			this.insertColumnButton.UseVisualStyleBackColor = true;
@@ -1486,9 +1501,9 @@
 			// 
 			// insertTableNameButton
 			// 
-			this.insertTableNameButton.Location = new System.Drawing.Point(16, 23);
+			this.insertTableNameButton.Location = new System.Drawing.Point(16, 21);
 			this.insertTableNameButton.Name = "insertTableNameButton";
-			this.insertTableNameButton.Size = new System.Drawing.Size(87, 23);
+			this.insertTableNameButton.Size = new System.Drawing.Size(87, 25);
 			this.insertTableNameButton.TabIndex = 6;
 			this.insertTableNameButton.Text = "テーブル名";
 			this.insertTableNameButton.UseVisualStyleBackColor = true;
@@ -1496,9 +1511,9 @@
 			// 
 			// insertDatabaseNameButton
 			// 
-			this.insertDatabaseNameButton.Location = new System.Drawing.Point(112, 23);
+			this.insertDatabaseNameButton.Location = new System.Drawing.Point(112, 21);
 			this.insertDatabaseNameButton.Name = "insertDatabaseNameButton";
-			this.insertDatabaseNameButton.Size = new System.Drawing.Size(97, 23);
+			this.insertDatabaseNameButton.Size = new System.Drawing.Size(97, 25);
 			this.insertDatabaseNameButton.TabIndex = 7;
 			this.insertDatabaseNameButton.Text = "データベース名";
 			this.insertDatabaseNameButton.UseVisualStyleBackColor = true;
@@ -1846,19 +1861,6 @@
 			// openFileDialog2
 			// 
 			this.openFileDialog2.FileName = "openFileDialog2";
-			// 
-			// addGameDirCheck
-			// 
-			this.addGameDirCheck.AutoSize = true;
-			this.addGameDirCheck.Enabled = false;
-			this.addGameDirCheck.Location = new System.Drawing.Point(245, 131);
-			this.addGameDirCheck.Name = "addGameDirCheck";
-			this.addGameDirCheck.Size = new System.Drawing.Size(214, 21);
-			this.addGameDirCheck.TabIndex = 22;
-			this.addGameDirCheck.Text = "ゲームのディレクトリパスを使用する";
-			this.toolTip1.SetToolTip(this.addGameDirCheck, "ゲームのフルパスではなく、ゲームが存在するディレクトリパスを引数に追加します。");
-			this.addGameDirCheck.UseVisualStyleBackColor = true;
-			this.addGameDirCheck.Visible = false;
 			// 
 			// Config
 			// 

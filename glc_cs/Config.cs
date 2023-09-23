@@ -129,7 +129,7 @@ namespace glc_cs
 			RoGCheck.Checked = ByRoG;
 
 			// [保存方法]
-			if (SaveType == "I")
+			if (SaveType == "I")	// INI
 			{
 				iniRadio.Checked = true;
 				setDirectoryControl(true);
@@ -144,11 +144,13 @@ namespace glc_cs
 				mysqlRadio.Checked = true;
 				setDirectoryControl(false);
 			}
-			else
+			else	// オフラインモード
 			{
+				// オフラインモード時、INIファイルの設定値を使用する
 				switch (ReadIni("general", "save", "I"))
 				{
 					case "I":
+					default:
 						iniRadio.Checked = true;
 						break;
 					case "D":
@@ -852,6 +854,8 @@ namespace glc_cs
 			useLocalDBCheck.Enabled = !controlVal;
 			saveWithDownloadCheck.Enabled = !controlVal;
 			dbBackupButton.Enabled = !controlVal;
+			offlineSaveEnableCheck.Visible = !controlVal;
+			saveWithDownloadCheck.Visible = !controlVal && OfflineSave;
 
 			groupBox7.Enabled = controlVal;
 			groupBox12.Enabled = !controlVal;
@@ -1229,14 +1233,11 @@ namespace glc_cs
 			if (offlineSaveEnableCheck.Checked && offlineSaveEnableCheck.Focused)
 			{
 				// オフライン保存有効時にダイアログを表示
-				MessageBox.Show("[" + offlineSaveEnableCheck.Text + "]を有効にすると、以下のタイミングで自動的にDBのバックアップが取得されます。\n\n・設定画面の[" + saveButton.Text + "]を押した時\n・アプリケーションを終了する時\n\nバックアップの保存先：" + BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\" + "\n\nまた、バックアップの取得に時間がかかる場合があります。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-			}
-			if (offlineSaveEnableCheck.Checked)
-			{
+				MessageBox.Show("[" + offlineSaveEnableCheck.Text + "]を有効にすると、以下のタイミングで自動的にDBのバックアップが取得されます。\n\n・設定画面の[" + saveWithDownloadCheck.Text + "]にチェックが入った状態で[" + saveButton.Text + "]を押した時\n・アプリケーションを終了する時\n\nバックアップの保存先：" + BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\" + "\n\nまた、バックアップの取得に時間がかかる場合があります。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				saveWithDownloadCheck.Visible = true;
 				saveWithDownloadCheck.Checked = true;
 			}
-			else
+			else if (!offlineSaveEnableCheck.Checked)
 			{
 				saveWithDownloadCheck.Visible = false;
 			}
