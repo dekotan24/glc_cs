@@ -438,7 +438,8 @@ namespace glc_cs
 			/// </summary>
 			public enum KeyNames
 			{
-				name
+				id
+				, name
 				, imgpass
 				, pass
 				, time
@@ -2919,30 +2920,35 @@ namespace glc_cs
 						if (ExtractKrkrAddGameArg)
 						{
 							appArgs.Append(" ").Append(gameArgs);
+							appArgs.Append("\"");
 						}
 						break;
 					case 2: // krkrz
 						if (ExtractKrkrzAddGameArg)
 						{
 							appArgs.Append(" ").Append(gameArgs);
+							appArgs.Append("\"");
 						}
 						break;
 					case 3: // krkrDump
 						if (ExtractKrkrDumpAddGameArg)
 						{
 							appArgs.Append(" ").Append(gameArgs);
+							appArgs.Append("\"");
 						}
 						break;
 					case 4: // Custom1
 						if (ExtractCustom1AddGameArg)
 						{
 							appArgs.Append(" ").Append(gameArgs);
+							appArgs.Append("\"");
 						}
 						break;
 					case 5: // Custom2
 						if (ExtractCustom2AddGameArg)
 						{
 							appArgs.Append(" ").Append(gameArgs);
+							appArgs.Append("\"");
 						}
 						break;
 				}
