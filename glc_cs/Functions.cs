@@ -1685,7 +1685,7 @@ namespace glc_cs
 				}
 				else if (opt.Length == 0)
 				{
-					if (!File.Exists(GameIni))
+					if (File.Exists(GameIni))
 					{
 						WritePrivateProfileString(
 										sec,
@@ -1696,7 +1696,7 @@ namespace glc_cs
 				}
 				else
 				{
-					if (!File.Exists((opt.EndsWith("\\") ? opt : opt + "\\") + "game.ini"))
+					if (File.Exists((opt.EndsWith("\\") ? opt : opt + "\\") + "game.ini"))
 					{
 						WritePrivateProfileString(
 										sec,

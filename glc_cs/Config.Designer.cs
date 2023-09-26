@@ -572,8 +572,6 @@
 			// saveWithDownloadCheck
 			// 
 			this.saveWithDownloadCheck.AutoSize = true;
-			this.saveWithDownloadCheck.Checked = true;
-			this.saveWithDownloadCheck.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.saveWithDownloadCheck.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.saveWithDownloadCheck.Location = new System.Drawing.Point(258, 357);
 			this.saveWithDownloadCheck.Name = "saveWithDownloadCheck";
@@ -1239,6 +1237,7 @@
 			this.iniText.Name = "iniText";
 			this.iniText.Size = new System.Drawing.Size(343, 24);
 			this.iniText.TabIndex = 7;
+			this.toolTip1.SetToolTip(this.iniText, "絶対パスのみ。相対パスでは正常に動作しない可能性があります。");
 			// 
 			// iniFolderSelectButton
 			// 
@@ -1305,7 +1304,7 @@
 			this.tabPage5.Controls.Add(this.groupBox7);
 			this.tabPage5.Location = new System.Drawing.Point(4, 22);
 			this.tabPage5.Name = "tabPage5";
-			this.tabPage5.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+			this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
 			this.tabPage5.Size = new System.Drawing.Size(472, 291);
 			this.tabPage5.TabIndex = 0;
 			this.tabPage5.Text = "データ";
@@ -1476,7 +1475,7 @@
 			this.tabPage8.Controls.Add(this.queryText);
 			this.tabPage8.Location = new System.Drawing.Point(4, 22);
 			this.tabPage8.Name = "tabPage8";
-			this.tabPage8.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+			this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
 			this.tabPage8.Size = new System.Drawing.Size(472, 291);
 			this.tabPage8.TabIndex = 1;
 			this.tabPage8.Text = "SQLエディタ";

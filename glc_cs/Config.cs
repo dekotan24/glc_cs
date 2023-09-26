@@ -860,7 +860,7 @@ namespace glc_cs
 			saveWithDownloadCheck.Enabled = !controlVal;
 			dbBackupButton.Enabled = !controlVal;
 			offlineSaveEnableCheck.Visible = !controlVal;
-			saveWithDownloadCheck.Visible = !controlVal && OfflineSave;
+			saveWithDownloadCheck.Visible = !controlVal && OfflineSave && SaveType != "T";
 
 			groupBox7.Enabled = controlVal;
 			groupBox12.Enabled = !controlVal;

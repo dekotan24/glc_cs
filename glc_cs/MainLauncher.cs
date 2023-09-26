@@ -450,7 +450,7 @@ namespace glc_cs
 							upButton.Visible = true;
 							downButton.Visible = true;
 							editButton.Visible = true;
-							ResolveError(MethodBase.GetCurrentMethod().Name, "データベースに接続できなかった為、オフラインモードで起動します。\nこの問題が一時的なものである場合、再起動で解決する場合があります。", 0, false, errMessage);
+							ResolveError(MethodBase.GetCurrentMethod().Name, "データベースに接続できませんでした。オフラインモードで起動します。\nこの問題が一時的なものであると考えられる場合、再起動で解決する場合があります。", 0, false, errMessage);
 						}
 					}
 					else
@@ -687,7 +687,7 @@ namespace glc_cs
 							upButton.Visible = true;
 							downButton.Visible = true;
 							editButton.Visible = true;
-							ResolveError(MethodBase.GetCurrentMethod().Name, "データベースに接続できなかった為、オフラインモードで起動します。\nこの問題が一時的なものである場合、再起動で解決する場合があります。", 0, false, errMessage);
+							ResolveError(MethodBase.GetCurrentMethod().Name, "データベースに接続できませんでした。オフラインモードで起動します。\nこの問題が一時的なものであると考えられる場合、再起動で解決する場合があります。", 0, false, errMessage);
 						}
 					}
 					else
@@ -2814,6 +2814,11 @@ namespace glc_cs
 
 			// エラー内容記述
 			WriteErrorLog(errorMsg, methodName, addInfo);
+
+			if (addInfo.Length > 0)
+			{
+				errorMsg += "\n\n[追加情報]\n" + addInfo;
+			}
 
 			// エラーダイアログ表示
 			switch (dialogType)
