@@ -1569,6 +1569,7 @@ namespace glc_cs
 			{
 				// アプリケーションが存在しない場合、実行できないようにする
 				startButtonEnable = false;
+				startButton.Text = "ゲームパスが存在しません";
 			}
 
 			if (File.Exists(imgpassdata))
@@ -1595,9 +1596,15 @@ namespace glc_cs
 			{
 				// 最大の場合、実行できないようにする
 				startButtonEnable = false;
+				startButton.Text = "記録上限のため起動不可";
 			}
 
 			startButton.Enabled = startButtonEnable;
+
+			if (startButtonEnable)
+			{
+				startButton.Text = "実行";
+			}
 
 			return;
 		}
