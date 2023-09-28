@@ -37,7 +37,7 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーション名
 			/// </summary>
-			protected static readonly string appName = "Game Launcher C# Edition";
+			protected static readonly string appName = "GLauncher C# Edition";
 
 			/// <summary>
 			/// アプリケーションバージョン
@@ -47,7 +47,7 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appBuild = "40.23.08.25";
+			protected static readonly string appBuild = "40.23.09.28";
 
 			/// <summary>
 			/// データベースバージョン
@@ -200,7 +200,7 @@ namespace glc_cs
 			/// <summary>
 			/// 棒読みちゃん 読み上げメッセージ
 			/// </summary>
-			protected static string bysMsg = "Game Launcherと接続しました。";
+			protected static string bysMsg = "GLauncherと接続しました。";
 
 			/// <summary>
 			/// 棒読みちゃん タイプ

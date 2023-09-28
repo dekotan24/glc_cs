@@ -142,7 +142,7 @@ namespace glc_cs
 					}
 				}
 				// itemがnoneの場合：ゲームが登録されていない場合
-				MessageBox.Show("Game Launcherをご利用頂きありがとうございます。\n\"追加\"ボタンを押して、ゲームを追加しましょう！",
+				MessageBox.Show("GLauncherをご利用頂きありがとうございます。\n\"追加\"ボタンを押して、ゲームを追加しましょう！",
 								AppName,
 								MessageBoxButtons.OK,
 								MessageBoxIcon.Information);
@@ -1160,7 +1160,7 @@ namespace glc_cs
 						Environment.CurrentDirectory = JudgeCurrentDir(CurrentExtractTool, originAppPath, newAppPath);
 
 						// 起動開始日時を取得
-						DateTime startTime = DateTime.Now;
+						DateTime startTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
 
 						// 起動中gifの可視化
 						runningPicture.Visible = true;
@@ -1182,7 +1182,10 @@ namespace glc_cs
 						p.WaitForExit();
 
 						// 起動終了日時を取得
-						DateTime endTime = DateTime.Now;
+						DateTime endTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+						string temp = (endTime - startTime).ToString();
+						int wakeUpTimes = Convert.ToInt32(TimeSpan.Parse(temp).TotalSeconds);
+
 
 						// 作業ディレクトリ復元
 						Environment.CurrentDirectory = BaseDir;
@@ -1195,14 +1198,14 @@ namespace glc_cs
 						this.WindowState = FormWindowState.Normal;
 
 						// 終了検出後
-						DialogResult dr = MessageBox.Show("実行終了を検出しました。\n開始日時：" + startTime.ToString("yyyy/MM/dd HH:mm:ss") + "\n終了日時：" + endTime.ToString("yyyy/MM/dd HH:mm:ss") + "\n\n正しくトラッキングできていますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+						DialogResult dr = MessageBox.Show("実行終了を検出しました。\n開始日時：" + startTime.ToString("yyyy/MM/dd HH:mm:ss") + "\n終了日時：" + endTime.ToString("yyyy/MM/dd HH:mm:ss") + "\n実行時間：" + wakeUpTimes + "\n\n正しくトラッキングできていますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 						if (dr == DialogResult.Yes)
 						{
 							MessageBox.Show("正常にトラッキングできています。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 						}
 						else
 						{
-							MessageBox.Show("トラッキングに失敗しています。\n以下をご確認ください。\n\n・ランチャーを指定していませんか？\n・GLを管理者権限で起動してみてください。\n・実行パスを英数字のみにしてみてください。\n\nそれでも解決しない場合は、GitHubでIssueを開いてファイルパスやゲームエンジン等を教えてください。可能な限り対応します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+							MessageBox.Show("トラッキングに失敗しています。\n以下をご確認ください。\n\n・ランチャーを指定していませんか？\n・AGLを管理者権限で起動してみてください。\n・実行パスを英数字のみにしてみてください。\n\nそれでも解決しない場合は、GitHubでIssueを開いてファイルパスやゲームエンジン等を教えてください。可能な限り対応します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 						}
 
 					}
@@ -2473,18 +2476,18 @@ namespace glc_cs
 
 			if (beforeWorkDir != afterWorkDir)
 			{
-				MessageBox.Show("既定の作業ディレクトリが変更されました。\nGame Launcherを再起動してください。\n\nOKを押してGame Launcherを終了します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("既定の作業ディレクトリが変更されました。\nGLauncherを再起動してください。\n\nOKを押してGLauncherを終了します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				ExitApp(!OfflineSave);
 			}
 			else if (beforeSaveType != afterSaveType)
 			{
 				// WriteIni("disable", "updchkVer", "0.0");
-				MessageBox.Show("データの保存方法が変更されました。\nGame Launcherを再起動してください。\n\nOKを押してGame Launcherを終了します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("データの保存方法が変更されました。\nGLauncherを再起動してください。\n\nOKを押してGLauncherを終了します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				ExitApp(!OfflineSave);
 			}
 			else if ((beforeGridEnabled != afterGridEnabled) || (beforeWindowMinimunEnabled != afterWindowMinimunEnabled))
 			{
-				MessageBox.Show("UIに関する設定が変更されました。\nGame Launcherを再起動してください。\n\nOKを押してGame Launcherを終了します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("UIに関する設定が変更されました。\nGLauncherを再起動してください。\n\nOKを押してGLauncherを終了します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				ExitApp(!OfflineSave);
 			}
 

@@ -64,6 +64,7 @@
 			this.saveWithDownloadCheck = new System.Windows.Forms.CheckBox();
 			this.addGameDirCheck = new System.Windows.Forms.CheckBox();
 			this.DisableInitialLoadCountCheck = new System.Windows.Forms.CheckBox();
+			this.iniText = new System.Windows.Forms.TextBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage7 = new System.Windows.Forms.TabPage();
 			this.groupBox16 = new System.Windows.Forms.GroupBox();
@@ -117,7 +118,6 @@
 			this.label16 = new System.Windows.Forms.Label();
 			this.urlText = new System.Windows.Forms.TextBox();
 			this.label9 = new System.Windows.Forms.Label();
-			this.iniText = new System.Windows.Forms.TextBox();
 			this.iniFolderSelectButton = new System.Windows.Forms.Button();
 			this.groupBox9 = new System.Windows.Forms.GroupBox();
 			this.label12 = new System.Windows.Forms.Label();
@@ -607,6 +607,15 @@
 			this.DisableInitialLoadCountCheck.Text = "起動時の進捗報告ダイアログの負荷軽減";
 			this.toolTip1.SetToolTip(this.DisableInitialLoadCountCheck, "ランチャー起動中の進捗報告を無効にします。");
 			this.DisableInitialLoadCountCheck.UseVisualStyleBackColor = true;
+			// 
+			// iniText
+			// 
+			this.iniText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.iniText.Location = new System.Drawing.Point(48, 25);
+			this.iniText.Name = "iniText";
+			this.iniText.Size = new System.Drawing.Size(343, 24);
+			this.iniText.TabIndex = 7;
+			this.toolTip1.SetToolTip(this.iniText, "絶対パスのみ。相対パスでは正常に動作しない可能性があります。");
 			// 
 			// tabControl1
 			// 
@@ -1230,15 +1239,6 @@
 			this.label9.TabIndex = 3;
 			this.label9.Text = "INI";
 			// 
-			// iniText
-			// 
-			this.iniText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.iniText.Location = new System.Drawing.Point(48, 25);
-			this.iniText.Name = "iniText";
-			this.iniText.Size = new System.Drawing.Size(343, 24);
-			this.iniText.TabIndex = 7;
-			this.toolTip1.SetToolTip(this.iniText, "絶対パスのみ。相対パスでは正常に動作しない可能性があります。");
-			// 
 			// iniFolderSelectButton
 			// 
 			this.iniFolderSelectButton.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
@@ -1758,7 +1758,7 @@
 			// 
 			this.logoPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.logoPictureBox.Image = global::glc_cs.Properties.Resources.icon;
-			this.logoPictureBox.Location = new System.Drawing.Point(13, 14);
+			this.logoPictureBox.Location = new System.Drawing.Point(10, 10);
 			this.logoPictureBox.Name = "logoPictureBox";
 			this.logoPictureBox.Size = new System.Drawing.Size(100, 100);
 			this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -1768,7 +1768,7 @@
 			// 
 			// updchkButton
 			// 
-			this.updchkButton.Location = new System.Drawing.Point(368, 76);
+			this.updchkButton.Location = new System.Drawing.Point(368, 75);
 			this.updchkButton.Name = "updchkButton";
 			this.updchkButton.Size = new System.Drawing.Size(106, 23);
 			this.updchkButton.TabIndex = 10;
@@ -1779,7 +1779,7 @@
 			// verLabel
 			// 
 			this.verLabel.AutoSize = true;
-			this.verLabel.Location = new System.Drawing.Point(333, 55);
+			this.verLabel.Location = new System.Drawing.Point(338, 55);
 			this.verLabel.Name = "verLabel";
 			this.verLabel.Size = new System.Drawing.Size(39, 12);
 			this.verLabel.TabIndex = 10;
@@ -1862,12 +1862,12 @@
 			// appNameLabel
 			// 
 			this.appNameLabel.AutoSize = true;
-			this.appNameLabel.Font = new System.Drawing.Font("ＭＳ 明朝", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.appNameLabel.Location = new System.Drawing.Point(130, 19);
+			this.appNameLabel.Font = new System.Drawing.Font("ＭＳ 明朝", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.appNameLabel.Location = new System.Drawing.Point(141, 21);
 			this.appNameLabel.Name = "appNameLabel";
-			this.appNameLabel.Size = new System.Drawing.Size(322, 24);
+			this.appNameLabel.Size = new System.Drawing.Size(312, 27);
 			this.appNameLabel.TabIndex = 0;
-			this.appNameLabel.Text = "Game Launcher C# Edition";
+			this.appNameLabel.Text = "GLauncher C# Edition";
 			// 
 			// saveButton
 			// 
