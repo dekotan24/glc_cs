@@ -31,26 +31,34 @@ namespace glc_cs
 			}
 
 			// バージョン取得
-			label10.Text = "Ver." + AppVer + " Build " + AppBuild;
+			verLabel.Text = "Ver." + AppVer + " Build " + AppBuild;
 
+			// [全般]タブ
 			// 背景画像
 			backgroundImageText.Text = BgImg;
-
-			// グリッド
+			// グリッド無効化
 			gridDisableCheck.Checked = !GridEnable;
-
-			// アップデートスキップ
-			if (InitialUpdateCheckSkipVer.Equals(AppVer))
-			{
-				updateCheckDisableCheck.Checked = InitialUpdateCheckSkipFlg;
-			}
-			else
-			{
-				updateCheckDisableCheck.Checked = false;
-			}
-
-			// 最小化コントロール
+			// アップデートフラグ
+			updateCheckDisableCheck.Checked = InitialUpdateCheckSkipFlg;
+			// 最小化コントロール表示フラグ
 			enableWindowHideControlCheck.Checked = WindowHideControlFlg;
+			// グリッドサイズ固定フラグ
+			fixGridSizeCheck.Checked = FixGridSizeFlg;
+			// グリッドサイズ値
+			switch (FixGridSize)
+			{
+				case 8:
+					fixGridSize8.Checked = true;
+					break;
+				case 64:
+					fixGridSize64.Checked = true;
+					break;
+				case 32:
+				default:
+					fixGridSize32.Checked = true;
+					break;
+			}
+			DisableInitialLoadCountCheck.Checked = DisableInitialLoadCountFlg;
 
 			// Discord設定読み込み
 			bool dconActive = Dconnect;
@@ -121,34 +129,36 @@ namespace glc_cs
 			RoSCheck.Checked = ByRoS;
 			RoGCheck.Checked = ByRoG;
 
-			// 保存方法
-			if (SaveType == "I")
+			// [保存方法]
+			if (SaveType == "I")	// INI
 			{
-				radioButton8.Checked = true;
+				iniRadio.Checked = true;
 				setDirectoryControl(true);
 			}
 			else if (SaveType == "D")   // MSSQL
 			{
-				radioButton9.Checked = true;
+				mssqlRadio.Checked = true;
 				setDirectoryControl(false);
 			}
 			else if (SaveType == "M")   // MySQL
 			{
-				radioButton5.Checked = true;
+				mysqlRadio.Checked = true;
 				setDirectoryControl(false);
 			}
-			else
+			else	// オフラインモード
 			{
+				// オフラインモード時、INIファイルの設定値を使用する
 				switch (ReadIni("general", "save", "I"))
 				{
 					case "I":
-						radioButton8.Checked = true;
+					default:
+						iniRadio.Checked = true;
 						break;
 					case "D":
-						radioButton9.Checked = true;
+						mssqlRadio.Checked = true;
 						break;
 					case "M":
-						radioButton5.Checked = true;
+						mysqlRadio.Checked = true;
 						break;
 				}
 			}
@@ -160,7 +170,9 @@ namespace glc_cs
 			userText.Text = DbUser;
 			pwText.Text = DbPass;
 
-			checkBox8.Checked = OfflineSave;
+			offlineSaveEnableCheck.Checked = OfflineSave;
+			useLocalDBCheck.Checked = UseLocalDB;
+
 
 			// スーパーモード
 			// ドロップダウン既定値設定
@@ -190,6 +202,18 @@ namespace glc_cs
 					iniText.Text = tmpRawGameDir;
 				}
 			}
+
+			// [ツール]タブ
+			enableExtractCheck.Checked = ExtractEnable;
+			extractToolsGroup.Enabled = ExtractEnable;
+			extractToolSelectCombo.SelectedIndex = 0;
+			extractToolPathText.Text = string.Empty;
+			extractToolArgText.Text = string.Empty;
+			addGameArgCheck.Checked = false;
+			extractCurrentDirCheck.Checked = false;
+			addGameDirCheck.Checked = false;
+
+			saveWithDownloadCheck.Visible = OfflineSave && (SaveType == "M" || SaveType == "D");
 		}
 
 		/// <summary>
@@ -199,9 +223,9 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void saveButton_Click(object sender, EventArgs e)
 		{
-			string offlineSaveTypeOld = ReadIni("general", "OfflineSave", checkBox8.Checked ? "1" : "0");
+			string offlineSaveTypeOld = ReadIni("general", "OfflineSave", offlineSaveEnableCheck.Checked ? "1" : "0");
 			bool canExit = true;
-			if (radioButton9.Checked || radioButton5.Checked)
+			if (mssqlRadio.Checked || mysqlRadio.Checked)
 			{
 				if (urlText.Text.Trim().Length <= 0)
 				{
@@ -238,15 +262,26 @@ namespace glc_cs
 			WriteIni("imgd", "bgimg", backgroundImageText.Text.Trim());
 			WriteIni("disable", "grid", gridDisableCheck.Checked ? "1" : "0");
 			WriteIni("disable", "updchk", updateCheckDisableCheck.Checked ? "1" : "0");
-			if (updateCheckDisableCheck.Checked && !InitialUpdateCheckSkipVer.Equals(AppVer))
+			if (updateCheckDisableCheck.Checked)
 			{
-				WriteIni("disable", "updchkVer", AppVer);
+				if (!InitialUpdateCheckSkipVer.Equals(AppVer))
+				{
+					WriteIni("disable", "updchkVer", AppVer);
+				}
+			}
+			else
+			{
+				WriteIni("disable", "updchkVer", "0.0");
 			}
 			WriteIni("disable", "enableWindowHideControl", enableWindowHideControlCheck.Checked ? "1" : "0");
+			WriteIni("disable", "DisableInitialLoadCount", DisableInitialLoadCountCheck.Checked ? "1" : "0");
+			WriteIni("grid", "fixGridSizeFlg", fixGridSizeCheck.Checked ? "1" : "0");
+			WriteIni("grid", "fixGridSize", (fixGridSize8.Checked ? "8" : (fixGridSize64.Checked ? "64" : "32")));
 
 			// 保存方法
-			WriteIni("general", "save", radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I");
-			WriteIni("general", "OfflineSave", checkBox8.Checked ? "1" : "0");
+			WriteIni("general", "save", mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I");
+			WriteIni("general", "OfflineSave", offlineSaveEnableCheck.Checked ? "1" : "0");
+			WriteIni("general", "UseLocalDB", useLocalDBCheck.Checked ? "1" : "0");
 			WriteIni("connect", "DBURL", urlText.Text.Trim());
 			WriteIni("connect", "DBPort", portText.Text.Trim());
 			WriteIni("connect", "DbName", dbText.Text.Trim());
@@ -276,10 +311,13 @@ namespace glc_cs
 			WriteIni("connect", "byRoS", RoSCheck.Checked ? "1" : "0");
 			WriteIni("connect", "byRoG", RoGCheck.Checked ? "1" : "0");
 
+			// 抽出
+			WriteIni("Extract", "Enabled", (Convert.ToInt32(enableExtractCheck.Checked)).ToString());
+
 			// データベースをローカルにINIで保存する
-			if (checkBox8.Checked)
+			if (offlineSaveEnableCheck.Checked && saveWithDownloadCheck.Checked)
 			{
-				if (radioButton9.Checked || radioButton5.Checked)
+				if (mssqlRadio.Checked || mysqlRadio.Checked)
 				{
 					string oldButtonText = saveButton.Text;
 					saveButton.Enabled = false;
@@ -339,18 +377,18 @@ namespace glc_cs
 
 		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			this.linkLabel1.LinkVisited = true;
+			this.webLinkLabel.LinkVisited = true;
 			System.Diagnostics.Process.Start("https://fanet.work");
 		}
 
 		private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			this.linkLabel2.LinkVisited = true;
+			this.mailLinkLabel.LinkVisited = true;
 			Clipboard.SetText("support@fanet.work");
 		}
 		private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			this.linkLabel3.LinkVisited = true;
+			this.githubLinkLabel.LinkVisited = true;
 			System.Diagnostics.Process.Start("https://github.com/dekotan24/glc_cs");
 		}
 
@@ -372,11 +410,11 @@ namespace glc_cs
 			ByHost = textBox4.Text;
 			ByPort = Convert.ToInt32(textBox5.Text);
 
-			Bouyomi_Connectchk(ByHost, ByPort, ByType);
+			Bouyomi_Connectchk();
 		}
 
 
-		private void checkBox2_CheckedChanged(object sender, EventArgs e)
+		private void bouyomiEnableCheck_CheckedChanged(object sender, EventArgs e)
 		{
 			if (bouyomiEnableCheck.Checked)
 			{
@@ -459,7 +497,7 @@ namespace glc_cs
 			}
 
 			// MySQLだけDatabaseも補填していないとエラーとする
-			if (radioButton5.Checked)
+			if (mysqlRadio.Checked)
 			{
 				if (dbText.Text.Trim().Length < 1)
 				{
@@ -475,7 +513,7 @@ namespace glc_cs
 			DbTable = tableText.Text.Trim();
 			DbUser = userText.Text.Trim();
 			DbPass = pwText.Text.Trim();
-			SaveType = radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I";
+			SaveType = mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I";
 
 			if (string.IsNullOrEmpty(DbTable))
 			{
@@ -726,7 +764,7 @@ namespace glc_cs
 			int sCount = 0;
 			int fCount = 0;
 
-			if (radioButton8.Checked)
+			if (iniRadio.Checked)
 			{
 				return;
 			}
@@ -741,7 +779,7 @@ namespace glc_cs
 			DbTable = tableText.Text.Trim();
 			DbUser = userText.Text.Trim();
 			DbPass = pwText.Text.Trim();
-			SaveType = radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I";
+			SaveType = mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I";
 
 			bool deleteAllRecodes = checkBox6.Checked;
 			bool forceCommit = checkBox7.Checked;
@@ -817,12 +855,17 @@ namespace glc_cs
 			label22.Enabled = !controlVal;
 			pwText.Enabled = !controlVal;
 			createTableButton.Enabled = !controlVal;
-			checkBox8.Enabled = !controlVal;
+			offlineSaveEnableCheck.Enabled = !controlVal;
+			useLocalDBCheck.Enabled = !controlVal;
+			saveWithDownloadCheck.Enabled = !controlVal;
 			dbBackupButton.Enabled = !controlVal;
+			offlineSaveEnableCheck.Visible = !controlVal;
+			saveWithDownloadCheck.Visible = !controlVal && OfflineSave && SaveType != "T";
 
 			groupBox7.Enabled = controlVal;
 			groupBox12.Enabled = !controlVal;
 			dbOverflowFixButton.Enabled = !controlVal;
+			saveWithDownloadCheck.Enabled = !controlVal;
 		}
 
 		private void iniAutoNumberingFixButton_Click(object sender, EventArgs e)
@@ -921,7 +964,7 @@ namespace glc_cs
 			}
 
 			// MySQLだけDatabaseも補填していないとエラーとする
-			if (radioButton5.Checked)
+			if (mysqlRadio.Checked)
 			{
 				if (dbText.Text.Trim().Length < 1)
 				{
@@ -937,7 +980,7 @@ namespace glc_cs
 			DbTable = tableText.Text.Trim();
 			DbUser = userText.Text.Trim();
 			DbPass = pwText.Text.Trim();
-			SaveType = radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I";
+			SaveType = mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I";
 
 			// 修正
 			SqlConnection cn = SqlCon;
@@ -1115,26 +1158,6 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void logoPictureBox_Click(object sender, EventArgs e)
 		{
-			Random r1 = new System.Random();
-			int rand = r1.Next(0, 5);
-			switch (rand)
-			{
-				case 0:
-					System.Media.SystemSounds.Beep.Play();
-					break;
-				case 1:
-					System.Media.SystemSounds.Asterisk.Play();
-					break;
-				case 2:
-					System.Media.SystemSounds.Exclamation.Play();
-					break;
-				case 3:
-					System.Media.SystemSounds.Hand.Play();
-					break;
-				case 4:
-					System.Media.SystemSounds.Question.Play();
-					break;
-			}
 		}
 
 		/// <summary>
@@ -1170,7 +1193,7 @@ namespace glc_cs
 			}
 
 			// MySQLだけDatabaseも補填していないとエラーとする
-			if (radioButton5.Checked)
+			if (mysqlRadio.Checked)
 			{
 				if (dbText.Text.Trim().Length < 1)
 				{
@@ -1192,7 +1215,7 @@ namespace glc_cs
 			DbTable = tableText.Text.Trim();
 			DbUser = userText.Text.Trim();
 			DbPass = pwText.Text.Trim();
-			SaveType = radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I";
+			SaveType = mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I";
 
 			string backupPath = (BaseDir.EndsWith("\\") ? BaseDir : BaseDir + "\\") + "database_backup(" + (DateTime.Now).ToString().Replace("/", "_").Replace(":", "_").Replace(" ", "_") + ")\\";
 			bool returnVal = downloadDbDataToLocal(backupPath);
@@ -1212,10 +1235,22 @@ namespace glc_cs
 
 		private void checkBox8_CheckedChanged(object sender, EventArgs e)
 		{
-			if (checkBox8.Checked && checkBox8.Focused)
+			if (offlineSaveEnableCheck.Checked && offlineSaveEnableCheck.Focused)
 			{
 				// オフライン保存有効時にダイアログを表示
-				MessageBox.Show("[オフラインに保存]を有効にすると、以下のタイミングで自動的にDBのバックアップが取得されます。\n\n・設定画面の[適用して閉じる]を押した時\n・アプリケーションを終了する時\n\nバックアップの保存先：" + BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\" + "\n\nまた、バックアップの取得に時間がかかる場合があります。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("[" + offlineSaveEnableCheck.Text + "]を有効にすると、以下のタイミングで自動的にDBのバックアップが取得されます。\n\n・設定画面の[" + saveWithDownloadCheck.Text + "]にチェックが入った状態で[" + saveButton.Text + "]を押した時\n・アプリケーションを終了する時\n\nバックアップの保存先：" + BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\" + "\n\nまた、バックアップの取得に時間がかかる場合があります。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				saveWithDownloadCheck.Visible = true;
+				saveWithDownloadCheck.Checked = true;
+			}
+			else if (!offlineSaveEnableCheck.Checked)
+			{
+				saveWithDownloadCheck.Visible = false;
+			}
+
+			if (offlineSaveEnableCheck.Checked && offlineSaveEnableCheck.Focused)
+			{
+				// オフライン保存有効時にダイアログを表示
+				MessageBox.Show("[" + offlineSaveEnableCheck.Text + "]を有効にすると、以下のタイミングで自動的にDBのバックアップが取得されます。\n\n・設定画面の[" + saveButton.Text + "]を押した時\n・アプリケーションを終了する時\n\nバックアップの保存先：" + BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\" + "\n\nまた、バックアップの取得に時間がかかる場合があります。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 		}
 
@@ -1365,7 +1400,7 @@ namespace glc_cs
 				}
 
 				// MySQLだけDatabaseも補填していないとエラーとする
-				if (radioButton5.Checked)
+				if (mysqlRadio.Checked)
 				{
 					if (dbText.Text.Trim().Length < 1)
 					{
@@ -1382,7 +1417,7 @@ namespace glc_cs
 				DbTable = tableText.Text.Trim();
 				DbUser = userText.Text.Trim();
 				DbPass = pwText.Text.Trim();
-				SaveType = radioButton9.Checked ? "D" : radioButton5.Checked ? "M" : "I";
+				SaveType = mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I";
 
 				// 修正
 				SqlConnection cn = SqlCon;
@@ -1562,6 +1597,12 @@ namespace glc_cs
 				case 12:
 					appendText = "DB_VERSION";
 					break;
+				case 13:
+					appendText = "EXECUTE_CMD";
+					break;
+				case 14:
+					appendText = "EXTRACT_TOOL";
+					break;
 			}
 			queryText.AppendText(appendText + " ");
 			queryText.Focus();
@@ -1573,6 +1614,212 @@ namespace glc_cs
 			if (updateCheckDisableCheck.Checked && updateCheckDisableCheck.Focused)
 			{
 				MessageBox.Show("これは毎起動時に行われるアップデートチェックによる負荷軽減のための機能です。\n\n※※※警告※※※\n将来バージョンのアップデートをiniファイルの値を直接書き換えて回避する等、本機能を不正に使用した場合に発生する いかなる損害・損失は一切責任を負いません。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
+		}
+
+		private void fixGridSize_CheckedChanged(object sender, EventArgs e)
+		{
+			if (fixGridSizeCheck.Checked)
+			{
+				fixGridSize8.Enabled = fixGridSize32.Enabled = fixGridSize64.Enabled = true;
+			}
+			else
+			{
+				fixGridSize8.Enabled = fixGridSize32.Enabled = fixGridSize64.Enabled = false;
+			}
+		}
+
+		private void gridDisableCheck_CheckedChanged(object sender, EventArgs e)
+		{
+			if (gridDisableCheck.Checked)
+			{
+				fixGridSizeCheck.Enabled = false;
+				if (fixGridSizeCheck.Checked)
+				{
+					fixGridSize8.Enabled = fixGridSize32.Enabled = fixGridSize64.Enabled = false;
+				}
+			}
+			else
+			{
+				fixGridSizeCheck.Enabled = true;
+				if (fixGridSizeCheck.Checked)
+				{
+					fixGridSize8.Enabled = fixGridSize32.Enabled = fixGridSize64.Enabled = true;
+				}
+			}
+		}
+
+		private void calcExecPlanButton_Click(object sender, EventArgs e)
+		{
+			if (GenerateExtractCmd(extractToolSelectCombo.SelectedIndex, "[ゲーム実行パス]", "[ゲーム実行引数]", out string extractAppPath, out string extractAppArgs))
+			{
+				extractExecPlanText.Text = extractAppPath + " " + extractAppArgs;
+			}
+			else
+			{
+				extractExecPlanText.Text = string.Empty;
+			}
+
+			return;
+		}
+
+		private void extractToolSelectButton_Click(object sender, EventArgs e)
+		{
+			openFileDialog2.Title = "抽出ツールを選択";
+			openFileDialog2.Filter = "実行ファイル(*.exe)|*.exe|すべてのファイル(*.*)|*.*";
+			openFileDialog2.FileName = "";
+			if (openFileDialog2.ShowDialog() == DialogResult.OK)
+			{
+				extractToolPathText.Text = openFileDialog2.FileName;
+			}
+
+			return;
+		}
+
+		private void extractToolSelectCombo_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			extractExecPlanText.Text = string.Empty;
+			switch (extractToolSelectCombo.SelectedIndex)
+			{
+				case 1: // krkr
+					extractToolPathText.Text = ExtractKrkrPath;
+					extractToolArgText.Text = ExtractKrkrArg;
+					addGameArgCheck.Checked = ExtractKrkrAddGameArg;
+					extractCurrentDirCheck.Checked = ExtractKrkrCurDir;
+					addGameDirCheck.Checked = ExtractKrkrGameDir;
+					break;
+				case 2: // krkrz
+					extractToolPathText.Text = ExtractKrkrzPath;
+					extractToolArgText.Text = ExtractKrkrzArg;
+					addGameArgCheck.Checked = ExtractKrkrzAddGameArg;
+					extractCurrentDirCheck.Checked = ExtractKrkrzCurDir;
+					addGameDirCheck.Checked = ExtractKrkrzGameDir;
+					break;
+				case 3: // krkrDump
+					extractToolPathText.Text = ExtractKrkrDumpPath;
+					extractToolArgText.Text = ExtractKrkrDumpArg;
+					addGameArgCheck.Checked = ExtractKrkrDumpAddGameArg;
+					extractCurrentDirCheck.Checked = ExtractKrkrDumpCurDir;
+					addGameDirCheck.Checked = ExtractKrkrDumpGameDir;
+					break;
+				case 4: // カスタム1
+					extractToolPathText.Text = ExtractCustom1Path;
+					extractToolArgText.Text = ExtractCustom1Arg;
+					addGameArgCheck.Checked = ExtractCustom1AddGameArg;
+					extractCurrentDirCheck.Checked = ExtractCustom1CurDir;
+					addGameDirCheck.Checked = ExtractCustom1GameDir;
+					break;
+				case 5: // カスタム2
+					extractToolPathText.Text = ExtractCustom2Path;
+					extractToolArgText.Text = ExtractCustom2Arg;
+					addGameArgCheck.Checked = ExtractCustom2AddGameArg;
+					extractCurrentDirCheck.Checked = ExtractCustom2CurDir;
+					addGameDirCheck.Checked = ExtractCustom2GameDir;
+					break;
+				default:
+					extractToolPathText.Text = string.Empty;
+					extractToolArgText.Text = string.Empty;
+					addGameArgCheck.Checked = false;
+					extractCurrentDirCheck.Checked = false;
+					addGameDirCheck.Checked = false;
+					break;
+			}
+		}
+
+		private void extractSaveButton_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				switch (extractToolSelectCombo.SelectedIndex)
+				{
+					case 1: // krkr
+						WriteIni("Extract", "krkrPath", extractToolPathText.Text.Trim());
+						WriteIni("Extract", "krkrArg", extractToolArgText.Text.Trim());
+						WriteIni("Extract", "krkrAddGameArg", addGameArgCheck.Checked ? "1" : "0");
+						WriteIni("Extract", "krkrCurDir", extractCurrentDirCheck.Checked ? "1" : "0");
+						WriteIni("Extract", "krkrGameDir", addGameDirCheck.Checked ? "1" : "0");
+						ExtractKrkrPath = extractToolPathText.Text.Trim();
+						ExtractKrkrArg = extractToolArgText.Text.Trim();
+						ExtractKrkrAddGameArg = Convert.ToBoolean(Convert.ToInt32(addGameArgCheck.Checked ? "1" : "0"));
+						ExtractKrkrCurDir = Convert.ToBoolean(Convert.ToInt32(extractCurrentDirCheck.Checked ? "1" : "0"));
+						ExtractKrkrGameDir = Convert.ToBoolean(Convert.ToInt32(addGameDirCheck.Checked ? "1" : "0"));
+						break;
+					case 2: // krkrz
+						WriteIni("Extract", "krkrzPath", extractToolPathText.Text.Trim());
+						WriteIni("Extract", "krkrzArg", extractToolArgText.Text.Trim());
+						WriteIni("Extract", "krkrzAddGameArg", addGameArgCheck.Checked ? "1" : "0");
+						WriteIni("Extract", "krkrzCurDir", extractCurrentDirCheck.Checked ? "1" : "0");
+						WriteIni("Extract", "krkrzGameDir", addGameDirCheck.Checked ? "1" : "0");
+						ExtractKrkrzPath = extractToolPathText.Text.Trim();
+						ExtractKrkrzArg = extractToolArgText.Text.Trim();
+						ExtractKrkrzAddGameArg = Convert.ToBoolean(Convert.ToInt32(addGameArgCheck.Checked ? "1" : "0"));
+						ExtractKrkrzCurDir = Convert.ToBoolean(Convert.ToInt32(extractCurrentDirCheck.Checked ? "1" : "0"));
+						ExtractKrkrzGameDir = Convert.ToBoolean(Convert.ToInt32(addGameDirCheck.Checked ? "1" : "0"));
+						break;
+					case 3: // krkrDump
+						WriteIni("Extract", "krkrDumpPath", extractToolPathText.Text.Trim());
+						WriteIni("Extract", "krkrDumpArg", extractToolArgText.Text.Trim());
+						WriteIni("Extract", "krkrDumpAddGameArg", addGameArgCheck.Checked ? "1" : "0");
+						WriteIni("Extract", "krkrDumpCurDir", extractCurrentDirCheck.Checked ? "1" : "0");
+						WriteIni("Extract", "krkrDumpGameDir", addGameDirCheck.Checked ? "1" : "0");
+						ExtractKrkrDumpPath = extractToolPathText.Text.Trim();
+						ExtractKrkrDumpArg = extractToolArgText.Text.Trim();
+						ExtractKrkrDumpAddGameArg = Convert.ToBoolean(Convert.ToInt32(addGameArgCheck.Checked ? "1" : "0"));
+						ExtractKrkrDumpCurDir = Convert.ToBoolean(Convert.ToInt32(extractCurrentDirCheck.Checked ? "1" : "0"));
+						ExtractKrkrDumpGameDir = Convert.ToBoolean(Convert.ToInt32(addGameDirCheck.Checked ? "1" : "0"));
+						break;
+					case 4: // カスタム1
+						WriteIni("Extract", "Custom1Path", extractToolPathText.Text.Trim());
+						WriteIni("Extract", "Custom1Arg", extractToolArgText.Text.Trim());
+						WriteIni("Extract", "Custom1AddGameArg", addGameArgCheck.Checked ? "1" : "0");
+						WriteIni("Extract", "Custom1CurDir", extractCurrentDirCheck.Checked ? "1" : "0");
+						WriteIni("Extract", "Custom1GameDir", addGameDirCheck.Checked ? "1" : "0");
+						ExtractCustom1Path = extractToolPathText.Text.Trim();
+						ExtractCustom1Arg = extractToolArgText.Text.Trim();
+						ExtractCustom1AddGameArg = Convert.ToBoolean(Convert.ToInt32(addGameArgCheck.Checked ? "1" : "0"));
+						ExtractCustom1CurDir = Convert.ToBoolean(Convert.ToInt32(extractCurrentDirCheck.Checked ? "1" : "0"));
+						ExtractCustom1GameDir = Convert.ToBoolean(Convert.ToInt32(addGameDirCheck.Checked ? "1" : "0"));
+						break;
+					case 5: // カスタム2
+						WriteIni("Extract", "Custom2Path", extractToolPathText.Text.Trim());
+						WriteIni("Extract", "Custom2Arg", extractToolArgText.Text.Trim());
+						WriteIni("Extract", "Custom2AddGameArg", addGameArgCheck.Checked ? "1" : "0");
+						WriteIni("Extract", "Custom2CurDir", extractCurrentDirCheck.Checked ? "1" : "0");
+						WriteIni("Extract", "Custom2GameDir", addGameDirCheck.Checked ? "1" : "0");
+						ExtractCustom2Path = extractToolPathText.Text.Trim();
+						ExtractCustom2Arg = extractToolArgText.Text.Trim();
+						ExtractCustom2AddGameArg = Convert.ToBoolean(Convert.ToInt32(addGameArgCheck.Checked ? "1" : "0"));
+						ExtractCustom2CurDir = Convert.ToBoolean(Convert.ToInt32(extractCurrentDirCheck.Checked ? "1" : "0"));
+						ExtractCustom2GameDir = Convert.ToBoolean(Convert.ToInt32(addGameDirCheck.Checked ? "1" : "0"));
+						break;
+				}
+				System.Media.SystemSounds.Beep.Play();
+			}
+			catch (Exception ex)
+			{
+				StringBuilder sb = new StringBuilder();
+				sb.Append("SelectedIndex:").Append(extractToolSelectCombo.SelectedIndex).Append(" / ");
+				sb.Append("PathText:").Append(extractToolPathText.Text.Trim()).Append(" / ");
+				sb.Append("ArgText:").Append(extractToolArgText.Text.Trim()).Append(" / ");
+				sb.Append("AddGameArg:").Append(addGameArgCheck.Checked ? "1" : "0");
+
+				WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, sb.ToString());
+
+				MessageBox.Show(ex.Message, AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+
+			return;
+		}
+
+		private void enableExtractCheck_CheckedChanged(object sender, EventArgs e)
+		{
+			if (enableExtractCheck.Checked)
+			{
+				extractToolsGroup.Enabled = true;
+			}
+			else
+			{
+				extractToolsGroup.Enabled = false;
 			}
 		}
 	}

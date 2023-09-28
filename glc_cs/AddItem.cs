@@ -16,6 +16,8 @@ namespace glc_cs
 		string genSaveType = string.Empty;
 		string iniPath = string.Empty;
 
+		DLsite dlSearchForm = new DLsite();
+
 		/// <summary>
 		/// MSSQL用
 		/// </summary>
@@ -45,6 +47,13 @@ namespace glc_cs
 
 			con = cn;
 			genSaveType = saveType;
+			rateCheck.Checked = Convert.ToBoolean(Rate);
+			if (ExtractEnable)
+			{
+				label10.Visible = true;
+				extractToolCombo.Visible = true;
+				extractToolCombo.SelectedIndex = 0;
+			}
 		}
 
 		/// <summary>
@@ -76,6 +85,13 @@ namespace glc_cs
 
 			con2 = cn;
 			genSaveType = saveType;
+			rateCheck.Checked = Convert.ToBoolean(Rate);
+			if (ExtractEnable)
+			{
+				label10.Visible = true;
+				extractToolCombo.Visible = true;
+				extractToolCombo.SelectedIndex = 0;
+			}
 		}
 
 		/// <summary>
@@ -100,6 +116,13 @@ namespace glc_cs
 					break;
 			}
 			genSaveType = saveType;
+			rateCheck.Checked = Convert.ToBoolean(Rate);
+			if (ExtractEnable)
+			{
+				label10.Visible = true;
+				extractToolCombo.Visible = true;
+				extractToolCombo.SelectedIndex = 0;
+			}
 		}
 
 		/// <summary>
@@ -118,6 +141,11 @@ namespace glc_cs
 			autoComplete(targetFile);
 		}
 
+		/// <summary>
+		/// マウスポインタのアイコンを変更します。
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void AddItem_DragEnter(object sender, DragEventArgs e)
 		{
 			// マウスポインター形状変更
@@ -166,9 +194,16 @@ namespace glc_cs
 			string runTime = runTimeText.Value.ToString();
 			string startCount = startCountText.Value.ToString();
 			string rate = rateCheck.Checked ? "1" : "0";
+			string extract_tool = extractToolCombo.SelectedIndex.ToString();
 
-			if (game_text.Length == 0 || gamePath.Length == 0)
+			if (game_text.Length == 0)
 			{
+				titleText.Focus();
+				return;
+			}
+			else if (gamePath.Length == 0)
+			{
+				exePathText.Focus();
 				return;
 			}
 
@@ -183,8 +218,8 @@ namespace glc_cs
 
 					if (!(File.Exists(targetFilePath)))
 					{
-						KeyNames[] writeKeys = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.execute_cmd, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.rating };
-						string[] writeValues = { game_text, imgPath, gamePath, executeCmd, runTime, startCount, dcon_text, dcon_img, string.Empty, "未プレイ", DBVer, rate };
+						KeyNames[] writeKeys = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.execute_cmd, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.rating, KeyNames.extract_tool };
+						string[] writeValues = { game_text, imgPath, gamePath, executeCmd, runTime, startCount, dcon_text, dcon_img, string.Empty, "未プレイ", DBVer, rate, extract_tool };
 
 						IniWrite(targetFilePath, "game", writeKeys, writeValues);
 						WriteIni("list", "game", newmaxval.ToString(), 0);
@@ -201,8 +236,8 @@ namespace glc_cs
 						DialogResult dialogResult = MessageBox.Show("既にiniファイルが存在します！！\nあり得ません。手動で管理INIファイルを追加したか、内部処理で何らかのミスが発生した可能性があります。\n最も安全な対処法は、一度このフォームを閉じて、[再読込]することです。\n\n" + targetFilePath + "\n[" + dup + "]\n上書きしますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 						if (dialogResult == DialogResult.Yes)
 						{
-							KeyNames[] writeKeys = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.execute_cmd, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.rating };
-							string[] writeValues = { game_text, imgPath, gamePath, executeCmd, runTime, startCount, dcon_text, dcon_img, string.Empty, "未プレイ", DBVer, rate };
+							KeyNames[] writeKeys = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.execute_cmd, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.rating, KeyNames.extract_tool };
+							string[] writeValues = { game_text, imgPath, gamePath, executeCmd, runTime, startCount, dcon_text, dcon_img, string.Empty, "未プレイ", DBVer, rate, extract_tool };
 
 							IniWrite(targetFilePath, "game", writeKeys, writeValues);
 							WriteIni("list", "game", newmaxval.ToString(), 0);
@@ -243,7 +278,7 @@ namespace glc_cs
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
 						// SQL文
-						CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( @game_name, @game_path, @execute_cmd, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @dcon_img, '', '未プレイ', @db_version )"
+						CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION, EXTRACT_TOOL ) VALUES ( @game_name, @game_path, @execute_cmd, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @dcon_img, '', '未プレイ', @db_version, @extract_tool )"
 					};
 					cm.Connection = cn;
 					// パラメータの設定
@@ -257,6 +292,7 @@ namespace glc_cs
 					cm.Parameters.AddWithValue("@age_flg", rate);
 					cm.Parameters.AddWithValue("@dcon_img", dcon_img);
 					cm.Parameters.AddWithValue("@db_version", DBVer);
+					cm.Parameters.AddWithValue("@extract_tool", extract_tool);
 
 					try
 					{
@@ -285,7 +321,7 @@ namespace glc_cs
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
 						// SQL文
-						CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( @game_name, @game_path, @execute_cmd, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @dcon_img, '', N'未プレイ', @db_version );"
+						CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION, EXTRACT_TOOL ) VALUES ( @game_name, @game_path, @execute_cmd, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @dcon_img, '', N'未プレイ', @db_version, @extract_tool );"
 					};
 					cm.Connection = cn;
 					// パラメータの設定
@@ -299,6 +335,7 @@ namespace glc_cs
 					cm.Parameters.AddWithValue("@age_flg", rate);
 					cm.Parameters.AddWithValue("@dcon_img", dcon_img);
 					cm.Parameters.AddWithValue("@db_version", DBVer);
+					cm.Parameters.AddWithValue("@extract_tool", extract_tool);
 
 					try
 					{
@@ -359,6 +396,51 @@ namespace glc_cs
 			startCountText.Value = 0;
 		}
 
+		/// <summary>
+		/// DLsiteから作品名を取得します。
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void getInfoButton_Click(object sender, EventArgs e)
+		{
+			// dlsiteからデータを取得します。
+			dlSearchForm.StartPosition = FormStartPosition.CenterParent;
+			dlSearchForm.ShowDialog();
+
+			// 反映
+			if (!string.IsNullOrEmpty(dlSearchForm.resultText))
+			{
+				titleText.Text = dlSearchForm.resultText;
+				if (dlSearchForm.resultImageSaved && !string.IsNullOrEmpty(dlSearchForm.resultImagePath) && File.Exists(dlSearchForm.resultImagePath))
+				{
+					imgPathText.Text = dlSearchForm.resultImagePath;
+				}
+
+				// フォーカス移動
+				if (string.IsNullOrEmpty(exePathText.Text))
+				{
+					exePathText.Focus();
+				}
+				else if (string.IsNullOrEmpty(imgPathText.Text))
+				{
+					imgPathText.Focus();
+				}
+				else
+				{
+					AddButton.Focus();
+				}
+			}
+			else
+			{
+				titleText.Focus();
+			}
+		}
+
+		/// <summary>
+		/// 実行アプリケーションを参照します。
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void exePathButton_Click(object sender, EventArgs e)
 		{
 			openFileDialog1.Title = "追加する実行ファイルを選択";
@@ -374,6 +456,11 @@ namespace glc_cs
 			}
 		}
 
+		/// <summary>
+		/// アプリケーションアイコンを参照します。
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void imgPathButton_Click(object sender, EventArgs e)
 		{
 			openFileDialog1.Title = "実行ファイルの画像を選択";
@@ -389,6 +476,11 @@ namespace glc_cs
 			}
 		}
 
+		/// <summary>
+		/// 実行アプリケーションが指定された場合に、自動的にアプリケーションアイコンを取得します。
+		/// </summary>
+		/// <param name="targetFile"></param>
+		/// <param name="targetType"></param>
 		private void autoComplete(string targetFile, string targetType = "")
 		{
 			// ファイルタイプが指定されていない場合に自動判別
@@ -409,7 +501,10 @@ namespace glc_cs
 			if (targetType == "exe")
 			{
 				// タイトル自動補填（ファイル名）
-				titleText.Text = Path.GetFileNameWithoutExtension(targetFile);
+				if (string.IsNullOrEmpty(titleText.Text.Trim()))
+				{
+					titleText.Text = Path.GetFileNameWithoutExtension(targetFile);
+				}
 
 				// 実行ファイルパス自動補填（ファイルフルパス）
 				exePathText.Text = targetFile;

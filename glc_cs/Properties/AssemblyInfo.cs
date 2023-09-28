@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // 制御されます。アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更します。
 
-[assembly: AssemblyTitle("Game Launcher")]
-[assembly: AssemblyDescription("Game Launcher C# Edition")]
+[assembly: AssemblyTitle("GLauncher")]
+[assembly: AssemblyDescription("GLauncher C# Edition")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("dekosoft / fanet.work")]
-[assembly: AssemblyProduct("Game Launcher C# Edition")]
+[assembly: AssemblyProduct("GLauncher C# Edition")]
 [assembly: AssemblyCopyright("(c) 2019-2023 Ogura Deko")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -34,6 +34,6 @@ using System.Runtime.InteropServices;
 // すべての値を指定するか、次を使用してビルド番号とリビジョン番号を既定に設定できます
 // 既定値にすることができます:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.9.2")]
-[assembly: AssemblyFileVersion("39.23.08.01")]
+[assembly: AssemblyVersion("1.10.0.0")]
+[assembly: AssemblyFileVersion("40.23.09.28")]
 [assembly: NeutralResourcesLanguage("ja-JP")]

@@ -37,22 +37,27 @@ namespace glc_cs
 			/// <summary>
 			/// アプリケーション名
 			/// </summary>
-			protected static readonly string appName = "Game Launcher C# Edition";
+			protected static readonly string appName = "GLauncher C# Edition";
 
 			/// <summary>
 			/// アプリケーションバージョン
 			/// </summary>
-			protected static readonly string appVer = "1.09b";
+			protected static readonly string appVer = "1.10";
 
 			/// <summary>
 			/// アプリケーションビルド番号
 			/// </summary>
-			protected static readonly string appBuild = "39.23.08.01";
+			protected static readonly string appBuild = "40.23.09.28";
 
 			/// <summary>
 			/// データベースバージョン
 			/// </summary>
-			protected static readonly string dbVer = "1.3";
+			protected static readonly string dbVer = "1.4";
+
+			/// <summary>
+			/// 初回ロードフラグ
+			/// </summary>
+			protected static bool isFirstLoad = true;
 
 			/// <summary>
 			/// ウィンドウ最小化ボタン表示フラグ
@@ -147,6 +152,16 @@ namespace glc_cs
 			protected static bool offlineSave = false;
 
 			/// <summary>
+			/// ローカルDB構築フラグ
+			/// </summary>
+			protected static bool useLocalDB = false;
+
+			/// <summary>
+			/// ローカルDB
+			/// </summary>
+			protected static DataTable localDB = null;
+
+			/// <summary>
 			/// データベースのURL
 			/// </summary>
 			protected static string dbUrl = string.Empty;
@@ -185,7 +200,7 @@ namespace glc_cs
 			/// <summary>
 			/// 棒読みちゃん 読み上げメッセージ
 			/// </summary>
-			protected static string bysMsg = "Game Launcherと接続しました。";
+			protected static string bysMsg = "GLauncherと接続しました。";
 
 			/// <summary>
 			/// 棒読みちゃん タイプ
@@ -268,11 +283,163 @@ namespace glc_cs
 			protected static string defaultStatusValueOfPlaying = "プレイ中";
 
 			/// <summary>
+			/// グリッドのイメージサイズ固定フラグ
+			/// </summary>
+			protected static bool fixGridSizeFlg = false;
+
+			/// <summary>
+			/// グリッドのイメージサイズ
+			/// </summary>
+			protected static int fixGridSize = 32;
+
+			/// <summary>
+			/// 初期起動時ゲームロードカウンタ表示フラグ
+			/// </summary>
+			protected static bool disableInitialLoadCountFlg = true;
+
+			/// <summary>
+			/// 抽出機能使用可否フラグ
+			/// </summary>
+			protected static bool extractEnable = false;
+
+			/// <summary>
+			/// 抽出ツールのID
+			/// </summary>
+			protected static int currentExtractTool = 0;
+
+			/// <summary>
+			/// krkrツールパス
+			/// </summary>
+			protected static string extractKrkrPath = string.Empty;
+
+			/// <summary>
+			/// krkr引数
+			/// </summary>
+			protected static string extractKrkrArg = string.Empty;
+
+			/// <summary>
+			/// krkrゲーム引数追加フラグ
+			/// </summary>
+			protected static bool extractKrkrAddGameArg = false;
+
+			/// <summary>
+			/// krkrツールをカレントディレクトリにするフラグ
+			/// </summary>
+			protected static bool extractKrkrCurDir = false;
+
+			/// <summary>
+			/// krkrにゲームのディレクトリパスを渡すフラグ
+			/// </summary>
+			protected static bool extractKrkrGameDir = false;
+
+			/// <summary>
+			/// krkrzツールパス
+			/// </summary>
+			protected static string extractKrkrzPath = string.Empty;
+
+			/// <summary>
+			/// krkrz引数
+			/// </summary>
+			protected static string extractKrkrzArg = string.Empty;
+
+			/// <summary>
+			/// krkrzゲーム引数追加フラグ
+			/// </summary>
+			protected static bool extractKrkrzAddGameArg = false;
+
+			/// <summary>
+			/// krkrzツールをカレントディレクトリにするフラグ
+			/// </summary>
+			protected static bool extractKrkrzCurDir = false;
+
+			/// <summary>
+			/// krkrzにゲームのディレクトリパスを渡すフラグ
+			/// </summary>
+			protected static bool extractKrkrzGameDir = false;
+
+			/// <summary>
+			/// krkrDumpツールパス
+			/// </summary>
+			protected static string extractKrkrDumpPath = string.Empty;
+
+			/// <summary>
+			/// krkrDump引数
+			/// </summary>
+			protected static string extractKrkrDumpArg = string.Empty;
+
+			/// <summary>
+			/// krkrDumpゲーム引数追加フラグ
+			/// </summary>
+			protected static bool extractKrkrDumpAddGameArg = false;
+
+			/// <summary>
+			/// krkrDumpツールをカレントディレクトリにするフラグ
+			/// </summary>
+			protected static bool extractKrkrDumpCurDir = false;
+
+			/// <summary>
+			/// krkrDumpにゲームのディレクトリパスを渡すフラグ
+			/// </summary>
+			protected static bool extractKrkrDumpGameDir = false;
+
+			/// <summary>
+			/// カスタム1ツールパス
+			/// </summary>
+			protected static string extractCustom1Path = string.Empty;
+
+			/// <summary>
+			/// カスタム1引数
+			/// </summary>
+			protected static string extractCustom1Arg = string.Empty;
+
+			/// <summary>
+			/// カスタム1ゲーム引数追加フラグ
+			/// </summary>
+			protected static bool extractCustom1AddGameArg = false;
+
+			/// <summary>
+			/// カスタム1ツールをカレントディレクトリにするフラグ
+			/// </summary>
+			protected static bool extractCustom1CurDir = false;
+
+			/// <summary>
+			/// カスタム1にゲームのディレクトリパスを渡すフラグ
+			/// </summary>
+			protected static bool extractCustom1GameDir = false;
+
+			/// <summary>
+			/// カスタム2ツールパス
+			/// </summary>
+			protected static string extractCustom2Path = string.Empty;
+
+			/// <summary>
+			/// カスタム2引数
+			/// </summary>
+			protected static string extractCustom2Arg = string.Empty;
+
+			/// <summary>
+			/// カスタム2ゲーム引数追加フラグ
+			/// </summary>
+			protected static bool extractCustom2AddGameArg = false;
+
+			/// <summary>
+			/// カスタム2ツールをカレントディレクトリにするフラグ
+			/// </summary>
+			protected static bool extractCustom2CurDir = false;
+
+			/// <summary>
+			/// カスタム2にゲームのディレクトリパスを渡すフラグ
+			/// </summary>
+			protected static bool extractCustom2GameDir = false;
+
+
+			/// <summary>
 			/// INIファイルに書き込む際に使用可能なキー名一覧
 			/// </summary>
 			public enum KeyNames
 			{
-				name
+				id
+				, name
 				, imgpass
 				, pass
 				, time
@@ -286,6 +453,7 @@ namespace glc_cs
 				, lastrun
 				, temp1
 				, execute_cmd
+				, extract_tool
 			}
 
 			/// <summary>
@@ -321,12 +489,30 @@ namespace glc_cs
 			}
 
 			/// <summary>
+			/// 初回ロードフラグ
+			/// </summary>
+			public static bool IsFirstLoad
+			{
+				get { return isFirstLoad; }
+				set { isFirstLoad = value; }
+			}
+
+			/// <summary>
 			/// ウィンドウに最小化コントロールを表示するかのフラグです
 			/// </summary>
 			public static bool WindowHideControlFlg
 			{
 				get { return windowHideControlFlg; }
 				set { windowHideControlFlg = value; }
+			}
+
+			/// <summary>
+			/// 初期起動時にスクラッシュウィンドウにロード中ゲームのカウンタを表示するかのフラグです
+			/// </summary>
+			public static bool DisableInitialLoadCountFlg
+			{
+				get { return disableInitialLoadCountFlg; }
+				set { disableInitialLoadCountFlg = value; }
 			}
 
 			/// <summary>
@@ -476,6 +662,24 @@ namespace glc_cs
 			{
 				get { return offlineSave; }
 				set { offlineSave = value; }
+			}
+
+			/// <summary>
+			/// ローカルDB構築フラグ
+			/// </summary>
+			public static bool UseLocalDB
+			{
+				get { return useLocalDB; }
+				set { useLocalDB = value; }
+			}
+
+			/// <summary>
+			/// ローカルDB
+			/// </summary>
+			public static DataTable LocalDB
+			{
+				get { return localDB; }
+				set { localDB = value; }
 			}
 
 			/// <summary>
@@ -764,6 +968,267 @@ namespace glc_cs
 			}
 
 			/// <summary>
+			/// グリッドのイメージサイズ固定フラグ
+			/// </summary>
+			public static bool FixGridSizeFlg
+			{
+				get { return fixGridSizeFlg; }
+				set { fixGridSizeFlg = value; }
+			}
+
+			/// <summary>
+			/// グリッドのイメージサイズ
+			/// </summary>
+			public static int FixGridSize
+			{
+				get { return fixGridSize; }
+				set { fixGridSize = (value == 8 || value == 32 || value == 64) ? value : 32; }
+			}
+
+			/// <summary>
+			/// 抽出ツールID
+			/// </summary>
+			public static int CurrentExtractTool
+			{
+				get { return currentExtractTool; }
+				set { currentExtractTool = value; }
+			}
+
+			/// <summary>
+			/// 抽出機能使用可否フラグ
+			/// </summary>
+			public static bool ExtractEnable
+			{
+				get { return extractEnable; }
+				set { extractEnable = value; }
+			}
+
+			/// <summary>
+			/// krkrツールパス
+			/// </summary>
+			public static string ExtractKrkrPath
+			{
+				get { return extractKrkrPath; }
+				set { extractKrkrPath = value; }
+			}
+
+			/// <summary>
+			/// krkr引数
+			/// </summary>
+			public static string ExtractKrkrArg
+			{
+				get { return extractKrkrArg; }
+				set { extractKrkrArg = value; }
+			}
+
+			/// <summary>
+			/// krkrゲーム引数追加フラグ
+			/// </summary>
+			public static bool ExtractKrkrAddGameArg
+			{
+				get { return extractKrkrAddGameArg; }
+				set { extractKrkrAddGameArg = value; }
+			}
+
+			/// <summary>
+			/// krkrツールをカレントディレクトリにするフラグ
+			/// </summary>
+			public static bool ExtractKrkrCurDir
+			{
+				get { return extractKrkrCurDir; }
+				set { extractKrkrCurDir = value; }
+			}
+
+			/// <summary>
+			/// krkrにゲームディレクトリを渡すフラグ
+			/// </summary>
+			public static bool ExtractKrkrGameDir
+			{
+				get { return extractKrkrGameDir; }
+				set { extractKrkrGameDir = value; }
+			}
+
+			/// <summary>
+			/// krkrzツールパス
+			/// </summary>
+			public static string ExtractKrkrzPath
+			{
+				get { return extractKrkrzPath; }
+				set { extractKrkrzPath = value; }
+			}
+
+			/// <summary>
+			/// krkrz引数
+			/// </summary>
+			public static string ExtractKrkrzArg
+			{
+				get { return extractKrkrzArg; }
+				set { extractKrkrzArg = value; }
+			}
+
+			/// <summary>
+			/// krkrzゲーム引数追加フラグ
+			/// </summary>
+			public static bool ExtractKrkrzAddGameArg
+			{
+				get { return extractKrkrzAddGameArg; }
+				set { extractKrkrzAddGameArg = value; }
+			}
+
+			/// <summary>
+			/// krkrzツールをカレントディレクトリにするフラグ
+			/// </summary>
+			public static bool ExtractKrkrzCurDir
+			{
+				get { return extractKrkrzCurDir; }
+				set { extractKrkrzCurDir = value; }
+			}
+
+			/// <summary>
+			/// krkrzにゲームディレクトリを渡すフラグ
+			/// </summary>
+			public static bool ExtractKrkrzGameDir
+			{
+				get { return extractKrkrzGameDir; }
+				set { extractKrkrzGameDir = value; }
+			}
+
+			/// <summary>
+			/// krkrDumpツールパス
+			/// </summary>
+			public static string ExtractKrkrDumpPath
+			{
+				get { return extractKrkrDumpPath; }
+				set { extractKrkrDumpPath = value; }
+			}
+
+			/// <summary>
+			/// krkrDump引数
+			/// </summary>
+			public static string ExtractKrkrDumpArg
+			{
+				get { return extractKrkrDumpArg; }
+				set { extractKrkrDumpArg = value; }
+			}
+
+			/// <summary>
+			/// krkrDumpゲーム引数追加フラグ
+			/// </summary>
+			public static bool ExtractKrkrDumpAddGameArg
+			{
+				get { return extractKrkrDumpAddGameArg; }
+				set { extractKrkrDumpAddGameArg = value; }
+			}
+
+			/// <summary>
+			/// krkrDumpツールをカレントディレクトリにするフラグ
+			/// </summary>
+			public static bool ExtractKrkrDumpCurDir
+			{
+				get { return extractKrkrDumpCurDir; }
+				set { extractKrkrDumpCurDir = value; }
+			}
+
+			/// <summary>
+			/// krkrDumpにゲームディレクトリを渡すフラグ
+			/// </summary>
+			public static bool ExtractKrkrDumpGameDir
+			{
+				get { return extractKrkrDumpGameDir; }
+				set { extractKrkrDumpGameDir = value; }
+			}
+
+			/// <summary>
+			/// Custom1ツールパス
+			/// </summary>
+			public static string ExtractCustom1Path
+			{
+				get { return extractCustom1Path; }
+				set { extractCustom1Path = value; }
+			}
+
+			/// <summary>
+			/// Custom1引数
+			/// </summary>
+			public static string ExtractCustom1Arg
+			{
+				get { return extractCustom1Arg; }
+				set { extractCustom1Arg = value; }
+			}
+
+			/// <summary>
+			/// Custom1ゲーム引数追加フラグ
+			/// </summary>
+			public static bool ExtractCustom1AddGameArg
+			{
+				get { return extractCustom1AddGameArg; }
+				set { extractCustom1AddGameArg = value; }
+			}
+
+			/// <summary>
+			/// Custom1ツールをカレントディレクトリにするフラグ
+			/// </summary>
+			public static bool ExtractCustom1CurDir
+			{
+				get { return extractCustom1CurDir; }
+				set { extractCustom1CurDir = value; }
+			}
+
+			/// <summary>
+			/// Custom1にゲームディレクトリを渡すフラグ
+			/// </summary>
+			public static bool ExtractCustom1GameDir
+			{
+				get { return extractCustom1GameDir; }
+				set { extractCustom1GameDir = value; }
+			}
+
+			/// <summary>
+			/// Custom2ツールパス
+			/// </summary>
+			public static string ExtractCustom2Path
+			{
+				get { return extractCustom2Path; }
+				set { extractCustom2Path = value; }
+			}
+
+			/// <summary>
+			/// Custom2引数
+			/// </summary>
+			public static string ExtractCustom2Arg
+			{
+				get { return extractCustom2Arg; }
+				set { extractCustom2Arg = value; }
+			}
+
+			/// <summary>
+			/// Custom2ゲーム引数追加フラグ
+			/// </summary>
+			public static bool ExtractCustom2AddGameArg
+			{
+				get { return extractCustom2AddGameArg; }
+				set { extractCustom2AddGameArg = value; }
+			}
+
+			/// <summary>
+			/// Custom2ツールをカレントディレクトリにするフラグ
+			/// </summary>
+			public static bool ExtractCustom2CurDir
+			{
+				get { return extractCustom2CurDir; }
+				set { extractCustom2CurDir = value; }
+			}
+
+			/// <summary>
+			/// Custom1にゲームディレクトリを渡すフラグ
+			/// </summary>
+			public static bool ExtractCustom2GameDir
+			{
+				get { return extractCustom2GameDir; }
+				set { extractCustom2GameDir = value; }
+			}
+
+			/// <summary>
 			/// システム変数をロードします
 			/// </summary>
 			/// <returns></returns>
@@ -771,10 +1236,7 @@ namespace glc_cs
 			{
 				MyBase64str base64 = new MyBase64str();
 
-				if (SaveType == "T")
-				{
-					return true;
-				}
+				string currentSaveType = SaveType;
 
 				if (File.Exists(ConfigIni))
 				{
@@ -783,9 +1245,11 @@ namespace glc_cs
 					GameIni = GameDir + "game.ini";
 					GameDb = ReadIni("default", "database", string.Empty);
 					DconPath = ReadIni("connect", "dconPath", "-1");
+					disableInitialLoadCountFlg = Convert.ToBoolean(Convert.ToInt32(ReadIni("disable", "DisableInitialLoadCount", "1")));
 
 					SaveType = ReadIni("general", "save", "I");
 					OfflineSave = Convert.ToBoolean(Convert.ToInt32(ReadIni("general", "OfflineSave", "0")));
+					UseLocalDB = Convert.ToBoolean(Convert.ToInt32(ReadIni("general", "UseLocalDB", "0")));
 					DbUrl = ReadIni("connect", "DBURL", string.Empty);
 					DbPort = ReadIni("connect", "DBPort", string.Empty);
 					DbName = ReadIni("connect", "DBName", string.Empty);
@@ -895,11 +1359,46 @@ namespace glc_cs
 					InitialUpdateCheckSkipFlg = Convert.ToBoolean(Convert.ToInt32(ReadIni("disable", "updchk", "0")));
 					InitialUpdateCheckSkipVer = ReadIni("disable", "updchkVer", string.Empty);
 					WindowHideControlFlg = Convert.ToBoolean(Convert.ToInt32(ReadIni("disable", "enableWindowHideControl", "0")));
+					FixGridSizeFlg = Convert.ToBoolean(Convert.ToInt32(ReadIni("grid", "fixGridSizeFlg", "0")));
+					FixGridSize = Convert.ToInt32(ReadIni("grid", "fixGridSize", "0"));
 
 					// dcon設定
 					Dconnect = Convert.ToBoolean(Convert.ToInt32(ReadIni("checkbox", "dconnect", "0")));
 					DconAppID = ReadIni("connect", "dconappid", string.Empty);
 					Rate = Convert.ToInt32(ReadIni("checkbox", "rate", "0"));
+
+					// 抽出
+					ExtractEnable = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Enabled", "0")));
+
+					ExtractKrkrPath = ReadIni("Extract", "krkrPath", string.Empty);
+					ExtractKrkrArg = ReadIni("Extract", "krkrArg", string.Empty);
+					ExtractKrkrAddGameArg = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrAddGameArg", "0")));
+					ExtractKrkrCurDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrCurDir", "0")));
+					ExtractKrkrGameDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrGameDir", "0")));
+
+					ExtractKrkrzPath = ReadIni("Extract", "krkrzPath", string.Empty);
+					ExtractKrkrzArg = ReadIni("Extract", "krkrzArg", string.Empty);
+					ExtractKrkrzAddGameArg = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrzAddGameArg", "0")));
+					ExtractKrkrzCurDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrzCurDir", "0")));
+					ExtractKrkrzGameDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrzGameDir", "0")));
+
+					ExtractKrkrDumpPath = ReadIni("Extract", "krkrDumpPath", string.Empty);
+					ExtractKrkrDumpArg = ReadIni("Extract", "krkrDumpArg", string.Empty);
+					ExtractKrkrDumpAddGameArg = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrDumpAddGameArg", "0")));
+					ExtractKrkrDumpCurDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrDumpCurDir", "0")));
+					ExtractKrkrDumpGameDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "krkrDumpGameDir", "0")));
+
+					ExtractCustom1Path = ReadIni("Extract", "Custom1Path", string.Empty);
+					ExtractCustom1Arg = ReadIni("Extract", "Custom1Arg", string.Empty);
+					ExtractCustom1AddGameArg = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Custom1AddGameArg", "0")));
+					ExtractCustom1CurDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Custom1CurDir", "0")));
+					ExtractCustom1GameDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Custom1GameDir", "0")));
+
+					ExtractCustom2Path = ReadIni("Extract", "Custom2Path", string.Empty);
+					ExtractCustom2Arg = ReadIni("Extract", "Custom2Arg", string.Empty);
+					ExtractCustom2AddGameArg = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Custom2AddGameArg", "0")));
+					ExtractCustom2CurDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Custom2CurDir", "0")));
+					ExtractCustom2GameDir = Convert.ToBoolean(Convert.ToInt32(ReadIni("Extract", "Custom2GameDir", "0")));
 				}
 				else
 				{
@@ -936,6 +1435,14 @@ namespace glc_cs
 					// dcon設定
 					Dconnect = false;
 					Rate = 0;
+				}
+
+				// 設定ロード前の保存方法がオフラインINIモードの場合、ゲームディレクトリ等を上書きする
+				if (currentSaveType == "T")
+				{
+					SaveType = "T";
+					GameDir = LocalPath;
+					GameIni = LocalIni;
 				}
 
 				return true;
@@ -1178,7 +1685,7 @@ namespace glc_cs
 				}
 				else if (opt.Length == 0)
 				{
-					if (!File.Exists(GameIni))
+					if (File.Exists(GameIni))
 					{
 						WritePrivateProfileString(
 										sec,
@@ -1189,7 +1696,7 @@ namespace glc_cs
 				}
 				else
 				{
-					if (!File.Exists((opt.EndsWith("\\") ? opt : opt + "\\") + "game.ini"))
+					if (File.Exists((opt.EndsWith("\\") ? opt : opt + "\\") + "game.ini"))
 					{
 						WritePrivateProfileString(
 										sec,
@@ -1259,9 +1766,9 @@ namespace glc_cs
 				{
 					TcpClient tc;
 
-					if (Convert.ToInt32(ReadIni("connect", "byType", "0")) == 1)
+					if (ByType == 1)
 					{
-						string url = "http://localhost:" + ReadIni("connect", "byPort", "50080") + "/talk";
+						string url = "http://127.0.0.1:" + ByPort + "/talk";
 						System.Net.WebClient wc = new System.Net.WebClient();
 						//NameValueCollectionの作成
 						System.Collections.Specialized.NameValueCollection ps =
@@ -1273,8 +1780,9 @@ namespace glc_cs
 						{
 							wc.UploadValues(url, ps);
 						}
-						catch (Exception)
+						catch (Exception ex)
 						{
+							WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, url);
 							DialogResult dr = MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。\n\n今回のみ接続しないようにしますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 							if (dr == DialogResult.Yes)
 							{
@@ -1292,8 +1800,9 @@ namespace glc_cs
 						{
 							tc = TC;
 						}
-						catch (Exception)
+						catch (Exception ex)
 						{
+							WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "");
 							DialogResult dr = MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。\n\n今回のみ接続しないようにしますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 							if (dr == DialogResult.Yes)
 							{
@@ -1306,14 +1815,14 @@ namespace glc_cs
 						{
 							using (BinaryWriter bw = new BinaryWriter(ns))
 							{
-								bw.Write(ByCmd);    //コマンド（ 0:メッセージ読み上げ）
-								bw.Write(BySpd);    //速度    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByTone);   //音程    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByVol);    //音量    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByVoice);  //声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
-								bw.Write(ByCode);   //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
-								bw.Write(ByLength); //文字列のbyte配列の長さ
-								bw.Write(BybMsg);   //文字列のbyte配列
+								bw.Write(ByCmd);    // コマンド（ 0:メッセージ読み上げ）
+								bw.Write(BySpd);    // 速度    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByTone);   // 音程    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByVol);    // 音量    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByVoice);  // 声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
+								bw.Write(ByCode);   // 文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
+								bw.Write(ByLength); // 文字列のbyte配列の長さ
+								bw.Write(BybMsg);   // 文字列のbyte配列
 							}
 						}
 						tc.Close();
@@ -1322,13 +1831,13 @@ namespace glc_cs
 				return;
 			}
 
-			public static void Bouyomi_Connectchk(string byHost, int byPort, int byType, bool showDialog = true)
+			public static void Bouyomi_Connectchk(bool showDialog = true)
 			{
 				BysMsg = "ゲームランチャーとの接続テストに成功しました。";
 
-				if (byType == 1)
+				if (ByType == 1)
 				{
-					string url = "http://localhost:" + byPort + "/talk";
+					string url = "http://127.0.0.1:" + ByPort + "/talk";
 					System.Net.WebClient wc = new System.Net.WebClient();
 					//NameValueCollectionの作成
 					System.Collections.Specialized.NameValueCollection ps =
@@ -1340,8 +1849,9 @@ namespace glc_cs
 					{
 						wc.UploadValues(url, ps);
 					}
-					catch (Exception)
+					catch (Exception ex)
 					{
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, url);
 						if (showDialog)
 						{
 							MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -1365,19 +1875,20 @@ namespace glc_cs
 						{
 							using (BinaryWriter bw = new BinaryWriter(ns))
 							{
-								bw.Write(ByCmd);    //コマンド（ 0:メッセージ読み上げ）
-								bw.Write(BySpd);    //速度    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByTone);   //音程    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByVol);    //音量    （-1:棒読みちゃん画面上の設定）
-								bw.Write(ByVoice);  //声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
-								bw.Write(ByCode);   //文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
-								bw.Write(ByLength); //文字列のbyte配列の長さ
-								bw.Write(BybMsg);   //文字列のbyte配列
+								bw.Write(ByCmd);    // コマンド（ 0:メッセージ読み上げ）
+								bw.Write(BySpd);    // 速度    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByTone);   // 音程    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByVol);    // 音量    （-1:棒読みちゃん画面上の設定）
+								bw.Write(ByVoice);  // 声質    （ 0:棒読みちゃん画面上の設定、1:女性1、2:女性2、3:男性1、4:男性2、5:中性、6:ロボット、7:機械1、8:機械2、10001～:SAPI5）
+								bw.Write(ByCode);   // 文字列のbyte配列の文字コード(0:UTF-8, 1:Unicode, 2:Shift-JIS)
+								bw.Write(ByLength); // 文字列のbyte配列の長さ
+								bw.Write(BybMsg);   // 文字列のbyte配列
 							}
 						}
 					}
-					catch (Exception)
+					catch (Exception ex)
 					{
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "");
 						if (showDialog)
 						{
 							MessageBox.Show("エラー：棒読みちゃんとの接続に失敗しました。\n接続できません。", appName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -1478,7 +1989,7 @@ namespace glc_cs
 								imgPathData = imgpassdata.Replace(beforeName, afterName);
 								if (!imgpassdata.Equals(imgPathData))
 								{
-									IniWrite(readini, "game", KeyNames.pass, imgPathData);
+									IniWrite(readini, "game", KeyNames.imgpass, imgPathData);
 									wasChanged = true;
 								}
 							}
@@ -1575,6 +2086,13 @@ namespace glc_cs
 				catch (Exception ex)
 				{
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "[初期退避処理] Path: " + targetWorkDir);
+
+					// ターゲットパスが存在していない場合
+					if (!File.Exists(targetWorkDir))
+					{
+						// 退避ファイルが存在する場合、復元する
+						Directory.Move(baseDir + "_temp_db_bak", targetWorkDir);
+					}
 					return false;
 				}
 
@@ -1620,7 +2138,7 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 60,
-							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION "
+							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, EXTRACT_TOOL, DB_VERSION "
 										+ " FROM " + dbName + "." + dbTable
 						};
 						cm2.Connection = cn;
@@ -1649,6 +2167,7 @@ namespace glc_cs
 										KeyNames.dcon_img,
 										KeyNames.memo,
 										KeyNames.status,
+										KeyNames.extract_tool,
 										KeyNames.ini_version
 									};
 									string[] keys =
@@ -1666,6 +2185,7 @@ namespace glc_cs
 										reader["DCON_IMG"].ToString(),
 										reader["MEMO"].ToString(),
 										reader["STATUS"].ToString(),
+										reader["EXTRACT_TOOL"].ToString(),
 										reader["DB_VERSION"].ToString()
 									};
 									IniWrite(saveLocalIniPath, "game", colNames, keys);
@@ -1705,7 +2225,7 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 60,
-							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION "
+							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, EXTRACT_TOOL, DB_VERSION "
 										+ " FROM " + dbTable
 						};
 						cm2.Connection = mcn;
@@ -1734,6 +2254,7 @@ namespace glc_cs
 										KeyNames.dcon_img,
 										KeyNames.memo,
 										KeyNames.status,
+										KeyNames.extract_tool,
 										KeyNames.ini_version
 									};
 									string[] keys =
@@ -1751,6 +2272,7 @@ namespace glc_cs
 										reader["DCON_IMG"].ToString(),
 										reader["MEMO"].ToString(),
 										reader["STATUS"].ToString(),
+										reader["EXTRACT_TOOL"].ToString(),
 										reader["DB_VERSION"].ToString()
 									};
 									IniWrite(saveLocalIniPath, "game", colNames, keys);
@@ -1891,7 +2413,8 @@ namespace glc_cs
 									KeyNames.memo,			// 10
 									KeyNames.status,		// 11
 									KeyNames.ini_version,	// 12
-									KeyNames.execute_cmd	// 13
+									KeyNames.execute_cmd,	// 13
+									KeyNames.extract_tool	// 14
 								};
 								string[] failedVal =
 								{
@@ -1908,7 +2431,8 @@ namespace glc_cs
 									"",
 									"未プレイ",
 									DBVer,
-									""
+									"",
+									"0"
 								};
 								string[] returnVal = new string[keyName.Length];
 
@@ -1929,7 +2453,7 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "' )"
+									CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "', '" + returnVal[14] + "' )"
 								};
 								cm2.Connection = cn1;
 								cm2.Transaction = tran1;
@@ -1995,7 +2519,8 @@ namespace glc_cs
 									KeyNames.memo,			// 10
 									KeyNames.status,		// 11
 									KeyNames.ini_version,	// 12
-									KeyNames.execute_cmd	// 13
+									KeyNames.execute_cmd,	// 13
+									KeyNames.extract_tool	// 14
 								};
 								string[] failedVal =
 								{
@@ -2012,7 +2537,8 @@ namespace glc_cs
 									"",
 									"未プレイ",
 									DBVer,
-									""
+									"",
+									"0"
 								};
 								string[] returnVal = new string[keyName.Length];
 
@@ -2033,7 +2559,7 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "', '" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "' );"
+									CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "', '" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "', '" + returnVal[14] + "' );"
 								};
 								mcm2.Connection = mcn1;
 								mcm2.Transaction = mtran1;
@@ -2152,7 +2678,8 @@ namespace glc_cs
 									KeyNames.memo,			// 10
 									KeyNames.status,		// 11
 									KeyNames.ini_version,	// 12
-									KeyNames.execute_cmd	// 13
+									KeyNames.execute_cmd,	// 13
+									KeyNames.extract_tool	// 14
 								};
 							string[] failedVal =
 							{
@@ -2169,7 +2696,8 @@ namespace glc_cs
 									"",
 									"未プレイ",
 									DBVer,
-									""
+									"",
+									"0"
 								};
 							string[] returnVal = new string[keyName.Length];
 
@@ -2201,7 +2729,7 @@ namespace glc_cs
 							{
 								CommandType = CommandType.Text,
 								CommandTimeout = 30,
-								CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "' )"
+								CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "', '" + returnVal[14] + "' )"
 							};
 							cm2.Connection = cn1;
 
@@ -2233,7 +2761,8 @@ namespace glc_cs
 									KeyNames.memo,			// 10
 									KeyNames.status,		// 11
 									KeyNames.ini_version,	// 12
-									KeyNames.execute_cmd	// 13
+									KeyNames.execute_cmd,	// 13
+									KeyNames.extract_tool	// 14
 								};
 							string[] failedVal =
 							{
@@ -2250,7 +2779,8 @@ namespace glc_cs
 									"",
 									"未プレイ",
 									DBVer,
-									""
+									"",
+									"0"
 								};
 							string[] returnVal = new string[keyName.Length];
 
@@ -2282,7 +2812,7 @@ namespace glc_cs
 							{
 								CommandType = CommandType.Text,
 								CommandTimeout = 30,
-								CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "' )"
+								CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "', '" + returnVal[14] + "' )"
 							};
 							mcm2.Connection = mcn1;
 
@@ -2304,6 +2834,130 @@ namespace glc_cs
 					}
 				}
 				return ans;
+			}
+
+
+			public static bool GenerateExtractCmd(int extractID, string gamePath, string gameArgs, out string extractAppPath, out string extractAppArgs)
+			{
+				StringBuilder appPath = new StringBuilder();
+				StringBuilder appArgs = new StringBuilder();
+				extractAppPath = string.Empty;
+				extractAppArgs = string.Empty;
+
+				// Indexが0の場合はツール未選択なので返す
+				if (extractID == 0)
+				{
+					return false;
+				}
+
+				switch (extractID)
+				{
+					case 1: // krkr
+						appPath.Append(ExtractKrkrPath);
+						if (ExtractKrkrArg.Length != 0)
+						{
+							appArgs.Append(ExtractKrkrArg);
+							appArgs.Append(ExtractKrkrArg).Append(" ");
+						}
+						if (ExtractKrkrAddGameArg)
+						{
+							appArgs.Append("\"");
+						}
+						break;
+					case 2: // krkrz
+						appPath.Append(ExtractKrkrzPath);
+						if (ExtractKrkrzArg.Length != 0)
+						{
+							appArgs.Append(ExtractKrkrzArg);
+							appArgs.Append(ExtractKrkrzArg).Append(" ");
+						}
+						if (ExtractKrkrzAddGameArg)
+						{
+							appArgs.Append("\"");
+						}
+						break;
+					case 3: // krkrDump
+						appPath.Append(ExtractKrkrDumpPath);
+						if (ExtractKrkrDumpArg.Length != 0)
+						{
+							appArgs.Append(ExtractKrkrDumpArg);
+							appArgs.Append(ExtractKrkrDumpArg).Append(" ");
+						}
+						if (ExtractKrkrDumpAddGameArg)
+						{
+							appArgs.Append("\"");
+						}
+						break;
+					case 4: // Custom1
+						appPath.Append(ExtractCustom1Path);
+						if (ExtractCustom1Arg.Length != 0)
+						{
+							appArgs.Append(ExtractCustom1Arg);
+							appArgs.Append(ExtractCustom1Arg).Append(" ");
+						}
+						if (ExtractCustom1AddGameArg)
+						{
+							appArgs.Append("\"");
+						}
+						break;
+					case 5: // Custom2
+						appPath.Append(ExtractCustom2Path);
+						if (ExtractCustom2Arg.Length != 0)
+						{
+							appArgs.Append(ExtractCustom2Arg);
+							appArgs.Append(ExtractCustom2Arg).Append(" ");
+						}
+						if (ExtractCustom2AddGameArg)
+						{
+							appArgs.Append("\"");
+						}
+						break;
+				}
+				appArgs.Append("\"").Append(gamePath);
+				switch (extractID)
+				{
+					case 1: // krkr
+						if (ExtractKrkrAddGameArg)
+						{
+							appArgs.Append(" ").Append(gameArgs);
+							appArgs.Append("\"");
+						}
+						break;
+					case 2: // krkrz
+						if (ExtractKrkrzAddGameArg)
+						{
+							appArgs.Append(" ").Append(gameArgs);
+							appArgs.Append("\"");
+						}
+						break;
+					case 3: // krkrDump
+						if (ExtractKrkrDumpAddGameArg)
+						{
+							appArgs.Append(" ").Append(gameArgs);
+							appArgs.Append("\"");
+						}
+						break;
+					case 4: // Custom1
+						if (ExtractCustom1AddGameArg)
+						{
+							appArgs.Append(" ").Append(gameArgs);
+							appArgs.Append("\"");
+						}
+						break;
+					case 5: // Custom2
+						if (ExtractCustom2AddGameArg)
+						{
+							appArgs.Append(" ").Append(gameArgs);
+							appArgs.Append("\"");
+						}
+						break;
+				}
+				appArgs.Append("\"");
+
+				extractAppPath = appPath.ToString();
+				extractAppArgs = appArgs.ToString();
+
+				return true;
 			}
 
 		}

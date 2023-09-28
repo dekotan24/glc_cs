@@ -11,10 +11,13 @@ namespace glc_cs
 {
 	public partial class Editor : Form
 	{
+		DLsite dlSearchForm = new DLsite();
+
 		SqlConnection con = new SqlConnection();
 		MySqlConnection con2 = new MySqlConnection();
 		string genSaveType = string.Empty;
 		string iniPath = string.Empty;
+		public string newGameName = string.Empty;
 
 		/// <summary>
 		/// MSSQL用
@@ -29,6 +32,12 @@ namespace glc_cs
 			// 数値ボックス最大値設定
 			runTimeText.Maximum = Int32.MaxValue;
 			startCountText.Maximum = Int32.MaxValue;
+			if (ExtractEnable)
+			{
+				label10.Visible = true;
+				extractToolCombo.Visible = true;
+				extractToolCombo.SelectedIndex = 0;
+			}
 
 			// モードチェックボックス反映
 			switch (saveType)
@@ -71,6 +80,12 @@ namespace glc_cs
 			// 数値ボックス最大値設定
 			runTimeText.Maximum = Int32.MaxValue;
 			startCountText.Maximum = Int32.MaxValue;
+			if (ExtractEnable)
+			{
+				label10.Visible = true;
+				extractToolCombo.Visible = true;
+				extractToolCombo.SelectedIndex = 0;
+			}
 
 			// モードチェックボックス反映
 			switch (saveType)
@@ -122,13 +137,14 @@ namespace glc_cs
 					dconText.Text = reader["DCON_TEXT"].ToString();
 					dconImgText.Text = reader["DCON_IMG"].ToString();
 					rateCheck.Checked = reader["AGE_FLG"].ToString() == "1" ? true : false;
+					extractToolCombo.SelectedIndex = Convert.ToInt32(reader["EXTRACT_TOOL"].ToString());
 					if (File.Exists(imgPathText.Text))
 					{
-						pictureBox1.ImageLocation = imgPathText.Text;
+						iconImage.ImageLocation = imgPathText.Text;
 					}
 					else
 					{
-						pictureBox1.ImageLocation = string.Empty;
+						iconImage.ImageLocation = string.Empty;
 					}
 				}
 
@@ -167,13 +183,14 @@ namespace glc_cs
 					dconText.Text = reader["DCON_TEXT"].ToString();
 					dconImgText.Text = reader["DCON_IMG"].ToString();
 					rateCheck.Checked = reader["AGE_FLG"].ToString() == "1" ? true : false;
+					extractToolCombo.SelectedIndex = Convert.ToInt32(reader["EXTRACT_TOOL"].ToString());
 					if (File.Exists(imgPathText.Text))
 					{
-						pictureBox1.ImageLocation = imgPathText.Text;
+						iconImage.ImageLocation = imgPathText.Text;
 					}
 					else
 					{
-						pictureBox1.ImageLocation = string.Empty;
+						iconImage.ImageLocation = string.Empty;
 					}
 				}
 
@@ -199,8 +216,8 @@ namespace glc_cs
 				iniPath = GameDir + selectedListCount + ".ini";
 				if (File.Exists(iniPath))
 				{
-					KeyNames[] keyNames = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.rating, KeyNames.execute_cmd };
-					string[] failedVal = { string.Empty, string.Empty, string.Empty, "0", string.Empty, string.Empty, string.Empty, Rate.ToString(), String.Empty };
+					KeyNames[] keyNames = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.rating, KeyNames.execute_cmd, KeyNames.extract_tool };
+					string[] failedVal = { string.Empty, string.Empty, string.Empty, "0", string.Empty, string.Empty, string.Empty, Rate.ToString(), String.Empty, "0" };
 
 					string[] resultValues = IniRead(iniPath, "game", keyNames, failedVal);
 
@@ -215,13 +232,14 @@ namespace glc_cs
 					dconText.Text = resultValues[5];
 					dconImgText.Text = resultValues[6];
 					rateCheck.Checked = Convert.ToBoolean(Convert.ToInt32(resultValues[7]));
+					extractToolCombo.SelectedIndex = Convert.ToInt32(resultValues[9]);
 					if (File.Exists(imgPathText.Text))
 					{
-						pictureBox1.ImageLocation = imgPathText.Text;
+						iconImage.ImageLocation = imgPathText.Text;
 					}
 					else
 					{
-						pictureBox1.ImageLocation = string.Empty;
+						iconImage.ImageLocation = string.Empty;
 					}
 				}
 
@@ -234,6 +252,7 @@ namespace glc_cs
 
 		private void CancelButton_Click(object sender, EventArgs e)
 		{
+			newGameName = string.Empty;
 			Close();
 		}
 
@@ -261,7 +280,7 @@ namespace glc_cs
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
 					// SQL文
-					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET GAME_NAME = @game_name, GAME_PATH = @game_path, IMG_PATH = @img_path, UPTIME = @uptime, RUN_COUNT = @run_count, DCON_TEXT = @dcon_text, AGE_FLG = @age_flg, DCON_IMG = @dcon_img, EXECUTE_CMD = @execute_cmd "
+					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET GAME_NAME = @game_name, GAME_PATH = @game_path, IMG_PATH = @img_path, UPTIME = @uptime, RUN_COUNT = @run_count, DCON_TEXT = @dcon_text, AGE_FLG = @age_flg, DCON_IMG = @dcon_img, EXECUTE_CMD = @execute_cmd, EXTRACT_TOOL = @extract_tool "
 								+ "WHERE ID = @id"
 				};
 				// パラメータの設定
@@ -274,6 +293,7 @@ namespace glc_cs
 				cm.Parameters.AddWithValue("@age_flg", (rateCheck.Checked ? "1" : "0"));
 				cm.Parameters.AddWithValue("@dcon_img", dconImgText.Text.Trim());
 				cm.Parameters.AddWithValue("@execute_cmd", executeCmdText.Text.Trim());
+				cm.Parameters.AddWithValue("@extract_tool", extractToolCombo.SelectedIndex);
 				cm.Parameters.AddWithValue("@id", label9.Text.Trim());
 				cm.Connection = con;
 
@@ -334,7 +354,7 @@ namespace glc_cs
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
 					// SQL文
-					CommandText = @"UPDATE " + DbTable + " SET GAME_NAME = @game_name, GAME_PATH = @game_path, IMG_PATH = @img_path, UPTIME = @uptime, RUN_COUNT = @run_count, DCON_TEXT = @dcon_text, AGE_FLG = @age_flg, DCON_IMG = @dcon_img, EXECUTE_CMD = @execute_cmd "
+					CommandText = @"UPDATE " + DbTable + " SET GAME_NAME = @game_name, GAME_PATH = @game_path, IMG_PATH = @img_path, UPTIME = @uptime, RUN_COUNT = @run_count, DCON_TEXT = @dcon_text, AGE_FLG = @age_flg, DCON_IMG = @dcon_img, EXECUTE_CMD = @execute_cmd, EXTRACT_TOOL = @extract_tool "
 												+ "WHERE ID = @id"
 				};
 				// パラメータの設定
@@ -347,6 +367,7 @@ namespace glc_cs
 				cm.Parameters.AddWithValue("@age_flg", (rateCheck.Checked ? "1" : "0"));
 				cm.Parameters.AddWithValue("@dcon_img", dconImgText.Text.Trim());
 				cm.Parameters.AddWithValue("@execute_cmd", executeCmdText.Text.Trim());
+				cm.Parameters.AddWithValue("@extract_tool", extractToolCombo.SelectedIndex);
 				cm.Parameters.AddWithValue("@id", label9.Text.Trim());
 
 				cm.Connection = con2;
@@ -397,13 +418,14 @@ namespace glc_cs
 				decimal runTimeTmp = runTimeText.Value;
 				decimal startTimeTmp = startCountText.Value;
 
-				KeyNames[] keyColumns = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.rating, KeyNames.execute_cmd };
-				string[] writeValues = { titleText.Text.Trim(), imgPathText.Text.Trim(), exePathText.Text.Trim(), runTimeTmp.ToString(), startTimeTmp.ToString(), dconText.Text.Trim(), dconImgText.Text.Trim(), (rateCheck.Checked ? "1" : "0"), executeCmdText.Text.Trim() };
+				KeyNames[] keyColumns = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.rating, KeyNames.execute_cmd, KeyNames.extract_tool };
+				string[] writeValues = { titleText.Text.Trim(), imgPathText.Text.Trim(), exePathText.Text.Trim(), runTimeTmp.ToString(), startTimeTmp.ToString(), dconText.Text.Trim(), dconImgText.Text.Trim(), (rateCheck.Checked ? "1" : "0"), executeCmdText.Text.Trim(), extractToolCombo.SelectedIndex.ToString() };
 				IniWrite(iniPath, "game", keyColumns, writeValues);
 			}
 
 			if (!hasError)
 			{
+				newGameName = titleText.Text.Trim();
 				Close();
 			}
 		}
@@ -445,6 +467,31 @@ namespace glc_cs
 			else
 			{
 				return;
+			}
+		}
+
+		private void getInfoButton_Click(object sender, EventArgs e)
+		{
+			// dlsiteからデータを取得します。
+			dlSearchForm.StartPosition = FormStartPosition.CenterParent;
+			dlSearchForm.ShowDialog();
+
+			// 反映
+			if (!string.IsNullOrEmpty(dlSearchForm.resultText))
+			{
+				titleText.Text = dlSearchForm.resultText;
+				if (dlSearchForm.resultImageSaved && !string.IsNullOrEmpty(dlSearchForm.resultImagePath) && File.Exists(dlSearchForm.resultImagePath))
+				{
+					imgPathText.Text = dlSearchForm.resultImagePath;
+					iconImage.ImageLocation = dlSearchForm.resultImagePath;
+				}
+
+				// フォーカス移動
+				exePathText.Focus();
+			}
+			else
+			{
+				titleText.Focus();
 			}
 		}
 	}

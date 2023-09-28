@@ -1,7 +1,9 @@
-﻿using MySql.Data.MySqlClient;
+﻿using glc_cs.Properties;
+using MySql.Data.MySqlClient;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -16,17 +18,25 @@ namespace glc_cs
 		// 設定フォーム宣言
 		Config ConfigForm = new Config();
 		Splash SplashForm = new Splash();
-		IconView IconViewForm = new IconView(null);
 
 		public gl()
 		{
 			InitializeComponent();
 		}
 
+		/// <summary>
+		/// 初期起動時イベント
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void gl_Load(object sender, EventArgs e)
 		{
 			// スプラッシュ画面表示
 			SplashForm.Show();
+
+			// ステータス変更
+			UpdateSplashInfo(1, "準備中…");
+
 			Application.DoEvents();
 
 			// スタイル設定
@@ -34,28 +44,42 @@ namespace glc_cs
 			this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
 			this.SetStyle(ControlStyles.UserPaint, true);
 
+			DateTime appStartTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+
 			// 終了処理設定
 			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
 
 			// 実行ボタンカバーを表示
-			pictureBox11.Visible = true;
+			runningPicture.Visible = true;
+
+			// ステータス変更
+			UpdateSplashInfo(2, "設定を読み込み中…");
 
 			// 設定ファイル読込
-			updateComponent();
+			UpdateComponent();
+
+			// ステータス変更
+			UpdateSplashInfo(3, "アップデートのチェック中…");
+			// アップデートチェック
+			if (!(InitialUpdateCheckSkipFlg && InitialUpdateCheckSkipVer.Equals(AppVer)))
+			{
+				CheckItemUpdate();
+			}
+
+			// ステータス変更
+			UpdateSplashInfo(4, "ゲームリストのロード中…");
+
+			// アイテム読込
+			string item = SaveType == "I" ? LoadItem(GameDir) : SaveType == "D" ? LoadItem2(SqlCon, IsFirstLoad) : LoadItem3(SqlCon2, IsFirstLoad);
+
+			// ステータス変更
+			UpdateSplashInfo(5, "UIの読み込み中…");
 
 			if (WindowHideControlFlg)
 			{
 				this.MinimizeBox = true;
 			}
 
-			// アップデートチェック
-			if (!(InitialUpdateCheckSkipFlg && InitialUpdateCheckSkipVer.Equals(AppVer)))
-			{
-				checkItemUpdate();
-			}
-
-			// アイテム読込
-			string item = SaveType == "I" ? LoadItem(GameDir) : SaveType == "D" ? LoadItem2(SqlCon, true) : LoadItem3(SqlCon2, true);
 			tabControl1.SelectedIndex = 1;
 			tabControl1.SelectedIndex = 0;
 
@@ -70,7 +94,10 @@ namespace glc_cs
 			orderDropDown.SelectedIndex = 0;
 
 			// 実行ボタン読込中画像を非表示
-			pictureBox11.Visible = false;
+			runningPicture.Visible = false;
+
+			// ステータス変更
+			UpdateSplashInfo(6, "最終処理中…");
 
 			// メインフォーム表示
 			this.Show();
@@ -78,6 +105,13 @@ namespace glc_cs
 			SplashForm.Close();
 			SplashForm.Dispose();
 			Application.DoEvents();
+
+			// 準備所要時間計算
+			DateTime appReadyTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+			string temp = (appReadyTime - appStartTime).ToString();
+			int wakeUpTimes = Convert.ToInt32(TimeSpan.Parse(temp).TotalSeconds);
+
+			Message(AppName + "へようこそ。ランチャーの起動時間は、" + wakeUpTimes + "秒でした。");
 
 			if (ByActive && ByRoW)
 			{
@@ -103,29 +137,43 @@ namespace glc_cs
 						}
 						catch (Exception ex)
 						{
-							resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
+							ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
 						}
 					}
 				}
 				// itemがnoneの場合：ゲームが登録されていない場合
-				MessageBox.Show("Game Launcherをご利用頂きありがとうございます。\n\"追加\"ボタンを押して、ゲームを追加しましょう！",
+				MessageBox.Show("GLauncherをご利用頂きありがとうございます。\n\"追加\"ボタンを押して、ゲームを追加しましょう！",
 								AppName,
 								MessageBoxButtons.OK,
 								MessageBoxIcon.Information);
 			}
+
+			IsFirstLoad = false;
+			GC.Collect();
 		}
+
+		/// <summary>
+		/// スプラッシュスクリーンのステータス変更
+		/// </summary>
+		/// <param name="value">進捗率</param>
+		/// <param name="message">メッセージ</param>
+		private void UpdateSplashInfo(int value, string message, int value2 = 0, int value3 = 0)
+		{
+			SplashForm.SetProgress(value, message, value2, value3);
+		}
+
 		/// <summary>
 		/// ゲームリストの読み込み
 		/// </summary>
 		/// <param name="gameDirname">iniファイルが格納されているフォルダ</param>
 		/// <returns>異常なら"_none_game_data"を返します。正常に処理した場合は空欄が返されます。</returns>
-		public string LoadItem(String gameDirname)
+		public string LoadItem(string gameDirname)
 		{
 			gameList.Items.Clear();
 			gameImgList.Items.Clear();
-			imageList0.Images.Clear();
-			imageList1.Images.Clear();
-			imageList2.Images.Clear();
+			imageList8.Images.Clear();
+			imageList32.Images.Clear();
+			imageList64.Images.Clear();
 
 			// 全ゲーム数取得
 			if (File.Exists(GameIni))
@@ -157,16 +205,26 @@ namespace glc_cs
 
 
 			int count;
-			String readini;
-			String ans = "";
+			string readini;
+			string ans = "";
 			Image lvimg;
 			ListViewItem lvi = new ListViewItem();
 
 			toolStripProgressBar1.Minimum = 0;
 			toolStripProgressBar1.Maximum = GameMax;
 
+			if (IsFirstLoad)
+			{
+				UpdateSplashInfo(-1, "ゲームリストのロード中… [" + GameMax + "件]");
+			}
+
 			for (count = 1; count <= GameMax; count++)
 			{
+				if (IsFirstLoad && !DisableInitialLoadCountFlg)
+				{
+					UpdateSplashInfo(-1, "ゲームリストのロード中", count, GameMax);
+				}
+
 				toolStripProgressBar1.Value = count;
 				// 読込iniファイル名更新
 				readini = gameDirname + "\\" + count + ".ini";
@@ -186,9 +244,9 @@ namespace glc_cs
 							lvimg = Properties.Resources.exe;
 						}
 
-						imageList0.Images.Add(count.ToString(), lvimg);
-						imageList1.Images.Add(count.ToString(), lvimg);
-						imageList2.Images.Add(count.ToString(), lvimg);
+						imageList8.Images.Add(count.ToString(), lvimg);
+						imageList32.Images.Add(count.ToString(), lvimg);
+						imageList64.Images.Add(count.ToString(), lvimg);
 
 						lvi = new ListViewItem(IniRead(readini, "game", KeyNames.name, string.Empty));
 						lvi.ImageIndex = (count - 1);
@@ -198,7 +256,7 @@ namespace glc_cs
 				else
 				{
 					// 個別ini存在しない場合
-					resolveError(MethodBase.GetCurrentMethod().Name, "iniファイル読み込み中にエラー。\nファイルが存在しません。\n\n[設定]→[ツール]→[【INI】連番修正]を実行してください。", 0, false, readini);
+					ResolveError(MethodBase.GetCurrentMethod().Name, "iniファイル読み込み中にエラー。\nファイルが存在しません。\n\n[設定]→[ツール]→[【INI】連番修正]を実行してください。", 0, false, readini);
 					this.ResumeLayout();
 					break;
 				}
@@ -213,17 +271,24 @@ namespace glc_cs
 				}
 				catch (Exception ex)
 				{
-					resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false, "GameMax:" + GameMax.ToString());
+					ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false, "GameMax:" + GameMax.ToString());
 					gameList.SelectedIndex = -1;
 				}
 			}
 
+			if (IsFirstLoad)
+			{
+				// グリッド画像最大値の設定
+				SetGridImgSizeChangeBar();
+			}
+
+			GC.Collect();
 			Application.DoEvents();
 			return ans;
 		}
 
 		/// <summary>
-		/// データベースからゲーム一覧をロードします
+		/// データベースからゲーム一覧をロードします（MSSQL）
 		/// </summary>
 		/// <param name="cn">SQL Connection</param>
 		/// <returns></returns>
@@ -235,9 +300,9 @@ namespace glc_cs
 			gameList.Items.Clear();
 			searchResultList.Items.Clear();
 			gameImgList.Items.Clear();
-			imageList0.Images.Clear();
-			imageList1.Images.Clear();
-			imageList2.Images.Clear();
+			imageList8.Images.Clear();
+			imageList32.Images.Clear();
+			imageList64.Images.Clear();
 
 			searchText.Text = string.Empty;
 			searchingText.Text = string.Empty;
@@ -281,6 +346,11 @@ namespace glc_cs
 					return "_none_game_data";
 				}
 
+				if (IsFirstLoad)
+				{
+					UpdateSplashInfo(-1, "ゲームリストのロード中… [" + GameMax + "件]");
+				}
+
 				if (!(GameMax >= 1)) // ゲーム登録数が1以上でない場合
 				{
 					reloadButton.Enabled = false;
@@ -304,10 +374,18 @@ namespace glc_cs
 				};
 				cm2.Connection = cn;
 
+				int counter = 0;
+
 				using (var reader = cm2.ExecuteReader())
 				{
 					while (reader.Read() == true)
 					{
+						counter++;
+						if (IsFirstLoad && !DisableInitialLoadCountFlg)
+						{
+							UpdateSplashInfo(-1, "ゲームリストのロード中", counter, GameMax);
+						}
+
 						gameList.Items.Add(reader["GAME_NAME"].ToString());
 
 						if (GridEnable)
@@ -321,9 +399,9 @@ namespace glc_cs
 								lvimg = Properties.Resources.exe;
 							}
 
-							imageList0.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
-							imageList1.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
-							imageList2.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList8.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList32.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList64.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
 
 							lvi = new ListViewItem(reader["GAME_NAME"].ToString());
 							lvi.ImageIndex = (Convert.ToInt32(reader["ROW_CNT"]) - 1);
@@ -368,21 +446,21 @@ namespace glc_cs
 						ans = LoadItem(LocalPath);
 						if (firstLoad)
 						{
-							toolStripStatusLabel3.Visible = true;
+							editINIStatusLabel.Visible = true;
 							upButton.Visible = true;
 							downButton.Visible = true;
 							editButton.Visible = true;
-							resolveError(MethodBase.GetCurrentMethod().Name, "データベースに接続できなかった為、オフラインモードで起動します。", 0, false);
+							ResolveError(MethodBase.GetCurrentMethod().Name, "データベースに接続できませんでした。オフラインモードで起動します。\nこの問題が一時的なものであると考えられる場合、再起動で解決する場合があります。", 0, false, errMessage);
 						}
 					}
 					else
 					{
-						resolveError(MethodBase.GetCurrentMethod().Name, errMessage, 0, false);
+						ResolveError(MethodBase.GetCurrentMethod().Name, errMessage, 0, false, errMessage);
 					}
 				}
 				else
 				{
-					resolveError(MethodBase.GetCurrentMethod().Name, errMessage, 0, false);
+					ResolveError(MethodBase.GetCurrentMethod().Name, errMessage, 0, false, errMessage);
 				}
 			}
 			else
@@ -409,11 +487,11 @@ namespace glc_cs
 								{
 									case 1:
 										// バックアップ作成エラー
-										resolveError(MethodBase.GetCurrentMethod().Name, "バックアップの作成中にエラーが発生しました。\n詳細はエラーログをご覧下さい。", 0, false);
+										ResolveError(MethodBase.GetCurrentMethod().Name, "バックアップの作成中にエラーが発生しました。\n詳細はエラーログをご覧下さい。", 0, false);
 										break;
 									case 2:
 										// insertエラー
-										resolveError(MethodBase.GetCurrentMethod().Name, "Insert中にエラーが発生しました。\n詳細はエラーログをご覧下さい。", 0, false);
+										ResolveError(MethodBase.GetCurrentMethod().Name, "Insert中にエラーが発生しました。\n詳細はエラーログをご覧下さい。", 0, false);
 										break;
 									case 3:
 									// Catchエラー
@@ -421,7 +499,7 @@ namespace glc_cs
 									// 復元エラー
 									default:
 										// 不明なエラー
-										resolveError(MethodBase.GetCurrentMethod().Name, "致命的なエラーが発生しました。\n詳細はエラーログをご覧下さい。", 0, false);
+										ResolveError(MethodBase.GetCurrentMethod().Name, "致命的なエラーが発生しました。\n詳細はエラーログをご覧下さい。", 0, false);
 										break;
 								}
 							}
@@ -434,6 +512,14 @@ namespace glc_cs
 					}
 				}
 			}
+
+			if (IsFirstLoad)
+			{
+				// グリッド画像最大値の設定
+				SetGridImgSizeChangeBar();
+			}
+
+			GC.Collect();
 			Application.DoEvents();
 			return ans;
 		}
@@ -451,9 +537,9 @@ namespace glc_cs
 			gameList.Items.Clear();
 			searchResultList.Items.Clear();
 			gameImgList.Items.Clear();
-			imageList0.Images.Clear();
-			imageList1.Images.Clear();
-			imageList2.Images.Clear();
+			imageList8.Images.Clear();
+			imageList32.Images.Clear();
+			imageList64.Images.Clear();
 
 			searchText.Text = string.Empty;
 			searchingText.Text = string.Empty;
@@ -497,6 +583,11 @@ namespace glc_cs
 					return "_none_game_data";
 				}
 
+				if (IsFirstLoad)
+				{
+					UpdateSplashInfo(-1, "ゲームリストのロード中… [" + GameMax + "件]");
+				}
+
 				if (!(GameMax >= 1)) // ゲーム登録数が1以上でない場合
 				{
 					reloadButton.Enabled = false;
@@ -520,10 +611,18 @@ namespace glc_cs
 				};
 				cm2.Connection = cn;
 
+				int counter = 0;
+
 				using (var reader = cm2.ExecuteReader())
 				{
 					while (reader.Read() == true)
 					{
+						counter++;
+						if (IsFirstLoad && !DisableInitialLoadCountFlg)
+						{
+							UpdateSplashInfo(-1, "ゲームリストのロード中", counter, GameMax);
+						}
+
 						gameList.Items.Add(reader["GAME_NAME"].ToString());
 
 						if (GridEnable)
@@ -537,9 +636,9 @@ namespace glc_cs
 								lvimg = Properties.Resources.exe;
 							}
 
-							imageList0.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
-							imageList1.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
-							imageList2.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList8.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList32.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
+							imageList64.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
 
 							lvi = new ListViewItem(reader["GAME_NAME"].ToString());
 							lvi.ImageIndex = (Convert.ToInt32(reader["ROW_CNT"]) - 1);
@@ -584,21 +683,21 @@ namespace glc_cs
 						ans = LoadItem(LocalPath);
 						if (firstLoad)
 						{
-							toolStripStatusLabel3.Visible = true;
+							editINIStatusLabel.Visible = true;
 							upButton.Visible = true;
 							downButton.Visible = true;
 							editButton.Visible = true;
-							resolveError(MethodBase.GetCurrentMethod().Name, "データベースに接続できなかった為、オフラインモードで起動します。", 0, false);
+							ResolveError(MethodBase.GetCurrentMethod().Name, "データベースに接続できませんでした。オフラインモードで起動します。\nこの問題が一時的なものであると考えられる場合、再起動で解決する場合があります。", 0, false, errMessage);
 						}
 					}
 					else
 					{
-						resolveError(MethodBase.GetCurrentMethod().Name, errMessage, 0, false);
+						ResolveError(MethodBase.GetCurrentMethod().Name, errMessage, 0, false, errMessage);
 					}
 				}
 				else
 				{
-					resolveError(MethodBase.GetCurrentMethod().Name, errMessage, 0, false);
+					ResolveError(MethodBase.GetCurrentMethod().Name, errMessage, 0, false, errMessage);
 				}
 			}
 			else
@@ -609,7 +708,7 @@ namespace glc_cs
 					// オフラインモードで変更がなかったかチェック
 					if (ReadIni("list", "dbupdate", "0", 0, LocalPath) == "1")
 					{
-						DialogResult dr = MessageBox.Show("オフラインモード実行時に変更がありました。\nデータベースへアップロードしますか？\n\n接続先：" + DbUrl + ":" + DbPort + " ▶ " + DbName + "." + DbTable + "\n\n※データベースのレコードを全削除し、オフラインのデータを登録します。\n\n[はい]	登録\n[いいえ]	破棄", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+						DialogResult dr = MessageBox.Show("オフラインモード実行時に変更がありました。\nデータベースへアップロードしますか？\n\n接続先：" + DbUrl + ":" + DbPort + " ▶ " + DbName + "." + DbTable + "\n\n※データベースのレコードを全削除し、オフラインのデータを登録します。\n\n[はい]	登録\n[いいえ]	変更を破棄", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 						if (dr == DialogResult.Yes)
 						{
 							int tmpMaxGameCount, sCount, fCount;
@@ -625,11 +724,11 @@ namespace glc_cs
 								{
 									case 1:
 										// バックアップ作成エラー
-										resolveError(MethodBase.GetCurrentMethod().Name, "バックアップの作成中にエラーが発生しました。\n詳細はエラーログをご覧下さい。", 0, false);
+										ResolveError(MethodBase.GetCurrentMethod().Name, "バックアップの作成中にエラーが発生しました。\n詳細はエラーログをご覧下さい。", 0, false);
 										break;
 									case 2:
 										// insertエラー
-										resolveError(MethodBase.GetCurrentMethod().Name, "Insert中にエラーが発生しました。\n詳細はエラーログをご覧下さい。", 0, false);
+										ResolveError(MethodBase.GetCurrentMethod().Name, "Insert中にエラーが発生しました。\n詳細はエラーログをご覧下さい。", 0, false);
 										break;
 									case 3:
 									// Catchエラー
@@ -637,7 +736,7 @@ namespace glc_cs
 									// 復元エラー
 									default:
 										// 不明なエラー
-										resolveError(MethodBase.GetCurrentMethod().Name, "致命的なエラーが発生しました。\n詳細はエラーログをご覧下さい。", 0, false);
+										ResolveError(MethodBase.GetCurrentMethod().Name, "致命的なエラーが発生しました。\n詳細はエラーログをご覧下さい。", 0, false);
 										break;
 								}
 							}
@@ -650,8 +749,53 @@ namespace glc_cs
 					}
 				}
 			}
+
+			if (IsFirstLoad)
+			{
+				// グリッド画像最大値の設定
+				SetGridImgSizeChangeBar();
+			}
+
+			GC.Collect();
 			Application.DoEvents();
 			return ans;
+		}
+
+		/// <summary>
+		/// グリッドの画像サイズ変更バーの最大値を設定します。
+		/// </summary>
+		private void SetGridImgSizeChangeBar()
+		{
+			if (GridEnable && FixGridSizeFlg)
+			{
+				trackBar1.Visible = false;
+				gameImgList.Height = 420;
+
+				switch (FixGridSize)
+				{
+					case 8:
+						gameImgList.LargeImageList = imageList8;
+						imageList32.Images.Clear();
+						imageList64.Images.Clear();
+						imageList32.Dispose();
+						imageList64.Dispose();
+						break;
+					case 32:
+						gameImgList.LargeImageList = imageList32;
+						imageList8.Images.Clear();
+						imageList64.Images.Clear();
+						imageList8.Dispose();
+						imageList64.Dispose();
+						break;
+					case 64:
+						gameImgList.LargeImageList = imageList64;
+						imageList8.Images.Clear();
+						imageList32.Images.Clear();
+						imageList8.Dispose();
+						imageList32.Dispose();
+						break;
+				}
+			}
 		}
 
 		/// <summary>
@@ -659,37 +803,39 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void startButton_Click(object sender, EventArgs e)
+		private void StartButton_Click(object sender, EventArgs e)
 		{
 			int startdata, timedata, ratinginfo;
 			bool sucExit = true;
+			string executeAppPath = exePathText.Text.Trim();
+			string executeAppArg = executeCmdText.Text.Trim();
 
 			if (gameList.SelectedIndex == -1)
 			{
-				resolveError(MethodBase.GetCurrentMethod().Name, "ゲームリストが空です。", 0, false);
+				ResolveError(MethodBase.GetCurrentMethod().Name, "ゲームリストが空です。", 0, false);
 				return;
 			}
-			String selectedtext = gameList.SelectedItem.ToString();
+			string selectedtext = gameList.SelectedItem.ToString();
 
 			// 共通部分を保存
-			string[] columnNames = { "track", "winmini", "sens" };
-			string[] data = { (Convert.ToInt32(trackCheck.Checked)).ToString(), (Convert.ToInt32(minCheck.Checked)).ToString(), (Convert.ToInt32(sensCheck.Checked)).ToString() };
-			string[] failedVal = { "0", "0", "0" };
+			string[] columnNames = { "track", "sens" };
+			string[] data = { (Convert.ToInt32(trackCheck.Checked)).ToString(), (Convert.ToInt32(sensCheck.Checked)).ToString() };
+			string[] failedVal = { "0", "0" };
 
-			iniEditCheck(ConfigIni, "checkbox", columnNames, data, failedVal);
+			IniEditCheck(ConfigIni, "checkbox", columnNames, data, failedVal);
 
 			if (SaveType == "I" || SaveType == "T")
 			{
 				// iniの場合、ステータス状態を書き込み
 				// Discordカスタムステータス、各種チェックボックス、ラジオの保存
-				String path = GameDir + (gameList.SelectedIndex + 1) + ".ini";
+				string path = GameDir + (gameList.SelectedIndex + 1) + ".ini";
 				if (File.Exists(path))
 				{
 					KeyNames[] keyNames = { KeyNames.stat, KeyNames.dcon_img, KeyNames.rating };
 					data = new string[] { (dconText.Text.Trim()), (dconImgText.Text.Trim()), (normalRadio.Checked ? "0" : "1") };
 					failedVal = new string[] { string.Empty, string.Empty, "0" };
 
-					iniEditCheck(path, "game", keyNames, data, failedVal);
+					IniEditCheck(path, "game", keyNames, data, failedVal);
 
 					// 更新前に選択していたゲームへ移動
 					if (gameList.Items.Contains(selectedtext))
@@ -700,14 +846,16 @@ namespace glc_cs
 				else
 				{
 					// 個別ini不存在
-					resolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報保管iniが存在しません。\n" + path, 0, false);
+					ResolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報保管iniが存在しません。\n" + path, 0, false);
 				}
 			}
 
 			if (File.Exists(exePathText.Text))
 			{
+				// トラッキングあり
 				if (trackCheck.Checked)
 				{
+					// 通常トラッキング実行
 					if (!testCheck.Checked)
 					{
 						// 現在時刻取得
@@ -715,13 +863,13 @@ namespace glc_cs
 						DateTime starttime = Convert.ToDateTime(strTime);
 
 						// 実行
-						System.Diagnostics.Process drunp = null;
+						Process drunp = null;
 						if (useDconCheck.Checked)
 						{
 							if (File.Exists(DconPath))
 							{
 								// propertiesファイル書き込み
-								String propertiesfile = Path.GetDirectoryName(DconPath) + "\\run.properties";
+								string propertiesfile = Path.GetDirectoryName(DconPath) + "\\run.properties";
 								Encoding enc = Encoding.GetEncoding("Shift-JIS");
 								StreamWriter writer = new StreamWriter(propertiesfile, false, enc);
 
@@ -746,39 +894,52 @@ namespace glc_cs
 
 								writer.Close();
 
-								drunp = System.Diagnostics.Process.Start(DconPath); // dcon実行
+								drunp = Process.Start(DconPath); // dcon実行
+								if (drunp == null)
+								{
+									string dconArgs = "-jar " + DconPath;
+									var startInfo = new ProcessStartInfo("javaw.exe", dconArgs);
+									drunp = Process.Start(startInfo);
+								}
 							}
 							else
 							{
-								resolveError(MethodBase.GetCurrentMethod().Name, "Discord Connectorが見つかりません。\n実行を中断します。", 0, false);
+								ResolveError(MethodBase.GetCurrentMethod().Name, "Discord Connectorが見つかりません。\n実行を中断します。", 0, false);
 								return;
 							}
 						}
 
-						// ウィンドウ最小化
-						if (minCheck.Checked == true)
+						// 既定ディレクトリの取得
+						string originAppPath = Path.GetDirectoryName(executeAppPath);
+
+						// 抽出パス構成
+						if (extractCheck.Checked)
 						{
-							this.WindowState = FormWindowState.Minimized;
-							this.ShowInTaskbar = false;
-							this.notifyIcon1.Visible = true;
+							if (!GenerateExtractCmd(CurrentExtractTool, executeAppPath, executeAppArg, out executeAppPath, out executeAppArg))
+							{
+								MessageBox.Show("抽出ツールが選択されていません！", AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+								return;
+							}
 						}
 
 						// 既定ディレクトリの変更
-						String apppath = Path.GetDirectoryName(exePathText.Text);
-						System.Environment.CurrentDirectory = apppath;
+						string newAppPath = Path.GetDirectoryName(executeAppPath);
+						Environment.CurrentDirectory = JudgeCurrentDir(CurrentExtractTool, originAppPath, newAppPath);
 
 						// 起動中gifの可視化
-						pictureBox11.Visible = true;
+						runningPicture.Visible = true;
 						startButton.Enabled = false;
+
+						// ウィンドウ最小化
+						this.WindowState = FormWindowState.Minimized;
 
 						Application.DoEvents();
 
 						// ゲーム実行
-						System.Diagnostics.Process p =
-						System.Diagnostics.Process.Start(exePathText.Text.Trim(), executeCmdText.Text.Trim());
+						Process p = Process.Start(executeAppPath, executeAppArg);
 
 						// 棒読み上げ
-						if (ByRoS)
+						if (ByActive && ByRoS)
 						{
 							Bouyomiage(nameText.Text + "を、トラッキングありで起動しました。");
 						}
@@ -786,15 +947,15 @@ namespace glc_cs
 						// ゲーム終了まで待機
 						p.WaitForExit();
 
-						// ゲーム終了
+						// 終了時刻取得
+						string time = (sucExit ? p.ExitTime : DateTime.Now).ToString("yyyy/MM/dd HH:mm:ss");
+						DateTime endtime = Convert.ToDateTime(time);
+
+						// 作業ディレクトリ復元
 						Environment.CurrentDirectory = BaseDir;
 
-						if (minCheck.Checked == true)
-						{
-							this.notifyIcon1.Visible = false;
-							this.WindowState = FormWindowState.Normal;
-							this.ShowInTaskbar = true;
-						}
+						// ウィンドウ通常表示化
+						this.WindowState = FormWindowState.Normal;
 
 						// 子プロセスの終了
 						if (useDconCheck.Checked)
@@ -802,12 +963,8 @@ namespace glc_cs
 							sucExit = KillChildProcess(drunp);
 						}
 
-						// 終了時刻取得
-						String time = (sucExit ? p.ExitTime : DateTime.Now).ToString("yyyy/MM/dd HH:mm:ss");
-						DateTime endtime = Convert.ToDateTime(time);
-
 						// 起動時間計算
-						String temp = (endtime - starttime).ToString();
+						string temp = (endtime - starttime).ToString();
 						int anss = Convert.ToInt32(TimeSpan.Parse(temp).TotalSeconds);
 
 						if (ByActive && ByRoS)
@@ -818,11 +975,11 @@ namespace glc_cs
 						if (anss < 15)
 						{
 							// 15秒以内に終了した場合、確認を行う
-							DialogResult dr = MessageBox.Show("起動時間が短いようです。\n今回：" + anss + "秒 ｜ しきい値：15秒\n\n今回の起動を無効にしますか？\n※起動時間、起動回数を更新しません", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+							DialogResult dr = MessageBox.Show("起動時間が短いようです。\n今回：" + anss + "秒 ｜ しきい値：15秒\n\n今回の記録を破棄しますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 							if (dr == DialogResult.Yes)
 							{
 								// 時間更新を行わずに終了
-								pictureBox11.Visible = false;
+								runningPicture.Visible = false;
 								startButton.Enabled = true;
 								return;
 							}
@@ -832,7 +989,7 @@ namespace glc_cs
 						{
 							// ini
 							int selecteditem = gameList.SelectedIndex + 1;
-							String readini = GameDir + selecteditem + ".ini";
+							string readini = GameDir + selecteditem + ".ini";
 
 							if (File.Exists(readini))
 							{
@@ -874,7 +1031,7 @@ namespace glc_cs
 							else
 							{
 								// 個別ini存在しない場合
-								resolveError(MethodBase.GetCurrentMethod().Name, "iniファイル読み込み中にエラー。\nファイルが存在しません。\n\n処理を中断します。\n予期せぬ不具合の発生につながる場合があります。\n直ちに終了することをお勧めしますが、このまま実行することもできます。", 0, false);
+								ResolveError(MethodBase.GetCurrentMethod().Name, "iniファイル読み込み中にエラー。\nファイルが存在しません。\n\n処理を中断します。\n予期せぬ不具合の発生につながる場合があります。\n直ちに終了することをお勧めしますが、このまま実行することもできます。", 0, false);
 							}
 						}
 						else
@@ -912,7 +1069,7 @@ namespace glc_cs
 										tr.Rollback();
 									}
 									WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
-									resolveError(MethodBase.GetCurrentMethod().Name, ex.Message + "\n\nエラーログに記載されているSQL文を手動で実行すると更新できます。", 0, false);
+									ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message + "\n\nエラーログに記載されているSQL文を手動で実行すると更新できます。\nSQLエディタを所持していない場合、[設定] > [ツール] > [SQLエディタ] からSQLを実行できます。", 0, false);
 								}
 								finally
 								{
@@ -954,7 +1111,7 @@ namespace glc_cs
 										tr.Rollback();
 									}
 									WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
-									resolveError(MethodBase.GetCurrentMethod().Name, ex.Message + "\n\nエラーログに記載されているSQL文を手動で実行すると更新できます。", 0, false);
+									ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message + "\n\nエラーログに記載されているSQL文を手動で実行すると更新できます。\nSQLエディタを所持していない場合、[設定] > [ツール] > [SQLエディタ] からSQLを実行できます。", 0, false);
 								}
 								finally
 								{
@@ -965,9 +1122,9 @@ namespace glc_cs
 								}
 							}
 
-							gameList_SelectedIndexChanged(sender, e);
+							GameList_SelectedIndexChanged(sender, e);
 						}
-						pictureBox11.Visible = false;
+						runningPicture.Visible = false;
 						startButton.Enabled = true;
 
 						if (SaveType == "D" || SaveType == "M")
@@ -975,36 +1132,45 @@ namespace glc_cs
 							if (searchResultList.Items.Count > 0)
 							{
 								// 再検索
-								searchExec(true);
+								SearchExec(true);
 							}
 						}
 					}
+					// テスト起動モード
 					else
 					{
 						// checkBox6.Checked
 						MessageBox.Show("テスト起動モードが有効です。\nこのモードでは起動時間、起動回数、DiscordRPCなどは実行されません。\n\n無効にするには、[テスト起動]チェックを外してください。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-						// 作業ディレクトリ変更
-						String apppath = Path.GetDirectoryName(exePathText.Text);
-						System.Environment.CurrentDirectory = apppath;
+						// 既定ディレクトリの取得
+						string originAppPath = Path.GetDirectoryName(executeAppPath);
+
+						// 抽出パス構成
+						if (extractCheck.Checked)
+						{
+							if (!GenerateExtractCmd(CurrentExtractTool, executeAppPath, executeAppArg, out executeAppPath, out executeAppArg))
+							{
+								MessageBox.Show("抽出ツールが選択されていません！", AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+								return;
+							}
+						}
+
+						// 既定ディレクトリの変更
+						string newAppPath = Path.GetDirectoryName(executeAppPath);
+						Environment.CurrentDirectory = JudgeCurrentDir(CurrentExtractTool, originAppPath, newAppPath);
 
 						// 起動開始日時を取得
-						DateTime startTime = DateTime.Now;
+						DateTime startTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
 
 						// 起動中gifの可視化
-						pictureBox11.Visible = true;
+						runningPicture.Visible = true;
 						startButton.Enabled = false;
 
 						// ウィンドウ最小化
-						if (minCheck.Checked == true)
-						{
-							this.WindowState = FormWindowState.Minimized;
-							this.notifyIcon1.Visible = true;
-						}
+						this.WindowState = FormWindowState.Minimized;
 
 						// ゲーム実行
-						System.Diagnostics.Process p =
-						System.Diagnostics.Process.Start(exePathText.Text.Trim(), executeCmdText.Text.Trim());
+						Process p = Process.Start(executeAppPath, executeAppArg);
 
 						// 棒読み上げ
 						if (ByActive && ByRoS)
@@ -1016,49 +1182,115 @@ namespace glc_cs
 						p.WaitForExit();
 
 						// 起動終了日時を取得
-						DateTime endTime = DateTime.Now;
+						DateTime endTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+						string temp = (endTime - startTime).ToString();
+						int wakeUpTimes = Convert.ToInt32(TimeSpan.Parse(temp).TotalSeconds);
+
 
 						// 作業ディレクトリ復元
-						System.Environment.CurrentDirectory = BaseDir;
-
-						if (minCheck.Checked == true)
-						{
-							this.WindowState = FormWindowState.Normal;
-							this.notifyIcon1.Visible = false;
-						}
+						Environment.CurrentDirectory = BaseDir;
 
 						// 起動中gifの非可視化
-						pictureBox11.Visible = false;
+						runningPicture.Visible = false;
 						startButton.Enabled = true;
 
+						// ウィンドウ通常表示化
+						this.WindowState = FormWindowState.Normal;
+
 						// 終了検出後
-						DialogResult dr = MessageBox.Show("実行終了を検出しました。\n開始日時：" + startTime.ToString("yyyy/MM/dd HH:mm:ss") + "\n終了日時：" + endTime.ToString("yyyy/MM/dd HH:mm:ss") + "\n\nゲームを正しくトラッキングできていますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+						DialogResult dr = MessageBox.Show("実行終了を検出しました。\n開始日時：" + startTime.ToString("yyyy/MM/dd HH:mm:ss") + "\n終了日時：" + endTime.ToString("yyyy/MM/dd HH:mm:ss") + "\n実行時間：" + wakeUpTimes + "\n\n正しくトラッキングできていますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 						if (dr == DialogResult.Yes)
 						{
 							MessageBox.Show("正常にトラッキングできています。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 						}
 						else
 						{
-							MessageBox.Show("トラッキングに失敗しています。\n\n以下をご確認ください。\n\n・ランチャーを指定していませんか？\n・GLを管理者権限で起動してみてください。\n・実行パスを英数字のみにしてみてください。\n\nそれでも解決しない場合は、トラッキングできません。ご了承ください。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+							MessageBox.Show("トラッキングに失敗しています。\n以下をご確認ください。\n\n・ランチャーを指定していませんか？\n・AGLを管理者権限で起動してみてください。\n・実行パスを英数字のみにしてみてください。\n\nそれでも解決しない場合は、GitHubでIssueを開いてファイルパスやゲームエンジン等を教えてください。可能な限り対応します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 						}
 
 					}
 				}
+				// トラッキングなしで実行
 				else
 				{
-					String apppath = Path.GetDirectoryName(exePathText.Text);
-					System.Environment.CurrentDirectory = apppath;
+					// 既定ディレクトリの取得
+					string originAppPath = Path.GetDirectoryName(executeAppPath);
+
+					// 抽出パス構成
+					if (extractCheck.Checked)
+					{
+						if (!GenerateExtractCmd(CurrentExtractTool, executeAppPath, executeAppArg, out executeAppPath, out executeAppArg))
+						{
+							MessageBox.Show("抽出ツールが選択されていません！", AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+							return;
+						}
+					}
+
+					// 既定ディレクトリの変更
+					string newAppPath = Path.GetDirectoryName(executeAppPath);
+					Environment.CurrentDirectory = JudgeCurrentDir(CurrentExtractTool, originAppPath, newAppPath);
 
 					if (ByActive && ByRoS)
 					{
 						Bouyomiage(nameText.Text + "を、トラッキングなしで起動しました。");
 					}
-					System.Diagnostics.Process.Start(exePathText.Text.Trim(), executeCmdText.Text.Trim());
+					Process.Start(executeAppPath, executeAppArg);
 
-					System.Environment.CurrentDirectory = BaseDir;
+					Environment.CurrentDirectory = BaseDir;
 				}
 			}
 			GC.Collect();
+		}
+
+		/// <summary>
+		/// ゲーム起動時のカレントディレクトリを選択・返却します。
+		/// </summary>
+		/// <param name="CurrentExtractTool">抽出ドロップダウンの値</param>
+		/// <param name="originAppPath">ゲームのディレクトリパス</param>
+		/// <param name="newAppPath">抽出ツールのディレクトリパス</param>
+		/// <returns></returns>
+		private string JudgeCurrentDir(int CurrentExtractTool, string originAppPath, string newAppPath)
+		{
+			string resultCurDirPath = originAppPath;
+			if (newAppPath.Length == 0)
+			{
+				return resultCurDirPath;
+			}
+
+			switch (CurrentExtractTool)
+			{
+				case 1: // krkr
+					if (ExtractKrkrCurDir)
+					{
+						resultCurDirPath = newAppPath;
+					}
+					break;
+				case 2: // krkrz
+					if (ExtractKrkrzCurDir)
+					{
+						resultCurDirPath = newAppPath;
+					}
+					break;
+				case 3: // krkrDump
+					if (ExtractKrkrDumpCurDir)
+					{
+						resultCurDirPath = newAppPath;
+					}
+					break;
+				case 4: // Custom1
+					if (ExtractCustom1CurDir)
+					{
+						resultCurDirPath = newAppPath;
+					}
+					break;
+				case 5: // Custom2
+					if (ExtractCustom2CurDir)
+					{
+						resultCurDirPath = newAppPath;
+					}
+					break;
+			}
+			return resultCurDirPath;
 		}
 
 		/// <summary>
@@ -1066,195 +1298,8 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void addButton_Click(object sender, EventArgs e)
+		private void AddButton_Click(object sender, EventArgs e)
 		{
-			/*
-			String exeans = "", imgans = "", ratedata = "";
-			openFileDialog1.Title = "追加する実行ファイルを選択";
-			openFileDialog1.Filter = "実行ファイル (*.exe)|*.exe|すべてのファイル (*.*)|*.*";
-			openFileDialog1.FileName = "";
-			if (openFileDialog1.ShowDialog() == DialogResult.OK)
-			{
-				exeans = openFileDialog1.FileName;
-			}
-			else
-			{
-				return;
-			}
-
-			openFileDialog1.Title = "実行ファイルの画像を選択";
-			openFileDialog1.Filter = "画像ファイル (*.png;*.jpg;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif";
-			openFileDialog1.FileName = Path.GetFileNameWithoutExtension(exeans).ToString() + ".png";
-			if (openFileDialog1.ShowDialog() == DialogResult.OK)
-			{
-				imgans = openFileDialog1.FileName;
-			}
-			else
-			{
-				imgans = "";
-			}
-
-			String filename = Path.GetFileNameWithoutExtension(exeans);
-			string appname_ans = Interaction.InputBox(
-				"アプリ名を設定", AppName, filename, -1, -1);
-
-			String gfilepass = "";
-
-			DialogResult rate = MessageBox.Show("成人向け(R-18)ゲームですか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-			if (rate == DialogResult.Yes)
-			{
-				ratedata = "1";
-			}
-			else
-			{
-				ratedata = "0";
-			}
-
-			if (SaveType == "I" || SaveType == "T")
-			{
-				// ini
-				if (File.Exists(GameIni))
-				{
-					fileSystemWatcher1.EnableRaisingEvents = false;
-
-					int newmaxval = GameMax + 1;
-
-					gfilepass = GameDir + "\\" + newmaxval + ".ini";
-
-					if (!(File.Exists(gfilepass)))
-					{
-						IniWrite(gfilepass, "game", "name", appname_ans);
-						IniWrite(gfilepass, "game", "imgpass", imgans);
-						IniWrite(gfilepass, "game", "pass", exeans);
-						IniWrite(gfilepass, "game", "time", "0");
-						IniWrite(gfilepass, "game", "start", "0");
-						IniWrite(gfilepass, "game", "stat", string.Empty);
-						IniWrite(gfilepass, "game", "dcon_img", string.Empty);
-						IniWrite(gfilepass, "game", "memo", string.Empty);
-						IniWrite(gfilepass, "game", "status", "未プレイ");
-						IniWrite(gfilepass, "game", "ini_version", DBVer);
-						IniWrite(gfilepass, "game", "rating", ratedata);
-						IniWrite(GameIni, "list", "game", newmaxval.ToString());
-
-						// 次回DB接続時に更新するフラグを立てる
-						if (SaveType == "T")
-						{
-							IniWrite(GameIni, "list", "dbupdate", "1");
-						}
-					}
-					else
-					{
-						String dup = IniRead(gfilepass, "game", "name", "unknown");
-						DialogResult dialogResult = MessageBox.Show("既にiniファイルが存在します！（通常は有り得ません）\n" + gfilepass + "\n[" + dup + "]\n上書きしますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-						if (dialogResult == DialogResult.Yes)
-						{
-							IniWrite(gfilepass, "game", "name", appname_ans);
-							IniWrite(gfilepass, "game", "imgpass", imgans);
-							IniWrite(gfilepass, "game", "pass", exeans);
-							IniWrite(gfilepass, "game", "time", "0");
-							IniWrite(gfilepass, "game", "start", "0");
-							IniWrite(gfilepass, "game", "stat", string.Empty);
-							IniWrite(gfilepass, "game", "dcon_img", string.Empty);
-							IniWrite(gfilepass, "game", "memo", string.Empty);
-							IniWrite(gfilepass, "game", "status", "未プレイ");
-							IniWrite(gfilepass, "game", "ini_version", DBVer);
-							IniWrite(gfilepass, "game", "rating", ratedata);
-							IniWrite(GameIni, "list", "game", newmaxval.ToString());
-
-							// 次回DB接続時に更新するフラグを立てる
-							if (SaveType == "T")
-							{
-								IniWrite(GameIni, "list", "dbupdate", "1");
-							}
-						}
-						else if (dialogResult == DialogResult.No)
-						{
-							MessageBox.Show("新規のゲームを追加せずに処理を中断します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-						}
-						else
-						{
-							resolveError(MethodBase.GetCurrentMethod().Name, "不明な結果です。\n実行を中断します。", 0, false);
-						}
-						return;
-					}
-
-					if (reloadCheck.Checked)
-					{
-						fileSystemWatcher1.EnableRaisingEvents = true;
-					}
-				}
-				else
-				{
-					resolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報統括管理ファイルが見つかりません！", 0, false);
-					return;
-				}
-			}
-			else
-			{
-				// database
-				if (SaveType == "D")
-				{
-					SqlConnection cn = SqlCon;
-					SqlCommand cm;
-					cm = new SqlCommand()
-					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( N'" + appname_ans + "', N'" + exeans + "', N'" + imgans + "', '0', '0','', '" + ratedata + "', NULL, '', N'未プレイ', N'" + DBVer + "' )"
-					};
-					cm.Connection = cn;
-
-					try
-					{
-						cn.Open();
-						cm.ExecuteNonQuery();
-					}
-					catch (Exception ex)
-					{
-						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
-						resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
-					}
-					finally
-					{
-						if (cn.State == ConnectionState.Open)
-						{
-							cn.Close();
-						}
-					}
-				}
-				else
-				{
-					MySqlConnection cn = SqlCon2;
-					MySqlCommand cm;
-					cm = new MySqlCommand()
-					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION ) VALUES ( '" + appname_ans.Replace("'", "''").Replace("\\", "\\\\") + "', '" + exeans.Replace("'", "''").Replace("\\", "\\\\") + "', '" + imgans.Replace("'", "''").Replace("\\", "\\\\") + "', '0', '0','', '" + ratedata + "', NULL, '', '未プレイ', '" + DBVer + "' );"
-					};
-					cm.Connection = cn;
-
-					try
-					{
-						cn.Open();
-						cm.ExecuteNonQuery();
-					}
-					catch (Exception ex)
-					{
-						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
-						resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
-					}
-					finally
-					{
-						if (cn.State == ConnectionState.Open)
-						{
-							cn.Close();
-						}
-					}
-				}
-			}
-			*/
-
 			if (SaveType == "D")
 			{
 				SqlConnection cn = SqlCon;
@@ -1278,21 +1323,31 @@ namespace glc_cs
 				addItem.ShowDialog(this);
 			}
 
-			reloadItems();
+			ReloadItems();
 			GC.Collect();
 		}
 
-		private void infoButton_Click(object sender, EventArgs e)
+		/// <summary>
+		/// 情報ボタン
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void InfoButton_Click(object sender, EventArgs e)
 		{
-			DialogResult result = MessageBox.Show(AppName + " Ver." + AppVer + " / Build " + AppBuild + "\n\n" + "現在の作業ディレクトリ [" + (SaveType == "I" ? "ローカルINI" : SaveType == "D" ? "SQL Server" : SaveType == "M" ? "MySQL" : "オフラインINI") + "]：\n" + ((SaveType == "D" || SaveType == "M") ? DbUrl + ":" + DbPort + " ▶ " + DbName + "." + DbTable : GameDir) + "\n\nAuthor: Ogura Deko (dekosoft)\nMail: support@fanet.work\nWeb: https://fanet.work\n\nCopyright (C) Ogura Deko and dekosoft Program rights reserved.",
+			MessageBox.Show(AppName + " Ver." + AppVer + " / Build " + AppBuild + "\n\n" + "現在の作業ディレクトリ [" + (SaveType == "I" ? "ローカルINI" : SaveType == "D" ? "SQL Server" : SaveType == "M" ? "MySQL" : "オフラインINI") + "]：\n" + ((SaveType == "D" || SaveType == "M") ? DbUrl + ":" + DbPort + " ▶ " + DbName + "." + DbTable : GameDir),
 								AppName,
 								MessageBoxButtons.OK,
 								MessageBoxIcon.Information);
 		}
 
-		private void gameList_SelectedIndexChanged(object sender, EventArgs e)
+		/// <summary>
+		/// ゲームリスト変更時イベント
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void GameList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (!(GameMax >= 1))
+			if (!(GameMax >= 1) || !(gameList.SelectedIndex >= 0))
 			{
 				return;
 			}
@@ -1306,8 +1361,8 @@ namespace glc_cs
 
 			// ゲーム詳細取得
 			int selecteditem = gameList.SelectedIndex + 1;
-			String readini = GameDir + selecteditem + ".ini";
-			String id = null, namedata = null, imgpassdata = null, passdata = null, execute_cmd = null, stimedata = null, startdata = null, cmtdata = null, dcon_imgdata = null, rating = null, status = null;
+			string readini = GameDir + selecteditem + ".ini";
+			string id = null, namedata = null, imgpassdata = null, passdata = null, execute_cmd = null, stimedata = null, startdata = null, cmtdata = null, dcon_imgdata = null, rating = null, status = null;
 
 			if (SaveType == "I" || SaveType == "T")
 			{
@@ -1315,8 +1370,8 @@ namespace glc_cs
 				if (File.Exists(readini))
 				{
 					// ini読込開始
-					KeyNames[] keyNames = { KeyNames.name, KeyNames.pass, KeyNames.imgpass, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.rating, KeyNames.status, KeyNames.execute_cmd };
-					string[] failedVal = { string.Empty, string.Empty, string.Empty, "0", "0", string.Empty, string.Empty, Rate.ToString(), string.Empty, string.Empty };
+					KeyNames[] keyNames = { KeyNames.name, KeyNames.pass, KeyNames.imgpass, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.rating, KeyNames.status, KeyNames.execute_cmd, KeyNames.extract_tool };
+					string[] failedVal = { string.Empty, string.Empty, string.Empty, "0", "0", string.Empty, string.Empty, Rate.ToString(), string.Empty, string.Empty, "0" };
 					string[] returnVals = IniRead(readini, "game", keyNames, failedVal);
 
 					namedata = returnVals[0].ToString();
@@ -1329,11 +1384,12 @@ namespace glc_cs
 					rating = returnVals[7].ToString();
 					status = returnVals[8].ToString();
 					execute_cmd = returnVals[9].ToString();
+					CurrentExtractTool = Convert.ToInt32(returnVals[10].ToString());
 				}
 				else
 				{
 					// 個別ini存在しない場合
-					resolveError(MethodBase.GetCurrentMethod().Name, "iniファイル読み込み中にエラー。\nファイルが存在しません。\n\n処理を中断します。\n予期せぬ不具合の発生につながる場合があります。\n直ちに終了することをお勧めしますが、このまま実行することもできます。", 4, false, readini);
+					ResolveError(MethodBase.GetCurrentMethod().Name, "iniファイル読み込み中にエラー。\nファイルが存在しません。\n\n処理を中断します。\n予期せぬ不具合の発生につながる場合があります。\n直ちに終了することをお勧めしますが、このまま実行することもできます。", 4, false, readini);
 				}
 			}
 			else
@@ -1351,7 +1407,7 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 30,
-							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG, STATUS, EXECUTE_CMD "
+							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG, STATUS, EXECUTE_CMD, EXTRACT_TOOL "
 											+ "FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROWCNT FROM " + DbName + "." + DbTable + ") AS T "
 											+ "WHERE ROWCNT = " + selecteditem
 											+ " ORDER BY ID ASC"
@@ -1363,7 +1419,7 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 30,
-							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG, STATUS, EXECUTE_CMD "
+							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG, STATUS, EXECUTE_CMD, EXTRACT_TOOL "
 											+ "FROM " + DbName + "." + DbTable
 											+ " ORDER BY ID ASC"
 						};
@@ -1388,13 +1444,14 @@ namespace glc_cs
 							dcon_imgdata = reader["DCON_IMG"].ToString();
 							rating = reader["AGE_FLG"].ToString();
 							status = reader["STATUS"].ToString();
+							CurrentExtractTool = Convert.ToInt32(reader["EXTRACT_TOOL"].ToString());
 						}
 
 					}
 					catch (Exception ex)
 					{
 						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
-						resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
+						ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
 					}
 					finally
 					{
@@ -1415,7 +1472,7 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 30,
-							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG, STATUS, EXECUTE_CMD "
+							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG, STATUS, EXECUTE_CMD, EXTRACT_TOOL "
 											+ "FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROWCNT FROM " + DbTable + ") AS T "
 											+ "WHERE ROWCNT = " + selecteditem
 											+ " ORDER BY ID ASC"
@@ -1427,7 +1484,7 @@ namespace glc_cs
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 30,
-							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG, STATUS, EXECUTE_CMD "
+							CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG, STATUS, EXECUTE_CMD, EXTRACT_TOOL "
 											+ "FROM " + DbTable
 											+ " ORDER BY ID ASC"
 						};
@@ -1452,13 +1509,14 @@ namespace glc_cs
 							dcon_imgdata = reader["DCON_IMG"].ToString();
 							rating = reader["AGE_FLG"].ToString();
 							status = reader["STATUS"].ToString();
+							CurrentExtractTool = Convert.ToInt32(reader["EXTRACT_TOOL"].ToString());
 						}
 
 					}
 					catch (Exception ex)
 					{
 						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
-						resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
+						ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
 					}
 					finally
 					{
@@ -1486,6 +1544,21 @@ namespace glc_cs
 			toolStripStatusLabel1.Text = "[" + selecteditem + "/" + GameMax + "]";
 			toolStripProgressBar1.Value = gameList.SelectedIndex + 1;
 
+			bool startButtonEnable = true;
+
+			if (string.IsNullOrEmpty(execute_cmd))
+			{
+				// 引数テキストボックス非表示
+				executeCmdText.Visible = false;
+				exePathText.Width = 381;
+			}
+			else
+			{
+				// 表示
+				executeCmdText.Visible = true;
+				exePathText.Width = 299;
+			}
+
 			if (Convert.ToInt32(rating) == 0)
 			{
 				normalRadio.Checked = true;
@@ -1495,40 +1568,45 @@ namespace glc_cs
 				ratedRadio.Checked = true;
 			}
 
-			if (File.Exists(passdata))
+			if (!File.Exists(passdata))
 			{
-				startButton.Enabled = true;
-			}
-			else
-			{
-				startButton.Enabled = false;
+				// アプリケーションが存在しない場合、実行できないようにする
+				startButtonEnable = false;
+				startButton.Text = "ゲームパスが存在しません";
 			}
 
 			if (File.Exists(imgpassdata))
 			{
 				try
 				{
+					gameIcon.Image = null;
 					gameIcon.ImageLocation = imgpassdata;
 				}
 				catch (Exception ex)
 				{
 					gameIcon.ImageLocation = "";
+					gameIcon.Image = Resources.exe;
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, imgpassdata);
 				}
 			}
 			else
 			{
 				gameIcon.ImageLocation = "";
+				gameIcon.Image = Resources.exe;
 			}
 
-			if ((runTimeText.Text == "35791394") || (startCountText.Text == Int32.MaxValue.ToString()))
+			if ((Convert.ToInt32(runTimeText.Text) >= 35791394) || (Convert.ToInt32(startCountText.Text) >= Int32.MaxValue))
 			{
 				// 最大の場合、実行できないようにする
-				startButton.Enabled = false;
+				startButtonEnable = false;
+				startButton.Text = "記録上限のため起動不可";
 			}
-			else
+
+			startButton.Enabled = startButtonEnable;
+
+			if (startButtonEnable)
 			{
-				startButton.Enabled = true;
+				startButton.Text = "実行";
 			}
 
 			return;
@@ -1539,7 +1617,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void copySelectedGameTitle(object sender, EventArgs e)
+		private void CopySelectedGameTitle(object sender, EventArgs e)
 		{
 			if (titleLabel.Text.Length > 0)
 			{
@@ -1561,13 +1639,18 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void reloadButton_Click(object sender, EventArgs e)
+		private void ReloadButton_Click(object sender, EventArgs e)
 		{
-			reloadItems();
+			ReloadItems();
 			return;
 		}
 
-		private void pictureBox3_Click(object sender, EventArgs e)
+		/// <summary>
+		/// ゲームタイトルをコピーします
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void GameTitleCopyPictureBox_Click(object sender, EventArgs e)
 		{
 			if (!(nameText.Text.Equals("")))
 			{
@@ -1575,7 +1658,12 @@ namespace glc_cs
 			}
 		}
 
-		private void pictureBox4_Click(object sender, EventArgs e)
+		/// <summary>
+		/// ゲームパスをコピーします
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void GamePathCopyPictureBox_Click(object sender, EventArgs e)
 		{
 			if (!(exePathText.Text.Equals("")))
 			{
@@ -1583,7 +1671,12 @@ namespace glc_cs
 			}
 		}
 
-		private void pictureBox6_Click(object sender, EventArgs e)
+		/// <summary>
+		/// ゲーム画像パスをコピーします
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void GameImgCopyPictureBox_Click(object sender, EventArgs e)
 		{
 			if (!(imgPathText.Text.Equals("")))
 			{
@@ -1591,13 +1684,18 @@ namespace glc_cs
 			}
 		}
 
-		private void pictureBox9_Click(object sender, EventArgs e)
+		/// <summary>
+		/// ゲーム起動時間を表示します
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void GameRunningTimePictureBox_Click(object sender, EventArgs e)
 		{
 			if (!(runTimeText.Text.Equals("")))
 			{
 				int total = Convert.ToInt32(runTimeText.Text);
-				String hour = (total / 60).ToString();
-				String min = (total % 60).ToString();
+				string hour = (total / 60).ToString();
+				string min = (total % 60).ToString();
 				int sTotal = (Convert.ToInt32(startCountText.Text) == 0 ? 1 : Convert.ToInt32(startCountText.Text));
 				string sMin = (total / sTotal).ToString();
 				string sHour = (Convert.ToInt32(sMin) / 60).ToString();
@@ -1620,9 +1718,9 @@ namespace glc_cs
 		/// <param name="key">キー</param>
 		/// <param name="data">データ</param>
 		/// <param name="failedval">失敗時の値</param>
-		private void iniEditCheck(string ininame, string sec, string[] keyNames, string[] data, string[] failedVal)
+		private void IniEditCheck(string ininame, string sec, string[] keyNames, string[] data, string[] failedVal)
 		{
-			pictureBox11.Visible = true;
+			runningPicture.Visible = true;
 
 			if (File.Exists(ininame))
 			{
@@ -1639,10 +1737,10 @@ namespace glc_cs
 			}
 			else
 			{
-				resolveError(MethodBase.GetCurrentMethod().Name, "該当するファイルがありません。\n\n[Error]\n" + ininame, 0, false, ininame);
+				ResolveError(MethodBase.GetCurrentMethod().Name, "該当するファイルがありません。\n\n[Error]\n" + ininame, 0, false, ininame);
 			}
 
-			pictureBox11.Visible = false;
+			runningPicture.Visible = false;
 			return;
 		}
 
@@ -1654,9 +1752,9 @@ namespace glc_cs
 		/// <param name="key">キー</param>
 		/// <param name="data">データ</param>
 		/// <param name="failedval">失敗時の値</param>
-		private void iniEditCheck(string ininame, string sec, KeyNames[] keyNames, string[] data, string[] failedVal)
+		private void IniEditCheck(string ininame, string sec, KeyNames[] keyNames, string[] data, string[] failedVal)
 		{
-			pictureBox11.Visible = true;
+			runningPicture.Visible = true;
 
 			if (File.Exists(ininame))
 			{
@@ -1673,29 +1771,28 @@ namespace glc_cs
 			}
 			else
 			{
-				resolveError(MethodBase.GetCurrentMethod().Name, "該当するファイルがありません。\n\n[Error]\n" + ininame, 0, false, ininame);
+				ResolveError(MethodBase.GetCurrentMethod().Name, "該当するファイルがありません。\n\n[Error]\n" + ininame, 0, false, ininame);
 			}
 
-			pictureBox11.Visible = false;
+			runningPicture.Visible = false;
 			return;
 		}
 
 		/// <summary>
 		/// コンフィグファイルのロードと画面反映を行います
 		/// </summary>
-		private void updateComponent()
+		private void UpdateComponent()
 		{
 			if (GLConfigLoad() == false)
 			{
-				resolveError(MethodBase.GetCurrentMethod().Name, "Configロード中にエラー。\n詳しくはエラーログを参照して下さい。", 0, false);
+				ResolveError(MethodBase.GetCurrentMethod().Name, "Configロード中にエラー。\n詳しくはエラーログを参照して下さい。", 0, false);
 			}
 
 			if (File.Exists(ConfigIni))
 			{
 				int ckv0 = Convert.ToInt32(ReadIni("checkbox", "track", "0"));
-				int ckv1 = Convert.ToInt32(ReadIni("checkbox", "winmini", "0"));
 
-				String bgimg = BgImg;
+				string bgimg = BgImg;
 				sensCheck.Checked = Convert.ToBoolean(Convert.ToInt32(ReadIni("checkbox", "sens", "0")));
 				useDconCheck.Checked = Dconnect;
 				if (useDconCheck.Checked)
@@ -1705,6 +1802,15 @@ namespace glc_cs
 				else
 				{
 					sensCheck.Visible = false;
+				}
+
+				if (ExtractEnable)
+				{
+					extractCheck.Visible = true;
+				}
+				else
+				{
+					extractCheck.Visible = false;
 				}
 
 				if (Rate == 1)
@@ -1720,7 +1826,7 @@ namespace glc_cs
 				{
 					if (ByRoW)
 					{
-						bouyomiConfigLoad();
+						Bouyomi_Connectchk();
 					}
 				}
 
@@ -1728,16 +1834,14 @@ namespace glc_cs
 				{
 					this.BackgroundImage = new Bitmap(bgimg);
 					this.BackgroundImageLayout = ImageLayout.Stretch;
-					toolStripStatusLabel2.Text = "！背景画像が適用されました。環境によっては描画に時間がかかる場合があります。！";
 				}
 				else
 				{
 					this.BackgroundImage = null;
-					message();
+					Message();
 				}
 
 				trackCheck.Checked = Convert.ToBoolean(ckv0);
-				minCheck.Checked = Convert.ToBoolean(ckv1);
 
 				if (trackCheck.Checked)
 				{
@@ -1749,7 +1853,6 @@ namespace glc_cs
 					dconConnectGroupBox.Visible = true;
 
 					testCheck.Visible = true;
-					minCheck.Visible = true;
 					if (useDconCheck.Checked)
 					{
 						sensCheck.Visible = true;
@@ -1765,7 +1868,6 @@ namespace glc_cs
 					dconConnectGroupBox.Visible = false;
 
 					testCheck.Visible = false;
-					minCheck.Visible = false;
 					sensCheck.Visible = false;
 				}
 
@@ -1775,7 +1877,7 @@ namespace glc_cs
 					// databaseの場合
 					upButton.Visible = false;
 					downButton.Visible = false;
-					toolStripStatusLabel3.Visible = false;
+					editINIStatusLabel.Visible = false;
 				}
 				else
 				{
@@ -1790,16 +1892,15 @@ namespace glc_cs
 				GameDir = BaseDir + "Data";
 				GameIni = GameDir + "game.ini";
 				trackCheck.Checked = true;
-				minCheck.Checked = true;
 				tabControl1.TabPages.Remove(tabPage3);
 			}
 			return;
 		}
 
 		/// <summary>
-		/// アップデートチェック
+		/// 起動時のアップデートチェック
 		/// </summary>
-		private void checkItemUpdate()
+		private void CheckItemUpdate()
 		{
 			DialogResult dr = new DialogResult();
 			if (SaveType == "D")
@@ -1835,9 +1936,9 @@ namespace glc_cs
 		/// <summary>
 		/// ゲームリストの再読込
 		/// </summary>
-		private void reloadItems()
+		private void ReloadItems()
 		{
-			updateComponent();
+			UpdateComponent();
 
 			if (SaveType == "I" || SaveType == "T")
 			{
@@ -1855,7 +1956,7 @@ namespace glc_cs
 				LoadItem(GameDir);
 				if (gameList.Items.Count != 0)
 				{
-					String selectedtext = gameList.SelectedItem.ToString();
+					string selectedtext = gameList.SelectedItem.ToString();
 					if (gameList.Items.Contains(selectedtext))
 					{
 						gameList.SelectedIndex = gameList.Items.IndexOf(selectedtext);
@@ -1887,14 +1988,19 @@ namespace glc_cs
 			return;
 		}
 
-		private void randomButton_Click(object sender, EventArgs e)
+		/// <summary>
+		/// ランダム選択ボタン
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void RandomButton_Click(object sender, EventArgs e)
 		{
 			int rawdata = GameMax;
 
 			if (rawdata >= 1)
 			{
 				// 乱数生成
-				System.Random r = new System.Random();
+				Random r = new Random();
 				int ans = r.Next(1, rawdata + 1);
 
 				gameList.SelectedIndex = ans - 1;
@@ -1929,7 +2035,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void delButton_Click(object sender, EventArgs e)
+		private void DelButton_Click(object sender, EventArgs e)
 		{
 			if (gameList.SelectedIndex == -1)
 			{
@@ -1937,13 +2043,13 @@ namespace glc_cs
 				return;
 			}
 			// 選択中のゲーム保管ファイルを削除
-			pictureBox11.Visible = true;
+			runningPicture.Visible = true;
 			int delval = gameList.SelectedIndex + 1;
-			String delname = nameText.Text;
+			string delname = nameText.Text;
 			if (SaveType == "I" || SaveType == "T")
 			{
 				// ini
-				delIniItem(delval, delname);
+				DelIniItem(delval, delname);
 
 				// 次回DB接続時に更新するフラグを立てる
 				if (SaveType == "T")
@@ -1954,18 +2060,23 @@ namespace glc_cs
 			else
 			{
 				// database
-				delDbItem(delval);
+				DelDbItem(delval);
 			}
 
-			pictureBox11.Visible = false;
+			runningPicture.Visible = false;
 			return;
 		}
 
-		private void editButton_Click(object sender, EventArgs e)
+		/// <summary>
+		/// 編集ボタン
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void EditButton_Click(object sender, EventArgs e)
 		{
-			String selectedListCount = (gameList.SelectedIndex + 1).ToString();
+			string selectedListCount = (gameList.SelectedIndex + 1).ToString();
 
-			if (gameList.SelectedIndex == -1)
+			if (!(gameList.SelectedIndex >= 0))
 			{
 				MessageBox.Show("ゲームリストが空です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
@@ -1981,7 +2092,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT T.ID, T.GAME_NAME, T.GAME_PATH, T.EXECUTE_CMD, T.IMG_PATH, T.UPTIME, T.RUN_COUNT, T.DCON_TEXT, T.DCON_IMG, T.AGE_FLG, T.ROW_CNT "
+					CommandText = @"SELECT T.ID, T.GAME_NAME, T.GAME_PATH, T.EXECUTE_CMD, T.IMG_PATH, T.UPTIME, T.RUN_COUNT, T.DCON_TEXT, T.DCON_IMG, T.AGE_FLG, T.ROW_CNT, T.EXTRACT_TOOL "
 									+ "FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROW_CNT FROM " + DbName + "." + DbTable + ") AS T "
 									+ "WHERE T.ROW_CNT = " + selectedListCount
 				};
@@ -1990,6 +2101,14 @@ namespace glc_cs
 				Editor form5 = new Editor(SaveType, selectedListCount, cn, cm);
 				form5.StartPosition = FormStartPosition.CenterParent;
 				form5.ShowDialog(this);
+				if (!string.IsNullOrEmpty(form5.newGameName))
+				{
+					gameList.Items[gameList.SelectedIndex] = form5.newGameName;
+					if (GridEnable)
+					{
+						gameImgList.Items[gameList.SelectedIndex].Text = form5.newGameName;
+					}
+				}
 			}
 			else if (SaveType == "M")
 			{
@@ -2001,7 +2120,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT T.ID, T.GAME_NAME, T.GAME_PATH, T.EXECUTE_CMD, T.IMG_PATH, T.UPTIME, T.RUN_COUNT, T.DCON_TEXT, T.DCON_IMG, T.AGE_FLG, T.ROW_CNT "
+					CommandText = @"SELECT T.ID, T.GAME_NAME, T.GAME_PATH, T.EXECUTE_CMD, T.IMG_PATH, T.UPTIME, T.RUN_COUNT, T.DCON_TEXT, T.DCON_IMG, T.AGE_FLG, T.ROW_CNT, T.EXTRACT_TOOL "
 									+ "FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROW_CNT FROM " + DbTable + ") AS T "
 									+ "WHERE T.ROW_CNT = " + selectedListCount
 				};
@@ -2010,28 +2129,44 @@ namespace glc_cs
 				Editor form5 = new Editor(SaveType, selectedListCount, cn, cm);
 				form5.StartPosition = FormStartPosition.CenterParent;
 				form5.ShowDialog(this);
+				if (!string.IsNullOrEmpty(form5.newGameName))
+				{
+					gameList.Items[gameList.SelectedIndex] = form5.newGameName;
+					if (GridEnable)
+					{
+						gameImgList.Items[gameList.SelectedIndex].Text = form5.newGameName;
+					}
+				}
 			}
 			else
 			{
 				// iniの場合
-				String path = GameDir + (gameList.SelectedIndex + 1) + ".ini";
+				string path = GameDir + (gameList.SelectedIndex + 1) + ".ini";
 				if (File.Exists(path))
 				{
 					Editor form5 = new Editor(SaveType, selectedListCount, new SqlConnection(), new SqlCommand());
 					form5.StartPosition = FormStartPosition.CenterParent;
 					form5.ShowDialog(this);
+					if (!string.IsNullOrEmpty(form5.newGameName))
+					{
+						gameList.Items[gameList.SelectedIndex] = form5.newGameName;
+						if (GridEnable)
+						{
+							gameImgList.Items[gameList.SelectedIndex].Text = form5.newGameName;
+						}
+					}
 				}
 				else
 				{
 					// 個別ini不存在
-					resolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報保管iniが存在しません。\n" + path, 0, false);
+					ResolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報保管iniが存在しません。\n" + path, 0, false);
 				}
 			}
 
-			gameList_SelectedIndexChanged(sender, e);
+			GameList_SelectedIndexChanged(sender, e);
 			if ((SaveType == "D" || SaveType == "M") && searchResultList.Items.Count > 0)
 			{
-				searchExec(true);
+				SearchExec(true);
 			}
 			GC.Collect();
 			return;
@@ -2042,9 +2177,9 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void memoButton_Click(object sender, EventArgs e)
+		private void MemoButton_Click(object sender, EventArgs e)
 		{
-			String selectedListCount = (gameList.SelectedIndex + 1).ToString();
+			string selectedListCount = (gameList.SelectedIndex + 1).ToString();
 
 			if (gameList.SelectedIndex == -1)
 			{
@@ -2070,7 +2205,7 @@ namespace glc_cs
 				Memo memoForm = new Memo(SaveType, selectedListCount, cn, cm);
 				memoForm.StartPosition = FormStartPosition.CenterParent;
 				memoForm.ShowDialog(this);
-				gameList_SelectedIndexChanged(sender, e);
+				GameList_SelectedIndexChanged(sender, e);
 				return;
 			}
 			else if (SaveType == "M")
@@ -2091,29 +2226,34 @@ namespace glc_cs
 				Memo memoForm = new Memo(SaveType, selectedListCount, cn, cm);
 				memoForm.StartPosition = FormStartPosition.CenterParent;
 				memoForm.ShowDialog(this);
-				gameList_SelectedIndexChanged(sender, e);
+				GameList_SelectedIndexChanged(sender, e);
 				return;
 			}
 
 			// INIの場合
-			String path = GameDir + (gameList.SelectedIndex + 1) + ".ini";
+			string path = GameDir + (gameList.SelectedIndex + 1) + ".ini";
 			if (File.Exists(path))
 			{
 				Memo memoForm = new Memo(SaveType, selectedListCount, new SqlConnection(), new SqlCommand());
 				memoForm.StartPosition = FormStartPosition.CenterParent;
 				memoForm.ShowDialog(this);
-				gameList_SelectedIndexChanged(sender, e);
+				GameList_SelectedIndexChanged(sender, e);
 			}
 			else
 			{
 				// 個別ini不存在
-				resolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報保管iniが存在しません。\n" + path, 0, false);
+				ResolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報保管iniが存在しません。\n" + path, 0, false);
 			}
 
 			return;
 		}
 
-		private void toolStripStatusLabel3_Click(object sender, EventArgs e)
+		/// <summary>
+		/// ゲーム管理データ編集ステータスラベルイベント
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void EditINIStatusLabel_Click(object sender, EventArgs e)
 		{
 			if (SaveType == "D" || SaveType == "M")
 			{
@@ -2122,19 +2262,24 @@ namespace glc_cs
 			}
 
 			// ini読込
-			String rawdata = GameDir + ((gameList.SelectedIndex + 1).ToString()) + ".ini";
+			string rawdata = GameDir + ((gameList.SelectedIndex + 1).ToString()) + ".ini";
 
 			if (File.Exists(rawdata))
 			{
-				System.Diagnostics.Process.Start(GameDir + (gameList.SelectedIndex + 1) + ".ini");
+				Process.Start(GameDir + (gameList.SelectedIndex + 1) + ".ini");
 			}
 			else
 			{
-				resolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報保管iniがありません！\n" + rawdata, 0, false);
+				ResolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報保管iniがありません！\n" + rawdata, 0, false);
 			}
 		}
 
-		private void upButton_Click(object sender, EventArgs e)
+		/// <summary>
+		/// 上に移動ボタン
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void UpButton_Click(object sender, EventArgs e)
 		{
 			if (SaveType == "I" || SaveType == "T")
 			{
@@ -2144,9 +2289,9 @@ namespace glc_cs
 				{
 					selected++;
 					int target = selected - 1;
-					String before = GameDir + (selected.ToString()) + ".ini";
-					String temp = GameDir + (target.ToString()) + "_.ini";
-					String after = GameDir + (target.ToString()) + ".ini";
+					string before = GameDir + (selected.ToString()) + ".ini";
+					string temp = GameDir + (target.ToString()) + "_.ini";
+					string after = GameDir + (target.ToString()) + ".ini";
 					if (File.Exists(before) && File.Exists(after))
 					{
 						File.Move(after, temp);
@@ -2161,7 +2306,7 @@ namespace glc_cs
 					}
 					else
 					{
-						resolveError(MethodBase.GetCurrentMethod().Name, "移動先もしくは移動前のファイルが見つかりません。\n\n移動前：" + before + "\n移動先：" + after, 0, false);
+						ResolveError(MethodBase.GetCurrentMethod().Name, "移動先もしくは移動前のファイルが見つかりません。\n\n移動前：" + before + "\n移動先：" + after, 0, false);
 					}
 				}
 				else
@@ -2180,31 +2325,12 @@ namespace glc_cs
 			return;
 		}
 
-		private void pictureBox13_Click(object sender, EventArgs e)
-		{
-			if (exePathText.Text != "")
-			{
-				String opendir = Path.GetDirectoryName(exePathText.Text);
-				if (Directory.Exists(opendir))
-				{
-					System.Diagnostics.Process.Start(opendir);
-				}
-			}
-		}
-
-		private void pictureBox14_Click(object sender, EventArgs e)
-		{
-			if (exePathText.Text != "")
-			{
-				String opendir = Path.GetDirectoryName(exePathText.Text);
-				if (Directory.Exists(opendir))
-				{
-					System.Diagnostics.Process.Start(opendir);
-				}
-			}
-		}
-
-		private void downButton_Click(object sender, EventArgs e)
+		/// <summary>
+		/// 下に移動ボタン
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void DownButton_Click(object sender, EventArgs e)
 		{
 			if (SaveType == "I" || SaveType == "T")
 			{
@@ -2214,9 +2340,9 @@ namespace glc_cs
 				{
 					selected++;
 					int target = selected + 1;
-					String before = GameDir + (selected.ToString()) + ".ini";
-					String temp = GameDir + (target.ToString()) + "_.ini";
-					String after = GameDir + (target.ToString()) + ".ini";
+					string before = GameDir + (selected.ToString()) + ".ini";
+					string temp = GameDir + (target.ToString()) + "_.ini";
+					string after = GameDir + (target.ToString()) + ".ini";
 					if (File.Exists(before) && File.Exists(after))
 					{
 						File.Move(after, temp);
@@ -2231,7 +2357,7 @@ namespace glc_cs
 					}
 					else
 					{
-						resolveError(MethodBase.GetCurrentMethod().Name, "移動先もしくは移動前のファイルが見つかりません。\nファイルに影響はありません。\n\n移動前：" + before + "\n移動先：" + after, 0, false);
+						ResolveError(MethodBase.GetCurrentMethod().Name, "移動先もしくは移動前のファイルが見つかりません。\nファイルに影響はありません。\n\n移動前：" + before + "\n移動先：" + after, 0, false);
 						return;
 					}
 				}
@@ -2251,7 +2377,46 @@ namespace glc_cs
 			return;
 		}
 
-		private void gameImgList_SelectedIndexChanged(object sender, EventArgs e)
+		/// <summary>
+		/// ゲームパスをエクスプローラーで起動します
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void GamePathOpenPictureBox_Click(object sender, EventArgs e)
+		{
+			if (exePathText.Text != "")
+			{
+				string opendir = Path.GetDirectoryName(exePathText.Text);
+				if (Directory.Exists(opendir))
+				{
+					Process.Start(opendir);
+				}
+			}
+		}
+
+		/// <summary>
+		/// ゲーム画像パスをエクスプローラーで起動します
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void GameImgOpenPictureBox_Click(object sender, EventArgs e)
+		{
+			if (exePathText.Text != "")
+			{
+				string opendir = Path.GetDirectoryName(exePathText.Text);
+				if (Directory.Exists(opendir))
+				{
+					Process.Start(opendir);
+				}
+			}
+		}
+
+		/// <summary>
+		/// イメージグリッド変更時イベント
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void GameImgList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (!(GameMax >= 1))
 			{
@@ -2270,21 +2435,28 @@ namespace glc_cs
 
 		}
 
-		private void trackBar1_Scroll(object sender, EventArgs e)
+		/// <summary>
+		/// グリッドの画像サイズ変更イベント
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void TrackBar1_Scroll(object sender, EventArgs e)
 		{
+			// ImageSizeを変更する
 			switch (trackBar1.Value)
 			{
 				case 0:
-
-					gameImgList.LargeImageList = imageList0;
+					gameImgList.LargeImageList = imageList8;
 					break;
 				case 1:
-					gameImgList.LargeImageList = imageList1;
+					gameImgList.LargeImageList = imageList32;
 					break;
 				case 2:
-					gameImgList.LargeImageList = imageList2;
+					gameImgList.LargeImageList = imageList64;
 					break;
 			}
+
+			GC.Collect();
 		}
 
 		/// <summary>
@@ -2292,7 +2464,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void configButton_Click(object sender, EventArgs e)
+		private void ConfigButton_Click(object sender, EventArgs e)
 		{
 			// 設定
 			string beforeWorkDir = BaseDir;
@@ -2302,7 +2474,7 @@ namespace glc_cs
 
 			ConfigForm.StartPosition = FormStartPosition.CenterParent;
 			ConfigForm.ShowDialog(this);
-			updateComponent();
+			UpdateComponent();
 
 			string afterWorkDir = BaseDir;
 			string afterSaveType = SaveType;
@@ -2311,17 +2483,18 @@ namespace glc_cs
 
 			if (beforeWorkDir != afterWorkDir)
 			{
-				MessageBox.Show("既定の作業ディレクトリが変更されました。\nGame Launcherを再起動してください。\n\nOKを押してGame Launcherを終了します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("既定の作業ディレクトリが変更されました。\nGLauncherを再起動してください。\n\nOKを押してGLauncherを終了します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				ExitApp(!OfflineSave);
 			}
 			else if (beforeSaveType != afterSaveType)
 			{
-				MessageBox.Show("データの保存方法が変更されました。\nGame Launcherを再起動してください。\n\nOKを押してGame Launcherを終了します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				// WriteIni("disable", "updchkVer", "0.0");
+				MessageBox.Show("データの保存方法が変更されました。\nGLauncherを再起動してください。\n\nOKを押してGLauncherを終了します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				ExitApp(!OfflineSave);
 			}
 			else if ((beforeGridEnabled != afterGridEnabled) || (beforeWindowMinimunEnabled != afterWindowMinimunEnabled))
 			{
-				MessageBox.Show("UIに関する設定が変更されました。\nGame Launcherを再起動してください。\n\nOKを押してGame Launcherを終了します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("UIに関する設定が変更されました。\nGLauncherを再起動してください。\n\nOKを押してGLauncherを終了します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				ExitApp(!OfflineSave);
 			}
 
@@ -2329,11 +2502,14 @@ namespace glc_cs
 			return;
 		}
 
-		private void message()
+		/// <summary>
+		/// ステータスバーに表示されるメッセージを選択
+		/// </summary>
+		private void Message(string message = null)
 		{
-			String ans = "";
+			string ans = "";
 			int tmp;
-			System.Random r = new System.Random();
+			Random r = new Random();
 			tmp = r.Next(1, 3);
 
 			switch (tmp)
@@ -2350,11 +2526,27 @@ namespace glc_cs
 					ans = "＊本ソフトウェアはベータ版です。エラーが発生した場合はご連絡ください。";
 					break;
 			}
+
+			if (IsFirstLoad && !string.IsNullOrEmpty(message))
+			{
+				ans = message;
+			}
+			else if (IsFirstLoad && toolStripStatusLabel2.Text.Trim().Length != 0)
+			{
+				// 初回起動時はメッセージを更新しない
+				return;
+			}
+
 			toolStripStatusLabel2.Text = ans;
 			return;
 		}
 
-		private void delIniItem(int delfileval, String delfilename)
+		/// <summary>
+		/// [INI] 選択データ削除
+		/// </summary>
+		/// <param name="delfileval"></param>
+		/// <param name="delfilename"></param>
+		private void DelIniItem(int delfileval, string delfilename)
 		{
 			int nextval;
 			string nextfile;
@@ -2385,7 +2577,7 @@ namespace glc_cs
 			else
 			{
 				// 削除ファイル不存在
-				resolveError(MethodBase.GetCurrentMethod().Name, "削除対象のiniファイルが存在しません。\n" + delfile, 0, false, delfile);
+				ResolveError(MethodBase.GetCurrentMethod().Name, "削除対象のiniファイルが存在しません。\n" + delfile, 0, false, delfile);
 			}
 			LoadItem(GameDir);
 			if (GameMax >= 2 && delfileval >= 2)
@@ -2403,7 +2595,11 @@ namespace glc_cs
 			return;
 		}
 
-		private void delDbItem(int delItemVal)
+		/// <summary>
+		/// [DB] 選択データ削除
+		/// </summary>
+		/// <param name="delItemVal"></param>
+		private void DelDbItem(int delItemVal)
 		{
 			string delName = string.Empty;
 			string delPath = string.Empty;
@@ -2417,7 +2613,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG "
+					CommandText = @"SELECT ID, GAME_NAME, GAME_PATH "
 									+ "FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROWCNT FROM " + DbName + "." + DbTable + ") AS T "
 									+ "WHERE ROWCNT = " + delItemVal
 				};
@@ -2437,7 +2633,7 @@ namespace glc_cs
 				catch (Exception ex)
 				{
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
-					resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
+					ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
 				}
 				finally
 				{
@@ -2472,7 +2668,7 @@ namespace glc_cs
 					}
 					catch (Exception ex)
 					{
-						resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false, cm.CommandText);
+						ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false, cm.CommandText);
 					}
 					finally
 					{
@@ -2499,7 +2695,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG "
+					CommandText = @"SELECT ID, GAME_NAME, GAME_PATH "
 									+ "FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROWCNT FROM " + DbTable + ") AS T "
 									+ "WHERE ROWCNT = " + delItemVal
 				};
@@ -2518,7 +2714,7 @@ namespace glc_cs
 				}
 				catch (Exception ex)
 				{
-					resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false, cm.CommandText);
+					ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false, cm.CommandText);
 				}
 				finally
 				{
@@ -2553,7 +2749,7 @@ namespace glc_cs
 					}
 					catch (Exception ex)
 					{
-						resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false, cm.CommandText);
+						ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false, cm.CommandText);
 					}
 					finally
 					{
@@ -2590,31 +2786,27 @@ namespace glc_cs
 		/// <summary>
 		/// 子プロセスを終了します
 		/// </summary>
-		/// <param name="process"></param>
-		bool KillChildProcess(System.Diagnostics.Process process)
+		/// <param name="process">プロセス</param>
+		bool KillChildProcess(Process process)
 		{
 			try
 			{
-				process.Close();
-				return true;
+				if (process != null)
+				{
+					process.Kill();
+					return true;
+				}
+				else
+				{
+					throw new Exception();
+				}
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show("既にdcon.jarが終了しています。\n起動時間が正常に記録されない可能性があります。\n\n" + ex.Message, AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, "processName:" + process.ProcessName + " (" + process.HasExited + ") / exitTime:" + process.ExitTime);
+				MessageBox.Show("既にdcon.jarが終了しています。\nDiscord RPCが正しく動作しなかった可能性があります。\n\n" + ex.Message, AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return false;
 			}
-		}
-
-		/// <summary>
-		/// 棒読みちゃんの設定を読み込みます
-		/// </summary>
-		private void bouyomiConfigLoad()
-		{
-			ByHost = ReadIni("connect", "byHost", "127.0.0.1");
-			ByPort = Convert.ToInt32(ReadIni("connect", "byPort", "50001"));
-			Bouyomi_Connectchk(ByHost, ByPort, ByType, false);
-			return;
 		}
 
 		/// <summary>
@@ -2626,12 +2818,17 @@ namespace glc_cs
 		/// <param name="forceClose">true：ダイアログ処理後に終了する、false：終了しないで戻る</param>
 		/// <param name="addInfo">追加情報</param>
 		/// <returns><paramref name="dialogType">dialogType</paramref>に対応するDialogResult</returns>
-		public DialogResult resolveError(string methodName, string errorMsg, int dialogType, bool forceClose = true, string addInfo = "")
+		public DialogResult ResolveError(string methodName, string errorMsg, int dialogType, bool forceClose = true, string addInfo = "")
 		{
 			DialogResult dr = new DialogResult();
 
 			// エラー内容記述
 			WriteErrorLog(errorMsg, methodName, addInfo);
+
+			if (addInfo.Length > 0)
+			{
+				errorMsg += "\n\n[追加情報]\n" + addInfo;
+			}
 
 			// エラーダイアログ表示
 			switch (dialogType)
@@ -2667,6 +2864,8 @@ namespace glc_cs
 
 			if ((SaveType == "D" || SaveType == "M") && OfflineSave && downloadDbEnabled)
 			{
+				notifyIcon1.BalloonTipText = "オフラインデータの取得中です。しばらくお待ち下さい。";
+				notifyIcon1.ShowBalloonTip(10);
 				string localPath = BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\";
 				downloadDbDataToLocal(localPath);
 			}
@@ -2676,6 +2875,8 @@ namespace glc_cs
 				Bouyomiage("ゲームランチャーを終了しました。");
 			}
 
+			GC.Collect();
+			this.Dispose();
 			Application.Exit();
 		}
 
@@ -2684,7 +2885,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void cleanButton_Click(object sender, EventArgs e)
+		private void CleanButton_Click(object sender, EventArgs e)
 		{
 			long beforeMemory = Environment.WorkingSet;
 			GC.Collect();
@@ -2698,7 +2899,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void ocButton_Click(object sender, EventArgs e)
+		private void OcButton_Click(object sender, EventArgs e)
 		{
 			if (GridMax)
 			{
@@ -2742,9 +2943,20 @@ namespace glc_cs
 				ocButton.Text = "<<";
 				GridMax = true;
 			}
+
+			if (GridEnable)
+			{
+				// グリッドと同期
+				gameImgList.EnsureVisible(gameList.SelectedIndex);
+			}
 		}
 
-		private void pictureBox1_Click(object sender, EventArgs e)
+		/// <summary>
+		/// ゲーム画像 クリックイベント
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void GameIcon_Click(object sender, EventArgs e)
 		{
 			if (File.Exists(gameIcon.ImageLocation))
 			{
@@ -2759,9 +2971,9 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void button13_Click(object sender, EventArgs e)
+		private void SearchButton_Click(object sender, EventArgs e)
 		{
-			searchExec(false);
+			SearchExec(false);
 		}
 
 		/// <summary>
@@ -2769,12 +2981,12 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void searchText_KeyPress(object sender, KeyPressEventArgs e)
+		private void SearchText_KeyPress(object sender, KeyPressEventArgs e)
 		{
 			// Enter押下で検索を実行
 			if (e.KeyChar == (char)Keys.Enter)
 			{
-				button13_Click(sender, e);
+				SearchButton_Click(sender, e);
 			}
 		}
 
@@ -2782,7 +2994,7 @@ namespace glc_cs
 		/// 検索画面更新
 		/// </summary>
 		/// <param name="reSearch">再検索フラグ</param>
-		private void searchExec(bool reSearch = false)
+		private void SearchExec(bool reSearch = false)
 		{
 
 			if (GameMax <= 0)
@@ -2881,7 +3093,7 @@ namespace glc_cs
 				catch (Exception ex)
 				{
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cn.ConnectionString);
-					resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
+					ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
 				}
 				finally
 				{
@@ -2943,7 +3155,7 @@ namespace glc_cs
 				catch (Exception ex)
 				{
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cn.ConnectionString);
-					resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
+					ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
 				}
 				finally
 				{
@@ -2965,7 +3177,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void searchResultList_SelectedIndexChanged(object sender, EventArgs e)
+		private void SearchResultList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			int rowCount = -1;
 
@@ -3075,7 +3287,7 @@ namespace glc_cs
 				catch (Exception ex)
 				{
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
-					resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
+					ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
 				}
 				finally
 				{
@@ -3163,7 +3375,7 @@ namespace glc_cs
 				catch (Exception ex)
 				{
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
-					resolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
+					ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
 				}
 				finally
 				{
@@ -3203,7 +3415,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void searchTargetDropDown_SelectedIndexChanged(object sender, EventArgs e)
+		private void SearchTargetDropDown_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			switch (searchTargetDropDown.SelectedIndex)
 			{
@@ -3214,6 +3426,7 @@ namespace glc_cs
 				case 1:
 					// 最終起動
 					searchText.Enabled = false;
+					orderDropDown.SelectedIndex = 1;
 					break;
 				case 2:
 					// dconメモ
@@ -3239,7 +3452,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void statusCombo_SelectedIndexChanged(object sender, EventArgs e)
+		private void StatusCombo_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			// アイテムがない場合はリターン
 			if (gameList.Items.Count == 0 || !statusCombo.Focused)
@@ -3281,7 +3494,7 @@ namespace glc_cs
 						tr.Rollback();
 					}
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
-					resolveError(MethodBase.GetCurrentMethod().Name, ex.Message + "\n\nエラーログに記載されているSQL文を手動で実行すると更新できます。", 0, false);
+					ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message + "\n\nエラーログに記載されているSQL文を手動で実行すると更新できます。", 0, false);
 				}
 				finally
 				{
@@ -3324,7 +3537,7 @@ namespace glc_cs
 						tr.Rollback();
 					}
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
-					resolveError(MethodBase.GetCurrentMethod().Name, ex.Message + "\n\nエラーログに記載されているSQL文を手動で実行すると更新できます。", 0, false);
+					ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message + "\n\nエラーログに記載されているSQL文を手動で実行すると更新できます。", 0, false);
 				}
 				finally
 				{
@@ -3337,12 +3550,17 @@ namespace glc_cs
 			// INI
 			else
 			{
-				String readini = GameDir + (gameList.SelectedIndex + 1) + ".ini";
+				string readini = GameDir + (gameList.SelectedIndex + 1) + ".ini";
 				IniWrite(readini, "game", "status", statusCombo.SelectedItem.ToString());
 			}
 		}
 
-		private void trackCheck_CheckedChanged(object sender, EventArgs e)
+		/// <summary>
+		/// トラッキングチェックボックス変更時イベント
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void TrackCheck_CheckedChanged(object sender, EventArgs e)
 		{
 			if (trackCheck.Focused)
 			{
@@ -3365,7 +3583,6 @@ namespace glc_cs
 					dconConnectGroupBox.Visible = true;
 
 					testCheck.Visible = true;
-					minCheck.Visible = true;
 					if (useDconCheck.Checked)
 					{
 						sensCheck.Visible = true;
@@ -3381,13 +3598,17 @@ namespace glc_cs
 					dconConnectGroupBox.Visible = false;
 
 					testCheck.Visible = false;
-					minCheck.Visible = false;
 					sensCheck.Visible = false;
 				}
 			}
 		}
 
-		private void useDconCheck_CheckedChanged(object sender, EventArgs e)
+		/// <summary>
+		/// DiscordConnectorチェックボックス変更時イベント
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void UseDconCheck_CheckedChanged(object sender, EventArgs e)
 		{
 			try
 			{
@@ -3409,23 +3630,12 @@ namespace glc_cs
 			}
 		}
 
-		private void minCheck_CheckedChanged(object sender, EventArgs e)
-		{
-			if (minCheck.Focused)
-			{
-				try
-				{
-					WriteIni("checkbox", "winmini", (Convert.ToInt32(minCheck.Checked)).ToString());
-				}
-				catch (Exception ex)
-				{
-					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, Convert.ToInt32(minCheck.Checked).ToString());
-					System.Media.SystemSounds.Hand.Play();
-				}
-			}
-		}
-
-		private void sensCheck_CheckedChanged(object sender, EventArgs e)
+		/// <summary>
+		/// センシティブモードチェックボックス変更時イベント
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void SensCheck_CheckedChanged(object sender, EventArgs e)
 		{
 			if (sensCheck.Focused)
 			{
@@ -3438,6 +3648,19 @@ namespace glc_cs
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, Convert.ToInt32(sensCheck.Checked).ToString());
 					System.Media.SystemSounds.Hand.Play();
 				}
+			}
+		}
+
+		/// <summary>
+		/// 抽出モード有効チェック
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ExtractCheck_CheckedChanged(object sender, EventArgs e)
+		{
+			if (extractCheck.Checked)
+			{
+				MessageBox.Show("いくつかのツールは起動直後に自己タスクを終了するため、\n正常にトラッキングできない場合があります。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 		}
 	}

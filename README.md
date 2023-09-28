@@ -24,7 +24,7 @@ DLsiteから作品情報を取得するアプリケーション[DLsiteInfoGetter
 
 
 ## Webビューア
-MySQLのデータベースに登録しているデータを表示する[GLWeb](https://github.com/dekotan24/GLWeb/)もどうぞ。
+MySQLデータベースに登録しているデータをブラウザで表示する[GLWeb](https://github.com/dekotan24/GLWeb/)もどうぞ。
 
 
 ## license
