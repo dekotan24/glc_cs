@@ -1,4 +1,4 @@
-# Game Launcher C# Edition
+# GLauncher（Game Launcher C# Edition）
 
 
 ## 概要
