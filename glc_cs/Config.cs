@@ -1240,17 +1240,10 @@ namespace glc_cs
 				// オフライン保存有効時にダイアログを表示
 				MessageBox.Show("[" + offlineSaveEnableCheck.Text + "]を有効にすると、以下のタイミングで自動的にDBのバックアップが取得されます。\n\n・設定画面の[" + saveWithDownloadCheck.Text + "]にチェックが入った状態で[" + saveButton.Text + "]を押した時\n・アプリケーションを終了する時\n\nバックアップの保存先：" + BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\" + "\n\nまた、バックアップの取得に時間がかかる場合があります。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				saveWithDownloadCheck.Visible = true;
-				saveWithDownloadCheck.Checked = true;
 			}
 			else if (!offlineSaveEnableCheck.Checked)
 			{
 				saveWithDownloadCheck.Visible = false;
-			}
-
-			if (offlineSaveEnableCheck.Checked && offlineSaveEnableCheck.Focused)
-			{
-				// オフライン保存有効時にダイアログを表示
-				MessageBox.Show("[" + offlineSaveEnableCheck.Text + "]を有効にすると、以下のタイミングで自動的にDBのバックアップが取得されます。\n\n・設定画面の[" + saveButton.Text + "]を押した時\n・アプリケーションを終了する時\n\nバックアップの保存先：" + BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\" + "\n\nまた、バックアップの取得に時間がかかる場合があります。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 		}
 

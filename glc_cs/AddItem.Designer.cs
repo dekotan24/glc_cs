@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddItem));
 			this.label1 = new System.Windows.Forms.Label();
 			this.titleText = new System.Windows.Forms.TextBox();
@@ -60,9 +61,12 @@
 			this.bioText = new System.Windows.Forms.Label();
 			this.executeCmdText = new System.Windows.Forms.TextBox();
 			this.label9 = new System.Windows.Forms.Label();
-			this.getInfoButton = new System.Windows.Forms.Button();
+			this.getDLsiteInfoButton = new System.Windows.Forms.Button();
 			this.extractToolCombo = new System.Windows.Forms.ComboBox();
 			this.label10 = new System.Windows.Forms.Label();
+			this.getVNDBInfoButton = new System.Windows.Forms.Button();
+			this.label11 = new System.Windows.Forms.Label();
+			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.imgPictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.runTimeText)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.startCountText)).BeginInit();
@@ -71,58 +75,53 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(362, 170);
-			this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+			this.label1.Location = new System.Drawing.Point(167, 85);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(81, 24);
+			this.label1.Size = new System.Drawing.Size(40, 12);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "タイトル";
 			// 
 			// titleText
 			// 
-			this.titleText.Location = new System.Drawing.Point(462, 164);
-			this.titleText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.titleText.Location = new System.Drawing.Point(213, 82);
 			this.titleText.MaxLength = 255;
 			this.titleText.Name = "titleText";
-			this.titleText.Size = new System.Drawing.Size(515, 31);
+			this.titleText.Size = new System.Drawing.Size(297, 19);
 			this.titleText.TabIndex = 1;
+			this.toolTip1.SetToolTip(this.titleText, "ゲームタイトル");
 			// 
 			// exePathText
 			// 
-			this.exePathText.Location = new System.Drawing.Point(462, 220);
-			this.exePathText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.exePathText.Location = new System.Drawing.Point(213, 136);
 			this.exePathText.MaxLength = 500;
 			this.exePathText.Name = "exePathText";
-			this.exePathText.Size = new System.Drawing.Size(582, 31);
-			this.exePathText.TabIndex = 5;
+			this.exePathText.Size = new System.Drawing.Size(271, 19);
+			this.exePathText.TabIndex = 10;
 			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(344, 226);
-			this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+			this.label2.Location = new System.Drawing.Point(159, 139);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(96, 24);
+			this.label2.Size = new System.Drawing.Size(48, 12);
 			this.label2.TabIndex = 2;
 			this.label2.Text = "実行パス";
 			// 
 			// exePathButton
 			// 
-			this.exePathButton.Location = new System.Drawing.Point(1062, 216);
-			this.exePathButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.exePathButton.Location = new System.Drawing.Point(490, 134);
 			this.exePathButton.Name = "exePathButton";
-			this.exePathButton.Size = new System.Drawing.Size(43, 46);
-			this.exePathButton.TabIndex = 6;
+			this.exePathButton.Size = new System.Drawing.Size(20, 23);
+			this.exePathButton.TabIndex = 11;
 			this.exePathButton.Text = "..";
 			this.exePathButton.UseVisualStyleBackColor = true;
 			this.exePathButton.Click += new System.EventHandler(this.exePathButton_Click);
 			// 
 			// imgPathButton
 			// 
-			this.imgPathButton.Location = new System.Drawing.Point(1062, 316);
-			this.imgPathButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.imgPathButton.Location = new System.Drawing.Point(490, 184);
 			this.imgPathButton.Name = "imgPathButton";
-			this.imgPathButton.Size = new System.Drawing.Size(43, 46);
+			this.imgPathButton.Size = new System.Drawing.Size(20, 23);
 			this.imgPathButton.TabIndex = 16;
 			this.imgPathButton.Text = "..";
 			this.imgPathButton.UseVisualStyleBackColor = true;
@@ -130,21 +129,19 @@
 			// 
 			// imgPathText
 			// 
-			this.imgPathText.Location = new System.Drawing.Point(462, 320);
-			this.imgPathText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.imgPathText.Location = new System.Drawing.Point(213, 186);
 			this.imgPathText.MaxLength = 500;
 			this.imgPathText.Name = "imgPathText";
-			this.imgPathText.Size = new System.Drawing.Size(582, 31);
+			this.imgPathText.Size = new System.Drawing.Size(271, 19);
 			this.imgPathText.TabIndex = 15;
 			this.imgPathText.TextChanged += new System.EventHandler(this.applyPictureBox);
 			// 
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(344, 326);
-			this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+			this.label3.Location = new System.Drawing.Point(159, 189);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(96, 24);
+			this.label3.Size = new System.Drawing.Size(48, 12);
 			this.label3.TabIndex = 5;
 			this.label3.Text = "画像パス";
 			// 
@@ -152,10 +149,9 @@
 			// 
 			this.imgPictureBox.BackColor = System.Drawing.Color.Transparent;
 			this.imgPictureBox.InitialImage = global::glc_cs.Properties.Resources.load;
-			this.imgPictureBox.Location = new System.Drawing.Point(26, 24);
-			this.imgPictureBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.imgPictureBox.Location = new System.Drawing.Point(12, 12);
 			this.imgPictureBox.Name = "imgPictureBox";
-			this.imgPictureBox.Size = new System.Drawing.Size(217, 200);
+			this.imgPictureBox.Size = new System.Drawing.Size(100, 100);
 			this.imgPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.imgPictureBox.TabIndex = 8;
 			this.imgPictureBox.TabStop = false;
@@ -163,10 +159,9 @@
 			// 
 			// runTimeResetButton
 			// 
-			this.runTimeResetButton.Location = new System.Drawing.Point(689, 482);
-			this.runTimeResetButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.runTimeResetButton.Location = new System.Drawing.Point(318, 267);
 			this.runTimeResetButton.Name = "runTimeResetButton";
-			this.runTimeResetButton.Size = new System.Drawing.Size(43, 38);
+			this.runTimeResetButton.Size = new System.Drawing.Size(20, 19);
 			this.runTimeResetButton.TabIndex = 31;
 			this.runTimeResetButton.Text = "0";
 			this.runTimeResetButton.UseVisualStyleBackColor = true;
@@ -174,49 +169,44 @@
 			// 
 			// dconText
 			// 
-			this.dconText.Location = new System.Drawing.Point(462, 376);
-			this.dconText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.dconText.Location = new System.Drawing.Point(213, 214);
 			this.dconText.MaxLength = 50;
 			this.dconText.Name = "dconText";
-			this.dconText.Size = new System.Drawing.Size(639, 31);
+			this.dconText.Size = new System.Drawing.Size(297, 19);
 			this.dconText.TabIndex = 20;
 			// 
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(308, 382);
-			this.label5.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+			this.label5.Location = new System.Drawing.Point(142, 217);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(131, 24);
+			this.label5.Size = new System.Drawing.Size(65, 12);
 			this.label5.TabIndex = 10;
 			this.label5.Text = "dconテキスト";
 			// 
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(334, 488);
-			this.label6.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+			this.label6.Location = new System.Drawing.Point(154, 270);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(106, 24);
+			this.label6.Size = new System.Drawing.Size(53, 12);
 			this.label6.TabIndex = 13;
 			this.label6.Text = "起動時間";
 			// 
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(763, 486);
-			this.label7.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+			this.label7.Location = new System.Drawing.Point(352, 269);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(106, 24);
+			this.label7.Size = new System.Drawing.Size(53, 12);
 			this.label7.TabIndex = 16;
 			this.label7.Text = "起動回数";
 			// 
 			// startCountResetButton
 			// 
-			this.startCountResetButton.Location = new System.Drawing.Point(1062, 482);
-			this.startCountResetButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.startCountResetButton.Location = new System.Drawing.Point(490, 267);
 			this.startCountResetButton.Name = "startCountResetButton";
-			this.startCountResetButton.Size = new System.Drawing.Size(43, 38);
+			this.startCountResetButton.Size = new System.Drawing.Size(20, 19);
 			this.startCountResetButton.TabIndex = 36;
 			this.startCountResetButton.Text = "0";
 			this.startCountResetButton.UseVisualStyleBackColor = true;
@@ -224,22 +214,20 @@
 			// 
 			// AddButton
 			// 
-			this.AddButton.Location = new System.Drawing.Point(245, 616);
-			this.AddButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.AddButton.Location = new System.Drawing.Point(113, 334);
 			this.AddButton.Name = "AddButton";
-			this.AddButton.Size = new System.Drawing.Size(264, 66);
-			this.AddButton.TabIndex = 60;
+			this.AddButton.Size = new System.Drawing.Size(122, 33);
+			this.AddButton.TabIndex = 55;
 			this.AddButton.Text = "追加";
 			this.AddButton.UseVisualStyleBackColor = true;
 			this.AddButton.Click += new System.EventHandler(this.ApplyButton_Click);
 			// 
 			// CloseButton
 			// 
-			this.CloseButton.Location = new System.Drawing.Point(630, 616);
-			this.CloseButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.CloseButton.Location = new System.Drawing.Point(291, 334);
 			this.CloseButton.Name = "CloseButton";
-			this.CloseButton.Size = new System.Drawing.Size(264, 66);
-			this.CloseButton.TabIndex = 70;
+			this.CloseButton.Size = new System.Drawing.Size(122, 33);
+			this.CloseButton.TabIndex = 60;
 			this.CloseButton.Text = "キャンセル";
 			this.CloseButton.UseVisualStyleBackColor = true;
 			this.CloseButton.Click += new System.EventHandler(this.CancelButton_Click);
@@ -248,10 +236,9 @@
 			// 
 			this.localIniCheck.AutoSize = true;
 			this.localIniCheck.Enabled = false;
-			this.localIniCheck.Location = new System.Drawing.Point(407, 24);
-			this.localIniCheck.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.localIniCheck.Location = new System.Drawing.Point(188, 12);
 			this.localIniCheck.Name = "localIniCheck";
-			this.localIniCheck.Size = new System.Drawing.Size(143, 28);
+			this.localIniCheck.Size = new System.Drawing.Size(76, 16);
 			this.localIniCheck.TabIndex = 22;
 			this.localIniCheck.Text = "ローカルINI";
 			this.localIniCheck.UseVisualStyleBackColor = true;
@@ -260,10 +247,9 @@
 			// 
 			this.onlineCheck.AutoSize = true;
 			this.onlineCheck.Enabled = false;
-			this.onlineCheck.Location = new System.Drawing.Point(585, 24);
-			this.onlineCheck.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.onlineCheck.Location = new System.Drawing.Point(270, 12);
 			this.onlineCheck.Name = "onlineCheck";
-			this.onlineCheck.Size = new System.Drawing.Size(161, 28);
+			this.onlineCheck.Size = new System.Drawing.Size(84, 16);
 			this.onlineCheck.TabIndex = 23;
 			this.onlineCheck.Text = "オンラインDB";
 			this.onlineCheck.UseVisualStyleBackColor = true;
@@ -272,10 +258,9 @@
 			// 
 			this.offlineCheck.AutoSize = true;
 			this.offlineCheck.Enabled = false;
-			this.offlineCheck.Location = new System.Drawing.Point(780, 24);
-			this.offlineCheck.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.offlineCheck.Location = new System.Drawing.Point(360, 12);
 			this.offlineCheck.Name = "offlineCheck";
-			this.offlineCheck.Size = new System.Drawing.Size(183, 28);
+			this.offlineCheck.Size = new System.Drawing.Size(95, 16);
 			this.offlineCheck.TabIndex = 24;
 			this.offlineCheck.Text = "オフラインモード";
 			this.offlineCheck.UseVisualStyleBackColor = true;
@@ -283,10 +268,9 @@
 			// rateCheck
 			// 
 			this.rateCheck.AutoSize = true;
-			this.rateCheck.Location = new System.Drawing.Point(462, 532);
-			this.rateCheck.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.rateCheck.Location = new System.Drawing.Point(213, 292);
 			this.rateCheck.Name = "rateCheck";
-			this.rateCheck.Size = new System.Drawing.Size(209, 28);
+			this.rateCheck.Size = new System.Drawing.Size(108, 16);
 			this.rateCheck.TabIndex = 40;
 			this.rateCheck.Text = "成人向け（R-18）";
 			this.rateCheck.UseVisualStyleBackColor = true;
@@ -294,10 +278,9 @@
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(384, 534);
-			this.label8.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+			this.label8.Location = new System.Drawing.Point(177, 293);
 			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(61, 24);
+			this.label8.Size = new System.Drawing.Size(30, 12);
 			this.label8.TabIndex = 27;
 			this.label8.Text = "フラグ";
 			// 
@@ -307,99 +290,90 @@
 			// 
 			// runTimeText
 			// 
-			this.runTimeText.Location = new System.Drawing.Point(462, 482);
-			this.runTimeText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.runTimeText.Location = new System.Drawing.Point(213, 267);
 			this.runTimeText.Maximum = new decimal(new int[] {
             35791394,
             0,
             0,
             0});
 			this.runTimeText.Name = "runTimeText";
-			this.runTimeText.Size = new System.Drawing.Size(215, 31);
+			this.runTimeText.Size = new System.Drawing.Size(99, 19);
 			this.runTimeText.TabIndex = 30;
 			// 
 			// startCountText
 			// 
-			this.startCountText.Location = new System.Drawing.Point(891, 482);
-			this.startCountText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.startCountText.Location = new System.Drawing.Point(411, 267);
 			this.startCountText.Maximum = new decimal(new int[] {
             2147483647,
             0,
             0,
             0});
 			this.startCountText.Name = "startCountText";
-			this.startCountText.Size = new System.Drawing.Size(158, 31);
+			this.startCountText.Size = new System.Drawing.Size(73, 19);
 			this.startCountText.TabIndex = 35;
 			// 
 			// dconImgText
 			// 
-			this.dconImgText.Location = new System.Drawing.Point(462, 432);
-			this.dconImgText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.dconImgText.Location = new System.Drawing.Point(213, 242);
 			this.dconImgText.MaxLength = 50;
 			this.dconImgText.Name = "dconImgText";
-			this.dconImgText.Size = new System.Drawing.Size(639, 31);
+			this.dconImgText.Size = new System.Drawing.Size(297, 19);
 			this.dconImgText.TabIndex = 25;
 			// 
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(282, 438);
-			this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+			this.label4.Location = new System.Drawing.Point(130, 245);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(154, 24);
+			this.label4.Size = new System.Drawing.Size(77, 12);
 			this.label4.TabIndex = 29;
 			this.label4.Text = "dconイメージID";
 			// 
 			// disCloseCheck
 			// 
 			this.disCloseCheck.AutoSize = true;
-			this.disCloseCheck.Location = new System.Drawing.Point(767, 706);
-			this.disCloseCheck.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.disCloseCheck.Location = new System.Drawing.Point(354, 379);
 			this.disCloseCheck.Name = "disCloseCheck";
-			this.disCloseCheck.Size = new System.Drawing.Size(318, 28);
-			this.disCloseCheck.TabIndex = 55;
+			this.disCloseCheck.Size = new System.Drawing.Size(162, 16);
+			this.disCloseCheck.TabIndex = 50;
 			this.disCloseCheck.Text = "追加後にウィンドウを閉じない";
 			this.disCloseCheck.UseVisualStyleBackColor = true;
 			// 
 			// bioText
 			// 
 			this.bioText.AutoSize = true;
-			this.bioText.Location = new System.Drawing.Point(297, 94);
-			this.bioText.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+			this.bioText.Location = new System.Drawing.Point(137, 47);
 			this.bioText.Name = "bioText";
-			this.bioText.Size = new System.Drawing.Size(562, 24);
+			this.bioText.Size = new System.Drawing.Size(281, 12);
 			this.bioText.TabIndex = 31;
 			this.bioText.Text = "ランチャーにアイテムを追加します。D&&Dで自動補填します。";
 			// 
 			// executeCmdText
 			// 
-			this.executeCmdText.Location = new System.Drawing.Point(462, 270);
-			this.executeCmdText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.executeCmdText.Location = new System.Drawing.Point(213, 161);
 			this.executeCmdText.MaxLength = 255;
 			this.executeCmdText.Name = "executeCmdText";
-			this.executeCmdText.Size = new System.Drawing.Size(639, 31);
-			this.executeCmdText.TabIndex = 10;
+			this.executeCmdText.Size = new System.Drawing.Size(297, 19);
+			this.executeCmdText.TabIndex = 15;
 			// 
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(290, 276);
-			this.label9.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+			this.label9.Location = new System.Drawing.Point(134, 164);
 			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(149, 24);
+			this.label9.Size = new System.Drawing.Size(73, 12);
 			this.label9.TabIndex = 32;
 			this.label9.Text = "実行パラメータ";
 			// 
-			// getInfoButton
+			// getDLsiteInfoButton
 			// 
-			this.getInfoButton.Location = new System.Drawing.Point(995, 160);
-			this.getInfoButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-			this.getInfoButton.Name = "getInfoButton";
-			this.getInfoButton.Size = new System.Drawing.Size(111, 46);
-			this.getInfoButton.TabIndex = 2;
-			this.getInfoButton.Text = "DLsite";
-			this.getInfoButton.UseVisualStyleBackColor = true;
-			this.getInfoButton.Click += new System.EventHandler(this.getInfoButton_Click);
+			this.getDLsiteInfoButton.Location = new System.Drawing.Point(270, 107);
+			this.getDLsiteInfoButton.Name = "getDLsiteInfoButton";
+			this.getDLsiteInfoButton.Size = new System.Drawing.Size(66, 23);
+			this.getDLsiteInfoButton.TabIndex = 5;
+			this.getDLsiteInfoButton.Text = "DLsite";
+			this.getDLsiteInfoButton.UseVisualStyleBackColor = true;
+			this.getDLsiteInfoButton.Click += new System.EventHandler(this.getDLsiteInfoButton_Click);
 			// 
 			// extractToolCombo
 			// 
@@ -412,33 +386,52 @@
             "krkrDump",
             "カスタム1",
             "カスタム2"});
-			this.extractToolCombo.Location = new System.Drawing.Point(843, 528);
-			this.extractToolCombo.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.extractToolCombo.Location = new System.Drawing.Point(389, 290);
 			this.extractToolCombo.Name = "extractToolCombo";
-			this.extractToolCombo.Size = new System.Drawing.Size(258, 32);
-			this.extractToolCombo.TabIndex = 50;
+			this.extractToolCombo.Size = new System.Drawing.Size(121, 20);
+			this.extractToolCombo.TabIndex = 45;
 			this.extractToolCombo.Visible = false;
 			// 
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(767, 534);
-			this.label10.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+			this.label10.Location = new System.Drawing.Point(354, 293);
 			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(58, 24);
+			this.label10.Size = new System.Drawing.Size(29, 12);
 			this.label10.TabIndex = 58;
 			this.label10.Text = "抽出";
 			this.label10.Visible = false;
 			// 
+			// getVNDBInfoButton
+			// 
+			this.getVNDBInfoButton.Location = new System.Drawing.Point(342, 107);
+			this.getVNDBInfoButton.Name = "getVNDBInfoButton";
+			this.getVNDBInfoButton.Size = new System.Drawing.Size(66, 23);
+			this.getVNDBInfoButton.TabIndex = 6;
+			this.getVNDBInfoButton.Text = "VNDB";
+			this.getVNDBInfoButton.UseVisualStyleBackColor = true;
+			this.getVNDBInfoButton.Click += new System.EventHandler(this.getVNDBInfoButton_Click);
+			// 
+			// label11
+			// 
+			this.label11.AutoSize = true;
+			this.label11.Location = new System.Drawing.Point(211, 112);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(53, 12);
+			this.label11.TabIndex = 72;
+			this.label11.Text = "自動取得";
+			// 
 			// AddItem
 			// 
 			this.AllowDrop = true;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1124, 746);
+			this.ClientSize = new System.Drawing.Size(519, 407);
+			this.Controls.Add(this.label11);
+			this.Controls.Add(this.getVNDBInfoButton);
 			this.Controls.Add(this.extractToolCombo);
 			this.Controls.Add(this.label10);
-			this.Controls.Add(this.getInfoButton);
+			this.Controls.Add(this.getDLsiteInfoButton);
 			this.Controls.Add(this.executeCmdText);
 			this.Controls.Add(this.label9);
 			this.Controls.Add(this.bioText);
@@ -471,7 +464,6 @@
 			this.Controls.Add(this.label1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "AddItem";
@@ -519,8 +511,11 @@
 		private System.Windows.Forms.Label bioText;
 		private System.Windows.Forms.TextBox executeCmdText;
 		private System.Windows.Forms.Label label9;
-		private System.Windows.Forms.Button getInfoButton;
+		private System.Windows.Forms.Button getDLsiteInfoButton;
 		private System.Windows.Forms.ComboBox extractToolCombo;
 		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Button getVNDBInfoButton;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.ToolTip toolTip1;
 	}
 }

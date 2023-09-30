@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DLsite));
 			this.label1 = new System.Windows.Forms.Label();
 			this.SearchTargetText = new System.Windows.Forms.TextBox();
@@ -42,6 +43,7 @@
 			this.ImageBox = new System.Windows.Forms.PictureBox();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
 			this.imageSavedCheck = new System.Windows.Forms.CheckBox();
+			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.ImageBox)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -61,6 +63,7 @@
 			this.SearchTargetText.Name = "SearchTargetText";
 			this.SearchTargetText.Size = new System.Drawing.Size(294, 19);
 			this.SearchTargetText.TabIndex = 1;
+			this.toolTip1.SetToolTip(this.SearchTargetText, "ゲームの作品IDもしくはURL");
 			this.SearchTargetText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SearchButton_KeyPress);
 			// 
 			// SearchButton
@@ -71,6 +74,7 @@
 			this.SearchButton.Size = new System.Drawing.Size(62, 23);
 			this.SearchButton.TabIndex = 2;
 			this.SearchButton.Text = "検索";
+			this.toolTip1.SetToolTip(this.SearchButton, "検索します");
 			this.SearchButton.UseVisualStyleBackColor = true;
 			this.SearchButton.Click += new System.EventHandler(this.SearchButton_Click);
 			// 
@@ -81,6 +85,7 @@
 			this.SearchResultText.Name = "SearchResultText";
 			this.SearchResultText.Size = new System.Drawing.Size(294, 19);
 			this.SearchResultText.TabIndex = 3;
+			this.toolTip1.SetToolTip(this.SearchResultText, "タイトル名");
 			// 
 			// SaveButton
 			// 
@@ -90,6 +95,7 @@
 			this.SaveButton.Size = new System.Drawing.Size(139, 37);
 			this.SaveButton.TabIndex = 7;
 			this.SaveButton.Text = "決定";
+			this.toolTip1.SetToolTip(this.SaveButton, "適用します");
 			this.SaveButton.UseVisualStyleBackColor = true;
 			this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
 			// 
@@ -101,6 +107,7 @@
 			this.CancelButton.Size = new System.Drawing.Size(139, 37);
 			this.CancelButton.TabIndex = 8;
 			this.CancelButton.Text = "キャンセル";
+			this.toolTip1.SetToolTip(this.CancelButton, "破棄します");
 			this.CancelButton.UseVisualStyleBackColor = true;
 			this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
 			// 
@@ -129,6 +136,7 @@
 			this.ImageText.Name = "ImageText";
 			this.ImageText.Size = new System.Drawing.Size(294, 19);
 			this.ImageText.TabIndex = 4;
+			this.toolTip1.SetToolTip(this.ImageText, "リモートの画像URL");
 			// 
 			// SaveImageButton
 			// 
@@ -138,6 +146,7 @@
 			this.SaveImageButton.Size = new System.Drawing.Size(62, 23);
 			this.SaveImageButton.TabIndex = 5;
 			this.SaveImageButton.Text = "保存";
+			this.toolTip1.SetToolTip(this.SaveImageButton, "サムネイルの画像を使用する場合は保存します");
 			this.SaveImageButton.UseVisualStyleBackColor = true;
 			this.SaveImageButton.Click += new System.EventHandler(this.SaveImageButton_Click);
 			// 
@@ -206,5 +215,6 @@
 		private System.Windows.Forms.PictureBox ImageBox;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog1;
 		private System.Windows.Forms.CheckBox imageSavedCheck;
+		private System.Windows.Forms.ToolTip toolTip1;
 	}
 }

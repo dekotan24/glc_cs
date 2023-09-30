@@ -12,6 +12,7 @@ namespace glc_cs
 	public partial class Editor : Form
 	{
 		DLsite dlSearchForm = new DLsite();
+		vndb vndbSearchForm = new vndb();
 
 		SqlConnection con = new SqlConnection();
 		MySqlConnection con2 = new MySqlConnection();
@@ -430,17 +431,17 @@ namespace glc_cs
 			}
 		}
 
-		private void button3_Click(object sender, EventArgs e)
+		private void runTimeResetButton_Click(object sender, EventArgs e)
 		{
 			runTimeText.Value = 0;
 		}
 
-		private void button4_Click(object sender, EventArgs e)
+		private void startCountResetButton_Click(object sender, EventArgs e)
 		{
 			startCountText.Value = 0;
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void exePathButton_Click(object sender, EventArgs e)
 		{
 			openFileDialog1.Title = "追加する実行ファイルを選択";
 			openFileDialog1.Filter = "実行ファイル (*.exe)|*.exe|すべてのファイル (*.*)|*.*";
@@ -455,11 +456,11 @@ namespace glc_cs
 			}
 		}
 
-		private void button2_Click(object sender, EventArgs e)
+		private void imgPathButton_Click(object sender, EventArgs e)
 		{
 			openFileDialog1.Title = "実行ファイルの画像を選択";
 			openFileDialog1.Filter = "画像ファイル (*.png;*.jpg;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif";
-			openFileDialog1.FileName = System.IO.Path.GetFileNameWithoutExtension(exePathText.Text.Trim()).ToString() + ".png";
+			openFileDialog1.FileName = Path.GetFileNameWithoutExtension(exePathText.Text.Trim()).ToString() + ".png";
 			if (openFileDialog1.ShowDialog() == DialogResult.OK)
 			{
 				imgPathText.Text = openFileDialog1.FileName;
@@ -470,7 +471,7 @@ namespace glc_cs
 			}
 		}
 
-		private void getInfoButton_Click(object sender, EventArgs e)
+		private void GetDLsiteInfoButton_Click(object sender, EventArgs e)
 		{
 			// dlsiteからデータを取得します。
 			dlSearchForm.StartPosition = FormStartPosition.CenterParent;
@@ -488,6 +489,47 @@ namespace glc_cs
 
 				// フォーカス移動
 				exePathText.Focus();
+			}
+			else
+			{
+				titleText.Focus();
+			}
+		}
+
+		private void GetVNDBInfoButton_Click(object sender, EventArgs e)
+		{
+			// vndbフォーム初期化
+			vndbSearchForm.StartPosition = FormStartPosition.CenterParent;
+
+			vndbSearchForm.Title = titleText.Text.Trim();
+			vndbSearchForm.ImageUrl = string.Empty;
+			vndbSearchForm.SaveImage = (imgPathText.Text.Trim().Length == 0) ? true : false;
+			vndbSearchForm.RequireApply = false;
+
+			vndbSearchForm.ShowDialog();
+
+			// 反映
+			if (vndbSearchForm.RequireApply)
+			{
+				titleText.Text = vndbSearchForm.Title;
+				if (!string.IsNullOrEmpty(vndbSearchForm.ImageUrl) && File.Exists(vndbSearchForm.ImageUrl))
+				{
+					imgPathText.Text = vndbSearchForm.ImageUrl;
+				}
+
+				// フォーカス移動
+				if (string.IsNullOrEmpty(exePathText.Text))
+				{
+					exePathText.Focus();
+				}
+				else if (string.IsNullOrEmpty(imgPathText.Text))
+				{
+					imgPathText.Focus();
+				}
+				else
+				{
+					ApplyButton.Focus();
+				}
 			}
 			else
 			{

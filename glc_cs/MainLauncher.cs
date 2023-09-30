@@ -100,6 +100,7 @@ namespace glc_cs
 			UpdateSplashInfo(6, "最終処理中…");
 
 			// メインフォーム表示
+			this.Activate();
 			this.Show();
 			this.Refresh();
 			SplashForm.Close();

@@ -11,6 +11,8 @@ namespace glc_cs
 		public string resultText = string.Empty;
 		public string resultImagePath = string.Empty;
 		public bool resultImageSaved = false;
+		private string productID = string.Empty;
+
 		public DLsite()
 		{
 			InitializeComponent();
@@ -52,12 +54,14 @@ namespace glc_cs
 					SearchResultText.Text = result.Title;
 					ImageText.Text = result.ImageUrl;
 					ImageBox.ImageLocation = result.ImageUrl;
+					productID = result.ProductId;
 				}
 				catch (Exception ex)
 				{
 					SearchResultText.Text = string.Empty;
 					ImageText.Text = string.Empty;
 					ImageBox.ImageLocation = null;
+					productID = string.Empty;
 					imageSavedCheck.Enabled = false;
 					imageSavedCheck.Checked = false;
 					MessageBox.Show(ex.Message, AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -73,7 +77,7 @@ namespace glc_cs
 		private void SaveImageButton_Click(object sender, EventArgs e)
 		{
 			saveFileDialog1 = new SaveFileDialog();
-			saveFileDialog1.FileName = "thumb.jpg";
+			saveFileDialog1.FileName = productID + "_thumb.jpg";
 			saveFileDialog1.Title = "画像を保存";
 			saveFileDialog1.Filter = "画像ファイル (*.jpg)|*.jpg";
 			if (saveFileDialog1.ShowDialog() == DialogResult.OK)

@@ -17,6 +17,7 @@ namespace glc_cs
 		string iniPath = string.Empty;
 
 		DLsite dlSearchForm = new DLsite();
+		vndb vndbSearchForm = new vndb();
 
 		/// <summary>
 		/// MSSQL用
@@ -401,7 +402,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void getInfoButton_Click(object sender, EventArgs e)
+		private void getDLsiteInfoButton_Click(object sender, EventArgs e)
 		{
 			// dlsiteからデータを取得します。
 			dlSearchForm.StartPosition = FormStartPosition.CenterParent;
@@ -414,6 +415,52 @@ namespace glc_cs
 				if (dlSearchForm.resultImageSaved && !string.IsNullOrEmpty(dlSearchForm.resultImagePath) && File.Exists(dlSearchForm.resultImagePath))
 				{
 					imgPathText.Text = dlSearchForm.resultImagePath;
+				}
+
+				// フォーカス移動
+				if (string.IsNullOrEmpty(exePathText.Text))
+				{
+					exePathText.Focus();
+				}
+				else if (string.IsNullOrEmpty(imgPathText.Text))
+				{
+					imgPathText.Focus();
+				}
+				else
+				{
+					AddButton.Focus();
+				}
+			}
+			else
+			{
+				titleText.Focus();
+			}
+		}
+
+		/// <summary>
+		/// vndbから作品名を取得します。
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void getVNDBInfoButton_Click(object sender, EventArgs e)
+		{
+			// vndbフォーム初期化
+			vndbSearchForm.StartPosition = FormStartPosition.CenterParent;
+
+			vndbSearchForm.Title = titleText.Text.Trim();
+			vndbSearchForm.ImageUrl = string.Empty;
+			vndbSearchForm.SaveImage = (imgPathText.Text.Trim().Length == 0) ? true : false;
+			vndbSearchForm.RequireApply = false;
+
+			vndbSearchForm.ShowDialog();
+
+			// 反映
+			if (vndbSearchForm.RequireApply)
+			{
+				titleText.Text = vndbSearchForm.Title;
+				if (!string.IsNullOrEmpty(vndbSearchForm.ImageUrl) && File.Exists(vndbSearchForm.ImageUrl))
+				{
+					imgPathText.Text = vndbSearchForm.ImageUrl;
 				}
 
 				// フォーカス移動
