@@ -46,6 +46,8 @@ namespace glc_cs
 			{
 				getExec(selectedListCount);
 			}
+
+			memoTextBox.Focus();
 		}
 
 		public Memo(string saveType, string selectedListCount, MySqlConnection cn, MySqlCommand cm)
@@ -78,6 +80,8 @@ namespace glc_cs
 			{
 				getExec(selectedListCount);
 			}
+
+			memoTextBox.Focus();
 		}
 
 
