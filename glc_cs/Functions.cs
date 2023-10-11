@@ -2209,7 +2209,7 @@ namespace glc_cs
 								}
 								count++;
 							}
-							IniWrite(targetWorkDir + "game.ini", "game", "list", count.ToString());
+							IniWrite(targetWorkDir + "game.ini", "list", "game", (count - 1).ToString());
 							isSuc = true;
 						}
 					}
@@ -2303,7 +2303,7 @@ namespace glc_cs
 								}
 								count++;
 							}
-							IniWrite(targetWorkDir + "game.ini", "game", "list", count.ToString());
+							IniWrite(targetWorkDir + "game.ini", "list", "game", (count - 1).ToString());
 							isSuc = true;
 						}
 
@@ -2466,8 +2466,6 @@ namespace glc_cs
 								{
 									// データ取得
 									returnVal = IniRead(readini, "game", keyName, failedVal);
-									// タイトルのエスケープ
-									returnVal[0] = EncodeSQLSpecialChars(returnVal[0]);
 									sCount++;
 								}
 								else
@@ -2541,12 +2539,15 @@ namespace glc_cs
 							// TRUNCATE実行
 							mcm1.ExecuteNonQuery();
 
+							Console.WriteLine("TRUNCATE COMPLETE!");
+
 							// TRANSACTION開始
 							mtran1 = mcn1.BeginTransaction();
 
 							// INSERTデータ取得
 							for (int i = 1; i <= tmpMaxGameCount; i++)
 							{
+								Console.WriteLine("GetInfo(" + i + " / " + tmpMaxGameCount + ")");
 								// ini情報取得
 								string readini = workDir + "\\" + i + ".ini";
 								KeyNames[] keyName =
@@ -2590,14 +2591,14 @@ namespace glc_cs
 								if (File.Exists(readini))
 								{
 									// データ取得
+									Console.WriteLine("file found.");
 									returnVal = IniRead(readini, "game", keyName, failedVal);
-									// タイトルのエスケープ
-									returnVal[0] = EncodeSQLSpecialChars(returnVal[0]);
 									sCount++;
 								}
 								else
 								{
 									fCount++;
+									Console.WriteLine("file not found.");
 									WriteErrorLog("ファイルが存在しません。該当ファイルのINSERT処理をスキップします。", MethodBase.GetCurrentMethod().Name, readini);
 									continue;
 								}
@@ -2629,7 +2630,9 @@ namespace glc_cs
 								mcm2.Parameters.AddWithValue("@extract_tool", returnVal[14]);
 
 								// INSERT文実行
+								Console.WriteLine("INSERT(" + i + " / " + tmpMaxGameCount + ") EXECUTE!");
 								mcm2.ExecuteNonQuery();
+								Console.WriteLine("INSERT(" + i + " / " + tmpMaxGameCount + ") COMPLETE!");
 							}
 
 							if (fCount > 0)

@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(vndb));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fanza));
 			this.searchText = new System.Windows.Forms.TextBox();
 			this.searchButton = new System.Windows.Forms.Button();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -77,7 +77,7 @@
 			this.toolTip1.SetToolTip(this.SaveImageCheck, "画像も取得する場合はチェック");
 			this.SaveImageCheck.UseVisualStyleBackColor = true;
 			// 
-			// vndb
+			// Fanza
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -90,8 +90,8 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "vndb";
-			this.Text = "VNDB Information Getter - Powered by VNDB.org";
+			this.Name = "Fanza";
+			this.Text = "FANZA Information Getter - Powered by dmm.co.jp";
 			this.Load += new System.EventHandler(this.vndb_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();

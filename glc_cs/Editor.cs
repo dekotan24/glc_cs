@@ -306,9 +306,9 @@ namespace glc_cs
 
 					if (dr.Read())
 					{
-						if (dr["GAME_NAME"].ToString() != gameTitleLabel.Text)
+						if (DecodeSQLSpecialChars(dr["GAME_NAME"].ToString()) != gameTitleLabel.Text)
 						{
-							throw new Exception("変更前の値に変更が行われた可能性があります。[" + dr["GAME_NAME"].ToString() + "] : [" + gameTitleLabel.Text + "]");
+							throw new Exception("ゲーム名が一致しません。リストが変更された可能性があります。\n検証で取得されたタイトル：[" + DecodeSQLSpecialChars(dr["GAME_NAME"].ToString()) + "]\n編集中のタイトル：[" + gameTitleLabel.Text + "]");
 						}
 					}
 					dr.Close();
@@ -381,9 +381,9 @@ namespace glc_cs
 
 					if (dr.Read())
 					{
-						if (dr["GAME_NAME"].ToString() != gameTitleLabel.Text)
+						if (DecodeSQLSpecialChars(dr["GAME_NAME"].ToString()) != gameTitleLabel.Text)
 						{
-							throw new Exception("変更前の値に変更が行われた可能性があります。[" + dr["GAME_NAME"].ToString() + "] : [" + gameTitleLabel.Text + "]");
+							throw new Exception("ゲーム名が一致しません。リストが変更された可能性があります。\n検証で取得されたタイトル：[" + DecodeSQLSpecialChars(dr["GAME_NAME"].ToString()) + "]\n編集中のタイトル：[" + gameTitleLabel.Text + "]");
 						}
 					}
 					dr.Close();
