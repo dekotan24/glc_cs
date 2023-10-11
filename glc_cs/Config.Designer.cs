@@ -730,7 +730,7 @@
 			this.backgroundImageSelectButton.TabIndex = 1;
 			this.backgroundImageSelectButton.Text = "..";
 			this.backgroundImageSelectButton.UseVisualStyleBackColor = true;
-			this.backgroundImageSelectButton.Click += new System.EventHandler(this.backgroundImageSelectButton_Click);
+			this.backgroundImageSelectButton.Click += new System.EventHandler(this.BackgroundImageSelectButton_Click);
 			// 
 			// backgroundImageText
 			// 
@@ -1331,7 +1331,7 @@
 			this.iniAutoNumberingFixButton.TabIndex = 15;
 			this.iniAutoNumberingFixButton.Text = "【INI】連番修正";
 			this.iniAutoNumberingFixButton.UseVisualStyleBackColor = true;
-			this.iniAutoNumberingFixButton.Click += new System.EventHandler(this.iniAutoNumberingFixButton_Click);
+			this.iniAutoNumberingFixButton.Click += new System.EventHandler(this.IniAutoNumberingFixButton_Click);
 			// 
 			// dbOverflowFixButton
 			// 
@@ -1376,7 +1376,7 @@
 			this.importIniToDbButton.TabIndex = 12;
 			this.importIniToDbButton.Text = "INI→DB取込";
 			this.importIniToDbButton.UseVisualStyleBackColor = true;
-			this.importIniToDbButton.Click += new System.EventHandler(this.importIniToDbButton_Click);
+			this.importIniToDbButton.Click += new System.EventHandler(this.ImportIniToDbButton_Click);
 			// 
 			// checkBox6
 			// 

@@ -387,13 +387,13 @@ namespace glc_cs
 							UpdateSplashInfo(-1, "ゲームリストのロード中", counter, GameMax);
 						}
 
-						gameList.Items.Add(reader["GAME_NAME"].ToString());
+						gameList.Items.Add(DecodeSQLSpecialChars(reader["GAME_NAME"].ToString()));
 
 						if (GridEnable)
 						{
 							try
 							{
-								lvimg = Image.FromFile(reader["IMG_PATH"].ToString());
+								lvimg = Image.FromFile(DecodeSQLSpecialChars(reader["IMG_PATH"].ToString()));
 							}
 							catch
 							{
@@ -404,7 +404,7 @@ namespace glc_cs
 							imageList32.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
 							imageList64.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
 
-							lvi = new ListViewItem(reader["GAME_NAME"].ToString());
+							lvi = new ListViewItem(DecodeSQLSpecialChars(reader["GAME_NAME"].ToString()));
 							lvi.ImageIndex = (Convert.ToInt32(reader["ROW_CNT"]) - 1);
 							gameImgList.Items.Add(lvi);
 						}
@@ -624,13 +624,13 @@ namespace glc_cs
 							UpdateSplashInfo(-1, "ゲームリストのロード中", counter, GameMax);
 						}
 
-						gameList.Items.Add(reader["GAME_NAME"].ToString());
+						gameList.Items.Add(DecodeSQLSpecialChars(reader["GAME_NAME"].ToString()));
 
 						if (GridEnable)
 						{
 							try
 							{
-								lvimg = Image.FromFile(reader["IMG_PATH"].ToString());
+								lvimg = Image.FromFile(DecodeSQLSpecialChars(reader["IMG_PATH"].ToString()));
 							}
 							catch
 							{
@@ -641,7 +641,7 @@ namespace glc_cs
 							imageList32.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
 							imageList64.Images.Add(reader["ROW_CNT"].ToString(), lvimg);
 
-							lvi = new ListViewItem(reader["GAME_NAME"].ToString());
+							lvi = new ListViewItem(DecodeSQLSpecialChars(reader["GAME_NAME"].ToString()));
 							lvi.ImageIndex = (Convert.ToInt32(reader["ROW_CNT"]) - 1);
 							gameImgList.Items.Add(lvi);
 						}
@@ -1047,11 +1047,16 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"UPDATE " + DbName + "." + DbTable + " SET UPTIME = CAST(CAST(UPTIME AS BIGINT) + " + anss + " AS NVARCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS INT) + 1 AS NVARCHAR), DCON_TEXT = N'" + dconText.Text.Trim() + "', DCON_IMG = N'" + dconImgText.Text.Trim() + "', AGE_FLG = N'" + (normalRadio.Checked ? "0" : "1") + "', LAST_RUN = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', STATUS = (CASE STATUS WHEN N'" + DefaultStatusValueOfNotPlaying + "' THEN N'" + DefaultStatusValueOfPlaying + "' ELSE STATUS END) "
-												+ " WHERE ID = '" + CurrentGameDbVal + "'"
+									CommandText = @"UPDATE " + DbName + "." + DbTable + " SET UPTIME = CAST(CAST(UPTIME AS BIGINT) + @uptime AS NVARCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS INT) + 1 AS NVARCHAR), DCON_TEXT = @dcon_text, DCON_IMG = @dcon_img, AGE_FLG = @age_flg, LAST_RUN = @last_run, STATUS = (CASE STATUS WHEN N'" + DefaultStatusValueOfNotPlaying + "' THEN N'" + DefaultStatusValueOfPlaying + "' ELSE STATUS END) "
+																			+ " WHERE ID = @current_game_db_val"
 								};
 								cm.Connection = cn;
-
+								cm.Parameters.AddWithValue("@uptime", anss);
+								cm.Parameters.AddWithValue("@dcon_text", EncodeSQLSpecialChars(dconText.Text.Trim()));
+								cm.Parameters.AddWithValue("@dcon_img", dconImgText.Text.Trim());
+								cm.Parameters.AddWithValue("@age_flg", normalRadio.Checked ? "0" : "1");
+								cm.Parameters.AddWithValue("@last_run", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+								cm.Parameters.AddWithValue("@current_game_db_val", CurrentGameDbVal);
 								// SQL実行
 								try
 								{
@@ -1089,10 +1094,16 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"UPDATE " + DbTable + " SET UPTIME = CAST(CAST(UPTIME AS SIGNED) + " + anss + " AS NCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS SIGNED) + 1 AS NCHAR), DCON_TEXT = N'" + dconText.Text.Trim() + "', DCON_IMG = N'" + dconImgText.Text.Trim() + "', AGE_FLG = N'" + (normalRadio.Checked ? "0" : "1") + "', LAST_RUN = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', STATUS = (CASE STATUS WHEN N'" + DefaultStatusValueOfNotPlaying + "' THEN N'" + DefaultStatusValueOfPlaying + "' ELSE STATUS END) "
-												+ " WHERE ID = '" + CurrentGameDbVal + "';"
+									CommandText = @"UPDATE " + DbTable + " SET UPTIME = CAST(CAST(UPTIME AS SIGNED) + @uptime AS NCHAR), RUN_COUNT = CAST(CAST(RUN_COUNT AS SIGNED) + 1 AS NCHAR), DCON_TEXT = @dcon_text, DCON_IMG = @dcon_img, AGE_FLG = @age_flg, LAST_RUN = @last_run, STATUS = (CASE STATUS WHEN N'" + DefaultStatusValueOfNotPlaying + "' THEN N'" + DefaultStatusValueOfPlaying + "' ELSE STATUS END) "
+																			+ " WHERE ID = @current_game_db_val;"
 								};
 								cm.Connection = cn;
+								cm.Parameters.AddWithValue("@uptime", anss);
+								cm.Parameters.AddWithValue("@dcon_text", EncodeSQLSpecialChars(dconText.Text.Trim()));
+								cm.Parameters.AddWithValue("@dcon_img", dconImgText.Text.Trim());
+								cm.Parameters.AddWithValue("@age_flg", normalRadio.Checked ? "0" : "1");
+								cm.Parameters.AddWithValue("@last_run", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+								cm.Parameters.AddWithValue("@current_game_db_val", CurrentGameDbVal);
 
 								// SQL実行
 								try
@@ -1206,7 +1217,7 @@ namespace glc_cs
 						}
 						else
 						{
-							MessageBox.Show("トラッキングに失敗しています。\n以下をご確認ください。\n\n・ランチャーを指定していませんか？\n・AGLを管理者権限で起動してみてください。\n・実行パスを英数字のみにしてみてください。\n\nそれでも解決しない場合は、GitHubでIssueを開いてファイルパスやゲームエンジン等を教えてください。可能な限り対応します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+							MessageBox.Show("トラッキングに失敗しています。\n以下をご確認ください。\n\n・ランチャーを指定していませんか？\n・ランチャーを管理者権限で起動してみてください。\n・実行パスを英数字のみにしてみてください。\n\nそれでも解決しない場合は、GitHubでIssueを開いてファイルパスやゲームエンジン等を教えてください。可能な限り対応します。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 						}
 
 					}
@@ -1435,13 +1446,13 @@ namespace glc_cs
 						if (reader.Read())
 						{
 							id = reader["ID"].ToString();
-							namedata = reader["GAME_NAME"].ToString();
-							imgpassdata = reader["IMG_PATH"].ToString();
-							passdata = reader["GAME_PATH"].ToString();
-							execute_cmd = reader["EXECUTE_CMD"].ToString();
+							namedata = DecodeSQLSpecialChars(reader["GAME_NAME"].ToString());
+							imgpassdata = DecodeSQLSpecialChars(reader["IMG_PATH"].ToString());
+							passdata = DecodeSQLSpecialChars(reader["GAME_PATH"].ToString());
+							execute_cmd = DecodeSQLSpecialChars(reader["EXECUTE_CMD"].ToString());
 							stimedata = reader["UPTIME"].ToString();
 							startdata = reader["RUN_COUNT"].ToString();
-							cmtdata = reader["DCON_TEXT"].ToString();
+							cmtdata = DecodeSQLSpecialChars(reader["DCON_TEXT"].ToString());
 							dcon_imgdata = reader["DCON_IMG"].ToString();
 							rating = reader["AGE_FLG"].ToString();
 							status = reader["STATUS"].ToString();
@@ -1500,13 +1511,13 @@ namespace glc_cs
 						if (reader.Read())
 						{
 							id = reader["ID"].ToString();
-							namedata = reader["GAME_NAME"].ToString();
-							imgpassdata = reader["IMG_PATH"].ToString();
-							execute_cmd = reader["EXECUTE_CMD"].ToString();
-							passdata = reader["GAME_PATH"].ToString();
+							namedata = DecodeSQLSpecialChars(reader["GAME_NAME"].ToString());
+							imgpassdata = DecodeSQLSpecialChars(reader["IMG_PATH"].ToString());
+							execute_cmd = DecodeSQLSpecialChars(reader["EXECUTE_CMD"].ToString());
+							passdata = DecodeSQLSpecialChars(reader["GAME_PATH"].ToString());
 							stimedata = reader["UPTIME"].ToString();
 							startdata = reader["RUN_COUNT"].ToString();
-							cmtdata = reader["DCON_TEXT"].ToString();
+							cmtdata = DecodeSQLSpecialChars(reader["DCON_TEXT"].ToString());
 							dcon_imgdata = reader["DCON_IMG"].ToString();
 							rating = reader["AGE_FLG"].ToString();
 							status = reader["STATUS"].ToString();
@@ -2627,8 +2638,8 @@ namespace glc_cs
 
 					if (reader.Read())
 					{
-						delName = reader["GAME_NAME"].ToString();
-						delPath = reader["GAME_PATH"].ToString();
+						delName = DecodeSQLSpecialChars(reader["GAME_NAME"].ToString());
+						delPath = DecodeSQLSpecialChars(reader["GAME_PATH"].ToString());
 					}
 				}
 				catch (Exception ex)
@@ -2709,8 +2720,8 @@ namespace glc_cs
 
 					if (reader.Read())
 					{
-						delName = reader["GAME_NAME"].ToString();
-						delPath = reader["GAME_PATH"].ToString();
+						delName = DecodeSQLSpecialChars(reader["GAME_NAME"].ToString());
+						delPath = DecodeSQLSpecialChars(reader["GAME_PATH"].ToString());
 					}
 				}
 				catch (Exception ex)
@@ -2868,7 +2879,7 @@ namespace glc_cs
 				notifyIcon1.BalloonTipText = "オフラインデータの取得中です。しばらくお待ち下さい。";
 				notifyIcon1.ShowBalloonTip(10);
 				string localPath = BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\";
-				downloadDbDataToLocal(localPath);
+				DownloadDbDataToLocal(localPath);
 			}
 
 			if (ByActive && ByRoW)
@@ -3060,9 +3071,10 @@ namespace glc_cs
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
 						CommandText = @"SELECT count(*) FROM " + DbName + "." + DbTable
-										+ (searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE '%" + searchName + "%'")
+										+ (searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE @search_name")
 					};
 					cm.Connection = cn;
+					cm.Parameters.AddWithValue("@search_name", "%" + searchName + "%");
 
 					int sqlAns = Convert.ToInt32(cm.ExecuteScalar().ToString());
 
@@ -3078,16 +3090,17 @@ namespace glc_cs
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
 						CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG, MEMO FROM " + DbName + "." + DbTable
-										+ (searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE '%" + searchName + "%'")
+										+ (searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE @search_name")
 										+ " ORDER BY " + searchOption + ((reSearch ? lastOrderDrop.SelectedIndex : orderDropDown.SelectedIndex) == 0 ? " ASC" : " DESC")
 					};
 					cm2.Connection = cn;
+					cm2.Parameters.AddWithValue("@search_name", "%" + searchName + "%");
 
 					using (var reader = cm2.ExecuteReader())
 					{
 						while (reader.Read() == true)
 						{
-							searchResultList.Items.Add(reader["GAME_NAME"].ToString());
+							searchResultList.Items.Add(DecodeSQLSpecialChars(reader["GAME_NAME"].ToString()));
 						}
 					}
 				}
@@ -3122,9 +3135,10 @@ namespace glc_cs
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
 						CommandText = @"SELECT count(*) FROM " + DbTable
-										+ (searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE '%" + searchName + "%'")
+										+ (searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE @search_name")
 					};
 					cm.Connection = cn;
+					cm.Parameters.AddWithValue("@search_name", "%" + searchName + "%");
 
 					int sqlAns = Convert.ToInt32(cm.ExecuteScalar().ToString());
 
@@ -3140,16 +3154,17 @@ namespace glc_cs
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
 						CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, DCON_IMG, AGE_FLG, MEMO FROM " + DbTable
-										+ (searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE '%" + searchName + "%'")
+										+ (searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE @search_name")
 										+ " ORDER BY " + searchOption + ((reSearch ? lastOrderDrop.SelectedIndex : orderDropDown.SelectedIndex) == 0 ? " ASC" : " DESC")
 					};
 					cm2.Connection = cn;
+					cm2.Parameters.AddWithValue("@search_name", "%" + searchName + "%");
 
 					using (var reader = cm2.ExecuteReader())
 					{
 						while (reader.Read() == true)
 						{
-							searchResultList.Items.Add(reader["GAME_NAME"].ToString());
+							searchResultList.Items.Add(DecodeSQLSpecialChars(reader["GAME_NAME"].ToString()));
 						}
 					}
 				}
@@ -3256,14 +3271,17 @@ namespace glc_cs
 						 + "				[ID], ROW_NUMBER() over (ORDER BY " + searchOption + " " + (lastOrderDrop.SelectedIndex == 0 ? "ASC" : "DESC") + ") AS [ROW2] "
 						 + "			FROM "
 						 + DbName + "." + DbTable
-						 + (searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE '%" + searchName + "%'")
+						 + (searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE @search_name")
 						 + "		) AS [T2] "
 						 + " ON [T].[ID] = [T2].[ID] "
 						 + ") AS SUB "
 						 + " ON [MAIN].[ID] = [SUB].[ID] "
-						 + " WHERE [SUB].[ROW2] = " + selecteditem
+						 + " WHERE [SUB].[ROW2] = @selected_item"
 						 + " ORDER BY [SUB].[ROW2] ASC "
 					};
+					cm.Connection = cn;
+					cm.Parameters.AddWithValue("@search_name", "%" + searchName + "%");
+					cm.Parameters.AddWithValue("@selected_item", selecteditem);
 				}
 				else
 				{
@@ -3342,16 +3360,19 @@ namespace glc_cs
 										+ "			,ROW_NUMBER() over (ORDER BY " + searchOption + " " + (lastOrderDrop.SelectedIndex == 0 ? " ASC" : " DESC") + ") AS ROW2"
 										+ "		FROM "
 										+ DbTable
-										+ (searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE '%" + searchName + "%'")
+										+ (searchOption == "LAST_RUN" ? "" : " WHERE " + searchOption + " LIKE @search_name")
 										+ ") AS sub2"
 										+ " ON "
 										+ "		main.ID = sub2.ID "
 										+ " WHERE "
-										+ (searchOption == "LAST_RUN" ? "" : searchOption + " LIKE '%" + searchName + "%' AND")
-										+ " ROW2 = " + (searchResultList.SelectedIndex + 1).ToString()
+										+ (searchOption == "LAST_RUN" ? "" : searchOption + " LIKE @search_name AND")
+										+ " ROW2 = @selected_item"
 										+ " ORDER BY "
 										+ searchOption + (lastOrderDrop.SelectedIndex == 0 ? " ASC" : " DESC")
 					};
+					cm.Connection = cn;
+					cm.Parameters.AddWithValue("@search_name", "%" + searchName + "%");
+					cm.Parameters.AddWithValue("@selected_item", searchResultList.SelectedIndex + 1);
 				}
 				else
 				{

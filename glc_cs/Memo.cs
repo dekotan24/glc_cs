@@ -96,12 +96,12 @@ namespace glc_cs
 				if (reader.Read())
 				{
 					gameIDLabel.Text = reader["ID"].ToString();
-					gameTitleLabel.Text = reader["GAME_NAME"].ToString();
+					gameTitleLabel.Text = DecodeSQLSpecialChars(reader["GAME_NAME"].ToString());
 					toolTip1.SetToolTip(gameTitleLabel, gameTitleLabel.Text);
-					memoTextBox.Text = reader["MEMO"].ToString();
-					if (File.Exists(reader["IMG_PATH"].ToString()))
+					memoTextBox.Text = DecodeSQLSpecialChars(reader["MEMO"].ToString());
+					if (File.Exists(DecodeSQLSpecialChars(reader["IMG_PATH"].ToString())))
 					{
-						gameImage.ImageLocation = reader["IMG_PATH"].ToString();
+						gameImage.ImageLocation = DecodeSQLSpecialChars(reader["IMG_PATH"].ToString());
 					}
 					else
 					{
@@ -134,12 +134,12 @@ namespace glc_cs
 				if (reader.Read())
 				{
 					gameIDLabel.Text = reader["ID"].ToString();
-					gameTitleLabel.Text = reader["GAME_NAME"].ToString();
+					gameTitleLabel.Text = DecodeSQLSpecialChars(reader["GAME_NAME"].ToString());
 					toolTip1.SetToolTip(gameTitleLabel, gameTitleLabel.Text);
-					memoTextBox.Text = reader["MEMO"].ToString();
-					if (File.Exists(reader["IMG_PATH"].ToString()))
+					memoTextBox.Text = DecodeSQLSpecialChars(reader["MEMO"].ToString());
+					if (File.Exists(DecodeSQLSpecialChars(reader["IMG_PATH"].ToString())))
 					{
-						gameImage.ImageLocation = reader["IMG_PATH"].ToString();
+						gameImage.ImageLocation = DecodeSQLSpecialChars(reader["IMG_PATH"].ToString());
 					}
 					else
 					{
@@ -224,11 +224,12 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET MEMO = N'" + memoTextBox.Text.Trim() + "' "
-									+ "WHERE ID = " + gameIDLabel.Text.Trim()
+					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET MEMO = @memo "
+									+ "WHERE ID = @game_id"
 				};
-
 				cm.Connection = con;
+				cm.Parameters.AddWithValue("@memo", EncodeSQLSpecialChars(memoTextBox.Text.Trim()));
+				cm.Parameters.AddWithValue("@game_id", gameIDLabel.Text.Trim());
 
 				try
 				{
@@ -238,9 +239,9 @@ namespace glc_cs
 
 					if (dr.Read())
 					{
-						if (dr["GAME_NAME"].ToString() != gameTitleLabel.Text)
+						if (DecodeSQLSpecialChars(dr["GAME_NAME"].ToString()) != gameTitleLabel.Text)
 						{
-							throw new Exception("変更前の値に変更が行われた可能性があります。[" + dr["GAME_NAME"].ToString() + "] : [" + gameTitleLabel.Text + "]");
+							throw new Exception("変更前の値に変更が行われた可能性があります。[" + DecodeSQLSpecialChars(dr["GAME_NAME"].ToString()) + "] : [" + gameTitleLabel.Text + "]");
 						}
 					}
 					dr.Close();
@@ -285,11 +286,12 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET MEMO = N'" + memoTextBox.Text.Trim() + "' "
-									+ "WHERE ID = " + gameIDLabel.Text.Trim()
+					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET MEMO = @memo "
+									+ "WHERE ID = @game_id"
 				};
-
 				cm.Connection = con2;
+				cm.Parameters.AddWithValue("@memo", EncodeSQLSpecialChars(memoTextBox.Text.Trim()));
+				cm.Parameters.AddWithValue("@game_id", gameIDLabel.Text.Trim());
 
 				try
 				{
@@ -299,9 +301,9 @@ namespace glc_cs
 
 					if (dr.Read())
 					{
-						if (dr["GAME_NAME"].ToString() != gameTitleLabel.Text)
+						if (DecodeSQLSpecialChars(dr["GAME_NAME"].ToString()) != gameTitleLabel.Text)
 						{
-							throw new Exception("変更前の値に変更が行われた可能性があります。[" + dr["GAME_NAME"].ToString() + "] : [" + gameTitleLabel.Text + "]");
+							throw new Exception("変更前の値に変更が行われた可能性があります。[" + DecodeSQLSpecialChars(dr["GAME_NAME"].ToString()) + "] : [" + gameTitleLabel.Text + "]");
 						}
 					}
 					dr.Close();

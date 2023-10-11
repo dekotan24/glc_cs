@@ -115,7 +115,7 @@
 			this.exePathButton.TabIndex = 11;
 			this.exePathButton.Text = "..";
 			this.exePathButton.UseVisualStyleBackColor = true;
-			this.exePathButton.Click += new System.EventHandler(this.exePathButton_Click);
+			this.exePathButton.Click += new System.EventHandler(this.ExePathButton_Click);
 			// 
 			// imgPathButton
 			// 
@@ -125,7 +125,7 @@
 			this.imgPathButton.TabIndex = 16;
 			this.imgPathButton.Text = "..";
 			this.imgPathButton.UseVisualStyleBackColor = true;
-			this.imgPathButton.Click += new System.EventHandler(this.imgPathButton_Click);
+			this.imgPathButton.Click += new System.EventHandler(this.ImgPathButton_Click);
 			// 
 			// imgPathText
 			// 
@@ -134,7 +134,7 @@
 			this.imgPathText.Name = "imgPathText";
 			this.imgPathText.Size = new System.Drawing.Size(271, 19);
 			this.imgPathText.TabIndex = 15;
-			this.imgPathText.TextChanged += new System.EventHandler(this.applyPictureBox);
+			this.imgPathText.TextChanged += new System.EventHandler(this.ApplyPictureBox);
 			// 
 			// label3
 			// 
@@ -165,7 +165,7 @@
 			this.runTimeResetButton.TabIndex = 31;
 			this.runTimeResetButton.Text = "0";
 			this.runTimeResetButton.UseVisualStyleBackColor = true;
-			this.runTimeResetButton.Click += new System.EventHandler(this.runTimeResetButton_Click);
+			this.runTimeResetButton.Click += new System.EventHandler(this.RunTimeResetButton_Click);
 			// 
 			// dconText
 			// 
@@ -210,7 +210,7 @@
 			this.startCountResetButton.TabIndex = 36;
 			this.startCountResetButton.Text = "0";
 			this.startCountResetButton.UseVisualStyleBackColor = true;
-			this.startCountResetButton.Click += new System.EventHandler(this.startCountResetButton_Click);
+			this.startCountResetButton.Click += new System.EventHandler(this.StartCountResetButton_Click);
 			// 
 			// AddButton
 			// 
@@ -373,7 +373,7 @@
 			this.getDLsiteInfoButton.TabIndex = 5;
 			this.getDLsiteInfoButton.Text = "DLsite";
 			this.getDLsiteInfoButton.UseVisualStyleBackColor = true;
-			this.getDLsiteInfoButton.Click += new System.EventHandler(this.getDLsiteInfoButton_Click);
+			this.getDLsiteInfoButton.Click += new System.EventHandler(this.GetDLsiteInfoButton_Click);
 			// 
 			// extractToolCombo
 			// 
@@ -410,7 +410,7 @@
 			this.getVNDBInfoButton.TabIndex = 6;
 			this.getVNDBInfoButton.Text = "VNDB";
 			this.getVNDBInfoButton.UseVisualStyleBackColor = true;
-			this.getVNDBInfoButton.Click += new System.EventHandler(this.getVNDBInfoButton_Click);
+			this.getVNDBInfoButton.Click += new System.EventHandler(this.GetVNDBInfoButton_Click);
 			// 
 			// label11
 			// 

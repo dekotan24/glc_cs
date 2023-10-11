@@ -193,7 +193,7 @@
 			this.MinimizeBox = false;
 			this.Name = "DLsite";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "DLsite Information Getter";
+			this.Text = "DLsite Information Getter - Powered by dlsite.com";
 			((System.ComponentModel.ISupportInitialize)(this.ImageBox)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

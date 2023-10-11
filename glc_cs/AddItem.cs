@@ -139,7 +139,7 @@ namespace glc_cs
 			// GetDataにより取得したString型の配列から要素を取り出す。
 			var targetFile = dropTarget[0];
 
-			autoComplete(targetFile);
+			AutoComplete(targetFile);
 		}
 
 		/// <summary>
@@ -283,13 +283,13 @@ namespace glc_cs
 					};
 					cm.Connection = cn;
 					// パラメータの設定
-					cm.Parameters.AddWithValue("@game_name", game_text);
-					cm.Parameters.AddWithValue("@game_path", gamePath);
-					cm.Parameters.AddWithValue("@execute_cmd", executeCmd);
-					cm.Parameters.AddWithValue("@img_path", imgPath);
+					cm.Parameters.AddWithValue("@game_name", EncodeSQLSpecialChars(game_text));
+					cm.Parameters.AddWithValue("@game_path", EncodeSQLSpecialChars(gamePath));
+					cm.Parameters.AddWithValue("@execute_cmd", EncodeSQLSpecialChars(executeCmd));
+					cm.Parameters.AddWithValue("@img_path", EncodeSQLSpecialChars(imgPath));
 					cm.Parameters.AddWithValue("@uptime", runTime);
 					cm.Parameters.AddWithValue("@run_count", startCount);
-					cm.Parameters.AddWithValue("@dcon_text", dcon_text);
+					cm.Parameters.AddWithValue("@dcon_text", EncodeSQLSpecialChars(dcon_text));
 					cm.Parameters.AddWithValue("@age_flg", rate);
 					cm.Parameters.AddWithValue("@dcon_img", dcon_img);
 					cm.Parameters.AddWithValue("@db_version", DBVer);
@@ -326,13 +326,13 @@ namespace glc_cs
 					};
 					cm.Connection = cn;
 					// パラメータの設定
-					cm.Parameters.AddWithValue("@game_name", game_text);
-					cm.Parameters.AddWithValue("@game_path", gamePath);
-					cm.Parameters.AddWithValue("@execute_cmd", executeCmd);
-					cm.Parameters.AddWithValue("@img_path", imgPath);
+					cm.Parameters.AddWithValue("@game_name", EncodeSQLSpecialChars(game_text));
+					cm.Parameters.AddWithValue("@game_path", EncodeSQLSpecialChars(gamePath));
+					cm.Parameters.AddWithValue("@execute_cmd", EncodeSQLSpecialChars(executeCmd));
+					cm.Parameters.AddWithValue("@img_path", EncodeSQLSpecialChars(imgPath));
 					cm.Parameters.AddWithValue("@uptime", runTime);
 					cm.Parameters.AddWithValue("@run_count", startCount);
-					cm.Parameters.AddWithValue("@dcon_text", dcon_text);
+					cm.Parameters.AddWithValue("@dcon_text", EncodeSQLSpecialChars(dcon_text));
 					cm.Parameters.AddWithValue("@age_flg", rate);
 					cm.Parameters.AddWithValue("@dcon_img", dcon_img);
 					cm.Parameters.AddWithValue("@db_version", DBVer);
@@ -373,7 +373,7 @@ namespace glc_cs
 				startCountText.Value = 0;
 				imgPictureBox.ImageLocation = "";
 
-				reloadIni();
+				ReloadIni();
 			}
 		}
 
@@ -382,7 +382,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void runTimeResetButton_Click(object sender, EventArgs e)
+		private void RunTimeResetButton_Click(object sender, EventArgs e)
 		{
 			runTimeText.Value = 0;
 		}
@@ -392,7 +392,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void startCountResetButton_Click(object sender, EventArgs e)
+		private void StartCountResetButton_Click(object sender, EventArgs e)
 		{
 			startCountText.Value = 0;
 		}
@@ -402,7 +402,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void getDLsiteInfoButton_Click(object sender, EventArgs e)
+		private void GetDLsiteInfoButton_Click(object sender, EventArgs e)
 		{
 			// dlsiteからデータを取得します。
 			dlSearchForm.StartPosition = FormStartPosition.CenterParent;
@@ -442,7 +442,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void getVNDBInfoButton_Click(object sender, EventArgs e)
+		private void GetVNDBInfoButton_Click(object sender, EventArgs e)
 		{
 			// vndbフォーム初期化
 			vndbSearchForm.StartPosition = FormStartPosition.CenterParent;
@@ -488,14 +488,14 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void exePathButton_Click(object sender, EventArgs e)
+		private void ExePathButton_Click(object sender, EventArgs e)
 		{
 			openFileDialog1.Title = "追加する実行ファイルを選択";
 			openFileDialog1.Filter = "実行ファイル (*.exe)|*.exe|すべてのファイル (*.*)|*.*";
 			openFileDialog1.FileName = "";
 			if (openFileDialog1.ShowDialog() == DialogResult.OK)
 			{
-				autoComplete(openFileDialog1.FileName, "exe");
+				AutoComplete(openFileDialog1.FileName, "exe");
 			}
 			else
 			{
@@ -508,14 +508,14 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void imgPathButton_Click(object sender, EventArgs e)
+		private void ImgPathButton_Click(object sender, EventArgs e)
 		{
 			openFileDialog1.Title = "実行ファイルの画像を選択";
 			openFileDialog1.Filter = "画像ファイル (*.png;*.jpg;*.bmp;*.gif)|*.png;*.jpg;*.bmp;*.gif|すべてのファイル (*.*)|*.*";
 			openFileDialog1.FileName = System.IO.Path.GetFileNameWithoutExtension(exePathText.Text.Trim()).ToString() + ".png";
 			if (openFileDialog1.ShowDialog() == DialogResult.OK)
 			{
-				autoComplete(openFileDialog1.FileName, "img");
+				AutoComplete(openFileDialog1.FileName, "img");
 			}
 			else
 			{
@@ -528,7 +528,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="targetFile"></param>
 		/// <param name="targetType"></param>
-		private void autoComplete(string targetFile, string targetType = "")
+		private void AutoComplete(string targetFile, string targetType = "")
 		{
 			// ファイルタイプが指定されていない場合に自動判別
 			if (targetType == string.Empty)
@@ -579,7 +579,7 @@ namespace glc_cs
 				imgPathText.Text = targetFile;
 			}
 
-			applyPictureBox(null, null);
+			ApplyPictureBox(null, null);
 
 			// 起動回数、実行時間の初期化
 			startCountText.Value = 0;
@@ -594,7 +594,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void applyPictureBox(object sender, EventArgs e)
+		private void ApplyPictureBox(object sender, EventArgs e)
 		{
 			// 画面反映
 			if (File.Exists(imgPathText.Text))
@@ -615,7 +615,7 @@ namespace glc_cs
 			}
 		}
 
-		private void reloadIni()
+		private void ReloadIni()
 		{
 			GLConfigLoad();
 		}

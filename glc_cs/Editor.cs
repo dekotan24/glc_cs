@@ -128,17 +128,17 @@ namespace glc_cs
 				if (reader.Read())
 				{
 					label9.Text = reader["ID"].ToString();
-					titleText.Text = reader["GAME_NAME"].ToString();
+					titleText.Text = DecodeSQLSpecialChars(reader["GAME_NAME"].ToString());
 					gameTitleLabel.Text = titleText.Text;
-					executeCmdText.Text = reader["EXECUTE_CMD"].ToString();
-					imgPathText.Text = reader["IMG_PATH"].ToString();
-					exePathText.Text = reader["GAME_PATH"].ToString();
+					executeCmdText.Text = DecodeSQLSpecialChars(reader["EXECUTE_CMD"].ToString());
+					imgPathText.Text = DecodeSQLSpecialChars(reader["IMG_PATH"].ToString());
+					exePathText.Text = DecodeSQLSpecialChars(reader["GAME_PATH"].ToString());
 					runTimeText.Value = Convert.ToInt32(reader["UPTIME"]);
 					startCountText.Value = Convert.ToInt32(reader["RUN_COUNT"]);
-					dconText.Text = reader["DCON_TEXT"].ToString();
+					dconText.Text = DecodeSQLSpecialChars(reader["DCON_TEXT"].ToString());
 					dconImgText.Text = reader["DCON_IMG"].ToString();
 					rateCheck.Checked = reader["AGE_FLG"].ToString() == "1" ? true : false;
-					extractToolCombo.SelectedIndex = Convert.ToInt32(reader["EXTRACT_TOOL"].ToString());
+					extractToolCombo.SelectedIndex = Convert.ToInt32(DecodeSQLSpecialChars(reader["EXTRACT_TOOL"].ToString()));
 					if (File.Exists(imgPathText.Text))
 					{
 						iconImage.ImageLocation = imgPathText.Text;
@@ -174,17 +174,17 @@ namespace glc_cs
 				if (reader.Read())
 				{
 					label9.Text = reader["ID"].ToString();
-					titleText.Text = reader["GAME_NAME"].ToString();
+					titleText.Text = DecodeSQLSpecialChars(reader["GAME_NAME"].ToString());
 					gameTitleLabel.Text = titleText.Text;
-					executeCmdText.Text = reader["EXECUTE_CMD"].ToString();
-					imgPathText.Text = reader["IMG_PATH"].ToString();
-					exePathText.Text = reader["GAME_PATH"].ToString();
+					executeCmdText.Text = DecodeSQLSpecialChars(reader["EXECUTE_CMD"].ToString());
+					imgPathText.Text = DecodeSQLSpecialChars(reader["IMG_PATH"].ToString());
+					exePathText.Text = DecodeSQLSpecialChars(reader["GAME_PATH"].ToString());
 					runTimeText.Value = Convert.ToInt32(reader["UPTIME"]);
 					startCountText.Value = Convert.ToInt32(reader["RUN_COUNT"]);
-					dconText.Text = reader["DCON_TEXT"].ToString();
+					dconText.Text = DecodeSQLSpecialChars(reader["DCON_TEXT"].ToString());
 					dconImgText.Text = reader["DCON_IMG"].ToString();
 					rateCheck.Checked = reader["AGE_FLG"].ToString() == "1" ? true : false;
-					extractToolCombo.SelectedIndex = Convert.ToInt32(reader["EXTRACT_TOOL"].ToString());
+					extractToolCombo.SelectedIndex = Convert.ToInt32(DecodeSQLSpecialChars(reader["EXTRACT_TOOL"].ToString()));
 					if (File.Exists(imgPathText.Text))
 					{
 						iconImage.ImageLocation = imgPathText.Text;
@@ -285,15 +285,15 @@ namespace glc_cs
 								+ "WHERE ID = @id"
 				};
 				// パラメータの設定
-				cm.Parameters.AddWithValue("@game_name", titleText.Text.Trim());
-				cm.Parameters.AddWithValue("@game_path", exePathText.Text.Trim());
-				cm.Parameters.AddWithValue("@img_path", imgPathText.Text.Trim());
+				cm.Parameters.AddWithValue("@game_name", EncodeSQLSpecialChars(titleText.Text.Trim()));
+				cm.Parameters.AddWithValue("@game_path", EncodeSQLSpecialChars(exePathText.Text.Trim()));
+				cm.Parameters.AddWithValue("@img_path", EncodeSQLSpecialChars(imgPathText.Text.Trim()));
 				cm.Parameters.AddWithValue("@uptime", runTimeText.Value);
 				cm.Parameters.AddWithValue("@run_count", startCountText.Value);
-				cm.Parameters.AddWithValue("@dcon_text", dconText.Text.Trim());
+				cm.Parameters.AddWithValue("@dcon_text", EncodeSQLSpecialChars(dconText.Text.Trim()));
 				cm.Parameters.AddWithValue("@age_flg", (rateCheck.Checked ? "1" : "0"));
 				cm.Parameters.AddWithValue("@dcon_img", dconImgText.Text.Trim());
-				cm.Parameters.AddWithValue("@execute_cmd", executeCmdText.Text.Trim());
+				cm.Parameters.AddWithValue("@execute_cmd", EncodeSQLSpecialChars(executeCmdText.Text.Trim()));
 				cm.Parameters.AddWithValue("@extract_tool", extractToolCombo.SelectedIndex);
 				cm.Parameters.AddWithValue("@id", label9.Text.Trim());
 				cm.Connection = con;
@@ -359,15 +359,15 @@ namespace glc_cs
 												+ "WHERE ID = @id"
 				};
 				// パラメータの設定
-				cm.Parameters.AddWithValue("@game_name", titleText.Text.Trim());
-				cm.Parameters.AddWithValue("@game_path", exePathText.Text.Trim());
-				cm.Parameters.AddWithValue("@img_path", imgPathText.Text.Trim());
+				cm.Parameters.AddWithValue("@game_name", EncodeSQLSpecialChars(titleText.Text.Trim()));
+				cm.Parameters.AddWithValue("@game_path", EncodeSQLSpecialChars(exePathText.Text.Trim()));
+				cm.Parameters.AddWithValue("@img_path", EncodeSQLSpecialChars(imgPathText.Text.Trim()));
 				cm.Parameters.AddWithValue("@uptime", runTimeText.Value);
 				cm.Parameters.AddWithValue("@run_count", startCountText.Value);
-				cm.Parameters.AddWithValue("@dcon_text", dconText.Text.Trim());
+				cm.Parameters.AddWithValue("@dcon_text", EncodeSQLSpecialChars(dconText.Text.Trim()));
 				cm.Parameters.AddWithValue("@age_flg", (rateCheck.Checked ? "1" : "0"));
 				cm.Parameters.AddWithValue("@dcon_img", dconImgText.Text.Trim());
-				cm.Parameters.AddWithValue("@execute_cmd", executeCmdText.Text.Trim());
+				cm.Parameters.AddWithValue("@execute_cmd", EncodeSQLSpecialChars(executeCmdText.Text.Trim()));
 				cm.Parameters.AddWithValue("@extract_tool", extractToolCombo.SelectedIndex);
 				cm.Parameters.AddWithValue("@id", label9.Text.Trim());
 

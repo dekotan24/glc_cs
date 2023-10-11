@@ -130,22 +130,22 @@ namespace glc_cs
 			RoGCheck.Checked = ByRoG;
 
 			// [保存方法]
-			if (SaveType == "I")	// INI
+			if (SaveType == "I")    // INI
 			{
 				iniRadio.Checked = true;
-				setDirectoryControl(true);
+				SetDirectoryControl(true);
 			}
 			else if (SaveType == "D")   // MSSQL
 			{
 				mssqlRadio.Checked = true;
-				setDirectoryControl(false);
+				SetDirectoryControl(false);
 			}
 			else if (SaveType == "M")   // MySQL
 			{
 				mysqlRadio.Checked = true;
-				setDirectoryControl(false);
+				SetDirectoryControl(false);
 			}
-			else	// オフラインモード
+			else    // オフラインモード
 			{
 				// オフラインモード時、INIファイルの設定値を使用する
 				switch (ReadIni("general", "save", "I"))
@@ -324,7 +324,7 @@ namespace glc_cs
 					saveButton.Text = "データ取得中…";
 					Application.DoEvents();
 
-					if (!downloadDbDataToLocal(LocalPath))
+					if (!DownloadDbDataToLocal(LocalPath))
 					{
 						// ローカル保存に失敗
 						if (offlineSaveTypeOld == "0")
@@ -720,7 +720,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void backgroundImageSelectButton_Click(object sender, EventArgs e)
+		private void BackgroundImageSelectButton_Click(object sender, EventArgs e)
 		{
 			String newpath;
 
@@ -739,19 +739,19 @@ namespace glc_cs
 		private void radioButton8_CheckedChanged(object sender, EventArgs e)
 		{
 			// iniMode
-			setDirectoryControl(true);
+			SetDirectoryControl(true);
 		}
 
 		private void radioButton9_CheckedChanged(object sender, EventArgs e)
 		{
 			// databaseMode(MSSQL)
-			setDirectoryControl(false);
+			SetDirectoryControl(false);
 		}
 
 		private void radioButton5_CheckedChanged(object sender, EventArgs e)
 		{
 			// databaseMode(MySQL)
-			setDirectoryControl(false);
+			SetDirectoryControl(false);
 		}
 
 		/// <summary>
@@ -759,7 +759,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void importIniToDbButton_Click(object sender, EventArgs e)
+		private void ImportIniToDbButton_Click(object sender, EventArgs e)
 		{
 			int sCount = 0;
 			int fCount = 0;
@@ -783,6 +783,8 @@ namespace glc_cs
 
 			bool deleteAllRecodes = checkBox6.Checked;
 			bool forceCommit = checkBox7.Checked;
+
+			string defaultButtonText = importIniToDbButton.Text;
 
 			if (File.Exists(GameIni) == false)
 			{
@@ -809,7 +811,7 @@ namespace glc_cs
 
 			// ボタンの状態を変更
 			importIniToDbButton.Enabled = true;
-			importIniToDbButton.Text = "INIファイルのデータをDBに取込";
+			importIniToDbButton.Text = defaultButtonText;
 
 			if (returnVal == 0)
 			{
@@ -833,7 +835,7 @@ namespace glc_cs
 		/// ディレクトリ関連タブのコントロールをセットします。
 		/// </summary>
 		/// <param name="controlVal">iniモード</param>
-		private void setDirectoryControl(bool controlVal)
+		private void SetDirectoryControl(bool controlVal)
 		{
 			// ini controlVal
 			label9.Enabled = controlVal;
@@ -868,7 +870,7 @@ namespace glc_cs
 			saveWithDownloadCheck.Enabled = !controlVal;
 		}
 
-		private void iniAutoNumberingFixButton_Click(object sender, EventArgs e)
+		private void IniAutoNumberingFixButton_Click(object sender, EventArgs e)
 		{
 			string readini = string.Empty;
 			string gameDirName = GameDir;
@@ -920,7 +922,7 @@ namespace glc_cs
 					if (dr == DialogResult.Yes)
 					{
 						// 自動整番処理
-						int result = iniReNumbering((overflowIni ? baseFileCount : 0));
+						int result = IniReNumbering((overflowIni ? baseFileCount : 0));
 						string newFileCount = ReadIni("list", "game", "0", 0);
 						MessageBox.Show("整番が完了しました！\n\n欠番処理件数：" + result + "件\n登録済みゲーム総数：" + fileCount + "→" + newFileCount + "件", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 					}
@@ -1218,11 +1220,11 @@ namespace glc_cs
 			SaveType = mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I";
 
 			string backupPath = (BaseDir.EndsWith("\\") ? BaseDir : BaseDir + "\\") + "database_backup(" + (DateTime.Now).ToString().Replace("/", "_").Replace(":", "_").Replace(" ", "_") + ")\\";
-			bool returnVal = downloadDbDataToLocal(backupPath);
+			bool returnVal = DownloadDbDataToLocal(backupPath);
 
 			if (returnVal)
 			{
-				MessageBox.Show("バックアップを取得しました。\n\n" + backupPath, AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("データが登録されていた場合、バックアップは以下のフォルダに保存されています。\n\n" + backupPath, AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 			else
 			{
@@ -1252,7 +1254,7 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="hasOverflowIni"></param>
 		/// <returns>処理件数</returns>
-		private int iniReNumbering(int overflowIniMaxCount)
+		private int IniReNumbering(int overflowIniMaxCount)
 		{
 			bool needMoveIni = false;
 			bool hasMovedIni = false;

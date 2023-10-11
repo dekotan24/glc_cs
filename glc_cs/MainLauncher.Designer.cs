@@ -757,12 +757,12 @@
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.gamePathPictureBox);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.exePathText);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.executeCmdText);
-			this.gameStatusFlowLayoutPanel.Controls.Add(this.gamePathCopyPictureBox);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.gamePathOpenPictureBox);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.gamePathCopyPictureBox);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.gameImgPictureBox);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.imgPathText);
-			this.gameStatusFlowLayoutPanel.Controls.Add(this.gameImgCopyPictureBox);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.gameImgOpenPictureBox);
+			this.gameStatusFlowLayoutPanel.Controls.Add(this.gameImgCopyPictureBox);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.gameRunningTimePictureBox);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.runTimeText);
 			this.gameStatusFlowLayoutPanel.Controls.Add(this.label2);

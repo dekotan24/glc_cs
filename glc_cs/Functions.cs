@@ -456,6 +456,17 @@ namespace glc_cs
 				, extract_tool
 			}
 
+
+			/// <summary>
+			/// ゲームデータ管理方法の一覧
+			/// </summary>
+			public enum ConnType
+			{
+				INI
+				, MSSQL
+				, MySQL
+			}
+
 			/// <summary>
 			/// アプリケーション名を返却します
 			/// </summary>
@@ -2056,7 +2067,7 @@ namespace glc_cs
 			/// </summary>
 			/// <param name="targetWorkDir">保存先フォルダ</param>
 			/// <returns>False：エラー</returns>
-			public static bool downloadDbDataToLocal(string targetWorkDir)
+			public static bool DownloadDbDataToLocal(string targetWorkDir)
 			{
 				if (ByActive && ByRoG)
 				{
@@ -2112,7 +2123,7 @@ namespace glc_cs
 					{
 						cn.Open();
 
-						//全ゲーム数取得
+						// 全ゲーム数取得
 						SqlCommand cm = new SqlCommand()
 						{
 							CommandType = CommandType.Text,
@@ -2129,7 +2140,13 @@ namespace glc_cs
 						}
 						else
 						{
-							//ゲームが1つもない場合
+							// ゲームが1つもない場合
+							// 作成したディレクトリを削除する
+							if (Directory.Exists(targetWorkDir))
+							{
+								Directory.Delete(targetWorkDir, true);
+							}
+							WriteErrorLog("データベース内にレコードが存在しません。", MethodBase.GetCurrentMethod().Name, "[ダウンロード処理] SaveType:" + saveType + " / MSSQL:" + cn.ConnectionString + " / MySQL:" + mcn.ConnectionString);
 							return true;
 						}
 
@@ -2172,18 +2189,18 @@ namespace glc_cs
 									};
 									string[] keys =
 									{
-										reader["GAME_NAME"].ToString(),
-										reader["IMG_PATH"].ToString(),
-										reader["GAME_PATH"].ToString(),
-										reader["EXECUTE_CMD"].ToString(),
+										DecodeSQLSpecialChars(reader["GAME_NAME"].ToString()),
+										DecodeSQLSpecialChars(reader["IMG_PATH"].ToString()),
+										DecodeSQLSpecialChars(reader["GAME_PATH"].ToString()),
+										DecodeSQLSpecialChars(reader["EXECUTE_CMD"].ToString()),
 										(string.IsNullOrEmpty(reader["UPTIME"].ToString()) ? "0" : reader["UPTIME"].ToString()),
 										(string.IsNullOrEmpty(reader["RUN_COUNT"].ToString()) ? "0" : reader["RUN_COUNT"].ToString()),
-										reader["DCON_TEXT"].ToString(),
+										DecodeSQLSpecialChars(reader["DCON_TEXT"].ToString()),
 										(string.IsNullOrEmpty(reader["AGE_FLG"].ToString()) ? Rate.ToString() : reader["AGE_FLG"].ToString()),
 										reader["TEMP1"].ToString(),
 										reader["LAST_RUN"].ToString(),
 										reader["DCON_IMG"].ToString(),
-										reader["MEMO"].ToString(),
+										DecodeSQLSpecialChars(reader["MEMO"].ToString()),
 										reader["STATUS"].ToString(),
 										reader["EXTRACT_TOOL"].ToString(),
 										reader["DB_VERSION"].ToString()
@@ -2192,6 +2209,7 @@ namespace glc_cs
 								}
 								count++;
 							}
+							IniWrite(targetWorkDir + "game.ini", "game", "list", count.ToString());
 							isSuc = true;
 						}
 					}
@@ -2217,6 +2235,12 @@ namespace glc_cs
 						else
 						{
 							// ゲームが1つもない場合
+							// 作成したディレクトリを削除する
+							if (Directory.Exists(targetWorkDir))
+							{
+								Directory.Delete(targetWorkDir, true);
+							}
+							WriteErrorLog("データベース内にレコードが存在しません。", MethodBase.GetCurrentMethod().Name, "[ダウンロード処理] SaveType:" + saveType + " / MSSQL:" + cn.ConnectionString + " / MySQL:" + mcn.ConnectionString);
 							return true;
 						}
 
@@ -2259,18 +2283,18 @@ namespace glc_cs
 									};
 									string[] keys =
 									{
-										reader["GAME_NAME"].ToString(),
-										reader["IMG_PATH"].ToString(),
-										reader["GAME_PATH"].ToString(),
-										reader["EXECUTE_CMD"].ToString(),
+										DecodeSQLSpecialChars(reader["GAME_NAME"].ToString()),
+										DecodeSQLSpecialChars(reader["IMG_PATH"].ToString()),
+										DecodeSQLSpecialChars(reader["GAME_PATH"].ToString()),
+										DecodeSQLSpecialChars(reader["EXECUTE_CMD"].ToString()),
 										(string.IsNullOrEmpty(reader["UPTIME"].ToString()) ? "0" : reader["UPTIME"].ToString()),
 										(string.IsNullOrEmpty(reader["RUN_COUNT"].ToString()) ? "0" : reader["RUN_COUNT"].ToString()),
-										reader["DCON_TEXT"].ToString(),
+										DecodeSQLSpecialChars(reader["DCON_TEXT"].ToString()),
 										(string.IsNullOrEmpty(reader["AGE_FLG"].ToString()) ? Rate.ToString() : reader["AGE_FLG"].ToString()),
 										reader["TEMP1"].ToString(),
 										reader["LAST_RUN"].ToString(),
 										reader["DCON_IMG"].ToString(),
-										reader["MEMO"].ToString(),
+										DecodeSQLSpecialChars(reader["MEMO"].ToString()),
 										reader["STATUS"].ToString(),
 										reader["EXTRACT_TOOL"].ToString(),
 										reader["DB_VERSION"].ToString()
@@ -2279,6 +2303,7 @@ namespace glc_cs
 								}
 								count++;
 							}
+							IniWrite(targetWorkDir + "game.ini", "game", "list", count.ToString());
 							isSuc = true;
 						}
 
@@ -2323,6 +2348,7 @@ namespace glc_cs
 						}
 					}
 				}
+
 				return isSuc;
 			}
 
@@ -2361,7 +2387,7 @@ namespace glc_cs
 				}
 
 				// データベースをバックアップ
-				if (!downloadDbDataToLocal(backupDir))
+				if (!DownloadDbDataToLocal(backupDir))
 				{
 					continueAdd = false;
 					ans = 1;
@@ -2438,7 +2464,10 @@ namespace glc_cs
 
 								if (File.Exists(readini))
 								{
+									// データ取得
 									returnVal = IniRead(readini, "game", keyName, failedVal);
+									// タイトルのエスケープ
+									returnVal[0] = EncodeSQLSpecialChars(returnVal[0]);
 									sCount++;
 								}
 								else
@@ -2453,10 +2482,26 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "', '" + returnVal[14] + "' )"
+									CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( @game_name, @game_path, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @temp1, @last_run, @dcon_img, @memo, @status, @db_version, @execute_cmd, @extract_tool )"
 								};
 								cm2.Connection = cn1;
 								cm2.Transaction = tran1;
+
+								cm2.Parameters.AddWithValue("@game_name", EncodeSQLSpecialChars(returnVal[0]));
+								cm2.Parameters.AddWithValue("@game_path", EncodeSQLSpecialChars(returnVal[1]));
+								cm2.Parameters.AddWithValue("@img_path", EncodeSQLSpecialChars(returnVal[2]));
+								cm2.Parameters.AddWithValue("@uptime", returnVal[3]);
+								cm2.Parameters.AddWithValue("@run_count", returnVal[4]);
+								cm2.Parameters.AddWithValue("@dcon_text", EncodeSQLSpecialChars(returnVal[5]));
+								cm2.Parameters.AddWithValue("@age_flg", returnVal[6]);
+								cm2.Parameters.AddWithValue("@temp1", returnVal[7]);
+								cm2.Parameters.AddWithValue("@last_run", string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]);
+								cm2.Parameters.AddWithValue("@dcon_img", returnVal[9]);
+								cm2.Parameters.AddWithValue("@memo", EncodeSQLSpecialChars(returnVal[10]));
+								cm2.Parameters.AddWithValue("@status", returnVal[11]);
+								cm2.Parameters.AddWithValue("@db_version", returnVal[12]);
+								cm2.Parameters.AddWithValue("@execute_cmd", EncodeSQLSpecialChars(returnVal[13]));
+								cm2.Parameters.AddWithValue("@extract_tool", returnVal[14]);
 
 								// INSERT文実行
 								cm2.ExecuteNonQuery();
@@ -2544,7 +2589,10 @@ namespace glc_cs
 
 								if (File.Exists(readini))
 								{
+									// データ取得
 									returnVal = IniRead(readini, "game", keyName, failedVal);
+									// タイトルのエスケープ
+									returnVal[0] = EncodeSQLSpecialChars(returnVal[0]);
 									sCount++;
 								}
 								else
@@ -2559,10 +2607,26 @@ namespace glc_cs
 								{
 									CommandType = CommandType.Text,
 									CommandTimeout = 30,
-									CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "', '" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "', '" + returnVal[14] + "' );"
+									CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( @game_name, @game_path, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @temp1, @last_run, @dcon_img, @memo, @status, @db_version, @execute_cmd, @extract_tool );"
 								};
 								mcm2.Connection = mcn1;
 								mcm2.Transaction = mtran1;
+
+								mcm2.Parameters.AddWithValue("@game_name", EncodeSQLSpecialChars(returnVal[0]));
+								mcm2.Parameters.AddWithValue("@game_path", EncodeSQLSpecialChars(returnVal[1]));
+								mcm2.Parameters.AddWithValue("@img_path", EncodeSQLSpecialChars(returnVal[2]));
+								mcm2.Parameters.AddWithValue("@uptime", returnVal[3]);
+								mcm2.Parameters.AddWithValue("@run_count", returnVal[4]);
+								mcm2.Parameters.AddWithValue("@dcon_text", EncodeSQLSpecialChars(returnVal[5]));
+								mcm2.Parameters.AddWithValue("@age_flg", returnVal[6]);
+								mcm2.Parameters.AddWithValue("@temp1", returnVal[7]);
+								mcm2.Parameters.AddWithValue("@last_run", string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]);
+								mcm2.Parameters.AddWithValue("@dcon_img", returnVal[9]);
+								mcm2.Parameters.AddWithValue("@memo", EncodeSQLSpecialChars(returnVal[10]));
+								mcm2.Parameters.AddWithValue("@status", returnVal[11]);
+								mcm2.Parameters.AddWithValue("@db_version", returnVal[12]);
+								mcm2.Parameters.AddWithValue("@execute_cmd", EncodeSQLSpecialChars(returnVal[13]));
+								mcm2.Parameters.AddWithValue("@extract_tool", returnVal[14]);
 
 								// INSERT文実行
 								mcm2.ExecuteNonQuery();
@@ -2703,7 +2767,10 @@ namespace glc_cs
 
 							if (File.Exists(readini))
 							{
+								// データ取得
 								returnVal = IniRead(readini, "game", keyName, failedVal);
+								// タイトルのエスケープ
+								returnVal[0] = EncodeSQLSpecialChars(returnVal[0]);
 							}
 							else
 							{
@@ -2729,9 +2796,24 @@ namespace glc_cs
 							{
 								CommandType = CommandType.Text,
 								CommandTimeout = 30,
-								CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "', '" + returnVal[14] + "' )"
+								CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( @game_name, @game_path, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @temp1, @last_run, @dcon_img, @memo, @status, @db_version, @execute_cmd, @extract_tool )"
 							};
 							cm2.Connection = cn1;
+							cm2.Parameters.AddWithValue("@game_name", EncodeSQLSpecialChars(returnVal[0]));
+							cm2.Parameters.AddWithValue("@game_path", EncodeSQLSpecialChars(returnVal[1]));
+							cm2.Parameters.AddWithValue("@img_path", EncodeSQLSpecialChars(returnVal[2]));
+							cm2.Parameters.AddWithValue("@uptime", EncodeSQLSpecialChars(returnVal[3]));
+							cm2.Parameters.AddWithValue("@run_count", returnVal[4]);
+							cm2.Parameters.AddWithValue("@dcon_text", returnVal[5]);
+							cm2.Parameters.AddWithValue("@age_flg", returnVal[6]);
+							cm2.Parameters.AddWithValue("@temp1", EncodeSQLSpecialChars(returnVal[7]));
+							cm2.Parameters.AddWithValue("@last_run", string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]);
+							cm2.Parameters.AddWithValue("@dcon_img", EncodeSQLSpecialChars(returnVal[9]));
+							cm2.Parameters.AddWithValue("@memo", EncodeSQLSpecialChars(returnVal[10]));
+							cm2.Parameters.AddWithValue("@status", EncodeSQLSpecialChars(returnVal[11]));
+							cm2.Parameters.AddWithValue("@db_version", EncodeSQLSpecialChars(returnVal[12]));
+							cm2.Parameters.AddWithValue("@execute_cmd", EncodeSQLSpecialChars(returnVal[13]));
+							cm2.Parameters.AddWithValue("@extract_tool", returnVal[14]);
 
 							// INSERT文実行
 							cm2.ExecuteNonQuery();
@@ -2786,7 +2868,10 @@ namespace glc_cs
 
 							if (File.Exists(readini))
 							{
+								// データ取得
 								returnVal = IniRead(readini, "game", keyName, failedVal);
+								// タイトルのエスケープ
+								returnVal[0] = EncodeSQLSpecialChars(returnVal[0]);
 							}
 							else
 							{
@@ -2812,9 +2897,24 @@ namespace glc_cs
 							{
 								CommandType = CommandType.Text,
 								CommandTimeout = 30,
-								CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( '" + returnVal[0] + "', '" + returnVal[1] + "', '" + returnVal[2] + "', '" + returnVal[3] + "', '" + returnVal[4] + "','" + returnVal[5] + "', '" + returnVal[6] + "', '" + returnVal[7] + "', '" + (string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]) + "', '" + returnVal[9] + "', '" + returnVal[10] + "', '" + returnVal[11] + "', '" + returnVal[12] + "', '" + returnVal[13] + "', '" + returnVal[14] + "' )"
+								CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( @game_name, @game_path, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @temp1, @last_run, @dcon_img, @memo, @status, @db_version, @execute_cmd, @extract_tool )"
 							};
 							mcm2.Connection = mcn1;
+							mcm2.Parameters.AddWithValue("@game_name", EncodeSQLSpecialChars(returnVal[0]));
+							mcm2.Parameters.AddWithValue("@game_path", EncodeSQLSpecialChars(returnVal[1]));
+							mcm2.Parameters.AddWithValue("@img_path", EncodeSQLSpecialChars(returnVal[2]));
+							mcm2.Parameters.AddWithValue("@uptime", returnVal[3]);
+							mcm2.Parameters.AddWithValue("@run_count", returnVal[4]);
+							mcm2.Parameters.AddWithValue("@dcon_text", EncodeSQLSpecialChars(returnVal[5]));
+							mcm2.Parameters.AddWithValue("@age_flg", returnVal[6]);
+							mcm2.Parameters.AddWithValue("@temp1", returnVal[7]);
+							mcm2.Parameters.AddWithValue("@last_run", string.IsNullOrEmpty(returnVal[8]) ? "1900-01-01 00:00:00" : returnVal[8]);
+							mcm2.Parameters.AddWithValue("@dcon_img", returnVal[9]);
+							mcm2.Parameters.AddWithValue("@memo", EncodeSQLSpecialChars(returnVal[10]));
+							mcm2.Parameters.AddWithValue("@status", returnVal[11]);
+							mcm2.Parameters.AddWithValue("@db_version", returnVal[12]);
+							mcm2.Parameters.AddWithValue("@execute_cmd", EncodeSQLSpecialChars(returnVal[13]));
+							mcm2.Parameters.AddWithValue("@extract_tool", returnVal[14]);
 
 							// INSERT文実行
 							mcm2.ExecuteNonQuery();
@@ -2960,6 +3060,35 @@ namespace glc_cs
 				return true;
 			}
 
+			public static string EncodeSQLSpecialChars(string rawText)
+			{
+				string result = string.Empty;
+
+				// 引数が空の場合はリターン
+				if (string.IsNullOrEmpty(rawText))
+				{
+					return string.Empty;
+				}
+
+				result = rawText.Replace("'", "''").Replace("\"", "\\\"").Replace("\\", "\\\\");
+
+				return result;
+			}
+
+			public static string DecodeSQLSpecialChars(string rawText)
+			{
+				string result = string.Empty;
+
+				// 引数が空の場合はリターン
+				if (string.IsNullOrEmpty(rawText))
+				{
+					return string.Empty;
+				}
+
+				result = rawText.Replace("''", "'").Replace("\\\"", "\"").Replace("\\\\", "\\");
+
+				return result;
+			}
 		}
 	}
 
