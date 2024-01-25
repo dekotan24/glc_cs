@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using glc_cs.Core;
+using MySql.Data.MySqlClient;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -7,6 +8,8 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using static glc_cs.Core.Export;
+using static glc_cs.Core.Property;
 using static glc_cs.General.Var;
 
 namespace glc_cs
@@ -169,6 +172,7 @@ namespace glc_cs
 			tableText.Text = DbTable;
 			userText.Text = DbUser;
 			pwText.Text = DbPass;
+			cryptCheck.Checked = EnablePWCrypt;
 
 			offlineSaveEnableCheck.Checked = OfflineSave;
 			useLocalDBCheck.Checked = UseLocalDB;
@@ -256,7 +260,7 @@ namespace glc_cs
 				}
 			}
 
-			MyBase64str base64 = new MyBase64str();
+			Crypt base64 = new Crypt();
 
 			// 全般
 			WriteIni("imgd", "bgimg", backgroundImageText.Text.Trim());
@@ -286,8 +290,9 @@ namespace glc_cs
 			WriteIni("connect", "DBPort", portText.Text.Trim());
 			WriteIni("connect", "DbName", dbText.Text.Trim());
 			WriteIni("connect", "DbTable", tableText.Text.Trim());
+			WriteIni("connect", "PWCryptFlg", cryptCheck.Checked ? "1" : "0");
 			WriteIni("connect", "DBUser", userText.Text.Trim());
-			WriteIni("connect", "DBPass", base64.Encode(pwText.Text.Trim()));
+			WriteIni("connect", "DBPass", base64.Encode(pwText.Text.Trim(), cryptCheck.Checked));
 
 			// discord設定適用
 			WriteIni("checkbox", "dconnect", (Convert.ToInt32(dconEnableCheck.Checked)).ToString());
@@ -561,7 +566,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"CREATE TABLE [dekosoft_gl].[dbo].[" + DbTable + "] ( [ID] INT IDENTITY(1,1) NOT NULL, [GAME_NAME] NVARCHAR(255), [GAME_PATH] NVARCHAR(MAX), [IMG_PATH] NVARCHAR(MAX), [UPTIME] NVARCHAR(255), [RUN_COUNT] NVARCHAR(99), [DCON_TEXT] NVARCHAR(50), [AGE_FLG] NVARCHAR(1), [TEMP1] NVARCHAR(255) NULL, [LAST_RUN] DATETIME NOT NULL DEFAULT N'" + Convert.ToDateTime("1900-01-01 00:00:00") + "', [DCON_IMG] NVARCHAR(50) NULL, [MEMO] NVARCHAR(500) NULL, [STATUS] NVARCHAR(10) NULL DEFAULT N'未プレイ', [DB_VERSION] NVARCHAR(5) NOT NULL DEFAULT N'" + DBVer + "' )"
+					CommandText = @"CREATE TABLE [dekosoft_gl].[dbo].[" + DbTable + "] ( [ID] INT IDENTITY(1,1) NOT NULL, [GAME_NAME] NVARCHAR(255), [GAME_PATH] NVARCHAR(MAX), [IMG_PATH] NVARCHAR(MAX), [UPTIME] NVARCHAR(255), [RUN_COUNT] NVARCHAR(99), [DCON_TEXT] NVARCHAR(50), [AGE_FLG] NVARCHAR(1), [TEMP1] NVARCHAR(255) NULL, [LAST_RUN] DATETIME NOT NULL DEFAULT N'" + Convert.ToDateTime("1900-01-01 00:00:00") + "', [DCON_IMG] NVARCHAR(50) NULL, [MEMO] NVARCHAR(500) NULL, [STATUS] NVARCHAR(10) NULL DEFAULT N'未プレイ', [DB_VERSION] NVARCHAR(5) NOT NULL DEFAULT N'" + DBVer + "', [SAVEDATA_PATH] NVARCHAR(MAX), [EXECUTE_CMD] NVARCHAR(500) NULL, [EXTRACT_TOOL] NVARCHAR(10) NULL DEFAULT N'0' )"
 				};
 				cm2.Connection = cn;
 
@@ -609,7 +614,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"CREATE TABLE " + DbTable + " ( ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT, GAME_NAME NVARCHAR(255), GAME_PATH NVARCHAR(500), IMG_PATH NVARCHAR(500), UPTIME NVARCHAR(255), RUN_COUNT NVARCHAR(99), DCON_TEXT NVARCHAR(50), AGE_FLG NVARCHAR(1), TEMP1 NVARCHAR(255) NULL, LAST_RUN DATETIME NOT NULL DEFAULT N'" + Convert.ToDateTime("1900-01-01 00:00:00") + "', DCON_IMG NVARCHAR(50) NULL, MEMO NVARCHAR(500) NULL, STATUS NVARCHAR(10) NULL DEFAULT N'未プレイ', DB_VERSION NVARCHAR(5) NOT NULL DEFAULT N'" + DBVer + "' )"
+					CommandText = @"CREATE TABLE " + DbTable + " ( ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT, GAME_NAME NVARCHAR(255), GAME_PATH NVARCHAR(500), IMG_PATH NVARCHAR(500), UPTIME NVARCHAR(255), RUN_COUNT NVARCHAR(99), DCON_TEXT NVARCHAR(50), AGE_FLG NVARCHAR(1), TEMP1 NVARCHAR(255) NULL, LAST_RUN DATETIME NOT NULL DEFAULT N'" + Convert.ToDateTime("1900-01-01 00:00:00") + "', DCON_IMG NVARCHAR(50) NULL, MEMO NVARCHAR(500) NULL, STATUS NVARCHAR(10) NULL DEFAULT N'未プレイ', DB_VERSION NVARCHAR(5) NOT NULL DEFAULT N'" + DBVer + "', SAVEDATA_PATH NVARCHAR(500), EXECUTE_CMD NVARCHAR(500) NULL, EXTRACT_TOOL NVARCHAR(10) NULL DEFAULT N'0' )"
 				};
 				cm2.Connection = cn;
 
@@ -856,16 +861,18 @@ namespace glc_cs
 			userText.Enabled = !controlVal;
 			label22.Enabled = !controlVal;
 			pwText.Enabled = !controlVal;
+			cryptCheck.Enabled = !controlVal;
 			createTableButton.Enabled = !controlVal;
 			offlineSaveEnableCheck.Enabled = !controlVal;
 			useLocalDBCheck.Enabled = !controlVal;
 			saveWithDownloadCheck.Enabled = !controlVal;
-			dbBackupButton.Enabled = !controlVal;
 			offlineSaveEnableCheck.Visible = !controlVal;
 			saveWithDownloadCheck.Visible = !controlVal && OfflineSave && SaveType != "T";
 
 			groupBox7.Enabled = controlVal;
 			groupBox12.Enabled = !controlVal;
+			groupBox18.Enabled = !controlVal;
+			groupBox19.Enabled = !controlVal;
 			dbOverflowFixButton.Enabled = !controlVal;
 			saveWithDownloadCheck.Enabled = !controlVal;
 		}
@@ -1160,79 +1167,6 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void logoPictureBox_Click(object sender, EventArgs e)
 		{
-		}
-
-		/// <summary>
-		/// バックアップボタン
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void dbBackupButton_Click(object sender, EventArgs e)
-		{
-			if (urlText.Text.Trim().Length < 1)
-			{
-				MessageBox.Show("URLは必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				urlText.Focus();
-				return;
-			}
-			else if (portText.Text.Trim().Length < 1)
-			{
-				MessageBox.Show("ポート番号は必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				portText.Focus();
-				return;
-			}
-			else if (userText.Text.Trim().Length < 1)
-			{
-				MessageBox.Show("ユーザ名は必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				userText.Focus();
-				return;
-			}
-			else if (pwText.Text.Trim().Length < 1)
-			{
-				MessageBox.Show("パスワードは必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				pwText.Focus();
-				return;
-			}
-
-			// MySQLだけDatabaseも補填していないとエラーとする
-			if (mysqlRadio.Checked)
-			{
-				if (dbText.Text.Trim().Length < 1)
-				{
-					MessageBox.Show("データベース名は必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-					dbText.Focus();
-					return;
-				}
-			}
-
-			// ボタンテキストを反映
-			string oldButtonText = dbBackupButton.Text;
-			dbBackupButton.Text = "取得中…";
-			dbBackupButton.Enabled = false;
-			Application.DoEvents();
-
-			DbUrl = urlText.Text.Trim();
-			DbPort = portText.Text.Trim();
-			DbName = dbText.Text.Trim();
-			DbTable = tableText.Text.Trim();
-			DbUser = userText.Text.Trim();
-			DbPass = pwText.Text.Trim();
-			SaveType = mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I";
-
-			string backupPath = (BaseDir.EndsWith("\\") ? BaseDir : BaseDir + "\\") + "database_backup(" + (DateTime.Now).ToString().Replace("/", "_").Replace(":", "_").Replace(" ", "_") + ")\\";
-			bool returnVal = DownloadDbDataToLocal(backupPath);
-
-			if (returnVal)
-			{
-				MessageBox.Show("データが登録されていた場合、バックアップは以下のフォルダに保存されています。\n\n" + backupPath, AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
-			}
-			else
-			{
-				MessageBox.Show("エラーが発生しました。\n詳細はエラーログをご覧下さい。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-
-			dbBackupButton.Text = oldButtonText;
-			dbBackupButton.Enabled = true;
 		}
 
 		private void checkBox8_CheckedChanged(object sender, EventArgs e)
@@ -1816,6 +1750,266 @@ namespace glc_cs
 			{
 				extractToolsGroup.Enabled = false;
 			}
+		}
+
+		/// <summary>
+		/// ファイルエクスポート
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ExportButton_Click(object sender, EventArgs e)
+		{
+			string exportPath = ExportPathText.Text.Trim();
+
+			// エクスポートパスが空欄の場合リターン
+			if (exportPath.Length == 0)
+			{
+				ExportPathText.Focus();
+				return;
+			}
+
+			if (urlText.Text.Trim().Length < 1)
+			{
+				MessageBox.Show("URLは必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				urlText.Focus();
+				return;
+			}
+			else if (portText.Text.Trim().Length < 1)
+			{
+				MessageBox.Show("ポート番号は必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				portText.Focus();
+				return;
+			}
+			else if (userText.Text.Trim().Length < 1)
+			{
+				MessageBox.Show("ユーザ名は必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				userText.Focus();
+				return;
+			}
+			else if (pwText.Text.Trim().Length < 1)
+			{
+				MessageBox.Show("パスワードは必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				pwText.Focus();
+				return;
+			}
+
+			// MySQLだけDatabaseも補填していないとエラーとする
+			if (mysqlRadio.Checked)
+			{
+				if (dbText.Text.Trim().Length < 1)
+				{
+					MessageBox.Show("データベース名は必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					dbText.Focus();
+					return;
+				}
+			}
+
+			DbUrl = urlText.Text.Trim();
+			DbPort = portText.Text.Trim();
+			DbName = dbText.Text.Trim();
+			DbTable = tableText.Text.Trim();
+			DbUser = userText.Text.Trim();
+			DbPass = pwText.Text.Trim();
+			SaveType = mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I";
+
+			SqlConnection cn = SqlCon;
+			MySqlConnection mcn = SqlCon2;
+
+			ExportButton.Enabled = false;
+
+			if (ExportRadio_CSV.Checked)
+			{
+				if (ExportData("CSV", SaveType, DbTable, exportPath, DbName, cn, mcn))
+				{
+					label15.Text = "出力完了";
+				}
+				else
+				{
+					label15.Text = "エラー。エラーログをご確認ください。";
+				}
+			}
+			else
+			{
+				if (ExportData("INI", SaveType, DbTable, exportPath, DbName, cn, mcn))
+				{
+					label15.Text = "出力完了";
+				}
+				else
+				{
+					label15.Text = "エラー。エラーログをご確認ください。";
+				}
+			}
+			ExportButton.Enabled = true;
+			System.Media.SystemSounds.Beep.Play();
+		}
+
+		/// <summary>
+		/// ファイルインポート
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ImportButton_Click(object sender, EventArgs e)
+		{
+			string importPath = ImportPathText.Text.Trim();
+
+			// エクスポートパスが空欄の場合リターン
+			if (importPath.Length == 0)
+			{
+				ImportPathText.Focus();
+				return;
+			}
+
+			if (urlText.Text.Trim().Length < 1)
+			{
+				MessageBox.Show("URLは必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				urlText.Focus();
+				return;
+			}
+			else if (portText.Text.Trim().Length < 1)
+			{
+				MessageBox.Show("ポート番号は必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				portText.Focus();
+				return;
+			}
+			else if (userText.Text.Trim().Length < 1)
+			{
+				MessageBox.Show("ユーザ名は必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				userText.Focus();
+				return;
+			}
+			else if (pwText.Text.Trim().Length < 1)
+			{
+				MessageBox.Show("パスワードは必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				pwText.Focus();
+				return;
+			}
+
+			// MySQLだけDatabaseも補填していないとエラーとする
+			if (mysqlRadio.Checked)
+			{
+				if (dbText.Text.Trim().Length < 1)
+				{
+					MessageBox.Show("データベース名は必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					dbText.Focus();
+					return;
+				}
+			}
+
+			DbUrl = urlText.Text.Trim();
+			DbPort = portText.Text.Trim();
+			DbName = dbText.Text.Trim();
+			DbTable = tableText.Text.Trim();
+			DbUser = userText.Text.Trim();
+			DbPass = pwText.Text.Trim();
+			SaveType = mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I";
+
+			SqlConnection cn = SqlCon;
+			MySqlConnection mcn = SqlCon2;
+
+			ImportButton.Enabled = false;
+
+			/*
+			if (ImportRadio_CSV.Checked)
+			{
+				if (ImportData("CSV", SaveType, DbTable, importPath, DbName, cn, mcn))
+				{
+					label15.Text = "取込完了";
+				}
+				else
+				{
+					label15.Text = "エラー。エラーログをご確認ください。";
+				}
+			}
+			else
+			{
+				if (ImportData("INI", SaveType, DbTable, importPath, DbName, cn, mcn))
+				{
+					label15.Text = "取込完了";
+				}
+				else
+				{
+					label15.Text = "エラー。エラーログをご確認ください。";
+				}
+			}
+			*/
+			ImportButton.Enabled = true;
+			System.Media.SystemSounds.Beep.Play();
+		}
+
+		/// <summary>
+		/// 出力先選択ダイアログの表示
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ExportPathSelectButton_Click(object sender, EventArgs e)
+		{
+			if (ExportRadio_CSV.Checked)
+			{
+				saveFileDialog1.Title = "出力先を選択";
+				saveFileDialog1.Filter = "CSVファイル(*.csv)|*.csv";
+				saveFileDialog1.FileName = "";
+				if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+				{
+					ExportPathText.Text = saveFileDialog1.FileName;
+				}
+			}
+			else
+			{
+				if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+				{
+					ExportPathText.Text = folderBrowserDialog1.SelectedPath;
+				}
+			}
+
+			return;
+		}
+
+		/// <summary>
+		/// 復元元選択ダイアログの表示
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ImportPathSelectButton_Click(object sender, EventArgs e)
+		{
+			if (ImportRadio_CSV.Checked)
+			{
+				openFileDialog1.Title = "復元元CSVを選択";
+				openFileDialog1.Filter = "CSVファイル(*.csv)|*.csv";
+				openFileDialog1.FileName = "";
+				if (openFileDialog1.ShowDialog() == DialogResult.OK)
+				{
+					ImportPathText.Text = saveFileDialog1.FileName;
+				}
+			}
+			else
+			{
+				if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+				{
+					ImportPathText.Text = folderBrowserDialog1.SelectedPath;
+				}
+			}
+
+			return;
+		}
+
+		private void ExportRadio_CSV_CheckedChanged(object sender, EventArgs e)
+		{
+			ExportPathText.Clear();
+		}
+
+		private void ExportRadio_INI_CheckedChanged(object sender, EventArgs e)
+		{
+			ExportPathText.Clear();
+		}
+
+		private void ImportPath_CSV_CheckedChanged(object sender, EventArgs e)
+		{
+			ImportPathText.Clear();
+		}
+
+		private void ImportPath_INI_CheckedChanged(object sender, EventArgs e)
+		{
+			ImportPathText.Clear();
 		}
 	}
 }

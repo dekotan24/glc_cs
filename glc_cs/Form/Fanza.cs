@@ -1,12 +1,4 @@
-﻿/*
- * **************
- * 
- * *** 作業中 ***
- * 
- * **************
- */
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
@@ -16,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static glc_cs.Core.Property;
 using static glc_cs.General.Var;
 
 /*
@@ -23,7 +16,7 @@ using static glc_cs.General.Var;
  * DMMでの商品検索APIの使用には、DMMアフィリエイトのAPIキーと、アフィリエイトIDが必要です。
  * 私の場合ですが、申請から承認までに12時間程度（夜申請→翌日昼に承認）かかりました。
  * 
- * 取得したAPIキーなどは、別ファイル"AuthData.cs"に記載してください。
+ * 取得したAPIキーなどは、別ファイル"Secret.cs"に記載してください。
  * 
  * リファレンス
  * https://affiliate.dmm.com/api/v3/itemlist.html

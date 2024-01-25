@@ -738,13 +738,6 @@
 			this.statusCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			resources.ApplyResources(this.statusCombo, "statusCombo");
 			this.statusCombo.FormattingEnabled = true;
-			this.statusCombo.Items.AddRange(new object[] {
-            resources.GetString("statusCombo.Items"),
-            resources.GetString("statusCombo.Items1"),
-            resources.GetString("statusCombo.Items2"),
-            resources.GetString("statusCombo.Items3"),
-            resources.GetString("statusCombo.Items4"),
-            resources.GetString("statusCombo.Items5")});
 			this.statusCombo.Name = "statusCombo";
 			this.statusCombo.SelectedIndexChanged += new System.EventHandler(this.StatusCombo_SelectedIndexChanged);
 			// 

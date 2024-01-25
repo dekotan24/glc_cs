@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using static glc_cs.Core.Property;
 using static glc_cs.General.Var;
 
 namespace glc_cs
@@ -139,6 +140,7 @@ namespace glc_cs
 					dconImgText.Text = reader["DCON_IMG"].ToString();
 					rateCheck.Checked = reader["AGE_FLG"].ToString() == "1" ? true : false;
 					extractToolCombo.SelectedIndex = Convert.ToInt32(DecodeSQLSpecialChars(reader["EXTRACT_TOOL"].ToString()));
+					savePathText.Text = DecodeSQLSpecialChars(reader["SAVEDATA_PATH"].ToString());
 					if (File.Exists(imgPathText.Text))
 					{
 						iconImage.ImageLocation = imgPathText.Text;
@@ -185,6 +187,8 @@ namespace glc_cs
 					dconImgText.Text = reader["DCON_IMG"].ToString();
 					rateCheck.Checked = reader["AGE_FLG"].ToString() == "1" ? true : false;
 					extractToolCombo.SelectedIndex = Convert.ToInt32(DecodeSQLSpecialChars(reader["EXTRACT_TOOL"].ToString()));
+					savePathText.Text = DecodeSQLSpecialChars(reader["SAVEDATA_PATH"].ToString());
+
 					if (File.Exists(imgPathText.Text))
 					{
 						iconImage.ImageLocation = imgPathText.Text;
@@ -217,8 +221,8 @@ namespace glc_cs
 				iniPath = GameDir + selectedListCount + ".ini";
 				if (File.Exists(iniPath))
 				{
-					KeyNames[] keyNames = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.rating, KeyNames.execute_cmd, KeyNames.extract_tool };
-					string[] failedVal = { string.Empty, string.Empty, string.Empty, "0", string.Empty, string.Empty, string.Empty, Rate.ToString(), String.Empty, "0" };
+					KeyNames[] keyNames = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.rating, KeyNames.execute_cmd, KeyNames.extract_tool, KeyNames.savedata_path };
+					string[] failedVal = { string.Empty, string.Empty, string.Empty, "0", string.Empty, string.Empty, string.Empty, Rate.ToString(), String.Empty, "0", string.Empty };
 
 					string[] resultValues = IniRead(iniPath, "game", keyNames, failedVal);
 
@@ -234,6 +238,7 @@ namespace glc_cs
 					dconImgText.Text = resultValues[6];
 					rateCheck.Checked = Convert.ToBoolean(Convert.ToInt32(resultValues[7]));
 					extractToolCombo.SelectedIndex = Convert.ToInt32(resultValues[9]);
+					savePathText.Text = resultValues[10];
 					if (File.Exists(imgPathText.Text))
 					{
 						iconImage.ImageLocation = imgPathText.Text;
@@ -281,7 +286,7 @@ namespace glc_cs
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
 					// SQL文
-					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET GAME_NAME = @game_name, GAME_PATH = @game_path, IMG_PATH = @img_path, UPTIME = @uptime, RUN_COUNT = @run_count, DCON_TEXT = @dcon_text, AGE_FLG = @age_flg, DCON_IMG = @dcon_img, EXECUTE_CMD = @execute_cmd, EXTRACT_TOOL = @extract_tool "
+					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET GAME_NAME = @game_name, GAME_PATH = @game_path, IMG_PATH = @img_path, UPTIME = @uptime, RUN_COUNT = @run_count, DCON_TEXT = @dcon_text, AGE_FLG = @age_flg, DCON_IMG = @dcon_img, EXECUTE_CMD = @execute_cmd, EXTRACT_TOOL = @extract_tool, SAVEDATA_PATH = @savePath "
 								+ "WHERE ID = @id"
 				};
 				// パラメータの設定
@@ -295,6 +300,7 @@ namespace glc_cs
 				cm.Parameters.AddWithValue("@dcon_img", dconImgText.Text.Trim());
 				cm.Parameters.AddWithValue("@execute_cmd", EncodeSQLSpecialChars(executeCmdText.Text.Trim()));
 				cm.Parameters.AddWithValue("@extract_tool", extractToolCombo.SelectedIndex);
+				cm.Parameters.AddWithValue("@savePath", EncodeSQLSpecialChars(savePathText.Text.Trim()));
 				cm.Parameters.AddWithValue("@id", label9.Text.Trim());
 				cm.Connection = con;
 
@@ -355,7 +361,7 @@ namespace glc_cs
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
 					// SQL文
-					CommandText = @"UPDATE " + DbTable + " SET GAME_NAME = @game_name, GAME_PATH = @game_path, IMG_PATH = @img_path, UPTIME = @uptime, RUN_COUNT = @run_count, DCON_TEXT = @dcon_text, AGE_FLG = @age_flg, DCON_IMG = @dcon_img, EXECUTE_CMD = @execute_cmd, EXTRACT_TOOL = @extract_tool "
+					CommandText = @"UPDATE " + DbTable + " SET GAME_NAME = @game_name, GAME_PATH = @game_path, IMG_PATH = @img_path, UPTIME = @uptime, RUN_COUNT = @run_count, DCON_TEXT = @dcon_text, AGE_FLG = @age_flg, DCON_IMG = @dcon_img, EXECUTE_CMD = @execute_cmd, EXTRACT_TOOL = @extract_tool, SAVEDATA_PATH = @savePath "
 												+ "WHERE ID = @id"
 				};
 				// パラメータの設定
@@ -369,6 +375,7 @@ namespace glc_cs
 				cm.Parameters.AddWithValue("@dcon_img", dconImgText.Text.Trim());
 				cm.Parameters.AddWithValue("@execute_cmd", EncodeSQLSpecialChars(executeCmdText.Text.Trim()));
 				cm.Parameters.AddWithValue("@extract_tool", extractToolCombo.SelectedIndex);
+				cm.Parameters.AddWithValue("@savePath", EncodeSQLSpecialChars(savePathText.Text.Trim()));
 				cm.Parameters.AddWithValue("@id", label9.Text.Trim());
 
 				cm.Connection = con2;
@@ -419,8 +426,8 @@ namespace glc_cs
 				decimal runTimeTmp = runTimeText.Value;
 				decimal startTimeTmp = startCountText.Value;
 
-				KeyNames[] keyColumns = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.rating, KeyNames.execute_cmd, KeyNames.extract_tool };
-				string[] writeValues = { titleText.Text.Trim(), imgPathText.Text.Trim(), exePathText.Text.Trim(), runTimeTmp.ToString(), startTimeTmp.ToString(), dconText.Text.Trim(), dconImgText.Text.Trim(), (rateCheck.Checked ? "1" : "0"), executeCmdText.Text.Trim(), extractToolCombo.SelectedIndex.ToString() };
+				KeyNames[] keyColumns = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.rating, KeyNames.execute_cmd, KeyNames.extract_tool, KeyNames.savedata_path };
+				string[] writeValues = { titleText.Text.Trim(), imgPathText.Text.Trim(), exePathText.Text.Trim(), runTimeTmp.ToString(), startTimeTmp.ToString(), dconText.Text.Trim(), dconImgText.Text.Trim(), (rateCheck.Checked ? "1" : "0"), executeCmdText.Text.Trim(), extractToolCombo.SelectedIndex.ToString(), savePathText.Text.Trim() };
 				IniWrite(iniPath, "game", keyColumns, writeValues);
 			}
 
@@ -515,6 +522,7 @@ namespace glc_cs
 				if (!string.IsNullOrEmpty(vndbSearchForm.ImageUrl) && File.Exists(vndbSearchForm.ImageUrl))
 				{
 					imgPathText.Text = vndbSearchForm.ImageUrl;
+					iconImage.ImageLocation = vndbSearchForm.ImageUrl;
 				}
 
 				// フォーカス移動

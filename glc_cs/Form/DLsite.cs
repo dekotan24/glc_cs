@@ -2,7 +2,7 @@
 using System;
 using System.Net;
 using System.Windows.Forms;
-using static glc_cs.General.Var;
+using static glc_cs.Core.Property;
 
 namespace glc_cs
 {

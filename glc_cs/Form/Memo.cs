@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using static glc_cs.Core.Property;
 using static glc_cs.General.Var;
 
 namespace glc_cs

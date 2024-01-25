@@ -9,6 +9,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using static glc_cs.Core.DataBind;
+using static glc_cs.Core.Property;
 using static glc_cs.General.Var;
 
 namespace glc_cs
@@ -89,6 +91,13 @@ namespace glc_cs
 				tabControl1.Controls.Remove(tabPage2);
 			}
 
+			// コントロールセット
+			// ステータスドロップダウン
+			foreach (string statusName in StatusDropDown())
+			{
+				statusCombo.Items.Add(statusName);
+			}
+
 			// 検索タブ
 			searchTargetDropDown.SelectedIndex = 0;
 			orderDropDown.SelectedIndex = 0;
@@ -98,6 +107,9 @@ namespace glc_cs
 
 			// ステータス変更
 			UpdateSplashInfo(6, "最終処理中…");
+
+			// アイテム詳細の再表示
+			GameList_SelectedIndexChanged(sender, e);
 
 			// メインフォーム表示
 			this.Activate();
@@ -189,7 +201,7 @@ namespace glc_cs
 			}
 			else
 			{
-				// ゲームが1つもない場合
+				// ゲーム統括管理INIがない場合
 				reloadButton.Enabled = false;
 				editButton.Enabled = false;
 				randomButton.Enabled = false;
@@ -847,7 +859,7 @@ namespace glc_cs
 				else
 				{
 					// 個別ini不存在
-					ResolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報保管iniが存在しません。\n" + path, 0, false);
+					ResolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報管理iniが存在しません。\n" + path, 0, false);
 				}
 			}
 
@@ -2104,7 +2116,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT T.ID, T.GAME_NAME, T.GAME_PATH, T.EXECUTE_CMD, T.IMG_PATH, T.UPTIME, T.RUN_COUNT, T.DCON_TEXT, T.DCON_IMG, T.AGE_FLG, T.ROW_CNT, T.EXTRACT_TOOL "
+					CommandText = @"SELECT T.ID, T.GAME_NAME, T.GAME_PATH, T.EXECUTE_CMD, T.IMG_PATH, T.UPTIME, T.RUN_COUNT, T.DCON_TEXT, T.DCON_IMG, T.AGE_FLG, T.ROW_CNT, T.EXTRACT_TOOL, T.SAVEDATA_PATH "
 									+ "FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROW_CNT FROM " + DbName + "." + DbTable + ") AS T "
 									+ "WHERE T.ROW_CNT = " + selectedListCount
 				};
@@ -2132,7 +2144,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT T.ID, T.GAME_NAME, T.GAME_PATH, T.EXECUTE_CMD, T.IMG_PATH, T.UPTIME, T.RUN_COUNT, T.DCON_TEXT, T.DCON_IMG, T.AGE_FLG, T.ROW_CNT, T.EXTRACT_TOOL "
+					CommandText = @"SELECT T.ID, T.GAME_NAME, T.GAME_PATH, T.EXECUTE_CMD, T.IMG_PATH, T.UPTIME, T.RUN_COUNT, T.DCON_TEXT, T.DCON_IMG, T.AGE_FLG, T.ROW_CNT, T.EXTRACT_TOOL, T.SAVEDATA_PATH "
 									+ "FROM ( SELECT *, ROW_NUMBER() OVER (ORDER BY ID) AS ROW_CNT FROM " + DbTable + ") AS T "
 									+ "WHERE T.ROW_CNT = " + selectedListCount
 				};
@@ -2171,7 +2183,7 @@ namespace glc_cs
 				else
 				{
 					// 個別ini不存在
-					ResolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報保管iniが存在しません。\n" + path, 0, false);
+					ResolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報管理iniが存在しません。\n" + path, 0, false);
 				}
 			}
 
@@ -2254,7 +2266,7 @@ namespace glc_cs
 			else
 			{
 				// 個別ini不存在
-				ResolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報保管iniが存在しません。\n" + path, 0, false);
+				ResolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報管理iniが存在しません。\n" + path, 0, false);
 			}
 
 			return;
@@ -2282,7 +2294,7 @@ namespace glc_cs
 			}
 			else
 			{
-				ResolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報保管iniがありません！\n" + rawdata, 0, false);
+				ResolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報管理iniがありません！\n" + rawdata, 0, false);
 			}
 		}
 

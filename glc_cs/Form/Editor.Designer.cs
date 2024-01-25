@@ -66,7 +66,7 @@
 			this.GetDLsiteInfoButton = new System.Windows.Forms.Button();
 			this.checkBox4 = new System.Windows.Forms.CheckBox();
 			this.button5 = new System.Windows.Forms.Button();
-			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.savePathText = new System.Windows.Forms.TextBox();
 			this.label11 = new System.Windows.Forms.Label();
 			this.button6 = new System.Windows.Forms.Button();
 			this.label12 = new System.Windows.Forms.Label();
@@ -374,7 +374,7 @@
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(311, 331);
+			this.label10.Location = new System.Drawing.Point(332, 331);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(29, 12);
 			this.label10.TabIndex = 32;
@@ -392,9 +392,9 @@
             "krkrDump",
             "カスタム1",
             "カスタム2"});
-			this.extractToolCombo.Location = new System.Drawing.Point(346, 328);
+			this.extractToolCombo.Location = new System.Drawing.Point(367, 328);
 			this.extractToolCombo.Name = "extractToolCombo";
-			this.extractToolCombo.Size = new System.Drawing.Size(121, 20);
+			this.extractToolCombo.Size = new System.Drawing.Size(100, 20);
 			this.extractToolCombo.TabIndex = 75;
 			this.extractToolCombo.Visible = false;
 			// 
@@ -411,57 +411,49 @@
 			// checkBox4
 			// 
 			this.checkBox4.AutoSize = true;
-			this.checkBox4.Enabled = false;
-			this.checkBox4.Location = new System.Drawing.Point(200, 330);
+			this.checkBox4.Location = new System.Drawing.Point(211, 330);
 			this.checkBox4.Name = "checkBox4";
 			this.checkBox4.Size = new System.Drawing.Size(105, 16);
 			this.checkBox4.TabIndex = 86;
 			this.checkBox4.Text = "セーブデータ共有";
 			this.checkBox4.UseVisualStyleBackColor = true;
-			this.checkBox4.Visible = false;
 			// 
 			// button5
 			// 
-			this.button5.Enabled = false;
 			this.button5.Location = new System.Drawing.Point(447, 354);
 			this.button5.Name = "button5";
 			this.button5.Size = new System.Drawing.Size(20, 23);
 			this.button5.TabIndex = 89;
-			this.button5.Text = "...";
+			this.button5.Text = "D";
+			this.toolTip1.SetToolTip(this.button5, "ディレクトリ参照");
 			this.button5.UseVisualStyleBackColor = true;
-			this.button5.Visible = false;
 			// 
-			// textBox1
+			// savePathText
 			// 
-			this.textBox1.Enabled = false;
-			this.textBox1.Location = new System.Drawing.Point(97, 356);
-			this.textBox1.MaxLength = 500;
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(318, 19);
-			this.textBox1.TabIndex = 88;
-			this.textBox1.Visible = false;
+			this.savePathText.Location = new System.Drawing.Point(97, 356);
+			this.savePathText.MaxLength = 500;
+			this.savePathText.Name = "savePathText";
+			this.savePathText.Size = new System.Drawing.Size(318, 19);
+			this.savePathText.TabIndex = 88;
 			// 
 			// label11
 			// 
 			this.label11.AutoSize = true;
-			this.label11.Enabled = false;
 			this.label11.Location = new System.Drawing.Point(29, 359);
 			this.label11.Name = "label11";
 			this.label11.Size = new System.Drawing.Size(62, 12);
 			this.label11.TabIndex = 87;
 			this.label11.Text = "セーブデータ";
-			this.label11.Visible = false;
 			// 
 			// button6
 			// 
-			this.button6.Enabled = false;
 			this.button6.Location = new System.Drawing.Point(421, 354);
 			this.button6.Name = "button6";
 			this.button6.Size = new System.Drawing.Size(20, 23);
 			this.button6.TabIndex = 90;
-			this.button6.Text = "..";
+			this.button6.Text = "F";
+			this.toolTip1.SetToolTip(this.button6, "ファイル参照");
 			this.button6.UseVisualStyleBackColor = true;
-			this.button6.Visible = false;
 			// 
 			// label12
 			// 
@@ -491,7 +483,7 @@
 			this.Controls.Add(this.label12);
 			this.Controls.Add(this.button6);
 			this.Controls.Add(this.button5);
-			this.Controls.Add(this.textBox1);
+			this.Controls.Add(this.savePathText);
 			this.Controls.Add(this.label11);
 			this.Controls.Add(this.checkBox4);
 			this.Controls.Add(this.GetDLsiteInfoButton);
@@ -579,7 +571,7 @@
 		private System.Windows.Forms.Button GetDLsiteInfoButton;
 		private System.Windows.Forms.Button button6;
 		private System.Windows.Forms.Button button5;
-		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.TextBox savePathText;
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.CheckBox checkBox4;
 		private System.Windows.Forms.Label label12;

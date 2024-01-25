@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static glc_cs.Core.Property;
 using static glc_cs.General.Var;
 
 namespace glc_cs
@@ -119,6 +120,11 @@ namespace glc_cs
 										MessageBox.Show("VNDBから画像の取得中にエラーが発生しました。\n\n" + ex.Message, AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
 										return;
 									}
+								}
+								// 画像保存ダイアログでキャンセルされた場合は検索画面に戻る
+								else
+								{
+									return;
 								}
 							}
 

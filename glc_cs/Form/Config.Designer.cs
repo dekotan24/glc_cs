@@ -37,7 +37,6 @@
 			this.mailLinkLabel = new System.Windows.Forms.LinkLabel();
 			this.dconAppIDText = new System.Windows.Forms.TextBox();
 			this.portText = new System.Windows.Forms.TextBox();
-			this.dbBackupButton = new System.Windows.Forms.Button();
 			this.checkBox7 = new System.Windows.Forms.CheckBox();
 			this.textBox9 = new System.Windows.Forms.TextBox();
 			this.textBox8 = new System.Windows.Forms.TextBox();
@@ -65,6 +64,13 @@
 			this.addGameDirCheck = new System.Windows.Forms.CheckBox();
 			this.DisableInitialLoadCountCheck = new System.Windows.Forms.CheckBox();
 			this.iniText = new System.Windows.Forms.TextBox();
+			this.createTableButton = new System.Windows.Forms.Button();
+			this.tableText = new System.Windows.Forms.TextBox();
+			this.dbText = new System.Windows.Forms.TextBox();
+			this.pwText = new System.Windows.Forms.TextBox();
+			this.userText = new System.Windows.Forms.TextBox();
+			this.urlText = new System.Windows.Forms.TextBox();
+			this.cryptCheck = new System.Windows.Forms.CheckBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage7 = new System.Windows.Forms.TabPage();
 			this.groupBox16 = new System.Windows.Forms.GroupBox();
@@ -105,18 +111,11 @@
 			this.tabPage4 = new System.Windows.Forms.TabPage();
 			this.groupBox10 = new System.Windows.Forms.GroupBox();
 			this.label29 = new System.Windows.Forms.Label();
-			this.label28 = new System.Windows.Forms.Label();
-			this.createTableButton = new System.Windows.Forms.Button();
 			this.label24 = new System.Windows.Forms.Label();
-			this.tableText = new System.Windows.Forms.TextBox();
 			this.label23 = new System.Windows.Forms.Label();
-			this.dbText = new System.Windows.Forms.TextBox();
 			this.label22 = new System.Windows.Forms.Label();
-			this.pwText = new System.Windows.Forms.TextBox();
 			this.label18 = new System.Windows.Forms.Label();
-			this.userText = new System.Windows.Forms.TextBox();
 			this.label16 = new System.Windows.Forms.Label();
-			this.urlText = new System.Windows.Forms.TextBox();
 			this.label9 = new System.Windows.Forms.Label();
 			this.iniFolderSelectButton = new System.Windows.Forms.Button();
 			this.groupBox9 = new System.Windows.Forms.GroupBox();
@@ -138,6 +137,23 @@
 			this.checkBox3 = new System.Windows.Forms.CheckBox();
 			this.label20 = new System.Windows.Forms.Label();
 			this.label19 = new System.Windows.Forms.Label();
+			this.tabPage10 = new System.Windows.Forms.TabPage();
+			this.groupBox19 = new System.Windows.Forms.GroupBox();
+			this.ImportRadio_CSV = new System.Windows.Forms.RadioButton();
+			this.ImportRadio_INI = new System.Windows.Forms.RadioButton();
+			this.ImportPathSelectButton = new System.Windows.Forms.Button();
+			this.ImportPathText = new System.Windows.Forms.TextBox();
+			this.label5 = new System.Windows.Forms.Label();
+			this.ImportButton = new System.Windows.Forms.Button();
+			this.groupBox18 = new System.Windows.Forms.GroupBox();
+			this.label4 = new System.Windows.Forms.Label();
+			this.ExportPathSelectButton = new System.Windows.Forms.Button();
+			this.label3 = new System.Windows.Forms.Label();
+			this.ExportPathText = new System.Windows.Forms.TextBox();
+			this.label2 = new System.Windows.Forms.Label();
+			this.ExportRadio_CSV = new System.Windows.Forms.RadioButton();
+			this.ExportRadio_INI = new System.Windows.Forms.RadioButton();
+			this.ExportButton = new System.Windows.Forms.Button();
 			this.tabPage8 = new System.Windows.Forms.TabPage();
 			this.groupBox15 = new System.Windows.Forms.GroupBox();
 			this.insertColumnsDropDown = new System.Windows.Forms.ComboBox();
@@ -178,6 +194,8 @@
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.label15 = new System.Windows.Forms.Label();
 			this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
+			this.openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
+			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage7.SuspendLayout();
@@ -201,6 +219,9 @@
 			this.groupBox8.SuspendLayout();
 			this.groupBox12.SuspendLayout();
 			this.groupBox7.SuspendLayout();
+			this.tabPage10.SuspendLayout();
+			this.groupBox19.SuspendLayout();
+			this.groupBox18.SuspendLayout();
 			this.tabPage8.SuspendLayout();
 			this.groupBox15.SuspendLayout();
 			this.ExecuteModeGroup.SuspendLayout();
@@ -277,23 +298,11 @@
 			this.portText.Enabled = false;
 			this.portText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.portText.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.portText.Location = new System.Drawing.Point(332, 65);
+			this.portText.Location = new System.Drawing.Point(332, 75);
 			this.portText.Name = "portText";
 			this.portText.Size = new System.Drawing.Size(59, 24);
 			this.portText.TabIndex = 10;
 			this.toolTip1.SetToolTip(this.portText, "MSSQLの既定【1433】\r\nMySQLの既定【3306】");
-			// 
-			// dbBackupButton
-			// 
-			this.dbBackupButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.dbBackupButton.Location = new System.Drawing.Point(397, 123);
-			this.dbBackupButton.Name = "dbBackupButton";
-			this.dbBackupButton.Size = new System.Drawing.Size(64, 27);
-			this.dbBackupButton.TabIndex = 16;
-			this.dbBackupButton.Text = "Backup";
-			this.toolTip1.SetToolTip(this.dbBackupButton, "データベースをバックアップします");
-			this.dbBackupButton.UseVisualStyleBackColor = true;
-			this.dbBackupButton.Click += new System.EventHandler(this.dbBackupButton_Click);
 			// 
 			// checkBox7
 			// 
@@ -378,7 +387,7 @@
 			// 
 			this.offlineSaveEnableCheck.AutoSize = true;
 			this.offlineSaveEnableCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.offlineSaveEnableCheck.Location = new System.Drawing.Point(350, 50);
+			this.offlineSaveEnableCheck.Location = new System.Drawing.Point(350, 51);
 			this.offlineSaveEnableCheck.Name = "offlineSaveEnableCheck";
 			this.offlineSaveEnableCheck.Size = new System.Drawing.Size(111, 22);
 			this.offlineSaveEnableCheck.TabIndex = 6;
@@ -421,7 +430,7 @@
 			this.useLocalDBCheck.AutoSize = true;
 			this.useLocalDBCheck.Enabled = false;
 			this.useLocalDBCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.useLocalDBCheck.Location = new System.Drawing.Point(197, 50);
+			this.useLocalDBCheck.Location = new System.Drawing.Point(197, 51);
 			this.useLocalDBCheck.Name = "useLocalDBCheck";
 			this.useLocalDBCheck.Size = new System.Drawing.Size(147, 22);
 			this.useLocalDBCheck.TabIndex = 5;
@@ -434,7 +443,7 @@
 			// 
 			this.enableWindowHideControlCheck.AutoSize = true;
 			this.enableWindowHideControlCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.enableWindowHideControlCheck.Location = new System.Drawing.Point(15, 47);
+			this.enableWindowHideControlCheck.Location = new System.Drawing.Point(15, 50);
 			this.enableWindowHideControlCheck.Name = "enableWindowHideControlCheck";
 			this.enableWindowHideControlCheck.Size = new System.Drawing.Size(159, 22);
 			this.enableWindowHideControlCheck.TabIndex = 9;
@@ -600,7 +609,7 @@
 			// 
 			this.DisableInitialLoadCountCheck.AutoSize = true;
 			this.DisableInitialLoadCountCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.DisableInitialLoadCountCheck.Location = new System.Drawing.Point(15, 73);
+			this.DisableInitialLoadCountCheck.Location = new System.Drawing.Point(15, 78);
 			this.DisableInitialLoadCountCheck.Name = "DisableInitialLoadCountCheck";
 			this.DisableInitialLoadCountCheck.Size = new System.Drawing.Size(243, 22);
 			this.DisableInitialLoadCountCheck.TabIndex = 10;
@@ -616,6 +625,82 @@
 			this.iniText.Size = new System.Drawing.Size(343, 24);
 			this.iniText.TabIndex = 7;
 			this.toolTip1.SetToolTip(this.iniText, "絶対パスのみ。相対パスでは正常に動作しない可能性があります。");
+			// 
+			// createTableButton
+			// 
+			this.createTableButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.createTableButton.Location = new System.Drawing.Point(397, 104);
+			this.createTableButton.Name = "createTableButton";
+			this.createTableButton.Size = new System.Drawing.Size(64, 53);
+			this.createTableButton.TabIndex = 16;
+			this.createTableButton.Text = "DB/Table\r\n自動作成";
+			this.toolTip1.SetToolTip(this.createTableButton, "DB/Table自動作成時は URL、Port、User、Passは必須です。\r\nMySQLを使用する場合、上記に加えてDBも入力してください。\r\n対象のDBへの" +
+        "フルアクセス権（GRANT ALL PRIVILEGES）が必要です。");
+			this.createTableButton.UseVisualStyleBackColor = true;
+			this.createTableButton.Click += new System.EventHandler(this.createTableButton_Click);
+			// 
+			// tableText
+			// 
+			this.tableText.Enabled = false;
+			this.tableText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.tableText.Location = new System.Drawing.Point(239, 104);
+			this.tableText.Name = "tableText";
+			this.tableText.Size = new System.Drawing.Size(152, 24);
+			this.tableText.TabIndex = 12;
+			this.toolTip1.SetToolTip(this.tableText, "接続先DBのテーブル名");
+			// 
+			// dbText
+			// 
+			this.dbText.Enabled = false;
+			this.dbText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.dbText.Location = new System.Drawing.Point(48, 104);
+			this.dbText.Name = "dbText";
+			this.dbText.Size = new System.Drawing.Size(135, 24);
+			this.dbText.TabIndex = 11;
+			this.toolTip1.SetToolTip(this.dbText, "接続先DBのデータベース名（MySQLのみ）");
+			// 
+			// pwText
+			// 
+			this.pwText.Enabled = false;
+			this.pwText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.pwText.Location = new System.Drawing.Point(239, 133);
+			this.pwText.Name = "pwText";
+			this.pwText.PasswordChar = '*';
+			this.pwText.Size = new System.Drawing.Size(152, 24);
+			this.pwText.TabIndex = 14;
+			this.toolTip1.SetToolTip(this.pwText, "接続先DBのパスワード");
+			// 
+			// userText
+			// 
+			this.userText.Enabled = false;
+			this.userText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.userText.Location = new System.Drawing.Point(48, 133);
+			this.userText.Name = "userText";
+			this.userText.Size = new System.Drawing.Size(135, 24);
+			this.userText.TabIndex = 13;
+			this.toolTip1.SetToolTip(this.userText, "接続先DBのユーザ名");
+			// 
+			// urlText
+			// 
+			this.urlText.Enabled = false;
+			this.urlText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.urlText.Location = new System.Drawing.Point(48, 75);
+			this.urlText.Name = "urlText";
+			this.urlText.Size = new System.Drawing.Size(227, 24);
+			this.urlText.TabIndex = 9;
+			this.toolTip1.SetToolTip(this.urlText, "接続先DBのURLもしくはIP");
+			// 
+			// cryptCheck
+			// 
+			this.cryptCheck.AutoSize = true;
+			this.cryptCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.cryptCheck.Location = new System.Drawing.Point(239, 163);
+			this.cryptCheck.Name = "cryptCheck";
+			this.cryptCheck.Size = new System.Drawing.Size(183, 22);
+			this.cryptCheck.TabIndex = 15;
+			this.cryptCheck.Text = "パスワードを暗号化して保存";
+			this.toolTip1.SetToolTip(this.cryptCheck, "configファイルにパスワードを暗号化します。");
+			this.cryptCheck.UseVisualStyleBackColor = true;
 			// 
 			// tabControl1
 			// 
@@ -651,7 +736,7 @@
 			this.groupBox16.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox16.Location = new System.Drawing.Point(6, 177);
 			this.groupBox16.Name = "groupBox16";
-			this.groupBox16.Size = new System.Drawing.Size(469, 108);
+			this.groupBox16.Size = new System.Drawing.Size(469, 111);
 			this.groupBox16.TabIndex = 5;
 			this.groupBox16.TabStop = false;
 			this.groupBox16.Text = "システム";
@@ -1069,10 +1154,9 @@
 			// 
 			// groupBox10
 			// 
-			this.groupBox10.Controls.Add(this.dbBackupButton);
+			this.groupBox10.Controls.Add(this.cryptCheck);
 			this.groupBox10.Controls.Add(this.label29);
 			this.groupBox10.Controls.Add(this.portText);
-			this.groupBox10.Controls.Add(this.label28);
 			this.groupBox10.Controls.Add(this.createTableButton);
 			this.groupBox10.Controls.Add(this.label24);
 			this.groupBox10.Controls.Add(this.tableText);
@@ -1088,9 +1172,9 @@
 			this.groupBox10.Controls.Add(this.iniText);
 			this.groupBox10.Controls.Add(this.iniFolderSelectButton);
 			this.groupBox10.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.groupBox10.Location = new System.Drawing.Point(6, 109);
+			this.groupBox10.Location = new System.Drawing.Point(6, 119);
 			this.groupBox10.Name = "groupBox10";
-			this.groupBox10.Size = new System.Drawing.Size(467, 208);
+			this.groupBox10.Size = new System.Drawing.Size(467, 198);
 			this.groupBox10.TabIndex = 3;
 			this.groupBox10.TabStop = false;
 			this.groupBox10.Text = "作業ディレクトリ／データベース";
@@ -1100,134 +1184,66 @@
 			this.label29.AutoSize = true;
 			this.label29.Enabled = false;
 			this.label29.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label29.Location = new System.Drawing.Point(294, 69);
+			this.label29.Location = new System.Drawing.Point(294, 79);
 			this.label29.Name = "label29";
 			this.label29.Size = new System.Drawing.Size(32, 18);
 			this.label29.TabIndex = 18;
 			this.label29.Text = "Port";
-			// 
-			// label28
-			// 
-			this.label28.AutoSize = true;
-			this.label28.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label28.Location = new System.Drawing.Point(50, 153);
-			this.label28.Name = "label28";
-			this.label28.Size = new System.Drawing.Size(374, 51);
-			this.label28.TabIndex = 16;
-			this.label28.Text = "DB/Table自動作成を行う場合、URL、Port、User、Passは必須です。\r\nMySQLを使用する場合、上記に加えてDBも入力してください。\r\n対象のD" +
-    "Bへのフルアクセス権（GRANT ALL PRIVILEGES）が必要です。";
-			// 
-			// createTableButton
-			// 
-			this.createTableButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.createTableButton.Location = new System.Drawing.Point(397, 63);
-			this.createTableButton.Name = "createTableButton";
-			this.createTableButton.Size = new System.Drawing.Size(64, 52);
-			this.createTableButton.TabIndex = 15;
-			this.createTableButton.Text = "DB/Table\r\n自動作成";
-			this.createTableButton.UseVisualStyleBackColor = true;
-			this.createTableButton.Click += new System.EventHandler(this.createTableButton_Click);
 			// 
 			// label24
 			// 
 			this.label24.AutoSize = true;
 			this.label24.Enabled = false;
 			this.label24.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label24.Location = new System.Drawing.Point(194, 98);
+			this.label24.Location = new System.Drawing.Point(194, 108);
 			this.label24.Name = "label24";
 			this.label24.Size = new System.Drawing.Size(39, 18);
 			this.label24.TabIndex = 14;
 			this.label24.Text = "Table";
-			// 
-			// tableText
-			// 
-			this.tableText.Enabled = false;
-			this.tableText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.tableText.Location = new System.Drawing.Point(239, 94);
-			this.tableText.Name = "tableText";
-			this.tableText.Size = new System.Drawing.Size(152, 24);
-			this.tableText.TabIndex = 12;
 			// 
 			// label23
 			// 
 			this.label23.AutoSize = true;
 			this.label23.Enabled = false;
 			this.label23.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label23.Location = new System.Drawing.Point(7, 98);
+			this.label23.Location = new System.Drawing.Point(7, 108);
 			this.label23.Name = "label23";
 			this.label23.Size = new System.Drawing.Size(25, 18);
 			this.label23.TabIndex = 12;
 			this.label23.Text = "DB";
-			// 
-			// dbText
-			// 
-			this.dbText.Enabled = false;
-			this.dbText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.dbText.Location = new System.Drawing.Point(48, 94);
-			this.dbText.Name = "dbText";
-			this.dbText.Size = new System.Drawing.Size(135, 24);
-			this.dbText.TabIndex = 11;
 			// 
 			// label22
 			// 
 			this.label22.AutoSize = true;
 			this.label22.Enabled = false;
 			this.label22.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label22.Location = new System.Drawing.Point(194, 127);
+			this.label22.Location = new System.Drawing.Point(194, 137);
 			this.label22.Name = "label22";
 			this.label22.Size = new System.Drawing.Size(34, 18);
 			this.label22.TabIndex = 10;
 			this.label22.Text = "Pass";
-			// 
-			// pwText
-			// 
-			this.pwText.Enabled = false;
-			this.pwText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.pwText.Location = new System.Drawing.Point(239, 123);
-			this.pwText.Name = "pwText";
-			this.pwText.PasswordChar = '*';
-			this.pwText.Size = new System.Drawing.Size(152, 24);
-			this.pwText.TabIndex = 14;
 			// 
 			// label18
 			// 
 			this.label18.AutoSize = true;
 			this.label18.Enabled = false;
 			this.label18.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label18.Location = new System.Drawing.Point(7, 127);
+			this.label18.Location = new System.Drawing.Point(7, 137);
 			this.label18.Name = "label18";
 			this.label18.Size = new System.Drawing.Size(35, 18);
 			this.label18.TabIndex = 8;
 			this.label18.Text = "User";
-			// 
-			// userText
-			// 
-			this.userText.Enabled = false;
-			this.userText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.userText.Location = new System.Drawing.Point(48, 123);
-			this.userText.Name = "userText";
-			this.userText.Size = new System.Drawing.Size(135, 24);
-			this.userText.TabIndex = 13;
 			// 
 			// label16
 			// 
 			this.label16.AutoSize = true;
 			this.label16.Enabled = false;
 			this.label16.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label16.Location = new System.Drawing.Point(7, 69);
+			this.label16.Location = new System.Drawing.Point(7, 79);
 			this.label16.Name = "label16";
 			this.label16.Size = new System.Drawing.Size(32, 18);
 			this.label16.TabIndex = 6;
 			this.label16.Text = "URL";
-			// 
-			// urlText
-			// 
-			this.urlText.Enabled = false;
-			this.urlText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.urlText.Location = new System.Drawing.Point(48, 65);
-			this.urlText.Name = "urlText";
-			this.urlText.Size = new System.Drawing.Size(227, 24);
-			this.urlText.TabIndex = 9;
 			// 
 			// label9
 			// 
@@ -1261,7 +1277,7 @@
 			this.groupBox9.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox9.Location = new System.Drawing.Point(6, 6);
 			this.groupBox9.Name = "groupBox9";
-			this.groupBox9.Size = new System.Drawing.Size(467, 97);
+			this.groupBox9.Size = new System.Drawing.Size(467, 107);
 			this.groupBox9.TabIndex = 2;
 			this.groupBox9.TabStop = false;
 			this.groupBox9.Text = "ゲームリスト管理方法";
@@ -1270,7 +1286,7 @@
 			// 
 			this.label12.AutoSize = true;
 			this.label12.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label12.Location = new System.Drawing.Point(28, 75);
+			this.label12.Location = new System.Drawing.Point(28, 79);
 			this.label12.Name = "label12";
 			this.label12.Size = new System.Drawing.Size(416, 18);
 			this.label12.TabIndex = 5;
@@ -1289,6 +1305,7 @@
 			// tabControl2
 			// 
 			this.tabControl2.Controls.Add(this.tabPage5);
+			this.tabControl2.Controls.Add(this.tabPage10);
 			this.tabControl2.Controls.Add(this.tabPage8);
 			this.tabControl2.Controls.Add(this.tabPage9);
 			this.tabControl2.Location = new System.Drawing.Point(2, 2);
@@ -1307,7 +1324,7 @@
 			this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
 			this.tabPage5.Size = new System.Drawing.Size(472, 291);
 			this.tabPage5.TabIndex = 0;
-			this.tabPage5.Text = "データ";
+			this.tabPage5.Text = "データ更新／修復";
 			this.tabPage5.UseVisualStyleBackColor = true;
 			// 
 			// groupBox8
@@ -1465,6 +1482,187 @@
 			this.label19.Size = new System.Drawing.Size(19, 17);
 			this.label19.TabIndex = 3;
 			this.label19.Text = "を";
+			// 
+			// tabPage10
+			// 
+			this.tabPage10.Controls.Add(this.groupBox19);
+			this.tabPage10.Controls.Add(this.groupBox18);
+			this.tabPage10.Location = new System.Drawing.Point(4, 22);
+			this.tabPage10.Name = "tabPage10";
+			this.tabPage10.Size = new System.Drawing.Size(472, 291);
+			this.tabPage10.TabIndex = 3;
+			this.tabPage10.Text = "データ取込／出力";
+			this.tabPage10.UseVisualStyleBackColor = true;
+			// 
+			// groupBox19
+			// 
+			this.groupBox19.Controls.Add(this.ImportRadio_CSV);
+			this.groupBox19.Controls.Add(this.ImportRadio_INI);
+			this.groupBox19.Controls.Add(this.ImportPathSelectButton);
+			this.groupBox19.Controls.Add(this.ImportPathText);
+			this.groupBox19.Controls.Add(this.label5);
+			this.groupBox19.Controls.Add(this.ImportButton);
+			this.groupBox19.Location = new System.Drawing.Point(9, 105);
+			this.groupBox19.Name = "groupBox19";
+			this.groupBox19.Size = new System.Drawing.Size(462, 66);
+			this.groupBox19.TabIndex = 1;
+			this.groupBox19.TabStop = false;
+			this.groupBox19.Text = "取込";
+			// 
+			// ImportRadio_CSV
+			// 
+			this.ImportRadio_CSV.AutoSize = true;
+			this.ImportRadio_CSV.Checked = true;
+			this.ImportRadio_CSV.Location = new System.Drawing.Point(12, 28);
+			this.ImportRadio_CSV.Name = "ImportRadio_CSV";
+			this.ImportRadio_CSV.Size = new System.Drawing.Size(46, 16);
+			this.ImportRadio_CSV.TabIndex = 11;
+			this.ImportRadio_CSV.TabStop = true;
+			this.ImportRadio_CSV.Text = "CSV";
+			this.ImportRadio_CSV.UseVisualStyleBackColor = true;
+			this.ImportRadio_CSV.CheckedChanged += new System.EventHandler(this.ImportPath_CSV_CheckedChanged);
+			// 
+			// ImportRadio_INI
+			// 
+			this.ImportRadio_INI.AutoSize = true;
+			this.ImportRadio_INI.Location = new System.Drawing.Point(64, 28);
+			this.ImportRadio_INI.Name = "ImportRadio_INI";
+			this.ImportRadio_INI.Size = new System.Drawing.Size(37, 16);
+			this.ImportRadio_INI.TabIndex = 10;
+			this.ImportRadio_INI.Text = "INI";
+			this.ImportRadio_INI.UseVisualStyleBackColor = true;
+			this.ImportRadio_INI.CheckedChanged += new System.EventHandler(this.ImportPath_INI_CheckedChanged);
+			// 
+			// ImportPathSelectButton
+			// 
+			this.ImportPathSelectButton.Location = new System.Drawing.Point(308, 23);
+			this.ImportPathSelectButton.Name = "ImportPathSelectButton";
+			this.ImportPathSelectButton.Size = new System.Drawing.Size(25, 23);
+			this.ImportPathSelectButton.TabIndex = 9;
+			this.ImportPathSelectButton.Text = "..";
+			this.ImportPathSelectButton.UseVisualStyleBackColor = true;
+			this.ImportPathSelectButton.Click += new System.EventHandler(this.ImportPathSelectButton_Click);
+			// 
+			// ImportPathText
+			// 
+			this.ImportPathText.Location = new System.Drawing.Point(107, 25);
+			this.ImportPathText.Name = "ImportPathText";
+			this.ImportPathText.Size = new System.Drawing.Size(195, 19);
+			this.ImportPathText.TabIndex = 8;
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Location = new System.Drawing.Point(344, 30);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(14, 12);
+			this.label5.TabIndex = 6;
+			this.label5.Text = "を";
+			// 
+			// ImportButton
+			// 
+			this.ImportButton.Location = new System.Drawing.Point(367, 25);
+			this.ImportButton.Name = "ImportButton";
+			this.ImportButton.Size = new System.Drawing.Size(81, 23);
+			this.ImportButton.TabIndex = 1;
+			this.ImportButton.Text = "取込";
+			this.ImportButton.UseVisualStyleBackColor = true;
+			this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
+			// 
+			// groupBox18
+			// 
+			this.groupBox18.Controls.Add(this.label4);
+			this.groupBox18.Controls.Add(this.ExportPathSelectButton);
+			this.groupBox18.Controls.Add(this.label3);
+			this.groupBox18.Controls.Add(this.ExportPathText);
+			this.groupBox18.Controls.Add(this.label2);
+			this.groupBox18.Controls.Add(this.ExportRadio_CSV);
+			this.groupBox18.Controls.Add(this.ExportRadio_INI);
+			this.groupBox18.Controls.Add(this.ExportButton);
+			this.groupBox18.Location = new System.Drawing.Point(7, 4);
+			this.groupBox18.Name = "groupBox18";
+			this.groupBox18.Size = new System.Drawing.Size(462, 95);
+			this.groupBox18.TabIndex = 0;
+			this.groupBox18.TabStop = false;
+			this.groupBox18.Text = "出力";
+			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(346, 55);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(14, 12);
+			this.label4.TabIndex = 8;
+			this.label4.Text = "に";
+			// 
+			// ExportPathSelectButton
+			// 
+			this.ExportPathSelectButton.Location = new System.Drawing.Point(310, 50);
+			this.ExportPathSelectButton.Name = "ExportPathSelectButton";
+			this.ExportPathSelectButton.Size = new System.Drawing.Size(25, 23);
+			this.ExportPathSelectButton.TabIndex = 7;
+			this.ExportPathSelectButton.Text = "..";
+			this.ExportPathSelectButton.UseVisualStyleBackColor = true;
+			this.ExportPathSelectButton.Click += new System.EventHandler(this.ExportPathSelectButton_Click);
+			// 
+			// label3
+			// 
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(302, 24);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(39, 12);
+			this.label3.TabIndex = 4;
+			this.label3.Text = "形式で";
+			// 
+			// ExportPathText
+			// 
+			this.ExportPathText.Location = new System.Drawing.Point(14, 52);
+			this.ExportPathText.Name = "ExportPathText";
+			this.ExportPathText.Size = new System.Drawing.Size(290, 19);
+			this.ExportPathText.TabIndex = 6;
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(37, 24);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(99, 12);
+			this.label2.TabIndex = 3;
+			this.label2.Text = "登録済みのデータを";
+			// 
+			// ExportRadio_CSV
+			// 
+			this.ExportRadio_CSV.AutoSize = true;
+			this.ExportRadio_CSV.Checked = true;
+			this.ExportRadio_CSV.Location = new System.Drawing.Point(166, 22);
+			this.ExportRadio_CSV.Name = "ExportRadio_CSV";
+			this.ExportRadio_CSV.Size = new System.Drawing.Size(46, 16);
+			this.ExportRadio_CSV.TabIndex = 2;
+			this.ExportRadio_CSV.TabStop = true;
+			this.ExportRadio_CSV.Text = "CSV";
+			this.ExportRadio_CSV.UseVisualStyleBackColor = true;
+			this.ExportRadio_CSV.CheckedChanged += new System.EventHandler(this.ExportRadio_CSV_CheckedChanged);
+			// 
+			// ExportRadio_INI
+			// 
+			this.ExportRadio_INI.AutoSize = true;
+			this.ExportRadio_INI.Location = new System.Drawing.Point(239, 22);
+			this.ExportRadio_INI.Name = "ExportRadio_INI";
+			this.ExportRadio_INI.Size = new System.Drawing.Size(37, 16);
+			this.ExportRadio_INI.TabIndex = 1;
+			this.ExportRadio_INI.Text = "INI";
+			this.ExportRadio_INI.UseVisualStyleBackColor = true;
+			this.ExportRadio_INI.CheckedChanged += new System.EventHandler(this.ExportRadio_INI_CheckedChanged);
+			// 
+			// ExportButton
+			// 
+			this.ExportButton.Location = new System.Drawing.Point(369, 50);
+			this.ExportButton.Name = "ExportButton";
+			this.ExportButton.Size = new System.Drawing.Size(81, 23);
+			this.ExportButton.TabIndex = 0;
+			this.ExportButton.Text = "出力";
+			this.ExportButton.UseVisualStyleBackColor = true;
+			this.ExportButton.Click += new System.EventHandler(this.ExportButton_Click);
 			// 
 			// tabPage8
 			// 
@@ -1897,6 +2095,10 @@
 			// 
 			this.openFileDialog2.FileName = "openFileDialog2";
 			// 
+			// openFileDialog3
+			// 
+			this.openFileDialog3.FileName = "openFileDialog3";
+			// 
 			// Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1951,6 +2153,11 @@
 			this.groupBox12.PerformLayout();
 			this.groupBox7.ResumeLayout(false);
 			this.groupBox7.PerformLayout();
+			this.tabPage10.ResumeLayout(false);
+			this.groupBox19.ResumeLayout(false);
+			this.groupBox19.PerformLayout();
+			this.groupBox18.ResumeLayout(false);
+			this.groupBox18.PerformLayout();
 			this.tabPage8.ResumeLayout(false);
 			this.groupBox15.ResumeLayout(false);
 			this.ExecuteModeGroup.ResumeLayout(false);
@@ -2042,7 +2249,6 @@
 		private System.Windows.Forms.Button dconAppIDClearButton;
 		private System.Windows.Forms.TextBox dconAppIDText;
 		private System.Windows.Forms.Label label27;
-		private System.Windows.Forms.Label label28;
 		private System.Windows.Forms.Button updchkButton;
 		private System.Windows.Forms.Button getDconButton;
 		private System.Windows.Forms.Label label29;
@@ -2052,7 +2258,6 @@
 		private System.Windows.Forms.GroupBox groupBox14;
 		private System.Windows.Forms.CheckBox gridDisableCheck;
 		private System.Windows.Forms.PictureBox logoPictureBox;
-		private System.Windows.Forms.Button dbBackupButton;
 		private System.Windows.Forms.TabControl tabControl2;
 		private System.Windows.Forms.TabPage tabPage5;
 		private System.Windows.Forms.GroupBox groupBox8;
@@ -2117,5 +2322,25 @@
 		private System.Windows.Forms.Label disclaimerLabel;
 		private System.Windows.Forms.CheckBox addGameDirCheck;
 		private System.Windows.Forms.CheckBox DisableInitialLoadCountCheck;
+		private System.Windows.Forms.CheckBox cryptCheck;
+		private System.Windows.Forms.TabPage tabPage10;
+		private System.Windows.Forms.GroupBox groupBox19;
+		private System.Windows.Forms.GroupBox groupBox18;
+		private System.Windows.Forms.RadioButton ImportRadio_CSV;
+		private System.Windows.Forms.RadioButton ImportRadio_INI;
+		private System.Windows.Forms.Button ImportPathSelectButton;
+		private System.Windows.Forms.TextBox ImportPathText;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Button ImportButton;
+		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.Button ExportPathSelectButton;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.TextBox ExportPathText;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.RadioButton ExportRadio_CSV;
+		private System.Windows.Forms.RadioButton ExportRadio_INI;
+		private System.Windows.Forms.Button ExportButton;
+		private System.Windows.Forms.OpenFileDialog openFileDialog3;
+		private System.Windows.Forms.SaveFileDialog saveFileDialog1;
 	}
 }

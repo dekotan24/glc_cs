@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using static glc_cs.Core.Property;
 using static glc_cs.General.Var;
 
 namespace glc_cs
@@ -124,6 +125,12 @@ namespace glc_cs
 		/// </summary>
 		private readonly StringBuilder v1_4 = new StringBuilder("[必須] Ver.1.4(Update to GL 1.10 or above)\n")
 		.AppendLine("\t* [カラム追加] [EXTRACT_TOOL]:抽出ツール保存用");
+
+		/// <summary>
+		/// [必須] Ver.1.4(update to GL 1.10)
+		/// </summary>
+		private readonly StringBuilder v1_5 = new StringBuilder("[必須] Ver.1.5(Update to GL 1.11 or above)\n")
+		.AppendLine("\t* [カラム追加] [SAVEDATA_PATH]:セーブデータのパス用");
 
 
 		/// <summary>
@@ -433,6 +440,57 @@ namespace glc_cs
 					updatePhaseCount++;
 				}
 				/* ↑ [必須] Ver.1.4(update to GL 1.10) ↑ */
+				/* ↓ [必須] Ver.1.5(update to GL 1.11) ↓ */
+				// [EXTRACT_TOOL] 存在チェック
+				cm = new SqlCommand()
+				{
+					CommandType = CommandType.Text,
+					CommandTimeout = 30,
+					CommandText = createIsExistsTableSQL(0, "SAVEDATA_PATH")
+				};
+				cm.Connection = con;
+
+				try
+				{
+					con.Open();
+					using (var reader = cm.ExecuteReader())
+					{
+						// カラムが存在しない場合、アップデートを行う
+						if (reader.Read() == false)
+						{
+							// DataReaderクローズ（クローズしないとエラーになる）
+							reader.Close();
+
+							hasUpdate = true;
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					string errorMsg = "[v1.4 -> v1.5 | SAVEDATA_PATH] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText + " / hasUpdate:" + hasUpdate;
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+					errMsg.AppendLine(errorMsg);
+				}
+				finally
+				{
+					if (con.State == ConnectionState.Open)
+					{
+						con.Close();
+					}
+
+					if (hasUpdate)
+					{
+						updateLog.AppendLine(v1_5.ToString());
+						updateRequired = true;
+						hasUpdate = false;
+					}
+					else
+					{
+						currentVersion = "1.5";
+					}
+					updatePhaseCount++;
+				}
+				/* ↑ [必須] Ver.1.4(update to GL 1.10) ↑ */
 
 
 			}
@@ -705,6 +763,58 @@ namespace glc_cs
 				}
 
 				/* ↑ [必須] Ver.1.4(update to GL 1.10) ↑ */
+				/* ↓ [必須] Ver.1.5(update to GL 1.11) ↓ */
+				// [EXTRACT_TOOL] 存在チェック
+				cm = new MySqlCommand()
+				{
+					CommandType = CommandType.Text,
+					CommandTimeout = 30,
+					CommandText = createIsExistsTableSQL(1, "SAVEDATA_PATH")
+				};
+				cm.Connection = con2;
+
+				try
+				{
+					con2.Open();
+					using (var reader = cm.ExecuteReader())
+					{
+						// カラムが存在しない場合、アップデートを行う
+						if (reader.Read() == false)
+						{
+							// DataReaderクローズ（クローズしないとエラーになる）
+							reader.Close();
+
+							hasUpdate = true;
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					string errorMsg = "[v1.4 -> v1.5 | SAVEDATA_PATH] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con2.ConnectionString + " / SQLCommand:" + cm.CommandText + " / hasUpdate:" + hasUpdate;
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+				}
+				finally
+				{
+					if (con2.State == ConnectionState.Open)
+					{
+						con2.Close();
+					}
+
+					if (hasUpdate)
+					{
+						updateLog.AppendLine(v1_5.ToString());
+						updateRequired = true;
+						hasUpdate = false;
+					}
+					else
+					{
+						currentVersion = "1.5";
+					}
+					updatePhaseCount++;
+				}
+
+				/* ↑ [必須] Ver.1.5(update to GL 1.11) ↑ */
 			}
 			else
 			{
@@ -718,6 +828,7 @@ namespace glc_cs
 				string ini_version = string.Empty;
 				string execute_cmd = string.Empty;
 				string extract_tool = string.Empty;
+				string savedata_path = string.Empty;
 
 				// 全ゲーム数取得
 				if (File.Exists(GameIni))
@@ -738,8 +849,8 @@ namespace glc_cs
 							{
 								/* ↓ [必須] Ver.1.1(update to GL 1.03) ↓ */
 								// アップデート対象のセクションを取得する
-								KeyNames[] keyNames = { KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.execute_cmd, KeyNames.extract_tool };
-								string[] failedVal = { "!Err", "!Err", "!Rrr", "!Err", "!Err", "!Err" };
+								KeyNames[] keyNames = { KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.execute_cmd, KeyNames.extract_tool, KeyNames.savedata_path };
+								string[] failedVal = { "!Err", "!Err", "!Rrr", "!Err", "!Err", "!Err", "!Err" };
 
 								string[] resultValues = IniRead(readini, "game", keyNames, failedVal);
 								dcon_img = resultValues[0];
@@ -748,6 +859,7 @@ namespace glc_cs
 								ini_version = resultValues[3];
 								execute_cmd = resultValues[4];
 								extract_tool = resultValues[5];
+								savedata_path = resultValues[6];
 
 
 								// 取得できなかった場合、アップデートフラグを立てる
@@ -789,6 +901,15 @@ namespace glc_cs
 									break;  // 1個でもアップデート対象があった場合、全てアップデート対象となるためループから抜ける
 								}
 								/* ↑ [必須] Ver.1.4(update to GL 1.10) ↑ */
+
+								/* ↓ [必須] Ver.1.5(update to GL 1.11) ↓ */
+								if (savedata_path.Equals("!Err"))
+								{
+									hasUpdate = true;
+									currentVersion = "1.4";
+									break;  // 1個でもアップデート対象があった場合、全てアップデート対象となるためループから抜ける
+								}
+								/* ↑ [必須] Ver.1.5(update to GL 1.11) ↑ */
 							}
 							catch
 							{
@@ -823,6 +944,11 @@ namespace glc_cs
 
 							case "1.3":
 								updateLog.AppendLine(v1_4.ToString());
+								updateRequired = true;
+								goto case "1.4";
+
+							case "1.4":
+								updateLog.AppendLine(v1_5.ToString());
 								updateRequired = true;
 								break;
 						}
@@ -1081,6 +1207,39 @@ namespace glc_cs
 					updateProgress.Value++;
 				}
 
+				// [必須] Ver.1.5(update to GL 1.11)
+				try
+				{
+					con.Open();
+					// カラム追加（EXTRACT_TOOL）
+					cm = new SqlCommand()
+					{
+						CommandType = CommandType.Text,
+						CommandTimeout = 30,
+						CommandText = @"ALTER TABLE " + DbName + "." + DbTable + " ADD SAVEDATA_PATH NVARCHAR(MAX) NULL;"
+					};
+					cm.Connection = con;
+					cm.ExecuteNonQuery();
+
+					updateStatus = 1;
+				}
+				catch (Exception ex)
+				{
+					string errorMsg = "[v1.4 -> v1.5 | ALTER TABLE(ADD), SAVEDATA_PATH] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText;
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+					updateStatus = -1;
+				}
+				finally
+				{
+					if (con.State == ConnectionState.Open)
+					{
+						con.Close();
+					}
+					// アップデート処理後のステータス更新
+					updateProgress.Value++;
+				}
+
 				// ↓ 最終共通処理
 				try
 				{
@@ -1104,6 +1263,7 @@ namespace glc_cs
 					};
 					cm.Connection = con;
 					cm.ExecuteNonQuery();
+
 					updateStatus = 1;
 				}
 				catch (Exception ex)
@@ -1146,7 +1306,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbTable + " ADD COLUMN DCON_IMG VARCHAR(50) NULL, ADD COLUMN MEMO VARCHAR(500) NULL, ADD COLUMN STATUS VARCHAR(10) NULL DEFAULT '未プレイ', ADD COLUMN DB_VERSION VARCHAR(5) NOT NULL DEFAULT '1.1';"
+						CommandText = @"ALTER TABLE " + DbTable + " ADD COLUMN DCON_IMG NVARCHAR(50) NULL, ADD COLUMN MEMO NVARCHAR(500) NULL, ADD COLUMN STATUS NVARCHAR(10) NULL DEFAULT '未プレイ', ADD COLUMN DB_VERSION NVARCHAR(5) NOT NULL DEFAULT '1.1';"
 					};
 					cm.Connection = con2;
 					cm.ExecuteNonQuery();
@@ -1224,6 +1384,7 @@ namespace glc_cs
 					};
 					cm.Connection = con2;
 					cm.ExecuteNonQuery();
+
 					updateStatus = 1;
 				}
 				catch (Exception ex)
@@ -1252,10 +1413,11 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbTable + " ADD COLUMN EXECUTE_CMD VARCHAR(500) NULL;"
+						CommandText = @"ALTER TABLE " + DbTable + " ADD COLUMN EXECUTE_CMD NVARCHAR(500) NULL;"
 					};
 					cm.Connection = con2;
 					cm.ExecuteNonQuery();
+
 					updateStatus = 1;
 				}
 				catch (Exception ex)
@@ -1284,15 +1446,49 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbTable + " ADD COLUMN EXTRACT_TOOL VARCHAR(10) NULL DEFAULT '0';"
+						CommandText = @"ALTER TABLE " + DbTable + " ADD COLUMN EXTRACT_TOOL NVARCHAR(10) NULL DEFAULT '0';"
 					};
 					cm.Connection = con2;
 					cm.ExecuteNonQuery();
+
 					updateStatus = 1;
 				}
 				catch (Exception ex)
 				{
 					string errorMsg = "[v1.3 -> v1.4 | ALTER TABLE(ADD), EXTRACT_TOOL] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con2.ConnectionString + " / SQLCommand:" + cm.CommandText;
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+					updateStatus = -1;
+				}
+				finally
+				{
+					if (con2.State == ConnectionState.Open)
+					{
+						con2.Close();
+					}
+					// アップデート処理後のステータス更新
+					updateProgress.Value++;
+				}
+
+				// [必須] Ver.1.5(update to GL 1.11)
+				try
+				{
+					con2.Open();
+					// カラム追加（SAVEDATA_PATH）
+					cm = new MySqlCommand()
+					{
+						CommandType = CommandType.Text,
+						CommandTimeout = 30,
+						CommandText = @"ALTER TABLE " + DbTable + " ADD COLUMN SAVEDATA_PATH NVARCHAR(500) NULL;"
+					};
+					cm.Connection = con2;
+					cm.ExecuteNonQuery();
+
+					updateStatus = 1;
+				}
+				catch (Exception ex)
+				{
+					string errorMsg = "[v1.4 -> v1.5 | ALTER TABLE(ADD), SAVEDATA_PATH] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con2.ConnectionString + " / SQLCommand:" + cm.CommandText;
 					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
 					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
 					updateStatus = -1;
@@ -1330,6 +1526,7 @@ namespace glc_cs
 					};
 					cm.Connection = con2;
 					cm.ExecuteNonQuery();
+
 					updateStatus = 1;
 				}
 				catch (Exception ex)
@@ -1360,6 +1557,7 @@ namespace glc_cs
 				string ini_version = "1.1";
 				string execute_cmd = string.Empty;
 				string extract_tool = "0";
+				string savedata_path = string.Empty;
 
 				// アップデート処理後のステータス更新
 				updateStatus = 1;
@@ -1382,8 +1580,8 @@ namespace glc_cs
 							try
 							{
 								// アップデート対象のセクションを取得する
-								KeyNames[] keyNames = { KeyNames.temp1, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.execute_cmd, KeyNames.extract_tool };
-								string[] failedVal = { "!Err", "!Err", "!Rrr", "!Err", "!Err", "!Err" };
+								KeyNames[] keyNames = { KeyNames.temp1, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.execute_cmd, KeyNames.extract_tool, KeyNames.savedata_path };
+								string[] failedVal = { "!Err", "!Err", "!Rrr", "!Err", "!Err", "!Err", "!Err" };
 
 								string[] resultValues = IniRead(readini, "game", keyNames, failedVal);
 								dcon_img = resultValues[0];
@@ -1392,6 +1590,7 @@ namespace glc_cs
 								ini_version = resultValues[3];
 								execute_cmd = resultValues[4];
 								extract_tool = resultValues[5];
+								savedata_path = resultValues[6];
 
 								/* ↓ [必須] Ver.1.1(update to GL 1.03) ↓ */
 								// 取得できなかった場合、アップデートを行う
@@ -1430,6 +1629,12 @@ namespace glc_cs
 									IniWrite(readini, "game", KeyNames.extract_tool, "0");
 								}
 								/* ↑ [必須] Ver.1.4(update to GL 1.10) ↑ */
+								/* ↓ [必須] Ver.1.5(update to GL 1.11) ↓ */
+								if (savedata_path.Equals("!Err"))
+								{
+									IniWrite(readini, "game", KeyNames.savedata_path, "0");
+								}
+								/* ↑ [必須] Ver.1.5(update to GL 1.11) ↑ */
 
 								/* ↓ 最終共通処理 */
 								// INIバージョン設定
@@ -1466,7 +1671,7 @@ namespace glc_cs
 					WriteIni("disable", "updchkVer", AppVer);
 				}
 
-				MessageBox.Show("アップデートが完了しました！（" + latestVersion + "）", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("アップデートが完了しました！（" + latestVersion + "）" + (errMsg.Length != 0 ? "\n\nアップデート中に幾つかのエラーに遭遇しました。\nカラム重複エラー以外のエラーが存在する場合は正しくアップデートできなかった可能性があります。\nエラー内容はエラーログをご確認ください。" : ""), AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
 				this.DialogResult = DialogResult.OK;
 			}
 			else

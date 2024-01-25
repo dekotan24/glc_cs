@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using static glc_cs.Core.Property;
 using static glc_cs.General.Var;
 
 namespace glc_cs
@@ -524,7 +525,7 @@ namespace glc_cs
 		}
 
 		/// <summary>
-		/// 実行アプリケーションが指定された場合に、自動的にアプリケーションアイコンを取得します。
+		/// 実行アプリケーションが指定された場合に、自動的にアプリケーション情報を取得します。
 		/// </summary>
 		/// <param name="targetFile"></param>
 		/// <param name="targetType"></param>
@@ -573,6 +574,16 @@ namespace glc_cs
 				{
 					imgPathText.Text = string.Empty;
 				}
+
+				// 抽出ツールの自動選択
+				if (ExtractEnable)
+				{
+					string extractToolResult = GetExtractTool(targetFile);
+					if (extractToolResult.Equals("krkrz") || extractToolResult.Equals("krkrz"))
+					{
+						extractToolCombo.SelectedItem = extractToolResult;
+					}
+				}
 			}
 			else
 			{
@@ -613,6 +624,26 @@ namespace glc_cs
 			{
 				imgPictureBox.ImageLocation = "";
 			}
+		}
+
+		private string GetExtractTool(string executePath)
+		{
+			string result = string.Empty;
+			if (File.Exists(executePath))
+			{
+				// アプリケーション情報の取得
+				System.Diagnostics.FileVersionInfo vi = System.Diagnostics.FileVersionInfo.GetVersionInfo(executePath);
+				string productName = vi.ProductName;
+				if (ProductName.Contains("(KIRIKIRI) Z"))
+				{
+					result = "krkrz";
+				}
+				else if (ProductName.Contains("(KIRIKIRI)"))
+				{
+					result = "krkr";
+				}
+			}
+			return result;
 		}
 
 		private void ReloadIni()

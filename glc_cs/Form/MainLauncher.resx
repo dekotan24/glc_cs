@@ -2743,24 +2743,6 @@
   <data name="statusCombo.ItemHeight" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
-  <data name="statusCombo.Items" xml:space="preserve">
-    <value>未プレイ</value>
-  </data>
-  <data name="statusCombo.Items1" xml:space="preserve">
-    <value>プレイ中</value>
-  </data>
-  <data name="statusCombo.Items2" xml:space="preserve">
-    <value>プレイ済</value>
-  </data>
-  <data name="statusCombo.Items3" xml:space="preserve">
-    <value>未攻略</value>
-  </data>
-  <data name="statusCombo.Items4" xml:space="preserve">
-    <value>攻略中</value>
-  </data>
-  <data name="statusCombo.Items5" xml:space="preserve">
-    <value>攻略済</value>
-  </data>
   <data name="statusCombo.Location" type="System.Drawing.Point, System.Drawing">
     <value>339, 96</value>
   </data>
