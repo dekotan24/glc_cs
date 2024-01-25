@@ -2,7 +2,7 @@
 
 
 ## 概要
-Game LauncherのC#移植版です。<br>
+ADVゲームの一元管理（ランチャー）を目的として作成しています。<br>
 趣味と勉強で開発しているので、ガバガバなところもあるかもしれません。<br>
 データベースの設定方法は[Wiki](https://github.com/dekotan24/glc_cs/wiki)をご覧ください。
 
@@ -13,6 +13,7 @@ Visual Studio 2022
 
 ## 使用しているNugetパッケージ
 * MySQL.Data
+* Newtonsoft.Json
 
 
 ## dcon
