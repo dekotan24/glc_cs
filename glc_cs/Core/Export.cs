@@ -13,7 +13,17 @@ namespace glc_cs.Core
 {
 	internal class Export
 	{
-		public static bool ExportData(string exportType, string saveType, string tableName, string savePath = "", string databaseName = null, SqlConnection scn = null, MySqlConnection mcn = null)
+		/// <summary>
+		/// [MSSQL] ファイルエクスポート
+		/// </summary>
+		/// <param name="exportType">出力形式</param>
+		/// <param name="saveType">データ保存方法</param>
+		/// <param name="tableName">データベーステーブル名</param>
+		/// <param name="savePath">保存先パス</param>
+		/// <param name="databaseName">データベース名</param>
+		/// <param name="scn">MSSQLコネクション</param>
+		/// <returns>true：成功、false:失敗</returns>
+		public static bool ExportData(string exportType, string tableName, string savePath, string databaseName, SqlConnection scn)
 		{
 			bool result = true;
 
@@ -22,26 +32,35 @@ namespace glc_cs.Core
 				savePath += "\\";
 			}
 
-			switch (saveType)
+			return result = ExecMSSQLExport(exportType, scn, databaseName, tableName, savePath);
+		}
+
+		/// <summary>
+		/// [MySQL] ファイルエクスポート
+		/// </summary>
+		/// <param name="exportType">出力形式</param>
+		/// <param name="saveType">データ保存方法</param>
+		/// <param name="tableName">データベーステーブル名</param>
+		/// <param name="savePath">保存先パス</param>
+		/// <param name="mcn">MySQLコネクション</param>
+		/// <returns>true：成功、false:失敗</returns>
+		public static bool ExportData(string exportType, string tableName, string savePath, MySqlConnection mcn)
+		{
+			bool result = true;
+
+			if (exportType == "INI" && !savePath.EndsWith("\\"))
 			{
-				case "D":
-					// MSSQL
-					result = ExecMSSQLExport(exportType, scn, databaseName, tableName, savePath);
-					break;
-				case "M":
-					// MySQL
-					result = ExecMySQLExport(exportType, mcn, tableName, savePath);
-					break;
-				default:
-					result = false;
-					break;
+				savePath += "\\";
 			}
-			return result;
+
+			// MySQL
+			return result = ExecMySQLExport(exportType, mcn, tableName, savePath);
 		}
 
 		private static bool ExecMSSQLExport(string exportType, SqlConnection cn, string databaseName, string tableName, string exportPath)
 		{
 			bool result = true;
+			bool exportResult = true;
 
 			try
 			{
@@ -130,11 +149,16 @@ namespace glc_cs.Core
 				switch (exportType)
 				{
 					case "INI":
-						IniExport(items, exportPath);
+						exportResult = IniExport(items, exportPath);
 						break;
 					case "CSV":
-						CsvExport(items, exportPath);
+						exportResult = CsvExport(items, exportPath);
 						break;
+				}
+
+				if (!exportResult)
+				{
+					result = false;
 				}
 			}
 			catch (Exception ex)
@@ -149,6 +173,7 @@ namespace glc_cs.Core
 		private static bool ExecMySQLExport(string exportType, MySqlConnection mcn, string tableName, string exportPath)
 		{
 			bool result = true;
+			bool exportResult = true;
 
 			try
 			{
@@ -238,11 +263,16 @@ namespace glc_cs.Core
 				switch (exportType)
 				{
 					case "INI":
-						IniExport(items, exportPath);
+						exportResult = IniExport(items, exportPath);
 						break;
 					case "CSV":
-						CsvExport(items, exportPath);
+						exportResult = CsvExport(items, exportPath);
 						break;
+				}
+
+				if (!exportResult)
+				{
+					result = false;
 				}
 			}
 			catch (Exception ex)

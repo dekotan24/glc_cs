@@ -12,7 +12,18 @@ namespace glc_cs.Core
 {
 	internal class Import
 	{
-		public static bool ImportData(string importType, string saveType, string tableName, string savePath = "", string databaseName = null, SqlConnection scn = null, MySqlConnection mcn = null)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="importType"></param>
+		/// <param name="saveType"></param>
+		/// <param name="tableName"></param>
+		/// <param name="savePath"></param>
+		/// <param name="databaseName"></param>
+		/// <param name="scn"></param>
+		/// <param name="mcn"></param>
+		/// <returns></returns>
+		public static bool ImportData(string importType, string tableName, string savePath, string databaseName, SqlConnection scn)
 		{
 			bool result = true;
 
@@ -21,20 +32,28 @@ namespace glc_cs.Core
 				savePath += "\\";
 			}
 
-			switch (saveType)
+			result = ExecMSSQLImport(importType, scn, databaseName, tableName, savePath);
+			return result;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="importType"></param>
+		/// <param name="tableName"></param>
+		/// <param name="savePath"></param>
+		/// <param name="mcn"></param>
+		/// <returns></returns>
+		public static bool ImportData(string importType, string tableName, string savePath, MySqlConnection mcn)
+		{
+			bool result = true;
+
+			if (importType == "INI" && !savePath.EndsWith("\\"))
 			{
-				case "D":
-					// MSSQL
-					result = ExecMSSQLImport(importType, scn, databaseName, tableName, savePath);
-					break;
-				case "M":
-					// MySQL
-					result = ExecMySQLImport(importType, mcn, tableName, savePath);
-					break;
-				default:
-					result = false;
-					break;
+				savePath += "\\";
 			}
+
+			result = ExecMySQLImport(importType, mcn, tableName, savePath);
 			return result;
 		}
 
@@ -55,7 +74,7 @@ namespace glc_cs.Core
 				};
 				cm.Connection = cn;
 
-				using (var reader = cm2.ExecuteReader())
+				using (var reader = cm.ExecuteReader())
 				{
 					// ヘッダ追加
 					int i = 0;

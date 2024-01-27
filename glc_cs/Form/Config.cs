@@ -1819,7 +1819,7 @@ namespace glc_cs
 
 			if (ExportRadio_CSV.Checked)
 			{
-				if (ExportData("CSV", SaveType, DbTable, exportPath, DbName, cn, mcn))
+				if (SaveType == "D" ? ExportData("CSV", DbTable, exportPath, DbName, cn) : ExportData("CSV", DbTable, exportPath, mcn))
 				{
 					label15.Text = "出力完了";
 				}
@@ -1830,7 +1830,7 @@ namespace glc_cs
 			}
 			else
 			{
-				if (ExportData("INI", SaveType, DbTable, exportPath, DbName, cn, mcn))
+				if (SaveType == "D" ? ExportData("INI", DbTable, exportPath, DbName, cn) : ExportData("INI", DbTable, exportPath, mcn))
 				{
 					label15.Text = "出力完了";
 				}

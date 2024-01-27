@@ -230,7 +230,6 @@
     <Compile Include="Core\Archive.cs" />
     <Compile Include="Core\Crypt.cs" />
     <Compile Include="Core\DataBind.cs" />
-    <Compile Include="Core\Import.cs" />
     <Compile Include="Core\Export.cs" />
     <Compile Include="Core\Property.cs" />
     <Compile Include="Form\DBUpdate.cs">
