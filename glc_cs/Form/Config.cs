@@ -1358,6 +1358,9 @@ namespace glc_cs
 				MySqlTransaction mtr = null;
 
 				string queryResult = string.Empty;
+				DataTable dt = new DataTable();
+				SqlDataAdapter da = null;
+				MySqlDataAdapter mda = null;
 
 				if (SaveType == "D")
 				{
@@ -1379,15 +1382,19 @@ namespace glc_cs
 						{
 							queryResult = "影響行数：" + cm.ExecuteNonQuery().ToString();
 						}
+						else if (executeReaderRadio.Checked)
+						{
+							da = new SqlDataAdapter(cm);
+							da.Fill(dt);
+						}
 						else
 						{
 							queryResult = cm.ExecuteScalar().ToString();
 						}
 
-						tr.Commit();
-						if (queryResult.Length != 0)
+						if (!executeReaderRadio.Checked)
 						{
-							MessageBox.Show(@queryResult, AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+							tr.Commit();
 						}
 					}
 					catch (Exception ex)
@@ -1427,20 +1434,24 @@ namespace glc_cs
 						{
 							queryResult = "影響行数：" + mcm.ExecuteNonQuery().ToString();
 						}
+						else if (executeReaderRadio.Checked)
+						{
+							mda = new MySqlDataAdapter(mcm);
+							mda.Fill(dt);
+						}
 						else
 						{
 							queryResult = mcm.ExecuteScalar().ToString();
 						}
 
-						mtr.Commit();
-						if (queryResult.Length != 0)
+						if (!executeReaderRadio.Checked)
 						{
-							MessageBox.Show(@queryResult, AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+							mtr.Commit();
 						}
 					}
 					catch (Exception ex)
 					{
-						if (mtr != null)
+						if (mtr != null && !executeReaderRadio.Checked)
 						{
 							mtr.Rollback();
 						}
@@ -1454,6 +1465,17 @@ namespace glc_cs
 							mcn.Close();
 						}
 					}
+				}
+
+				// リザルト
+				if (queryResult.Length != 0)
+				{
+					MessageBox.Show(@queryResult, AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+				if (executeReaderRadio.Checked)
+				{
+					DataViewForm drf = new DataViewForm(dt);
+					drf.ShowDialog();
 				}
 			}
 			return;

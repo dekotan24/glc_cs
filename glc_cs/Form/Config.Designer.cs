@@ -71,6 +71,7 @@
 			this.userText = new System.Windows.Forms.TextBox();
 			this.urlText = new System.Windows.Forms.TextBox();
 			this.cryptCheck = new System.Windows.Forms.CheckBox();
+			this.executeReaderRadio = new System.Windows.Forms.RadioButton();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage7 = new System.Windows.Forms.TabPage();
 			this.groupBox16 = new System.Windows.Forms.GroupBox();
@@ -350,19 +351,19 @@
 			// 
 			this.executeNonQueryRadio.AutoSize = true;
 			this.executeNonQueryRadio.Checked = true;
-			this.executeNonQueryRadio.Location = new System.Drawing.Point(84, 14);
+			this.executeNonQueryRadio.Location = new System.Drawing.Point(16, 15);
 			this.executeNonQueryRadio.Name = "executeNonQueryRadio";
 			this.executeNonQueryRadio.Size = new System.Drawing.Size(122, 21);
 			this.executeNonQueryRadio.TabIndex = 10;
 			this.executeNonQueryRadio.TabStop = true;
 			this.executeNonQueryRadio.Text = "ExecuteNonQuery";
-			this.toolTip1.SetToolTip(this.executeNonQueryRadio, "結果セットを返さない場合に使用します。\r\n影響を受けた行数を返します。\r\n【どちらを選べばよいか迷った場合はこちらを選択】");
+			this.toolTip1.SetToolTip(this.executeNonQueryRadio, "結果セットを返さない場合に使用します。\r\n影響を受けた行数を返します。\r\n【どれを選べばよいか迷った場合はこちらを選択】");
 			this.executeNonQueryRadio.UseVisualStyleBackColor = true;
 			// 
 			// executeScalerRadio
 			// 
 			this.executeScalerRadio.AutoSize = true;
-			this.executeScalerRadio.Location = new System.Drawing.Point(275, 14);
+			this.executeScalerRadio.Location = new System.Drawing.Point(188, 15);
 			this.executeScalerRadio.Name = "executeScalerRadio";
 			this.executeScalerRadio.Size = new System.Drawing.Size(101, 21);
 			this.executeScalerRadio.TabIndex = 11;
@@ -701,6 +702,17 @@
 			this.cryptCheck.Text = "パスワードを暗号化して保存";
 			this.toolTip1.SetToolTip(this.cryptCheck, "configファイルにパスワードを暗号化します。");
 			this.cryptCheck.UseVisualStyleBackColor = true;
+			// 
+			// executeReaderRadio
+			// 
+			this.executeReaderRadio.AutoSize = true;
+			this.executeReaderRadio.Location = new System.Drawing.Point(347, 15);
+			this.executeReaderRadio.Name = "executeReaderRadio";
+			this.executeReaderRadio.Size = new System.Drawing.Size(106, 21);
+			this.executeReaderRadio.TabIndex = 12;
+			this.executeReaderRadio.Text = "ExecuteReader";
+			this.toolTip1.SetToolTip(this.executeReaderRadio, "GridViewで結果を表示します。\r\nSELECT文使用時にご利用ください。");
+			this.executeReaderRadio.UseVisualStyleBackColor = true;
 			// 
 			// tabControl1
 			// 
@@ -1754,6 +1766,7 @@
 			// 
 			// ExecuteModeGroup
 			// 
+			this.ExecuteModeGroup.Controls.Add(this.executeReaderRadio);
 			this.ExecuteModeGroup.Controls.Add(this.executeScalerRadio);
 			this.ExecuteModeGroup.Controls.Add(this.executeNonQueryRadio);
 			this.ExecuteModeGroup.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
@@ -2342,5 +2355,6 @@
 		private System.Windows.Forms.Button ExportButton;
 		private System.Windows.Forms.OpenFileDialog openFileDialog3;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+		private System.Windows.Forms.RadioButton executeReaderRadio;
 	}
 }

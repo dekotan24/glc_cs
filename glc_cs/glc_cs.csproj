@@ -232,6 +232,12 @@
     <Compile Include="Core\DataBind.cs" />
     <Compile Include="Core\Export.cs" />
     <Compile Include="Core\Property.cs" />
+    <Compile Include="Form\DataViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\DataViewForm.Designer.cs">
+      <DependentUpon>DataViewForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\DBUpdate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -301,6 +307,9 @@
       <DependentUpon>Editor.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\Program.cs" />
+    <EmbeddedResource Include="Form\DataViewForm.resx">
+      <DependentUpon>DataViewForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\DBUpdate.resx">
       <DependentUpon>DBUpdate.cs</DependentUpon>
     </EmbeddedResource>
