@@ -17,6 +17,7 @@ namespace glc_cs
 		private void Form3_Load(object sender, EventArgs e)
 		{
 			// label3.Text = "MD5: " + ComputeFileHash(Application.ExecutablePath);
+			label2.Text = "Ver." + Core.Property.AppVer;
 		}
 
 		private static string ComputeFileHash(string filePath)

@@ -14,7 +14,7 @@ namespace glc_cs.Core
 		/// <summary>
 		/// アプリケーション名
 		/// </summary>
-		protected static readonly string appName = "GLauncher C# Edition";
+		protected static readonly string appName = "GLauncher";
 
 		/// <summary>
 		/// アプリケーションバージョン

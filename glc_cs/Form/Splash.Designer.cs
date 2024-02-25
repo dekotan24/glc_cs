@@ -35,6 +35,7 @@
 			this.progressBar1 = new System.Windows.Forms.ProgressBar();
 			this.MemoryLabel = new System.Windows.Forms.Label();
 			this.progressBar2 = new System.Windows.Forms.ProgressBar();
+			this.label2 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -53,11 +54,11 @@
 			// 
 			this.label1.AutoSize = true;
 			this.label1.Font = new System.Drawing.Font("Meiryo UI", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label1.Location = new System.Drawing.Point(122, 21);
+			this.label1.Location = new System.Drawing.Point(166, 20);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(215, 24);
+			this.label1.Size = new System.Drawing.Size(111, 24);
 			this.label1.TabIndex = 1;
-			this.label1.Text = "GLauncher C# Edition";
+			this.label1.Text = "GLauncher";
 			// 
 			// statusLabel
 			// 
@@ -102,12 +103,23 @@
 			this.progressBar2.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.progressBar2.TabIndex = 8;
 			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label2.Location = new System.Drawing.Point(281, 28);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(53, 14);
+			this.label2.TabIndex = 9;
+			this.label2.Text = "Ver.x.x.x";
+			// 
 			// Splash
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(350, 129);
 			this.ControlBox = false;
+			this.Controls.Add(this.label2);
 			this.Controls.Add(this.progressBar2);
 			this.Controls.Add(this.MemoryLabel);
 			this.Controls.Add(this.progressBar1);
@@ -141,5 +153,6 @@
 		private System.Windows.Forms.ProgressBar progressBar1;
 		private System.Windows.Forms.Label MemoryLabel;
 		private System.Windows.Forms.ProgressBar progressBar2;
+		private System.Windows.Forms.Label label2;
 	}
 }
