@@ -445,7 +445,6 @@ namespace glc_cs.Core
 			, savedata_path
 		}
 
-
 		/// <summary>
 		/// ゲームデータ管理方法の一覧
 		/// </summary>
@@ -454,6 +453,7 @@ namespace glc_cs.Core
 			INI
 			, MSSQL
 			, MySQL
+			, Temp
 		}
 
 		/// <summary>

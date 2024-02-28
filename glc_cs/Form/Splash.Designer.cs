@@ -54,7 +54,7 @@
 			// 
 			this.label1.AutoSize = true;
 			this.label1.Font = new System.Drawing.Font("Meiryo UI", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label1.Location = new System.Drawing.Point(166, 20);
+			this.label1.Location = new System.Drawing.Point(147, 20);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(111, 24);
 			this.label1.TabIndex = 1;

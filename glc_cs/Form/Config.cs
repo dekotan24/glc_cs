@@ -175,7 +175,6 @@ namespace glc_cs
 			cryptCheck.Checked = EnablePWCrypt;
 
 			offlineSaveEnableCheck.Checked = OfflineSave;
-			useLocalDBCheck.Checked = UseLocalDB;
 
 
 			// スーパーモード
@@ -285,7 +284,6 @@ namespace glc_cs
 			// 保存方法
 			WriteIni("general", "save", mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I");
 			WriteIni("general", "OfflineSave", offlineSaveEnableCheck.Checked ? "1" : "0");
-			WriteIni("general", "UseLocalDB", useLocalDBCheck.Checked ? "1" : "0");
 			WriteIni("connect", "DBURL", urlText.Text.Trim());
 			WriteIni("connect", "DBPort", portText.Text.Trim());
 			WriteIni("connect", "DbName", dbText.Text.Trim());
@@ -864,7 +862,6 @@ namespace glc_cs
 			cryptCheck.Enabled = !controlVal;
 			createTableButton.Enabled = !controlVal;
 			offlineSaveEnableCheck.Enabled = !controlVal;
-			useLocalDBCheck.Enabled = !controlVal;
 			saveWithDownloadCheck.Enabled = !controlVal;
 			offlineSaveEnableCheck.Visible = !controlVal;
 			saveWithDownloadCheck.Visible = !controlVal && OfflineSave && SaveType != "T";
@@ -872,7 +869,6 @@ namespace glc_cs
 			groupBox7.Enabled = controlVal;
 			groupBox12.Enabled = !controlVal;
 			groupBox18.Enabled = !controlVal;
-			groupBox19.Enabled = !controlVal;
 			dbOverflowFixButton.Enabled = !controlVal;
 			saveWithDownloadCheck.Enabled = !controlVal;
 		}
@@ -1866,99 +1862,6 @@ namespace glc_cs
 		}
 
 		/// <summary>
-		/// ファイルインポート
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void ImportButton_Click(object sender, EventArgs e)
-		{
-			string importPath = ImportPathText.Text.Trim();
-
-			// エクスポートパスが空欄の場合リターン
-			if (importPath.Length == 0)
-			{
-				ImportPathText.Focus();
-				return;
-			}
-
-			if (urlText.Text.Trim().Length < 1)
-			{
-				MessageBox.Show("URLは必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				urlText.Focus();
-				return;
-			}
-			else if (portText.Text.Trim().Length < 1)
-			{
-				MessageBox.Show("ポート番号は必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				portText.Focus();
-				return;
-			}
-			else if (userText.Text.Trim().Length < 1)
-			{
-				MessageBox.Show("ユーザ名は必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				userText.Focus();
-				return;
-			}
-			else if (pwText.Text.Trim().Length < 1)
-			{
-				MessageBox.Show("パスワードは必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-				pwText.Focus();
-				return;
-			}
-
-			// MySQLだけDatabaseも補填していないとエラーとする
-			if (mysqlRadio.Checked)
-			{
-				if (dbText.Text.Trim().Length < 1)
-				{
-					MessageBox.Show("データベース名は必須です。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-					dbText.Focus();
-					return;
-				}
-			}
-
-			DbUrl = urlText.Text.Trim();
-			DbPort = portText.Text.Trim();
-			DbName = dbText.Text.Trim();
-			DbTable = tableText.Text.Trim();
-			DbUser = userText.Text.Trim();
-			DbPass = pwText.Text.Trim();
-			SaveType = mssqlRadio.Checked ? "D" : mysqlRadio.Checked ? "M" : "I";
-
-			SqlConnection cn = SqlCon;
-			MySqlConnection mcn = SqlCon2;
-
-			ImportButton.Enabled = false;
-
-			/*
-			if (ImportRadio_CSV.Checked)
-			{
-				if (ImportData("CSV", SaveType, DbTable, importPath, DbName, cn, mcn))
-				{
-					label15.Text = "取込完了";
-				}
-				else
-				{
-					label15.Text = "エラー。エラーログをご確認ください。";
-				}
-			}
-			else
-			{
-				if (ImportData("INI", SaveType, DbTable, importPath, DbName, cn, mcn))
-				{
-					label15.Text = "取込完了";
-				}
-				else
-				{
-					label15.Text = "エラー。エラーログをご確認ください。";
-				}
-			}
-			*/
-			ImportButton.Enabled = true;
-			System.Media.SystemSounds.Beep.Play();
-		}
-
-		/// <summary>
 		/// 出力先選択ダイアログの表示
 		/// </summary>
 		/// <param name="sender"></param>
@@ -1986,34 +1889,6 @@ namespace glc_cs
 			return;
 		}
 
-		/// <summary>
-		/// 復元元選択ダイアログの表示
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void ImportPathSelectButton_Click(object sender, EventArgs e)
-		{
-			if (ImportRadio_CSV.Checked)
-			{
-				openFileDialog1.Title = "復元元CSVを選択";
-				openFileDialog1.Filter = "CSVファイル(*.csv)|*.csv";
-				openFileDialog1.FileName = "";
-				if (openFileDialog1.ShowDialog() == DialogResult.OK)
-				{
-					ImportPathText.Text = saveFileDialog1.FileName;
-				}
-			}
-			else
-			{
-				if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-				{
-					ImportPathText.Text = folderBrowserDialog1.SelectedPath;
-				}
-			}
-
-			return;
-		}
-
 		private void ExportRadio_CSV_CheckedChanged(object sender, EventArgs e)
 		{
 			ExportPathText.Clear();
@@ -2022,16 +1897,6 @@ namespace glc_cs
 		private void ExportRadio_INI_CheckedChanged(object sender, EventArgs e)
 		{
 			ExportPathText.Clear();
-		}
-
-		private void ImportPath_CSV_CheckedChanged(object sender, EventArgs e)
-		{
-			ImportPathText.Clear();
-		}
-
-		private void ImportPath_INI_CheckedChanged(object sender, EventArgs e)
-		{
-			ImportPathText.Clear();
 		}
 	}
 }

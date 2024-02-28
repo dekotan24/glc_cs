@@ -270,6 +270,17 @@ namespace glc_cs
 			else
 			{
 				// database
+				// 重複登録チェック
+				if (duplicateAddCheck(SaveType, gamePath))
+				{
+					DialogResult dr = MessageBox.Show("同一のゲームは既に登録済みです。\n登録しますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+					if (dr == DialogResult.No)
+					{
+						return;
+					}
+				}
+
+				// 登録処理
 				if (SaveType == "D")
 				{
 					// 接続情報
@@ -641,6 +652,98 @@ namespace glc_cs
 				else if (ProductName.Contains("(KIRIKIRI)"))
 				{
 					result = "krkr";
+				}
+			}
+			return result;
+		}
+
+		/// <summary>
+		/// 重複チェック
+		/// </summary>
+		/// <param name="saveType">ゲームデータ管理方法</param>
+		/// <param name="gamePath">ゲームパス</param>
+		/// <returns>True：同一パス存在する、False：存在しない</returns>
+		private bool duplicateAddCheck(string saveType, string gamePath)
+		{
+			bool result = true;
+			if (saveType == "I" || saveType == "T")
+			{
+				return false;
+			}
+			if (saveType == "D")
+			{
+				// MSSQL
+				SqlConnection cn = SqlCon;
+				SqlCommand cm;
+				cm = new SqlCommand()
+				{
+					CommandType = CommandType.Text,
+					CommandTimeout = 30,
+					// SQL文
+					CommandText = @"SELECT ID FROM " + DbName + "." + DbTable + " WHERE GAME_PATH = @game_path"
+				};
+				cm.Connection = cn;
+				// パラメータの設定
+				cm.Parameters.AddWithValue("@game_path", EncodeSQLSpecialChars(gamePath));
+
+				try
+				{
+					cn.Open();
+					var reader = cm.ExecuteReader();
+
+					if (!reader.Read())
+					{
+						result = false;
+					}
+				}
+				catch (Exception ex)
+				{
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
+				}
+				finally
+				{
+					if (cn.State == ConnectionState.Open)
+					{
+						cn.Close();
+					}
+				}
+			}
+			else
+			{
+				// MySQL
+				MySqlConnection cn = SqlCon2;
+				MySqlCommand cm;
+				cm = new MySqlCommand()
+				{
+					CommandType = CommandType.Text,
+					CommandTimeout = 30,
+					// SQL文
+					CommandText = @"SELECT ID FROM " + DbTable + " WHERE GAME_PATH = @game_path;"
+				};
+				cm.Connection = cn;
+				// パラメータの設定
+				cm.Parameters.AddWithValue("@game_path", EncodeSQLSpecialChars(gamePath));
+
+				try
+				{
+					cn.Open();
+					var reader = cm.ExecuteReader();
+
+					if (!reader.Read())
+					{
+						result = false;
+					}
+				}
+				catch (Exception ex)
+				{
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, cm.CommandText);
+				}
+				finally
+				{
+					if (cn.State == ConnectionState.Open)
+					{
+						cn.Close();
+					}
 				}
 			}
 			return result;

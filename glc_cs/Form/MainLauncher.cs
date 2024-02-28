@@ -112,8 +112,8 @@ namespace glc_cs
 			GameList_SelectedIndexChanged(sender, e);
 
 			// メインフォーム表示
-			this.Activate();
 			this.Show();
+			this.Activate();
 			this.Refresh();
 			SplashForm.Close();
 			SplashForm.Dispose();
