@@ -70,6 +70,7 @@
 			this.urlText = new System.Windows.Forms.TextBox();
 			this.cryptCheck = new System.Windows.Forms.CheckBox();
 			this.executeReaderRadio = new System.Windows.Forms.RadioButton();
+			this.checkBox7 = new System.Windows.Forms.CheckBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage7 = new System.Windows.Forms.TabPage();
 			this.groupBox16 = new System.Windows.Forms.GroupBox();
@@ -133,6 +134,10 @@
 			this.label20 = new System.Windows.Forms.Label();
 			this.label19 = new System.Windows.Forms.Label();
 			this.tabPage10 = new System.Windows.Forms.TabPage();
+			this.groupBox12 = new System.Windows.Forms.GroupBox();
+			this.label25 = new System.Windows.Forms.Label();
+			this.importIniToDbButton = new System.Windows.Forms.Button();
+			this.checkBox6 = new System.Windows.Forms.CheckBox();
 			this.groupBox18 = new System.Windows.Forms.GroupBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.ExportPathSelectButton = new System.Windows.Forms.Button();
@@ -184,11 +189,6 @@
 			this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
 			this.openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-			this.groupBox12 = new System.Windows.Forms.GroupBox();
-			this.label25 = new System.Windows.Forms.Label();
-			this.checkBox7 = new System.Windows.Forms.CheckBox();
-			this.importIniToDbButton = new System.Windows.Forms.Button();
-			this.checkBox6 = new System.Windows.Forms.CheckBox();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage7.SuspendLayout();
@@ -212,6 +212,7 @@
 			this.groupBox8.SuspendLayout();
 			this.groupBox7.SuspendLayout();
 			this.tabPage10.SuspendLayout();
+			this.groupBox12.SuspendLayout();
 			this.groupBox18.SuspendLayout();
 			this.tabPage8.SuspendLayout();
 			this.groupBox15.SuspendLayout();
@@ -221,7 +222,6 @@
 			this.groupBox17.SuspendLayout();
 			this.TabPage3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
-			this.groupBox12.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox1
@@ -421,9 +421,9 @@
 			this.updateCheckDisableCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.updateCheckDisableCheck.Location = new System.Drawing.Point(15, 22);
 			this.updateCheckDisableCheck.Name = "updateCheckDisableCheck";
-			this.updateCheckDisableCheck.Size = new System.Drawing.Size(279, 22);
+			this.updateCheckDisableCheck.Size = new System.Drawing.Size(351, 22);
 			this.updateCheckDisableCheck.TabIndex = 8;
-			this.updateCheckDisableCheck.Text = "起動時のアップデートチェックをスキップする";
+			this.updateCheckDisableCheck.Text = "起動時のアップデートチェックをスキップする（試験機能）";
 			this.toolTip1.SetToolTip(this.updateCheckDisableCheck, "各バージョンの2回目以降の起動時のアップデートチェックを無効にします。");
 			this.updateCheckDisableCheck.UseVisualStyleBackColor = true;
 			this.updateCheckDisableCheck.CheckedChanged += new System.EventHandler(this.updateCheckDisableCheck_CheckedChanged);
@@ -676,6 +676,20 @@
 			this.executeReaderRadio.Text = "ExecuteReader";
 			this.toolTip1.SetToolTip(this.executeReaderRadio, "GridViewで結果を表示します。\r\nSELECT文使用時にご利用ください。");
 			this.executeReaderRadio.UseVisualStyleBackColor = true;
+			// 
+			// checkBox7
+			// 
+			this.checkBox7.AutoSize = true;
+			this.checkBox7.Checked = true;
+			this.checkBox7.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBox7.Enabled = false;
+			this.checkBox7.Location = new System.Drawing.Point(13, 49);
+			this.checkBox7.Name = "checkBox7";
+			this.checkBox7.Size = new System.Drawing.Size(280, 21);
+			this.checkBox7.TabIndex = 11;
+			this.checkBox7.Text = "エラー発生時に該当データをスキップする（強制）";
+			this.toolTip1.SetToolTip(this.checkBox7, "取込処理中にエラーが発生した場合、エラー発生直前までに取り込んだデータをコミットします");
+			this.checkBox7.UseVisualStyleBackColor = true;
 			// 
 			// tabControl1
 			// 
@@ -936,7 +950,7 @@
 			this.groupBox5.Controls.Add(this.RoWCheck);
 			this.groupBox5.Enabled = false;
 			this.groupBox5.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.groupBox5.Location = new System.Drawing.Point(6, 198);
+			this.groupBox5.Location = new System.Drawing.Point(6, 208);
 			this.groupBox5.Name = "groupBox5";
 			this.groupBox5.Size = new System.Drawing.Size(470, 96);
 			this.groupBox5.TabIndex = 2;
@@ -991,7 +1005,7 @@
 			this.groupBox4.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox4.Location = new System.Drawing.Point(6, 73);
 			this.groupBox4.Name = "groupBox4";
-			this.groupBox4.Size = new System.Drawing.Size(470, 119);
+			this.groupBox4.Size = new System.Drawing.Size(470, 129);
 			this.groupBox4.TabIndex = 1;
 			this.groupBox4.TabStop = false;
 			this.groupBox4.Text = "連携設定";
@@ -1009,7 +1023,7 @@
 			// byResetButton
 			// 
 			this.byResetButton.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.byResetButton.Location = new System.Drawing.Point(258, 86);
+			this.byResetButton.Location = new System.Drawing.Point(258, 90);
 			this.byResetButton.Name = "byResetButton";
 			this.byResetButton.Size = new System.Drawing.Size(103, 27);
 			this.byResetButton.TabIndex = 10;
@@ -1020,7 +1034,7 @@
 			// byConnectionTestButton
 			// 
 			this.byConnectionTestButton.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.byConnectionTestButton.Location = new System.Drawing.Point(93, 86);
+			this.byConnectionTestButton.Location = new System.Drawing.Point(93, 90);
 			this.byConnectionTestButton.Name = "byConnectionTestButton";
 			this.byConnectionTestButton.Size = new System.Drawing.Size(91, 27);
 			this.byConnectionTestButton.TabIndex = 11;
@@ -1417,8 +1431,54 @@
 			this.tabPage10.Name = "tabPage10";
 			this.tabPage10.Size = new System.Drawing.Size(472, 291);
 			this.tabPage10.TabIndex = 3;
-			this.tabPage10.Text = "データ出力";
+			this.tabPage10.Text = "データ取込／出力";
 			this.tabPage10.UseVisualStyleBackColor = true;
+			// 
+			// groupBox12
+			// 
+			this.groupBox12.Controls.Add(this.label25);
+			this.groupBox12.Controls.Add(this.checkBox7);
+			this.groupBox12.Controls.Add(this.importIniToDbButton);
+			this.groupBox12.Controls.Add(this.checkBox6);
+			this.groupBox12.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox12.Location = new System.Drawing.Point(2, 105);
+			this.groupBox12.Name = "groupBox12";
+			this.groupBox12.Size = new System.Drawing.Size(470, 108);
+			this.groupBox12.TabIndex = 7;
+			this.groupBox12.TabStop = false;
+			this.groupBox12.Text = "INI→DB取込";
+			// 
+			// label25
+			// 
+			this.label25.AutoSize = true;
+			this.label25.Location = new System.Drawing.Point(37, 79);
+			this.label25.Name = "label25";
+			this.label25.Size = new System.Drawing.Size(397, 17);
+			this.label25.TabIndex = 3;
+			this.label25.Text = "ゲーム管理方法が [DB] で、DB接続の各情報が入力されている場合に取込可能";
+			// 
+			// importIniToDbButton
+			// 
+			this.importIniToDbButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.importIniToDbButton.Location = new System.Drawing.Point(306, 23);
+			this.importIniToDbButton.Name = "importIniToDbButton";
+			this.importIniToDbButton.Size = new System.Drawing.Size(158, 47);
+			this.importIniToDbButton.TabIndex = 12;
+			this.importIniToDbButton.Text = "INI→DB取込";
+			this.importIniToDbButton.UseVisualStyleBackColor = true;
+			// 
+			// checkBox6
+			// 
+			this.checkBox6.AutoSize = true;
+			this.checkBox6.Checked = true;
+			this.checkBox6.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBox6.Enabled = false;
+			this.checkBox6.Location = new System.Drawing.Point(13, 25);
+			this.checkBox6.Name = "checkBox6";
+			this.checkBox6.Size = new System.Drawing.Size(269, 21);
+			this.checkBox6.TabIndex = 10;
+			this.checkBox6.Text = "テーブルのすべてのレコードを削除する（強制）";
+			this.checkBox6.UseVisualStyleBackColor = true;
 			// 
 			// groupBox18
 			// 
@@ -1640,6 +1700,7 @@
 			// 
 			// queryText
 			// 
+			this.queryText.DetectUrls = false;
 			this.queryText.Location = new System.Drawing.Point(3, 3);
 			this.queryText.Name = "queryText";
 			this.queryText.Size = new System.Drawing.Size(466, 144);
@@ -1913,11 +1974,11 @@
 			// 
 			this.appNameLabel.AutoSize = true;
 			this.appNameLabel.Font = new System.Drawing.Font("ＭＳ 明朝", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.appNameLabel.Location = new System.Drawing.Point(141, 21);
+			this.appNameLabel.Location = new System.Drawing.Point(212, 21);
 			this.appNameLabel.Name = "appNameLabel";
-			this.appNameLabel.Size = new System.Drawing.Size(312, 27);
+			this.appNameLabel.Size = new System.Drawing.Size(147, 27);
 			this.appNameLabel.TabIndex = 0;
-			this.appNameLabel.Text = "GLauncher C# Edition";
+			this.appNameLabel.Text = "GLauncher";
 			// 
 			// saveButton
 			// 
@@ -1950,66 +2011,6 @@
 			// openFileDialog3
 			// 
 			this.openFileDialog3.FileName = "openFileDialog3";
-			// 
-			// groupBox12
-			// 
-			this.groupBox12.Controls.Add(this.label25);
-			this.groupBox12.Controls.Add(this.checkBox7);
-			this.groupBox12.Controls.Add(this.importIniToDbButton);
-			this.groupBox12.Controls.Add(this.checkBox6);
-			this.groupBox12.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.groupBox12.Location = new System.Drawing.Point(2, 105);
-			this.groupBox12.Name = "groupBox12";
-			this.groupBox12.Size = new System.Drawing.Size(470, 108);
-			this.groupBox12.TabIndex = 7;
-			this.groupBox12.TabStop = false;
-			this.groupBox12.Text = "INI→DB取込";
-			// 
-			// label25
-			// 
-			this.label25.AutoSize = true;
-			this.label25.Location = new System.Drawing.Point(37, 79);
-			this.label25.Name = "label25";
-			this.label25.Size = new System.Drawing.Size(397, 17);
-			this.label25.TabIndex = 3;
-			this.label25.Text = "ゲーム管理方法が [DB] で、DB接続の各情報が入力されている場合に取込可能";
-			// 
-			// checkBox7
-			// 
-			this.checkBox7.AutoSize = true;
-			this.checkBox7.Checked = true;
-			this.checkBox7.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.checkBox7.Enabled = false;
-			this.checkBox7.Location = new System.Drawing.Point(13, 49);
-			this.checkBox7.Name = "checkBox7";
-			this.checkBox7.Size = new System.Drawing.Size(280, 21);
-			this.checkBox7.TabIndex = 11;
-			this.checkBox7.Text = "エラー発生時に該当データをスキップする（強制）";
-			this.toolTip1.SetToolTip(this.checkBox7, "取込処理中にエラーが発生した場合、エラー発生直前までに取り込んだデータをコミットします");
-			this.checkBox7.UseVisualStyleBackColor = true;
-			// 
-			// importIniToDbButton
-			// 
-			this.importIniToDbButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.importIniToDbButton.Location = new System.Drawing.Point(306, 23);
-			this.importIniToDbButton.Name = "importIniToDbButton";
-			this.importIniToDbButton.Size = new System.Drawing.Size(158, 47);
-			this.importIniToDbButton.TabIndex = 12;
-			this.importIniToDbButton.Text = "INI→DB取込";
-			this.importIniToDbButton.UseVisualStyleBackColor = true;
-			// 
-			// checkBox6
-			// 
-			this.checkBox6.AutoSize = true;
-			this.checkBox6.Checked = true;
-			this.checkBox6.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.checkBox6.Enabled = false;
-			this.checkBox6.Location = new System.Drawing.Point(13, 25);
-			this.checkBox6.Name = "checkBox6";
-			this.checkBox6.Size = new System.Drawing.Size(269, 21);
-			this.checkBox6.TabIndex = 10;
-			this.checkBox6.Text = "テーブルのすべてのレコードを削除する（強制）";
-			this.checkBox6.UseVisualStyleBackColor = true;
 			// 
 			// Config
 			// 
@@ -2064,6 +2065,8 @@
 			this.groupBox7.ResumeLayout(false);
 			this.groupBox7.PerformLayout();
 			this.tabPage10.ResumeLayout(false);
+			this.groupBox12.ResumeLayout(false);
+			this.groupBox12.PerformLayout();
 			this.groupBox18.ResumeLayout(false);
 			this.groupBox18.PerformLayout();
 			this.tabPage8.ResumeLayout(false);
@@ -2078,8 +2081,6 @@
 			this.TabPage3.ResumeLayout(false);
 			this.TabPage3.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
-			this.groupBox12.ResumeLayout(false);
-			this.groupBox12.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

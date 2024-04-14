@@ -1560,7 +1560,7 @@ namespace glc_cs
 		{
 			if (updateCheckDisableCheck.Checked && updateCheckDisableCheck.Focused)
 			{
-				MessageBox.Show("これは毎起動時に行われるアップデートチェックによる負荷軽減のための機能です。\n\n※※※警告※※※\n将来バージョンのアップデートをiniファイルの値を直接書き換えて回避する等、本機能を不正に使用した場合に発生する いかなる損害・損失は一切責任を負いません。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("これは毎起動時に行われるアップデートチェックによる負荷軽減のための機能です。\n\n※※※警告※※※\n将来バージョンのアップデートをiniファイルの値を直接書き換えて回避する等、本機能を不正に使用した場合に発生する いかなる損害・損失は一切責任を負いません。\nまた、本機能は試験段階です。予期せぬ不具合に遭遇する可能性があります。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			}
 		}
 
