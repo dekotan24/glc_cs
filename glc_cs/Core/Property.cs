@@ -24,7 +24,7 @@ namespace glc_cs.Core
 		/// <summary>
 		/// アプリケーションビルド番号
 		/// </summary>
-		protected static readonly string appBuild = "41.23.--.--";
+		protected static readonly string appBuild = "41.24.04.21";
 
 		/// <summary>
 		/// データベースバージョン
