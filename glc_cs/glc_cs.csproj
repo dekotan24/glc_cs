@@ -104,9 +104,6 @@
     <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\packages\Portable.BouncyCastle.1.9.0\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
-    <Reference Include="DLsiteInfoGetter">
-      <HintPath>.\DLsiteInfoGetter.dll</HintPath>
-    </Reference>
     <Reference Include="Google.Protobuf, Version=3.23.4.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Protobuf.3.23.4\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
@@ -150,8 +147,14 @@
     <Reference Include="NAudio.WinMM, Version=2.1.0.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.WinMM.2.1.0\lib\netstandard2.0\NAudio.WinMM.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="SevenZipSharp, Version=1.6.1.23, Culture=neutral, PublicKeyToken=c8ff6ba0184838bb, processorArchitecture=MSIL">
+      <HintPath>..\packages\Squid-Box.SevenZipSharp.1.6.1.23\lib\net472\SevenZipSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -224,92 +227,129 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBUpdate.cs">
+    <Compile Include="Core\Archive.cs" />
+    <Compile Include="Core\Crypt.cs" />
+    <Compile Include="Core\DataBind.cs" />
+    <Compile Include="Core\Export.cs" />
+    <Compile Include="Core\Property.cs" />
+    <Compile Include="Form\DataViewForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DBUpdate.Designer.cs">
+    <Compile Include="Form\DataViewForm.Designer.cs">
+      <DependentUpon>DataViewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\DBUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\DBUpdate.Designer.cs">
       <DependentUpon>DBUpdate.cs</DependentUpon>
     </Compile>
-    <Compile Include="AddItem.cs">
+    <Compile Include="Form\AddItem.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddItem.Designer.cs">
+    <Compile Include="Form\AddItem.Designer.cs">
       <DependentUpon>AddItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="DLsite.cs">
+    <Compile Include="Form\DLsite.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DLsite.Designer.cs">
+    <Compile Include="Form\DLsite.Designer.cs">
       <DependentUpon>DLsite.cs</DependentUpon>
     </Compile>
-    <Compile Include="Memo.cs">
+    <Compile Include="Core\Secret.cs" />
+    <Compile Include="Form\Fanza.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Memo.Designer.cs">
+    <Compile Include="Form\Fanza.Designer.cs">
+      <DependentUpon>Fanza.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Splash2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Splash2.Designer.cs">
+      <DependentUpon>Splash2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\vndb.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\vndb.Designer.cs">
+      <DependentUpon>vndb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Memo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Memo.Designer.cs">
       <DependentUpon>Memo.cs</DependentUpon>
     </Compile>
-    <Compile Include="Functions.cs" />
-    <Compile Include="MainLauncher.cs">
+    <Compile Include="Core\Functions.cs" />
+    <Compile Include="Form\MainLauncher.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainLauncher.Designer.cs">
+    <Compile Include="Form\MainLauncher.Designer.cs">
       <DependentUpon>MainLauncher.cs</DependentUpon>
     </Compile>
-    <Compile Include="Config.cs">
+    <Compile Include="Form\Config.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Config.Designer.cs">
+    <Compile Include="Form\Config.Designer.cs">
       <DependentUpon>Config.cs</DependentUpon>
     </Compile>
-    <Compile Include="Splash.cs">
+    <Compile Include="Form\Splash.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Splash.Designer.cs">
+    <Compile Include="Form\Splash.Designer.cs">
       <DependentUpon>Splash.cs</DependentUpon>
     </Compile>
-    <Compile Include="IconView.cs">
+    <Compile Include="Form\IconView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IconView.Designer.cs">
+    <Compile Include="Form\IconView.Designer.cs">
       <DependentUpon>IconView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editor.cs">
+    <Compile Include="Form\Editor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Editor.Designer.cs">
+    <Compile Include="Form\Editor.Designer.cs">
       <DependentUpon>Editor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
-    <EmbeddedResource Include="DBUpdate.resx">
+    <Compile Include="Core\Program.cs" />
+    <EmbeddedResource Include="Form\DataViewForm.resx">
+      <DependentUpon>DataViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\DBUpdate.resx">
       <DependentUpon>DBUpdate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AddItem.resx">
+    <EmbeddedResource Include="Form\AddItem.resx">
       <DependentUpon>AddItem.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="DLsite.resx">
+    <EmbeddedResource Include="Form\DLsite.resx">
       <DependentUpon>DLsite.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainLauncher.ja-JP.resx">
-      <DependentUpon>MainLauncher.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainLauncher.resx">
+    <EmbeddedResource Include="Form\MainLauncher.ja-JP.resx">
       <DependentUpon>MainLauncher.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Config.resx">
+    <EmbeddedResource Include="Form\MainLauncher.resx">
+      <DependentUpon>MainLauncher.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\Config.resx">
       <DependentUpon>Config.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Memo.resx">
+    <EmbeddedResource Include="Form\Memo.resx">
       <DependentUpon>Memo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Splash.resx">
+    <EmbeddedResource Include="Form\Splash2.resx">
+      <DependentUpon>Splash2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="IconView.resx">
+    <EmbeddedResource Include="Form\IconView.resx">
       <DependentUpon>IconView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Editor.resx">
+    <EmbeddedResource Include="Form\Editor.resx">
       <DependentUpon>Editor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -323,6 +363,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Form\Fanza.resx">
+      <DependentUpon>Fanza.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\vndb.resx">
+      <DependentUpon>vndb.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -386,10 +432,17 @@
     <None Include="Resources\icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="favicon.ico" />
-    <Content Include="icon_alpha.ico" />
-    <Content Include="icon_alpha_new.ico" />
     <None Include="Resources\icon_alpha.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon_alpha_new.ico" />
+    <None Include="Resources\murasame_nowLoading.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DLsiteInfoGetter\DLsiteInfoGetter\DLsiteInfoGetter.csproj">
+      <Project>{743f3245-4e32-4da3-b879-1dd13979c286}</Project>
+      <Name>DLsiteInfoGetter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

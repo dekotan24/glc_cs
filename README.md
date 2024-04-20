@@ -1,8 +1,8 @@
-# Game Launcher C# Edition
+# GLauncher（Game Launcher C# Edition）
 
 
 ## 概要
-Game LauncherのC#移植版です。<br>
+ADVゲームの一元管理（ランチャー）を目的として作成しています。<br>
 趣味と勉強で開発しているので、ガバガバなところもあるかもしれません。<br>
 データベースの設定方法は[Wiki](https://github.com/dekotan24/glc_cs/wiki)をご覧ください。
 
@@ -13,18 +13,24 @@ Visual Studio 2022
 
 ## 使用しているNugetパッケージ
 * MySQL.Data
+* Newtonsoft.Json
+
+
+## DLsite Information Getter
+DLsiteから作品情報を取得するアプリケーション[DLsiteInfoGetter](https://github.com/dekotan24/DLsiteInfoGetter)を使用しています。<br>
+本プロジェクトファイルをコピーした場合、こちらも導入しないと動きません。
 
 
 ## dcon
 Discord Connectorのソースコードは[dcon](https://github.com/dekotan24/dcon)リポジトリへどうぞ。
 
 
-## DLsite Information Getter
-DLsiteから作品情報を取得するアプリケーション[DLsiteInfoGetter](https://github.com/dekotan24/DLsiteInfoGetter)を使用しています。
-
-
 ## Webビューア
 MySQLデータベースに登録しているデータをブラウザで表示する[GLWeb](https://github.com/dekotan24/GLWeb/)もどうぞ。
+
+
+## thanks
+[夏音](https://twitter.com/kaon_umr) 様
 
 
 ## license

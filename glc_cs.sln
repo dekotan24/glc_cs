@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "glc_cs", "glc_cs\glc_cs.csproj", "{674FE692-E59D-444D-A524-1AE48923E8AB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{743F3245-4E32-4DA3-B879-1DD13979C286} = {743F3245-4E32-4DA3-B879-1DD13979C286}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLsiteInfoGetter", "..\DLsiteInfoGetter\DLsiteInfoGetter\DLsiteInfoGetter.csproj", "{743F3245-4E32-4DA3-B879-1DD13979C286}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{674FE692-E59D-444D-A524-1AE48923E8AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{674FE692-E59D-444D-A524-1AE48923E8AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{674FE692-E59D-444D-A524-1AE48923E8AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{743F3245-4E32-4DA3-B879-1DD13979C286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{743F3245-4E32-4DA3-B879-1DD13979C286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{743F3245-4E32-4DA3-B879-1DD13979C286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{743F3245-4E32-4DA3-B879-1DD13979C286}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
