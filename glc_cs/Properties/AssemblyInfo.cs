@@ -7,11 +7,11 @@ using System.Runtime.InteropServices;
 // これらの属性値を変更します。
 
 [assembly: AssemblyTitle("GLauncher")]
-[assembly: AssemblyDescription("GLauncher C# Edition")]
+[assembly: AssemblyDescription("GLauncher")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("dekosoft / fanet.work")]
-[assembly: AssemblyProduct("GLauncher C# Edition")]
-[assembly: AssemblyCopyright("(c) 2019-2023 Ogura Deko")]
+[assembly: AssemblyProduct("GLauncher")]
+[assembly: AssemblyCopyright("(c) 2019-2024 Ogura Deko")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -34,6 +34,6 @@ using System.Runtime.InteropServices;
 // すべての値を指定するか、次を使用してビルド番号とリビジョン番号を既定に設定できます
 // 既定値にすることができます:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.10.0.0")]
-[assembly: AssemblyFileVersion("40.23.09.28")]
+[assembly: AssemblyVersion("1.11.0.0")]
+[assembly: AssemblyFileVersion("41.24.04.21")]
 [assembly: NeutralResourcesLanguage("ja-JP")]

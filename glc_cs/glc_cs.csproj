@@ -435,14 +435,14 @@
     <None Include="Resources\icon_alpha.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="icon_alpha_new.ico" />
+    <None Include="Resources\murasame_nowLoading.png" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\DLsiteInfoGetter\DLsiteInfoGetter\DLsiteInfoGetter.csproj">
       <Project>{743f3245-4e32-4da3-b879-1dd13979c286}</Project>
       <Name>DLsiteInfoGetter</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="icon_alpha_new.ico" />
-    <None Include="Resources\murasame_nowLoading.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
