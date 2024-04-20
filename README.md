@@ -16,12 +16,13 @@ Visual Studio 2022
 * Newtonsoft.Json
 
 
+## DLsite Information Getter
+DLsiteから作品情報を取得するアプリケーション[DLsiteInfoGetter](https://github.com/dekotan24/DLsiteInfoGetter)を使用しています。<br>
+本プロジェクトファイルをコピーした場合、こちらも導入しないと動きません。
+
+
 ## dcon
 Discord Connectorのソースコードは[dcon](https://github.com/dekotan24/dcon)リポジトリへどうぞ。
-
-
-## DLsite Information Getter
-DLsiteから作品情報を取得するアプリケーション[DLsiteInfoGetter](https://github.com/dekotan24/DLsiteInfoGetter)を使用しています。
 
 
 ## Webビューア

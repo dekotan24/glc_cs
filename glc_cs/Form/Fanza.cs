@@ -12,6 +12,7 @@ using static glc_cs.Core.Property;
 using static glc_cs.General.Var;
 
 /*
+ * ※※※　未開発です　※※※
  * 
  * DMMでの商品検索APIの使用には、DMMアフィリエイトのAPIキーと、アフィリエイトIDが必要です。
  * 私の場合ですが、申請から承認までに12時間程度（夜申請→翌日昼に承認）かかりました。
