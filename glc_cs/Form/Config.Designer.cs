@@ -373,7 +373,7 @@
 			this.toolTip1.SetToolTip(this.offlineSaveEnableCheck, "DBのデータをローカルにINIファイルとして保存します。\r\n次回起動時にDBに接続できない場合、ローカルに保存したINIファイルを使用できます。\r\nデータの同期（" +
         "アップロード）はDB接続時に行います。");
 			this.offlineSaveEnableCheck.UseVisualStyleBackColor = true;
-			this.offlineSaveEnableCheck.CheckedChanged += new System.EventHandler(this.checkBox8_CheckedChanged);
+			this.offlineSaveEnableCheck.CheckedChanged += new System.EventHandler(this.offlineSaveEnableCheck_CheckedChanged);
 			// 
 			// mssqlRadio
 			// 

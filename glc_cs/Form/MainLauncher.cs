@@ -20,6 +20,9 @@ namespace glc_cs
 		// 設定フォーム宣言
 		Config ConfigForm = new Config();
 		Splash SplashForm = new Splash();
+		Splash2 Splash2Form = new Splash2();
+
+		private bool enabledExSplash = false;
 
 		public gl()
 		{
@@ -34,10 +37,18 @@ namespace glc_cs
 		private void gl_Load(object sender, EventArgs e)
 		{
 			// スプラッシュ画面表示
-			SplashForm.Show();
+			enabledExSplash = Convert.ToBoolean(Convert.ToInt32(ReadIni("general", "exSplash", "0", 1)));
+			if (enabledExSplash)
+			{
+				Splash2Form.Show();
+			}
+			else
+			{
+				SplashForm.Show();
+			}
 
 			// ステータス変更
-			UpdateSplashInfo(1, "準備中…");
+			UpdateSplashInfo(1, "準備中…", enabledExSplash);
 
 			Application.DoEvents();
 
@@ -55,13 +66,13 @@ namespace glc_cs
 			runningPicture.Visible = true;
 
 			// ステータス変更
-			UpdateSplashInfo(2, "設定を読み込み中…");
+			UpdateSplashInfo(2, "設定を読み込み中…", enabledExSplash);
 
 			// 設定ファイル読込
 			UpdateComponent();
 
 			// ステータス変更
-			UpdateSplashInfo(3, "アップデートのチェック中…");
+			UpdateSplashInfo(3, "アップデートのチェック中…", enabledExSplash);
 			// アップデートチェック
 			if (!(InitialUpdateCheckSkipFlg && InitialUpdateCheckSkipVer.Equals(AppVer)))
 			{
@@ -69,13 +80,13 @@ namespace glc_cs
 			}
 
 			// ステータス変更
-			UpdateSplashInfo(4, "ゲームリストのロード中…");
+			UpdateSplashInfo(4, "ゲームリストのロード中…", enabledExSplash);
 
 			// アイテム読込
 			string item = SaveType == "I" ? LoadItem(GameDir) : SaveType == "D" ? LoadItem2(SqlCon, IsFirstLoad) : LoadItem3(SqlCon2, IsFirstLoad);
 
 			// ステータス変更
-			UpdateSplashInfo(5, "UIの読み込み中…");
+			UpdateSplashInfo(5, "UIの読み込み中…", enabledExSplash);
 
 			if (WindowHideControlFlg)
 			{
@@ -106,7 +117,7 @@ namespace glc_cs
 			runningPicture.Visible = false;
 
 			// ステータス変更
-			UpdateSplashInfo(6, "最終処理中…");
+			UpdateSplashInfo(6, "最終処理中…", enabledExSplash);
 
 			// アイテム詳細の再表示
 			GameList_SelectedIndexChanged(sender, e);
@@ -117,6 +128,8 @@ namespace glc_cs
 			this.Refresh();
 			SplashForm.Close();
 			SplashForm.Dispose();
+			Splash2Form.Close();
+			Splash2Form.Dispose();
 			Application.DoEvents();
 
 			// 準備所要時間計算
@@ -170,9 +183,16 @@ namespace glc_cs
 		/// </summary>
 		/// <param name="value">進捗率</param>
 		/// <param name="message">メッセージ</param>
-		private void UpdateSplashInfo(int value, string message, int value2 = 0, int value3 = 0)
+		private void UpdateSplashInfo(int value, string message, bool exSplash, int value2 = 0, int value3 = 0)
 		{
-			SplashForm.SetProgress(value, message, value2, value3);
+			if (exSplash)
+			{
+				Splash2Form.SetProgress(value, message, value2, value3);
+			}
+			else
+			{
+				SplashForm.SetProgress(value, message, value2, value3);
+			}
 		}
 
 		/// <summary>
@@ -228,14 +248,14 @@ namespace glc_cs
 
 			if (IsFirstLoad)
 			{
-				UpdateSplashInfo(-1, "ゲームリストのロード中… [" + GameMax + "件]");
+				UpdateSplashInfo(-1, "ゲームリストのロード中… [" + GameMax + "件]", enabledExSplash);
 			}
 
 			for (count = 1; count <= GameMax; count++)
 			{
 				if (IsFirstLoad && !DisableInitialLoadCountFlg)
 				{
-					UpdateSplashInfo(-1, "ゲームリストのロード中", count, GameMax);
+					UpdateSplashInfo(-1, "ゲームリストのロード中", enabledExSplash, count, GameMax);
 				}
 
 				toolStripProgressBar1.Value = count;
@@ -361,7 +381,7 @@ namespace glc_cs
 
 				if (IsFirstLoad)
 				{
-					UpdateSplashInfo(-1, "ゲームリストのロード中… [" + GameMax + "件]");
+					UpdateSplashInfo(-1, "ゲームリストのロード中… [" + GameMax + "件]", enabledExSplash);
 				}
 
 				if (!(GameMax >= 1)) // ゲーム登録数が1以上でない場合
@@ -396,7 +416,7 @@ namespace glc_cs
 						counter++;
 						if (IsFirstLoad && !DisableInitialLoadCountFlg)
 						{
-							UpdateSplashInfo(-1, "ゲームリストのロード中", counter, GameMax);
+							UpdateSplashInfo(-1, "ゲームリストのロード中", enabledExSplash, counter, GameMax);
 						}
 
 						gameList.Items.Add(DecodeSQLSpecialChars(reader["GAME_NAME"].ToString()));
@@ -598,7 +618,7 @@ namespace glc_cs
 
 				if (IsFirstLoad)
 				{
-					UpdateSplashInfo(-1, "ゲームリストのロード中… [" + GameMax + "件]");
+					UpdateSplashInfo(-1, "ゲームリストのロード中… [" + GameMax + "件]", enabledExSplash);
 				}
 
 				if (!(GameMax >= 1)) // ゲーム登録数が1以上でない場合
@@ -633,7 +653,7 @@ namespace glc_cs
 						counter++;
 						if (IsFirstLoad && !DisableInitialLoadCountFlg)
 						{
-							UpdateSplashInfo(-1, "ゲームリストのロード中", counter, GameMax);
+							UpdateSplashInfo(-1, "ゲームリストのロード中", enabledExSplash, counter, GameMax);
 						}
 
 						gameList.Items.Add(DecodeSQLSpecialChars(reader["GAME_NAME"].ToString()));

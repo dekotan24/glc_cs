@@ -16,6 +16,7 @@ namespace glc_cs
 {
 	public partial class Config : Form
 	{
+		private int spCnt = 0;
 		public Config()
 		{
 			InitializeComponent();
@@ -1163,9 +1164,31 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void logoPictureBox_Click(object sender, EventArgs e)
 		{
+			if (spCnt == 10)
+			{
+				if (Convert.ToInt32(ReadIni("general", "exSplash", "0", 1)) == 1)
+				{
+					DialogResult dr = MessageBox.Show("Exスプラッシュスクリーンを無効にしますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+					if (dr == DialogResult.No)
+					{
+						return;
+					}
+					spCnt = 0;
+					WriteIni("general", "exSplash", "0", 1);
+				}
+				else
+				{
+					WriteIni("general", "exSplash", "1", 1);
+					System.Media.SystemSounds.Beep.Play();
+				}
+			}
+			else
+			{
+				spCnt++;
+			}
 		}
 
-		private void checkBox8_CheckedChanged(object sender, EventArgs e)
+		private void offlineSaveEnableCheck_CheckedChanged(object sender, EventArgs e)
 		{
 			if (offlineSaveEnableCheck.Checked && offlineSaveEnableCheck.Focused)
 			{

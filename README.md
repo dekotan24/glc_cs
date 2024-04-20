@@ -28,5 +28,9 @@ DLsiteから作品情報を取得するアプリケーション[DLsiteInfoGetter
 MySQLデータベースに登録しているデータをブラウザで表示する[GLWeb](https://github.com/dekotan24/GLWeb/)もどうぞ。
 
 
+## thanks
+[夏音](https://twitter.com/kaon_umr) 様
+
+
 ## license
 This application is developed under the MIT license.

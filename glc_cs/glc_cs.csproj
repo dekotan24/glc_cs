@@ -263,6 +263,12 @@
     <Compile Include="Form\Fanza.Designer.cs">
       <DependentUpon>Fanza.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\Splash2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Splash2.Designer.cs">
+      <DependentUpon>Splash2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\vndb.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -333,6 +339,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Memo.resx">
       <DependentUpon>Memo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\Splash2.resx">
+      <DependentUpon>Splash2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
@@ -433,6 +442,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_alpha_new.ico" />
+    <None Include="Resources\murasame_nowLoading.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
