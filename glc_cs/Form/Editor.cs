@@ -5,8 +5,8 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using static glc_cs.Core.Functions;
 using static glc_cs.Core.Property;
-using static glc_cs.General.Var;
 
 namespace glc_cs
 {
@@ -543,6 +543,161 @@ namespace glc_cs
 			{
 				titleText.Focus();
 			}
+		}
+
+		private void Editor_DragDrop(object sender, DragEventArgs e)
+		{
+			// DataFormats.FileDropを与えて、GetDataPresent()メソッドを呼び出す。
+			var dropTarget = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+
+			// GetDataにより取得したString型の配列から要素を取り出す。
+			var targetFile = dropTarget[0];
+
+			AutoComplete(targetFile);
+		}
+
+		private void Editor_DragEnter(object sender, DragEventArgs e)
+		{
+			// マウスポインター形状変更
+			//
+			// DragDropEffects
+			//  Copy  :データがドロップ先にコピーされようとしている状態
+			//  Move  :データがドロップ先に移動されようとしている状態
+			//  Scroll:データによってドロップ先でスクロールが開始されようとしている状態、あるいは現在スクロール中である状態
+			//  All   :上の3つを組み合わせたもの
+			//  Link  :データのリンクがドロップ先に作成されようとしている状態
+			//  None  :いかなるデータもドロップ先が受け付けようとしない状態
+
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				e.Effect = DragDropEffects.Copy;
+			}
+			else
+			{
+				e.Effect = DragDropEffects.None;
+			}
+		}
+
+		/// <summary>
+		/// <see cref="imgPathText"/> に入力されているパスで <see cref="imgPictureBox"/> に画像を反映
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ApplyPictureBox(object sender, EventArgs e)
+		{
+			// 画面反映
+			if (File.Exists(imgPathText.Text))
+			{
+				try
+				{
+					iconImage.ImageLocation = imgPathText.Text;
+				}
+				catch (Exception ex)
+				{
+					iconImage.ImageLocation = "";
+					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, imgPathText.Text);
+				}
+			}
+			else
+			{
+				iconImage.ImageLocation = "";
+			}
+		}
+
+		/// <summary>
+		/// 実行アプリケーションが指定された場合に、自動的にアプリケーション情報を取得します。
+		/// </summary>
+		/// <param name="targetFile"></param>
+		/// <param name="targetType"></param>
+		private void AutoComplete(string targetFile, string targetType = "")
+		{
+			// ファイルタイプが指定されていない場合に自動判別
+			if (targetType == string.Empty)
+			{
+				string extension = Path.GetExtension(targetFile);
+				if (extension == ".jpg" || extension == ".png" || extension == ".bmp" || extension == ".gif")
+				{
+					targetType = "img";
+				}
+				else
+				{
+					targetType = "exe";
+				}
+			}
+
+			// ファイルごとによる処理
+			if (targetType == "exe")
+			{
+				// タイトル自動補填（ファイル名）
+				if (string.IsNullOrEmpty(titleText.Text.Trim()))
+				{
+					titleText.Text = Path.GetFileNameWithoutExtension(targetFile);
+				}
+
+				// 実行ファイルパス自動補填（ファイルフルパス）
+				exePathText.Text = targetFile;
+
+				// 画像ファイルパス自動補填（[ファイル名(.png|.jpg)]の検出）
+				string targetPath = Path.GetDirectoryName(targetFile).EndsWith("\\") ? Path.GetDirectoryName(targetFile) : Path.GetDirectoryName(targetFile) + "\\";
+				string targetName = Path.GetFileNameWithoutExtension(targetFile);
+				string[] targetImageTemp = { targetPath + targetName + ".png", targetPath + targetName + ".jpg" };
+
+				if (File.Exists(targetImageTemp[0]))
+				{
+					imgPathText.Text = targetImageTemp[0];
+				}
+				else if (File.Exists(targetImageTemp[1]))
+				{
+					imgPathText.Text = targetImageTemp[1];
+				}
+				else
+				{
+					imgPathText.Text = string.Empty;
+				}
+
+				// 抽出ツールの自動選択
+				if (ExtractEnable)
+				{
+					string extractToolResult = GetExtractTool(targetFile);
+					if (extractToolResult.Equals("krkr") || extractToolResult.Equals("krkrz"))
+					{
+						extractToolCombo.SelectedItem = extractToolResult;
+					}
+				}
+			}
+			else
+			{
+				imgPathText.Text = targetFile;
+			}
+
+			ApplyPictureBox(null, null);
+
+			// 起動回数、実行時間の初期化
+			startCountText.Value = 0;
+			runTimeText.Value = 0;
+
+			// フラグ初期化
+			rateCheck.Checked = Rate != 0;
+		}
+
+		private string GetExtractTool(string executePath)
+		{
+			string result = string.Empty;
+			if (File.Exists(executePath))
+			{
+				// アプリケーション情報の取得
+				System.Diagnostics.FileVersionInfo vi = System.Diagnostics.FileVersionInfo.GetVersionInfo(executePath);
+				string productName = vi.ProductName;
+				if (ProductName.Contains("(KIRIKIRI) Z"))
+				{
+					result = "krkrz";
+				}
+				else if (ProductName.Contains("(KIRIKIRI)"))
+				{
+					result = "krkr";
+				}
+			}
+			return result;
 		}
 	}
 }

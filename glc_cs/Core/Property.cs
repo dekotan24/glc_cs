@@ -19,12 +19,12 @@ namespace glc_cs.Core
 		/// <summary>
 		/// アプリケーションバージョン
 		/// </summary>
-		protected static readonly string appVer = "1.11";
+		protected static readonly string appVer = "1.12";
 
 		/// <summary>
 		/// アプリケーションビルド番号
 		/// </summary>
-		protected static readonly string appBuild = "41.24.04.21";
+		protected static readonly string appBuild = "42.24.04.22";
 
 		/// <summary>
 		/// データベースバージョン
@@ -64,17 +64,17 @@ namespace glc_cs.Core
 		/// <summary>
 		/// アプリケーション設定パス(config.ini)
 		/// </summary>
-		protected static string configIni = AppDomain.CurrentDomain.BaseDirectory + "config.ini";
+		protected static string configIni = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.ini");
 
 		/// <summary>
 		/// オフラインINI用ローカルディレクトリ
 		/// </summary>
-		protected static string localPath = BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\";
+		protected static string localPath = Path.Combine(BaseDir, "Local\\");
 
 		/// <summary>
 		/// オフラインINI用ローカル統括管理ファイル
 		/// </summary>
-		protected static string localIni = BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\game.ini";
+		protected static string localIni = Path.Combine(BaseDir, "Local", "game.ini");
 
 		/// <summary>
 		/// ゲーム総数

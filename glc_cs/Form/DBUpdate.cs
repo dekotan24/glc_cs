@@ -7,8 +7,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using static glc_cs.Core.Functions;
 using static glc_cs.Core.Property;
-using static glc_cs.General.Var;
 
 namespace glc_cs
 {
@@ -960,7 +960,12 @@ namespace glc_cs
 			}
 
 			// アップデートチェック
-			if (updateLog.ToString().Length > 0)
+			// アップデートなし時に自動で閉じる
+			if (updateLog.ToString().Length == 0)
+			{
+				this.DialogResult = DialogResult.Ignore;
+			}
+			else if (updateLog.ToString().Length > 0)
 			{
 				if (updateRequired)
 				{
@@ -990,12 +995,6 @@ namespace glc_cs
 			{
 				WriteErrorLog("アップデートチェック中にエラーが発生しました。", MethodBase.GetCurrentMethod().Name, errMsg.ToString());
 				MessageBox.Show("アップデートチェック中にエラーが発生しました。\n\n" + errMsg.ToString(), AppName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-
-			// アップデートなし時に自動で閉じる
-			if (updateLog.ToString().Length == 0)
-			{
-				this.DialogResult = DialogResult.Ignore;
 			}
 		}
 
@@ -1632,7 +1631,7 @@ namespace glc_cs
 								/* ↓ [必須] Ver.1.5(update to GL 1.11) ↓ */
 								if (savedata_path.Equals("!Err"))
 								{
-									IniWrite(readini, "game", KeyNames.savedata_path, "0");
+									IniWrite(readini, "game", KeyNames.savedata_path, string.Empty);
 								}
 								/* ↑ [必須] Ver.1.5(update to GL 1.11) ↑ */
 

@@ -37,7 +37,6 @@
 			this.progressBar2 = new System.Windows.Forms.ProgressBar();
 			this.label2 = new System.Windows.Forms.Label();
 			this.pictureBox2 = new System.Windows.Forms.PictureBox();
-			this.label3 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			this.SuspendLayout();
@@ -124,26 +123,14 @@
 			// 
 			// pictureBox2
 			// 
-			this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
-			this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
+			this.pictureBox2.BackColor = System.Drawing.SystemColors.ActiveBorder;
+			this.pictureBox2.BackgroundImage = global::glc_cs.Properties.Resources.amane_nowLoading;
 			this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
 			this.pictureBox2.Location = new System.Drawing.Point(0, 0);
 			this.pictureBox2.Name = "pictureBox2";
 			this.pictureBox2.Size = new System.Drawing.Size(330, 390);
 			this.pictureBox2.TabIndex = 10;
 			this.pictureBox2.TabStop = false;
-			// 
-			// label3
-			// 
-			this.label3.AutoSize = true;
-			this.label3.BackColor = System.Drawing.Color.White;
-			this.label3.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label3.ForeColor = System.Drawing.SystemColors.ControlDark;
-			this.label3.Location = new System.Drawing.Point(0, 366);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(325, 14);
-			this.label3.TabIndex = 11;
-			this.label3.Text = "以前のスプラッシュスクリーンに戻すには、再度イースターエッグを実行します。";
 			// 
 			// Splash2
 			// 
@@ -152,7 +139,6 @@
 			this.BackColor = System.Drawing.SystemColors.ActiveBorder;
 			this.ClientSize = new System.Drawing.Size(330, 390);
 			this.ControlBox = false;
-			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.progressBar2);
 			this.Controls.Add(this.MemoryLabel);
@@ -191,6 +177,5 @@
 		private System.Windows.Forms.ProgressBar progressBar2;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.PictureBox pictureBox2;
-		private System.Windows.Forms.Label label3;
 	}
 }
