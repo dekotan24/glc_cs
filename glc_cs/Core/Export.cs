@@ -6,8 +6,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using static glc_cs.Core.Functions;
 using static glc_cs.Core.Property;
-using static glc_cs.General.Var;
 
 namespace glc_cs.Core
 {

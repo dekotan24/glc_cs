@@ -2,8 +2,8 @@
 using System;
 using System.IO;
 using System.Reflection;
+using static glc_cs.Core.Functions;
 using static glc_cs.Core.Property;
-using static glc_cs.General.Var;
 
 namespace glc_cs
 {

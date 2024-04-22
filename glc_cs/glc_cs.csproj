@@ -230,6 +230,7 @@
     <Compile Include="Core\Archive.cs" />
     <Compile Include="Core\Crypt.cs" />
     <Compile Include="Core\DataBind.cs" />
+    <Compile Include="Core\Exception.cs" />
     <Compile Include="Core\Export.cs" />
     <Compile Include="Core\Property.cs" />
     <Compile Include="Form\DataViewForm.cs">
@@ -436,6 +437,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_alpha_new.ico" />
+    <None Include="Resources\amane_nowLoading.png" />
     <None Include="Resources\murasame_nowLoading.png" />
   </ItemGroup>
   <ItemGroup>

@@ -5,8 +5,8 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using static glc_cs.Core.Functions;
 using static glc_cs.Core.Property;
-using static glc_cs.General.Var;
 
 namespace glc_cs
 {
@@ -26,7 +26,7 @@ namespace glc_cs
 		/// <param name="saveType">ゲームデータ保存方法</param>
 		/// <param name="cn">SQLコネクション</param>
 		/// <param name="cm">SQLコマンド</param>
-		public AddItem(string saveType, SqlConnection cn)
+		public AddItem(string saveType, SqlConnection cn, string dropItems = "")
 		{
 			InitializeComponent();
 			// 数値ボックス最大値設定
@@ -56,6 +56,10 @@ namespace glc_cs
 				extractToolCombo.Visible = true;
 				extractToolCombo.SelectedIndex = 0;
 			}
+			if (!string.IsNullOrEmpty(dropItems))
+			{
+				AutoComplete(dropItems);
+			}
 		}
 
 		/// <summary>
@@ -64,7 +68,7 @@ namespace glc_cs
 		/// <param name="saveType">ゲームデータ保存方法</param>
 		/// <param name="cn">SQLコネクション</param>
 		/// <param name="cm">SQLコマンド</param>
-		public AddItem(string saveType, MySqlConnection cn)
+		public AddItem(string saveType, MySqlConnection cn, string dropItems = "")
 		{
 			InitializeComponent();
 			// 数値ボックス最大値設定
@@ -94,13 +98,17 @@ namespace glc_cs
 				extractToolCombo.Visible = true;
 				extractToolCombo.SelectedIndex = 0;
 			}
+			if (!string.IsNullOrEmpty(dropItems))
+			{
+				AutoComplete(dropItems);
+			}
 		}
 
 		/// <summary>
 		/// INI / オフラインモード用
 		/// </summary>
 		/// <param name="saveType">ゲームデータ保存方法</param>
-		public AddItem(string saveType)
+		public AddItem(string saveType, string dropItems = "")
 		{
 			InitializeComponent();
 			// 数値ボックス最大値設定
@@ -124,6 +132,10 @@ namespace glc_cs
 				label10.Visible = true;
 				extractToolCombo.Visible = true;
 				extractToolCombo.SelectedIndex = 0;
+			}
+			if (!string.IsNullOrEmpty(dropItems))
+			{
+				AutoComplete(dropItems);
 			}
 		}
 
@@ -197,6 +209,8 @@ namespace glc_cs
 			string startCount = startCountText.Value.ToString();
 			string rate = rateCheck.Checked ? "1" : "0";
 			string extract_tool = extractToolCombo.SelectedIndex.ToString();
+			string temp1 = string.Empty;
+			string savedata_path = string.Empty;
 
 			if (game_text.Length == 0)
 			{
@@ -220,8 +234,8 @@ namespace glc_cs
 
 					if (!(File.Exists(targetFilePath)))
 					{
-						KeyNames[] writeKeys = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.execute_cmd, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.rating, KeyNames.extract_tool };
-						string[] writeValues = { game_text, imgPath, gamePath, executeCmd, runTime, startCount, dcon_text, dcon_img, string.Empty, "未プレイ", DBVer, rate, extract_tool };
+						KeyNames[] writeKeys = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.execute_cmd, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.rating, KeyNames.extract_tool, KeyNames.temp1, KeyNames.savedata_path };
+						string[] writeValues = { game_text, imgPath, gamePath, executeCmd, runTime, startCount, dcon_text, dcon_img, string.Empty, DefaultStatusValueOfNotPlaying, DBVer, rate, extract_tool, temp1, savedata_path };
 
 						IniWrite(targetFilePath, "game", writeKeys, writeValues);
 						WriteIni("list", "game", newmaxval.ToString(), 0);
@@ -238,8 +252,8 @@ namespace glc_cs
 						DialogResult dialogResult = MessageBox.Show("既にiniファイルが存在します！！\nあり得ません。手動で管理INIファイルを追加したか、内部処理で何らかのミスが発生した可能性があります。\n最も安全な対処法は、一度このフォームを閉じて、[再読込]することです。\n\n" + targetFilePath + "\n[" + dup + "]\n上書きしますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
 						if (dialogResult == DialogResult.Yes)
 						{
-							KeyNames[] writeKeys = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.execute_cmd, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.rating, KeyNames.extract_tool };
-							string[] writeValues = { game_text, imgPath, gamePath, executeCmd, runTime, startCount, dcon_text, dcon_img, string.Empty, "未プレイ", DBVer, rate, extract_tool };
+							KeyNames[] writeKeys = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.execute_cmd, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.rating, KeyNames.extract_tool, KeyNames.temp1, KeyNames.savedata_path };
+							string[] writeValues = { game_text, imgPath, gamePath, executeCmd, runTime, startCount, dcon_text, dcon_img, string.Empty, DefaultStatusValueOfNotPlaying, DBVer, rate, extract_tool, temp1, savedata_path };
 
 							IniWrite(targetFilePath, "game", writeKeys, writeValues);
 							WriteIni("list", "game", newmaxval.ToString(), 0);
@@ -291,7 +305,7 @@ namespace glc_cs
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
 						// SQL文
-						CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION, EXTRACT_TOOL ) VALUES ( @game_name, @game_path, @execute_cmd, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @dcon_img, '', '未プレイ', @db_version, @extract_tool )"
+						CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION, EXTRACT_TOOL, TEMP1, SAVEDATA_PATH ) VALUES ( @game_name, @game_path, @execute_cmd, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @dcon_img, '', '未プレイ', @db_version, @extract_tool, @temp1, @savedata_path )"
 					};
 					cm.Connection = cn;
 					// パラメータの設定
@@ -306,6 +320,8 @@ namespace glc_cs
 					cm.Parameters.AddWithValue("@dcon_img", dcon_img);
 					cm.Parameters.AddWithValue("@db_version", DBVer);
 					cm.Parameters.AddWithValue("@extract_tool", extract_tool);
+					cm.Parameters.AddWithValue("@temp1", temp1);
+					cm.Parameters.AddWithValue("@savedata_path", savedata_path);
 
 					try
 					{
@@ -334,7 +350,7 @@ namespace glc_cs
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
 						// SQL文
-						CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION, EXTRACT_TOOL ) VALUES ( @game_name, @game_path, @execute_cmd, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @dcon_img, '', N'未プレイ', @db_version, @extract_tool );"
+						CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION, EXTRACT_TOOL, TEMP1, SAVEDATA_PATH ) VALUES ( @game_name, @game_path, @execute_cmd, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @dcon_img, '', N'未プレイ', @db_version, @extract_tool, @temp1, @savedata_path );"
 					};
 					cm.Connection = cn;
 					// パラメータの設定
@@ -349,6 +365,8 @@ namespace glc_cs
 					cm.Parameters.AddWithValue("@dcon_img", dcon_img);
 					cm.Parameters.AddWithValue("@db_version", DBVer);
 					cm.Parameters.AddWithValue("@extract_tool", extract_tool);
+					cm.Parameters.AddWithValue("@temp1", temp1);
+					cm.Parameters.AddWithValue("@savedata_path", savedata_path);
 
 					try
 					{
@@ -542,6 +560,11 @@ namespace glc_cs
 		/// <param name="targetType"></param>
 		private void AutoComplete(string targetFile, string targetType = "")
 		{
+			if (string.IsNullOrEmpty(targetFile))
+			{
+				return;
+			}
+
 			// ファイルタイプが指定されていない場合に自動判別
 			if (targetType == string.Empty)
 			{
@@ -590,7 +613,7 @@ namespace glc_cs
 				if (ExtractEnable)
 				{
 					string extractToolResult = GetExtractTool(targetFile);
-					if (extractToolResult.Equals("krkrz") || extractToolResult.Equals("krkrz"))
+					if (extractToolResult.Equals("krkr") || extractToolResult.Equals("krkrz"))
 					{
 						extractToolCombo.SelectedItem = extractToolResult;
 					}

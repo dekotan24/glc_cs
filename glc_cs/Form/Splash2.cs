@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Security.Cryptography;
 using System.Windows.Forms;
@@ -9,15 +10,23 @@ namespace glc_cs
 	{
 		static readonly HashAlgorithm hashProvider = new MD5CryptoServiceProvider();
 
-		public Splash2()
+		public Splash2(string bgimg = "")
 		{
 			InitializeComponent();
+			if (!string.IsNullOrEmpty(bgimg) && File.Exists(bgimg))
+			{
+				pictureBox2.BackgroundImage = Image.FromFile(bgimg);
+			}
 		}
 
 		private void Form3_Load(object sender, EventArgs e)
 		{
 			// label3.Text = "MD5: " + ComputeFileHash(Application.ExecutablePath);
 			label2.Text = "Ver." + Core.Property.AppVer;
+			this.Show();
+			this.Activate();
+			this.Refresh();
+			Application.DoEvents();
 		}
 
 		private static string ComputeFileHash(string filePath)

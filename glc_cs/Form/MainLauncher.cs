@@ -1,4 +1,5 @@
-﻿using glc_cs.Properties;
+﻿using glc_cs.Core.glException;
+using glc_cs.Properties;
 using MySql.Data.MySqlClient;
 using System;
 using System.Data;
@@ -10,8 +11,8 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using static glc_cs.Core.DataBind;
+using static glc_cs.Core.Functions;
 using static glc_cs.Core.Property;
-using static glc_cs.General.Var;
 
 namespace glc_cs
 {
@@ -36,146 +37,165 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void gl_Load(object sender, EventArgs e)
 		{
-			// スプラッシュ画面表示
-			enabledExSplash = Convert.ToBoolean(Convert.ToInt32(ReadIni("general", "exSplash", "0", 1)));
-			if (enabledExSplash)
+			try
 			{
-				Splash2Form.Show();
-			}
-			else
-			{
-				SplashForm.Show();
-			}
-
-			// ステータス変更
-			UpdateSplashInfo(1, "準備中…", enabledExSplash);
-
-			Application.DoEvents();
-
-			// スタイル設定
-			this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-			this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-			this.SetStyle(ControlStyles.UserPaint, true);
-
-			DateTime appStartTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
-
-			// 終了処理設定
-			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
-
-			// 実行ボタンカバーを表示
-			runningPicture.Visible = true;
-
-			// ステータス変更
-			UpdateSplashInfo(2, "設定を読み込み中…", enabledExSplash);
-
-			// 設定ファイル読込
-			UpdateComponent();
-
-			// ステータス変更
-			UpdateSplashInfo(3, "アップデートのチェック中…", enabledExSplash);
-			// アップデートチェック
-			if (!(InitialUpdateCheckSkipFlg && InitialUpdateCheckSkipVer.Equals(AppVer)))
-			{
-				CheckItemUpdate();
-			}
-
-			// ステータス変更
-			UpdateSplashInfo(4, "ゲームリストのロード中…", enabledExSplash);
-
-			// アイテム読込
-			string item = SaveType == "I" ? LoadItem(GameDir) : SaveType == "D" ? LoadItem2(SqlCon, IsFirstLoad) : LoadItem3(SqlCon2, IsFirstLoad);
-
-			// ステータス変更
-			UpdateSplashInfo(5, "UIの読み込み中…", enabledExSplash);
-
-			if (WindowHideControlFlg)
-			{
-				this.MinimizeBox = true;
-			}
-
-			tabControl1.SelectedIndex = 1;
-			tabControl1.SelectedIndex = 0;
-
-			// グリッド削除処理
-			if (!GridEnable)
-			{
-				tabControl1.Controls.Remove(tabPage2);
-			}
-
-			// コントロールセット
-			// ステータスドロップダウン
-			foreach (string statusName in StatusDropDown())
-			{
-				statusCombo.Items.Add(statusName);
-			}
-
-			// 検索タブ
-			searchTargetDropDown.SelectedIndex = 0;
-			orderDropDown.SelectedIndex = 0;
-
-			// 実行ボタン読込中画像を非表示
-			runningPicture.Visible = false;
-
-			// ステータス変更
-			UpdateSplashInfo(6, "最終処理中…", enabledExSplash);
-
-			// アイテム詳細の再表示
-			GameList_SelectedIndexChanged(sender, e);
-
-			// メインフォーム表示
-			this.Show();
-			this.Activate();
-			this.Refresh();
-			SplashForm.Close();
-			SplashForm.Dispose();
-			Splash2Form.Close();
-			Splash2Form.Dispose();
-			Application.DoEvents();
-
-			// 準備所要時間計算
-			DateTime appReadyTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
-			string temp = (appReadyTime - appStartTime).ToString();
-			int wakeUpTimes = Convert.ToInt32(TimeSpan.Parse(temp).TotalSeconds);
-
-			Message(AppName + "へようこそ。ランチャーの起動時間は、" + wakeUpTimes + "秒でした。");
-
-			if (ByActive && ByRoW)
-			{
-				Bouyomiage("ゲームランチャーを起動しました");
-			}
-
-			if (item == "_none_game_data" || item == "0")
-			{
-				if (SaveType == "I" || SaveType == "T")
+				// スプラッシュ画面表示
+				enabledExSplash = Convert.ToBoolean(Convert.ToInt32(ReadIni("general", "exSplash", "0")));
+				if (enabledExSplash)
 				{
-					// ini
-					if (!(File.Exists(GameIni)))
-					{
-						WriteIni("list", "game", "0", 0);
-					}
+					string exspPath = ReadIni("imgd", "spimg", string.Empty);
+					Splash2Form = new Splash2(exspPath);
+					Splash2Form.Show();
+				}
+				else
+				{
+					SplashForm.Show();
+				}
 
+				// ステータス変更
+				UpdateSplashInfo(1, "準備中…", enabledExSplash);
 
-					if (!(Directory.Exists(GameDir)))
+				Application.DoEvents();
+
+				// スタイル設定
+				this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+				this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+				this.SetStyle(ControlStyles.UserPaint, true);
+
+				DateTime appStartTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+
+				// 終了処理設定
+				Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
+
+				// 実行ボタンカバーを表示
+				runningPicture.Visible = true;
+
+				// ステータス変更
+				UpdateSplashInfo(2, "設定を読み込み中…", enabledExSplash);
+
+				// 設定ファイル読込
+				UpdateComponent();
+
+				// ステータス変更
+				UpdateSplashInfo(3, "アップデートのチェック中…", enabledExSplash);
+				// アップデートチェック
+				if (!(InitialUpdateCheckSkipFlg && InitialUpdateCheckSkipVer.Equals(AppVer)))
+				{
+					bool checkResult = CheckItemUpdate();
+					if (!checkResult)
 					{
-						try
-						{
-							Directory.CreateDirectory(GameDir);
-						}
-						catch (Exception ex)
-						{
-							ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
-						}
+						throw new DataUpdateCancellationException();
 					}
 				}
-				// itemがnoneの場合：ゲームが登録されていない場合
-				MessageBox.Show("GLauncherをご利用頂きありがとうございます。\n\"追加\"ボタンを押して、ゲームを追加しましょう！",
-								AppName,
-								MessageBoxButtons.OK,
-								MessageBoxIcon.Information);
-			}
 
-			IsFirstLoad = false;
-			GC.Collect();
+				// ステータス変更
+				UpdateSplashInfo(4, "ゲームリストのロード中…", enabledExSplash);
+
+				// アイテム読込
+				string item = SaveType == "I" ? LoadItem(GameDir) : SaveType == "D" ? LoadItem2(SqlCon, IsFirstLoad) : LoadItem3(SqlCon2, IsFirstLoad);
+
+				// ステータス変更
+				UpdateSplashInfo(5, "UIの読み込み中…", enabledExSplash);
+
+				if (WindowHideControlFlg)
+				{
+					this.MinimizeBox = true;
+				}
+
+				tabControl1.SelectedIndex = 1;
+				tabControl1.SelectedIndex = 0;
+
+				// グリッド削除処理
+				if (!GridEnable)
+				{
+					tabControl1.Controls.Remove(tabPage2);
+				}
+
+				// コントロールセット
+				// ステータスドロップダウン
+				foreach (string statusName in StatusDropDown())
+				{
+					statusCombo.Items.Add(statusName);
+				}
+
+				// 検索タブ
+				searchTargetDropDown.SelectedIndex = 0;
+				orderDropDown.SelectedIndex = 0;
+
+				// 実行ボタン読込中画像を非表示
+				runningPicture.Visible = false;
+
+				// ステータス変更
+				UpdateSplashInfo(6, "最終処理中…", enabledExSplash);
+
+				// アイテム詳細の再表示
+				GameList_SelectedIndexChanged(sender, e);
+
+				// メインフォーム表示
+				this.Show();
+				this.Activate();
+				this.Refresh();
+				SplashForm.Close();
+				SplashForm.Dispose();
+				Splash2Form.Close();
+				Splash2Form.Dispose();
+				Application.DoEvents();
+
+				// 準備所要時間計算
+				DateTime appReadyTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+				string temp = (appReadyTime - appStartTime).ToString();
+				int wakeUpTimes = Convert.ToInt32(TimeSpan.Parse(temp).TotalSeconds);
+
+				Message(AppName + "へようこそ。ランチャーの起動時間は、" + wakeUpTimes + "秒でした。");
+
+				if (ByActive && ByRoW)
+				{
+					Bouyomiage("ゲームランチャーを起動しました");
+				}
+
+				if (item == "_none_game_data" || item == "0")
+				{
+					if (SaveType == "I" || SaveType == "T")
+					{
+						// ini
+						if (!(File.Exists(GameIni)))
+						{
+							WriteIni("list", "game", "0", 0);
+						}
+
+
+						if (!(Directory.Exists(GameDir)))
+						{
+							try
+							{
+								Directory.CreateDirectory(GameDir);
+							}
+							catch (Exception ex)
+							{
+								ResolveError(MethodBase.GetCurrentMethod().Name, ex.Message, 0, false);
+							}
+						}
+					}
+					// itemがnoneの場合：ゲームが登録されていない場合
+					MessageBox.Show("GLauncherをご利用頂きありがとうございます。\n\"追加\"ボタンを押して、ゲームを追加しましょう！",
+									AppName,
+									MessageBoxButtons.OK,
+									MessageBoxIcon.Information);
+				}
+
+				IsFirstLoad = false;
+				GC.Collect();
+			}
+			catch (DataUpdateCancellationException)
+			{
+				// DBUpdateキャンセル
+				ExitApp();
+			}
+			catch (Exception ex)
+			{
+				WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, ex.StackTrace);
+				ResolveError(MethodBase.GetCurrentMethod().Name, "起動処理中に予期せぬエラーが発生しました。\n\n" + ex.Message, 0);
+			}
 		}
 
 		/// <summary>
@@ -218,24 +238,23 @@ namespace glc_cs
 				delButton.Enabled = true;
 				memoButton.Enabled = true;
 				statusCombo.Enabled = true;
+				upButton.Enabled = true;
+				downButton.Enabled = true;
+				startButton.Enabled = true;
 			}
 			else
 			{
 				// ゲーム統括管理INIがない場合
-				reloadButton.Enabled = false;
-				editButton.Enabled = false;
-				randomButton.Enabled = false;
-				delButton.Enabled = false;
-				memoButton.Enabled = false;
-				statusCombo.Enabled = false;
+				WriteIni("list", "game", "0", 0);
+				GameMax = 0;
+				clearAllInfo();
 				return "_none_game_data";
 			}
 
 			if (!(GameMax >= 1)) // ゲーム登録数が1以上でない場合
 			{
-				reloadButton.Enabled = false;
+				clearAllInfo();
 			}
-
 
 			int count;
 			string readini;
@@ -365,17 +384,15 @@ namespace glc_cs
 					delButton.Enabled = true;
 					memoButton.Enabled = true;
 					statusCombo.Enabled = true;
+					upButton.Enabled = true;
+					downButton.Enabled = true;
+					startButton.Enabled = true;
 				}
 				else
 				{
 					// ゲームが1つもない場合
 					GameMax = 0;
-					reloadButton.Enabled = false;
-					editButton.Enabled = false;
-					randomButton.Enabled = false;
-					delButton.Enabled = false;
-					memoButton.Enabled = false;
-					statusCombo.Enabled = false;
+					clearAllInfo();
 					return "_none_game_data";
 				}
 
@@ -386,7 +403,7 @@ namespace glc_cs
 
 				if (!(GameMax >= 1)) // ゲーム登録数が1以上でない場合
 				{
-					reloadButton.Enabled = false;
+					clearAllInfo();
 				}
 
 				Image lvimg;
@@ -462,7 +479,7 @@ namespace glc_cs
 				}
 			}
 
-			string backupDir = BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "DbBackup\\";
+			string backupDir = Path.Combine(BaseDir, "DbBackup\\");
 
 			if (errMessage.Length != 0)
 			{
@@ -479,7 +496,6 @@ namespace glc_cs
 						ans = LoadItem(LocalPath);
 						if (firstLoad)
 						{
-							editINIStatusLabel.Visible = true;
 							upButton.Visible = true;
 							downButton.Visible = true;
 							editButton.Visible = true;
@@ -602,17 +618,15 @@ namespace glc_cs
 					delButton.Enabled = true;
 					memoButton.Enabled = true;
 					statusCombo.Enabled = true;
+					upButton.Enabled = true;
+					downButton.Enabled = true;
+					startButton.Enabled = true;
 				}
 				else
 				{
 					// ゲームが1つもない場合
 					GameMax = 0;
-					reloadButton.Enabled = false;
-					editButton.Enabled = false;
-					randomButton.Enabled = false;
-					delButton.Enabled = false;
-					memoButton.Enabled = false;
-					statusCombo.Enabled = false;
+					clearAllInfo();
 					return "_none_game_data";
 				}
 
@@ -623,7 +637,7 @@ namespace glc_cs
 
 				if (!(GameMax >= 1)) // ゲーム登録数が1以上でない場合
 				{
-					reloadButton.Enabled = false;
+					clearAllInfo();
 				}
 
 				Image lvimg;
@@ -699,7 +713,7 @@ namespace glc_cs
 				}
 			}
 
-			string backupDir = BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "DbBackup\\";
+			string backupDir = Path.Combine(BaseDir, "DbBackup\\");
 
 			if (errMessage.Length != 0)
 			{
@@ -716,10 +730,10 @@ namespace glc_cs
 						ans = LoadItem(LocalPath);
 						if (firstLoad)
 						{
-							editINIStatusLabel.Visible = true;
 							upButton.Visible = true;
 							downButton.Visible = true;
 							editButton.Visible = true;
+							startButton.Enabled = true;
 							ResolveError(MethodBase.GetCurrentMethod().Name, "データベースに接続できませんでした。オフラインモードで起動します。\nこの問題が一時的なものであると考えられる場合、再起動で解決する場合があります。", 0, false, errMessage);
 						}
 					}
@@ -879,7 +893,7 @@ namespace glc_cs
 				else
 				{
 					// 個別ini不存在
-					ResolveError(MethodBase.GetCurrentMethod().Name, "ゲーム情報管理iniが存在しません。\n" + path, 0, false);
+					MessageBox.Show("ゲーム情報管理iniが存在しません。\n" + path, AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				}
 			}
 
@@ -1344,29 +1358,7 @@ namespace glc_cs
 		/// <param name="e"></param>
 		private void AddButton_Click(object sender, EventArgs e)
 		{
-			if (SaveType == "D")
-			{
-				SqlConnection cn = SqlCon;
-
-				AddItem addItem = new AddItem(SaveType, cn);
-				addItem.StartPosition = FormStartPosition.CenterParent;
-				addItem.ShowDialog(this);
-			}
-			else if (SaveType == "M")
-			{
-				MySqlConnection cn = SqlCon2;
-
-				AddItem addItem = new AddItem(SaveType, cn);
-				addItem.StartPosition = FormStartPosition.CenterParent;
-				addItem.ShowDialog(this);
-			}
-			else
-			{
-				AddItem addItem = new AddItem(SaveType);
-				addItem.StartPosition = FormStartPosition.CenterParent;
-				addItem.ShowDialog(this);
-			}
-
+			openAddItem();
 			ReloadItems();
 			GC.Collect();
 		}
@@ -1921,7 +1913,6 @@ namespace glc_cs
 					// databaseの場合
 					upButton.Visible = false;
 					downButton.Visible = false;
-					editINIStatusLabel.Visible = false;
 				}
 				else
 				{
@@ -1944,7 +1935,9 @@ namespace glc_cs
 		/// <summary>
 		/// 起動時のアップデートチェック
 		/// </summary>
-		private void CheckItemUpdate()
+		/// <returns>True:アップデート成功／アップデートなし
+		/// False:アップデート失敗／終了</returns>
+		private bool CheckItemUpdate()
 		{
 			DialogResult dr = new DialogResult();
 			if (SaveType == "D")
@@ -1974,7 +1967,9 @@ namespace glc_cs
 			if (dr == DialogResult.Cancel)
 			{
 				ExitApp(false);
+				return false;
 			}
+			return true;
 		}
 
 		/// <summary>
@@ -2549,12 +2544,12 @@ namespace glc_cs
 		/// <summary>
 		/// ステータスバーに表示されるメッセージを選択
 		/// </summary>
-		private void Message(string message = null)
+		private void Message(string message = "", bool forceSet = false)
 		{
 			string ans = "";
 			int tmp;
 			Random r = new Random();
-			tmp = r.Next(1, 3);
+			tmp = r.Next(1, 2);
 
 			switch (tmp)
 			{
@@ -2565,13 +2560,9 @@ namespace glc_cs
 				case 2:
 					ans = "＊変更を保存するには「保存」か「起動」を押します。";
 					break;
-
-				case 3:
-					ans = "＊本ソフトウェアはベータ版です。エラーが発生した場合はご連絡ください。";
-					break;
 			}
 
-			if (IsFirstLoad && !string.IsNullOrEmpty(message))
+			if ((IsFirstLoad || forceSet) && !string.IsNullOrEmpty(message))
 			{
 				ans = message;
 			}
@@ -2626,15 +2617,23 @@ namespace glc_cs
 			LoadItem(GameDir);
 			if (GameMax >= 2 && delfileval >= 2)
 			{
-				gameList.SelectedIndex = delfileval - 2;
+				if (delfileval - 2 < 0)
+				{
+					gameList.SelectedIndex = 0;
+				}
+				else
+				{
+					gameList.SelectedIndex = delfileval - 2;
+				}
 			}
 			else if (GameMax == 1 && delfileval >= 1)
 			{
-				gameList.SelectedIndex = 1;
+				gameList.SelectedIndex = 0;
 			}
 			else
 			{
-				gameList.SelectedIndex = 0;
+				clearAllInfo();
+				gameList.SelectedIndex = -1;
 			}
 			return;
 		}
@@ -2814,16 +2813,45 @@ namespace glc_cs
 
 			if (GameMax >= 2 && delItemVal >= 2)
 			{
-				gameList.SelectedIndex = delItemVal - 2;
+				if (delItemVal - 2 < 0)
+				{
+					gameList.SelectedIndex = 0;
+				}
+				else
+				{
+					gameList.SelectedIndex = delItemVal - 2;
+				}
 			}
 			else if (GameMax == 1 && delItemVal >= 1)
 			{
-				gameList.SelectedIndex = 1;
+				gameList.SelectedIndex = 0;
 			}
 			else
 			{
-				gameList.SelectedIndex = 0;
+				clearAllInfo();
+				gameList.SelectedIndex = -1;
 			}
+			return;
+		}
+
+		private void clearAllInfo()
+		{
+			gameIcon.ImageLocation = null;
+			titleLabel.Text = "No Game";
+			nameText.Text = imgPathText.Text = exePathText.Text = executeCmdText.Text = dconText.Text = dconImgText.Text = runTimeText.Text = startCountText.Text = string.Empty;
+			statusCombo.SelectedItem = DefaultStatusValueOfNotPlaying;
+			reloadButton.Enabled = false;
+			editButton.Enabled = false;
+			randomButton.Enabled = false;
+			delButton.Enabled = false;
+			memoButton.Enabled = false;
+			statusCombo.Enabled = false;
+			upButton.Enabled = false;
+			downButton.Enabled = false;
+			startButton.Enabled = false;
+			trackCheck.Checked = false;
+			changeTrackCheckStatus();
+
 			return;
 		}
 
@@ -2896,6 +2924,8 @@ namespace glc_cs
 				ExitApp();
 			}
 
+			runningPicture.Visible = false;
+
 			return dr;
 		}
 
@@ -2910,7 +2940,7 @@ namespace glc_cs
 			{
 				notifyIcon1.BalloonTipText = "オフラインデータの取得中です。しばらくお待ち下さい。";
 				notifyIcon1.ShowBalloonTip(10);
-				string localPath = BaseDir + (BaseDir.EndsWith("\\") ? "" : "\\") + "Local\\";
+				string localPath = Path.Combine(BaseDir, "Local\\");
 				DownloadDbDataToLocal(localPath);
 			}
 
@@ -2922,20 +2952,8 @@ namespace glc_cs
 			GC.Collect();
 			this.Dispose();
 			Application.Exit();
-		}
-
-		/// <summary>
-		/// メモリ解放ボタン
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void CleanButton_Click(object sender, EventArgs e)
-		{
-			long beforeMemory = Environment.WorkingSet;
-			GC.Collect();
-			long afterMemory = Environment.WorkingSet;
-			long diffMemory = beforeMemory - afterMemory;
-			MessageBox.Show("メモリを解放しました。\n" + beforeMemory + "byte -> " + afterMemory + "byte (" + diffMemory + "byte)", AppName, MessageBoxButtons.OK, MessageBoxIcon.Information);
+			this.Close();
+			return;
 		}
 
 		/// <summary>
@@ -2991,7 +3009,10 @@ namespace glc_cs
 			if (GridEnable)
 			{
 				// グリッドと同期
-				gameImgList.EnsureVisible(gameList.SelectedIndex);
+				if (gameList.SelectedIndex != -1)
+				{
+					gameImgList.EnsureVisible(gameList.SelectedIndex);
+				}
 			}
 		}
 
@@ -3618,42 +3639,47 @@ namespace glc_cs
 		{
 			if (trackCheck.Focused)
 			{
-				try
+				changeTrackCheckStatus();
+			}
+		}
+
+		private void changeTrackCheckStatus()
+		{
+			try
+			{
+				WriteIni("checkbox", "track", (Convert.ToInt32(trackCheck.Checked)).ToString());
+			}
+			catch (Exception ex)
+			{
+				WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, Convert.ToInt32(trackCheck.Checked).ToString());
+			}
+
+			if (trackCheck.Checked)
+			{
+				dconTextPictureBox.Visible = true;
+				dconText.Visible = true;
+				dconImgPictureBox.Visible = true;
+				dconImgText.Visible = true;
+
+				dconConnectGroupBox.Visible = true;
+
+				testCheck.Visible = true;
+				if (useDconCheck.Checked)
 				{
-					WriteIni("checkbox", "track", (Convert.ToInt32(trackCheck.Checked)).ToString());
+					sensCheck.Visible = true;
 				}
-				catch (Exception ex)
-				{
-					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, Convert.ToInt32(trackCheck.Checked).ToString());
-				}
+			}
+			else
+			{
+				dconTextPictureBox.Visible = false;
+				dconText.Visible = false;
+				dconImgPictureBox.Visible = false;
+				dconImgText.Visible = false;
 
-				if (trackCheck.Checked)
-				{
-					dconTextPictureBox.Visible = true;
-					dconText.Visible = true;
-					dconImgPictureBox.Visible = true;
-					dconImgText.Visible = true;
+				dconConnectGroupBox.Visible = false;
 
-					dconConnectGroupBox.Visible = true;
-
-					testCheck.Visible = true;
-					if (useDconCheck.Checked)
-					{
-						sensCheck.Visible = true;
-					}
-				}
-				else
-				{
-					dconTextPictureBox.Visible = false;
-					dconText.Visible = false;
-					dconImgPictureBox.Visible = false;
-					dconImgText.Visible = false;
-
-					dconConnectGroupBox.Visible = false;
-
-					testCheck.Visible = false;
-					sensCheck.Visible = false;
-				}
+				testCheck.Visible = false;
+				sensCheck.Visible = false;
 			}
 		}
 
@@ -3715,6 +3741,78 @@ namespace glc_cs
 			if (extractCheck.Checked)
 			{
 				MessageBox.Show("いくつかのツールは起動直後に自己タスクを終了するため、\n正常にトラッキングできない場合があります。", AppName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+			}
+		}
+
+		private void gl_DragEnter(object sender, DragEventArgs e)
+		{
+			// マウスポインター形状変更
+			//
+			// DragDropEffects
+			//  Copy  :データがドロップ先にコピーされようとしている状態
+			//  Move  :データがドロップ先に移動されようとしている状態
+			//  Scroll:データによってドロップ先でスクロールが開始されようとしている状態、あるいは現在スクロール中である状態
+			//  All   :上の3つを組み合わせたもの
+			//  Link  :データのリンクがドロップ先に作成されようとしている状態
+			//  None  :いかなるデータもドロップ先が受け付けようとしない状態
+
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				e.Effect = DragDropEffects.Copy;
+			}
+			else
+			{
+				e.Effect = DragDropEffects.None;
+			}
+		}
+
+		private void gl_DragDrop(object sender, DragEventArgs e)
+		{
+			// DataFormats.FileDropを与えて、GetDataPresent()メソッドを呼び出す。
+			var dropTarget = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+
+			// GetDataにより取得したString型の配列から要素を取り出す。
+			var targetFile = dropTarget[0];
+
+			string extension = Path.GetExtension(targetFile);
+			if (!(extension == ".jpg" || extension == ".png" || extension == ".bmp" || extension == ".gif" || extension == ".exe"))
+			{
+				Message("そのファイル形式は対応していません。", true);
+				return;
+			}
+
+			openAddItem(targetFile);
+			ReloadItems();
+			GC.Collect();
+		}
+
+		/// <summary>
+		/// ゲーム追加ウィンドウを開きます
+		/// </summary>
+		/// <param name="targetFile">オートコンプリート対象のファイル</param>
+		private void openAddItem(string targetFile = "")
+		{
+			if (SaveType == "D")
+			{
+				SqlConnection cn = SqlCon;
+
+				AddItem addItem = new AddItem(SaveType, cn, targetFile);
+				addItem.StartPosition = FormStartPosition.CenterParent;
+				addItem.ShowDialog(this);
+			}
+			else if (SaveType == "M")
+			{
+				MySqlConnection cn = SqlCon2;
+
+				AddItem addItem = new AddItem(SaveType, cn, targetFile);
+				addItem.StartPosition = FormStartPosition.CenterParent;
+				addItem.ShowDialog(this);
+			}
+			else
+			{
+				AddItem addItem = new AddItem(SaveType, targetFile);
+				addItem.StartPosition = FormStartPosition.CenterParent;
+				addItem.ShowDialog(this);
 			}
 		}
 	}

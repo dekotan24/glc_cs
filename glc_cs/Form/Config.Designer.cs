@@ -189,6 +189,7 @@
 			this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
 			this.openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+			this.exSplashImgButton = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage7.SuspendLayout();
@@ -421,10 +422,10 @@
 			this.updateCheckDisableCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.updateCheckDisableCheck.Location = new System.Drawing.Point(15, 22);
 			this.updateCheckDisableCheck.Name = "updateCheckDisableCheck";
-			this.updateCheckDisableCheck.Size = new System.Drawing.Size(351, 22);
+			this.updateCheckDisableCheck.Size = new System.Drawing.Size(368, 22);
 			this.updateCheckDisableCheck.TabIndex = 8;
-			this.updateCheckDisableCheck.Text = "起動時のアップデートチェックをスキップする（試験機能）";
-			this.toolTip1.SetToolTip(this.updateCheckDisableCheck, "各バージョンの2回目以降の起動時のアップデートチェックを無効にします。");
+			this.updateCheckDisableCheck.Text = "起動時のDBアップデートチェックをスキップする（試験機能）";
+			this.toolTip1.SetToolTip(this.updateCheckDisableCheck, "各バージョンの2回目以降の起動時のDBアップデートチェックを無効にします。");
 			this.updateCheckDisableCheck.UseVisualStyleBackColor = true;
 			this.updateCheckDisableCheck.CheckedChanged += new System.EventHandler(this.updateCheckDisableCheck_CheckedChanged);
 			// 
@@ -663,7 +664,7 @@
 			this.cryptCheck.Size = new System.Drawing.Size(183, 22);
 			this.cryptCheck.TabIndex = 15;
 			this.cryptCheck.Text = "パスワードを暗号化して保存";
-			this.toolTip1.SetToolTip(this.cryptCheck, "configファイルにパスワードを暗号化します。");
+			this.toolTip1.SetToolTip(this.cryptCheck, "パスワードを暗号化して保存します。");
 			this.cryptCheck.UseVisualStyleBackColor = true;
 			// 
 			// executeReaderRadio
@@ -1824,6 +1825,7 @@
 			// 
 			// TabPage3
 			// 
+			this.TabPage3.Controls.Add(this.exSplashImgButton);
 			this.TabPage3.Controls.Add(this.disclaimerLabel);
 			this.TabPage3.Controls.Add(this.authorLabel);
 			this.TabPage3.Controls.Add(this.logoPictureBox);
@@ -2011,6 +2013,17 @@
 			// openFileDialog3
 			// 
 			this.openFileDialog3.FileName = "openFileDialog3";
+			// 
+			// exSplashImgButton
+			// 
+			this.exSplashImgButton.Location = new System.Drawing.Point(117, 86);
+			this.exSplashImgButton.Name = "exSplashImgButton";
+			this.exSplashImgButton.Size = new System.Drawing.Size(19, 23);
+			this.exSplashImgButton.TabIndex = 15;
+			this.exSplashImgButton.Text = "..";
+			this.exSplashImgButton.UseVisualStyleBackColor = true;
+			this.exSplashImgButton.Visible = false;
+			this.exSplashImgButton.Click += new System.EventHandler(this.exSplashImgButton_Click);
 			// 
 			// Config
 			// 
@@ -2246,5 +2259,6 @@
 		private System.Windows.Forms.CheckBox checkBox7;
 		private System.Windows.Forms.Button importIniToDbButton;
 		private System.Windows.Forms.CheckBox checkBox6;
+		private System.Windows.Forms.Button exSplashImgButton;
 	}
 }

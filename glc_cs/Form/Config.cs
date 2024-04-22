@@ -9,8 +9,8 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using static glc_cs.Core.Export;
+using static glc_cs.Core.Functions;
 using static glc_cs.Core.Property;
-using static glc_cs.General.Var;
 
 namespace glc_cs
 {
@@ -218,6 +218,9 @@ namespace glc_cs
 			addGameDirCheck.Checked = false;
 
 			saveWithDownloadCheck.Visible = OfflineSave && (SaveType == "M" || SaveType == "D");
+
+			// バージョン情報タブ
+			exSplashImgButton.Visible = Convert.ToBoolean(Convert.ToInt32(ReadIni("general", "exSplash", "0")));
 		}
 
 		/// <summary>
@@ -1168,18 +1171,17 @@ namespace glc_cs
 			{
 				if (Convert.ToInt32(ReadIni("general", "exSplash", "0", 1)) == 1)
 				{
-					DialogResult dr = MessageBox.Show("Exスプラッシュスクリーンを無効にしますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-					if (dr == DialogResult.No)
-					{
-						return;
-					}
 					spCnt = 0;
 					WriteIni("general", "exSplash", "0", 1);
+					exSplashImgButton.Visible = false;
+					System.Media.SystemSounds.Beep.Play();
 				}
 				else
 				{
+					spCnt = 0;
 					WriteIni("general", "exSplash", "1", 1);
-					System.Media.SystemSounds.Beep.Play();
+					exSplashImgButton.Visible = true;
+					System.Media.SystemSounds.Asterisk.Play();
 				}
 			}
 			else
@@ -1920,6 +1922,28 @@ namespace glc_cs
 		private void ExportRadio_INI_CheckedChanged(object sender, EventArgs e)
 		{
 			ExportPathText.Clear();
+		}
+
+		private void exSplashImgButton_Click(object sender, EventArgs e)
+		{
+			OpenFileDialog ofd = new OpenFileDialog();
+			ofd.Title = "スプラッシュスクリーン用の画像を選択..（528x620px推奨）";
+			ofd.Filter = "画像ファイル|*.png;*.jpg";
+			ofd.FileName = "";
+			if (ofd.ShowDialog() == DialogResult.OK)
+			{
+				string nfp = ofd.FileName;
+				WriteIni("imgd", "spimg", nfp);
+			}
+			else
+			{
+				DialogResult dr = MessageBox.Show("既に登録されている画像を削除しますか？", AppName, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+				if (dr == DialogResult.Yes)
+				{
+					WriteIni("imgd", "spimg", string.Empty);
+				}
+			}
+			return;
 		}
 	}
 }

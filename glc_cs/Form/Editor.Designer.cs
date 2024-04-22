@@ -417,6 +417,7 @@
 			this.checkBox4.TabIndex = 86;
 			this.checkBox4.Text = "セーブデータ共有";
 			this.checkBox4.UseVisualStyleBackColor = true;
+			this.checkBox4.Visible = false;
 			// 
 			// button5
 			// 
@@ -427,6 +428,7 @@
 			this.button5.Text = "D";
 			this.toolTip1.SetToolTip(this.button5, "ディレクトリ参照");
 			this.button5.UseVisualStyleBackColor = true;
+			this.button5.Visible = false;
 			// 
 			// savePathText
 			// 
@@ -435,6 +437,7 @@
 			this.savePathText.Name = "savePathText";
 			this.savePathText.Size = new System.Drawing.Size(318, 19);
 			this.savePathText.TabIndex = 88;
+			this.savePathText.Visible = false;
 			// 
 			// label11
 			// 
@@ -444,6 +447,7 @@
 			this.label11.Size = new System.Drawing.Size(62, 12);
 			this.label11.TabIndex = 87;
 			this.label11.Text = "セーブデータ";
+			this.label11.Visible = false;
 			// 
 			// button6
 			// 
@@ -454,6 +458,7 @@
 			this.button6.Text = "F";
 			this.toolTip1.SetToolTip(this.button6, "ファイル参照");
 			this.button6.UseVisualStyleBackColor = true;
+			this.button6.Visible = false;
 			// 
 			// label12
 			// 
@@ -476,6 +481,7 @@
 			// 
 			// Editor
 			// 
+			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(480, 444);
@@ -525,6 +531,8 @@
 			this.MinimizeBox = false;
 			this.Name = "Editor";
 			this.Text = "登録データを編集";
+			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Editor_DragDrop);
+			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Editor_DragEnter);
 			((System.ComponentModel.ISupportInitialize)(this.iconImage)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.runTimeText)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.startCountText)).EndInit();

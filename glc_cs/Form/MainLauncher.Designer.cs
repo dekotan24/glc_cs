@@ -48,7 +48,6 @@
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
-			this.editINIStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
 			this.label2 = new System.Windows.Forms.Label();
@@ -68,7 +67,6 @@
 			this.gamePathPictureBox = new System.Windows.Forms.PictureBox();
 			this.gameTitlePictureBox = new System.Windows.Forms.PictureBox();
 			this.testCheck = new System.Windows.Forms.CheckBox();
-			this.cleanButton = new System.Windows.Forms.Button();
 			this.ocButton = new System.Windows.Forms.Button();
 			this.dconTextPictureBox = new System.Windows.Forms.PictureBox();
 			this.gameImgOpenPictureBox = new System.Windows.Forms.PictureBox();
@@ -245,7 +243,6 @@
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.toolStripProgressBar1,
-            this.editINIStatusLabel,
             this.toolStripStatusLabel2});
 			resources.ApplyResources(this.statusStrip1, "statusStrip1");
 			this.statusStrip1.Name = "statusStrip1";
@@ -260,13 +257,6 @@
 			// 
 			this.toolStripProgressBar1.Name = "toolStripProgressBar1";
 			resources.ApplyResources(this.toolStripProgressBar1, "toolStripProgressBar1");
-			// 
-			// editINIStatusLabel
-			// 
-			this.editINIStatusLabel.BackColor = System.Drawing.Color.Silver;
-			this.editINIStatusLabel.Name = "editINIStatusLabel";
-			resources.ApplyResources(this.editINIStatusLabel, "editINIStatusLabel");
-			this.editINIStatusLabel.Click += new System.EventHandler(this.EditINIStatusLabel_Click);
 			// 
 			// toolStripStatusLabel2
 			// 
@@ -401,14 +391,6 @@
 			this.testCheck.Name = "testCheck";
 			this.toolTip1.SetToolTip(this.testCheck, resources.GetString("testCheck.ToolTip"));
 			this.testCheck.UseVisualStyleBackColor = false;
-			// 
-			// cleanButton
-			// 
-			resources.ApplyResources(this.cleanButton, "cleanButton");
-			this.cleanButton.Name = "cleanButton";
-			this.toolTip1.SetToolTip(this.cleanButton, resources.GetString("cleanButton.ToolTip"));
-			this.cleanButton.UseVisualStyleBackColor = true;
-			this.cleanButton.Click += new System.EventHandler(this.CleanButton_Click);
 			// 
 			// ocButton
 			// 
@@ -711,7 +693,6 @@
 			this.flowLayoutPanel1.Controls.Add(this.addButton);
 			this.flowLayoutPanel1.Controls.Add(this.reloadButton);
 			this.flowLayoutPanel1.Controls.Add(this.editButton);
-			this.flowLayoutPanel1.Controls.Add(this.cleanButton);
 			this.flowLayoutPanel1.Controls.Add(this.infoButton);
 			this.flowLayoutPanel1.Controls.Add(this.configButton);
 			resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
@@ -786,6 +767,7 @@
 			// 
 			// gl
 			// 
+			this.AllowDrop = true;
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.runningPicture);
@@ -809,6 +791,8 @@
 			this.MinimizeBox = false;
 			this.Name = "gl";
 			this.Load += new System.EventHandler(this.gl_Load);
+			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.gl_DragDrop);
+			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.gl_DragEnter);
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dconImgPictureBox)).EndInit();
@@ -882,7 +866,6 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button editButton;
         private System.Windows.Forms.CheckBox sensCheck;
-        private System.Windows.Forms.ToolStripStatusLabel editINIStatusLabel;
         private System.Windows.Forms.Button configButton;
         private System.Windows.Forms.Button downButton;
         private System.Windows.Forms.Button upButton;
@@ -899,7 +882,6 @@
 		private System.Windows.Forms.ListView gameImgList;
 		private System.Windows.Forms.TrackBar trackBar1;
 		private System.Windows.Forms.ImageList imageList8;
-		private System.Windows.Forms.Button cleanButton;
 		private System.Windows.Forms.Button ocButton;
 		private System.Windows.Forms.TabPage tabPage3;
 		private System.Windows.Forms.ListBox searchResultList;
