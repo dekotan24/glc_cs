@@ -36,6 +36,7 @@
 			this.SaveImageCheck = new System.Windows.Forms.CheckBox();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+			this.floorSelector = new System.Windows.Forms.TreeView();
 			this.SuspendLayout();
 			// 
 			// searchText
@@ -77,11 +78,20 @@
 			this.toolTip1.SetToolTip(this.SaveImageCheck, "画像も取得する場合はチェック");
 			this.SaveImageCheck.UseVisualStyleBackColor = true;
 			// 
+			// floorSelector
+			// 
+			this.floorSelector.HideSelection = false;
+			this.floorSelector.Location = new System.Drawing.Point(843, 39);
+			this.floorSelector.Name = "floorSelector";
+			this.floorSelector.Size = new System.Drawing.Size(153, 399);
+			this.floorSelector.TabIndex = 4;
+			// 
 			// Fanza
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(851, 452);
+			this.ClientSize = new System.Drawing.Size(1008, 452);
+			this.Controls.Add(this.floorSelector);
 			this.Controls.Add(this.SaveImageCheck);
 			this.Controls.Add(this.flowLayoutPanel1);
 			this.Controls.Add(this.searchButton);
@@ -106,5 +116,6 @@
 		private System.Windows.Forms.CheckBox SaveImageCheck;
 		private System.Windows.Forms.ToolTip toolTip1;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+		private System.Windows.Forms.TreeView floorSelector;
 	}
 }

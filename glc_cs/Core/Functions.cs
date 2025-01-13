@@ -1765,7 +1765,6 @@ namespace glc_cs.Core
 					appPath.Append(ExtractKrkrPath);
 					if (ExtractKrkrArg.Length != 0)
 					{
-						appArgs.Append(ExtractKrkrArg);
 						appArgs.Append(ExtractKrkrArg).Append(" ");
 					}
 					if (ExtractKrkrAddGameArg)
@@ -1777,7 +1776,6 @@ namespace glc_cs.Core
 					appPath.Append(ExtractKrkrzPath);
 					if (ExtractKrkrzArg.Length != 0)
 					{
-						appArgs.Append(ExtractKrkrzArg);
 						appArgs.Append(ExtractKrkrzArg).Append(" ");
 					}
 					if (ExtractKrkrzAddGameArg)
@@ -1789,7 +1787,6 @@ namespace glc_cs.Core
 					appPath.Append(ExtractKrkrDumpPath);
 					if (ExtractKrkrDumpArg.Length != 0)
 					{
-						appArgs.Append(ExtractKrkrDumpArg);
 						appArgs.Append(ExtractKrkrDumpArg).Append(" ");
 					}
 					if (ExtractKrkrDumpAddGameArg)
@@ -1801,7 +1798,6 @@ namespace glc_cs.Core
 					appPath.Append(ExtractCustom1Path);
 					if (ExtractCustom1Arg.Length != 0)
 					{
-						appArgs.Append(ExtractCustom1Arg);
 						appArgs.Append(ExtractCustom1Arg).Append(" ");
 					}
 					if (ExtractCustom1AddGameArg)
@@ -1813,7 +1809,6 @@ namespace glc_cs.Core
 					appPath.Append(ExtractCustom2Path);
 					if (ExtractCustom2Arg.Length != 0)
 					{
-						appArgs.Append(ExtractCustom2Arg);
 						appArgs.Append(ExtractCustom2Arg).Append(" ");
 					}
 					if (ExtractCustom2AddGameArg)

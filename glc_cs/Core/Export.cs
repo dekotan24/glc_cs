@@ -192,7 +192,10 @@ namespace glc_cs.Core
 
 				if (sqlAns > 0)
 				{
-					WriteIni("list", "game", sqlAns.ToString(), 0, exportPath);
+					if (exportType == "CSV")
+					{
+						WriteIni("list", "game", sqlAns.ToString(), 0, exportPath);
+					}
 				}
 				else
 				{
