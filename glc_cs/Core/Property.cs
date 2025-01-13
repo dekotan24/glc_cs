@@ -19,12 +19,12 @@ namespace glc_cs.Core
 		/// <summary>
 		/// アプリケーションバージョン
 		/// </summary>
-		protected static readonly string appVer = "1.12";
+		protected static readonly string appVer = "1.13";
 
 		/// <summary>
 		/// アプリケーションビルド番号
 		/// </summary>
-		protected static readonly string appBuild = "42.24.04.22";
+		protected static readonly string appBuild = "43.25.01.13";
 
 		/// <summary>
 		/// データベースバージョン
