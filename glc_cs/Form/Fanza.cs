@@ -45,6 +45,7 @@ namespace glc_cs
 			ImageUrl = string.Empty;
 			RequireApply = false;
 			SaveImage = false;
+			setFloorSelector();
 		}
 
 		private void vndb_Load(object sender, EventArgs e)
@@ -77,6 +78,7 @@ namespace glc_cs
 
 			try
 			{
+				string searchUrl = createSearchQuery(keyword);
 				// キーワードを使用して検索リクエストを送信し、JSONデータを取得
 				string jsonResponse = await PerformSearchAsync(keyword);
 
@@ -161,6 +163,11 @@ namespace glc_cs
 			}
 		}
 
+		private string createSearchQuery(string keyword)
+		{
+			return @"https://api.dmm.com/affiliate/v3/ItemList?api_id=[APIID]&affiliate_id=[アフィリエイトID]&site=FANZA&service=digital&floor=videoa&hits=10&sort=date&keyword=%e4%b8%8a%e5%8e%9f%e4%ba%9c%e8%a1%a3&output=json";
+		}
+
 		private string GetJapaneseTitle(ResultItem result)
 		{
 			// タイトル情報を検索
@@ -231,6 +238,27 @@ namespace glc_cs
 				WriteErrorLog("JSONデータの解析エラー", MethodBase.GetCurrentMethod().Name, ex.Message);
 				return null; // エラーが発生した場合は null を返すか、適切なエラー処理を行ってください
 			}
+		}
+
+		private void setFloorSelector()
+		{
+			// 一般
+			TreeNode floorCat = new TreeNode("一般ゲーム");
+			floorSelector.Nodes.Add(floorCat);
+			TreeNode floorHead = new TreeNode("商業");
+			floorCat.Nodes.Add(floorHead);
+			floorHead = new TreeNode("同人");
+			floorCat.Nodes.Add(floorHead);
+
+			// 成人
+			floorCat = new TreeNode("成人ゲーム");
+			floorSelector.Nodes.Add(floorCat);
+			floorHead = new TreeNode("商業");
+			floorCat.Nodes.Add(floorHead);
+			floorHead = new TreeNode("同人");
+			floorCat.Nodes.Add(floorHead);
+
+			floorSelector.ExpandAll();
 		}
 	}
 

@@ -235,7 +235,7 @@ namespace glc_cs
 					if (!(File.Exists(targetFilePath)))
 					{
 						KeyNames[] writeKeys = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.execute_cmd, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.rating, KeyNames.extract_tool, KeyNames.temp1, KeyNames.savedata_path };
-						string[] writeValues = { game_text, imgPath, gamePath, executeCmd, runTime, startCount, dcon_text, dcon_img, string.Empty, DefaultStatusValueOfNotPlaying, DBVer, rate, extract_tool, temp1, savedata_path };
+						string[] writeValues = { game_text, imgPath, gamePath, executeCmd, runTime, startCount, dcon_text, dcon_img, string.Empty, DefaultStatusValueOfNotPlaying.ToString(), DBVer, rate, extract_tool, temp1, savedata_path };
 
 						IniWrite(targetFilePath, "game", writeKeys, writeValues);
 						WriteIni("list", "game", newmaxval.ToString(), 0);
@@ -253,7 +253,7 @@ namespace glc_cs
 						if (dialogResult == DialogResult.Yes)
 						{
 							KeyNames[] writeKeys = { KeyNames.name, KeyNames.imgpass, KeyNames.pass, KeyNames.execute_cmd, KeyNames.time, KeyNames.start, KeyNames.stat, KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.rating, KeyNames.extract_tool, KeyNames.temp1, KeyNames.savedata_path };
-							string[] writeValues = { game_text, imgPath, gamePath, executeCmd, runTime, startCount, dcon_text, dcon_img, string.Empty, DefaultStatusValueOfNotPlaying, DBVer, rate, extract_tool, temp1, savedata_path };
+							string[] writeValues = { game_text, imgPath, gamePath, executeCmd, runTime, startCount, dcon_text, dcon_img, string.Empty, DefaultStatusValueOfNotPlaying.ToString(), DBVer, rate, extract_tool, temp1, savedata_path };
 
 							IniWrite(targetFilePath, "game", writeKeys, writeValues);
 							WriteIni("list", "game", newmaxval.ToString(), 0);

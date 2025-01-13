@@ -266,6 +266,7 @@ namespace glc_cs
 			Crypt base64 = new Crypt();
 
 			// 全般
+			WriteIni("default", "directory", iniText.Text.Trim().EndsWith("\\") ? iniText.Text.Trim() : iniText.Text.Trim() + "\\");
 			WriteIni("imgd", "bgimg", backgroundImageText.Text.Trim());
 			WriteIni("disable", "grid", gridDisableCheck.Checked ? "1" : "0");
 			WriteIni("disable", "updchk", updateCheckDisableCheck.Checked ? "1" : "0");
@@ -1169,17 +1170,17 @@ namespace glc_cs
 		{
 			if (spCnt == 10)
 			{
-				if (Convert.ToInt32(ReadIni("general", "exSplash", "0", 1)) == 1)
+				if (Convert.ToInt32(ReadIni("general", "exSplash", "0")) == 1)
 				{
 					spCnt = 0;
-					WriteIni("general", "exSplash", "0", 1);
+					WriteIni("general", "exSplash", "0");
 					exSplashImgButton.Visible = false;
 					System.Media.SystemSounds.Beep.Play();
 				}
 				else
 				{
 					spCnt = 0;
-					WriteIni("general", "exSplash", "1", 1);
+					WriteIni("general", "exSplash", "1");
 					exSplashImgButton.Visible = true;
 					System.Media.SystemSounds.Asterisk.Play();
 				}
@@ -1188,6 +1189,7 @@ namespace glc_cs
 			{
 				spCnt++;
 			}
+			return;
 		}
 
 		private void offlineSaveEnableCheck_CheckedChanged(object sender, EventArgs e)
@@ -1202,6 +1204,7 @@ namespace glc_cs
 			{
 				saveWithDownloadCheck.Visible = false;
 			}
+			return;
 		}
 
 		/// <summary>
@@ -1944,6 +1947,10 @@ namespace glc_cs
 				}
 			}
 			return;
+		}
+
+		private void compactModeCheck_CheckedChanged(object sender, EventArgs e)
+		{
 		}
 	}
 }

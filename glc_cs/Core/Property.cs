@@ -253,12 +253,12 @@ namespace glc_cs.Core
 		/// <summary>
 		/// 未プレイ時のデフォルトステータス
 		/// </summary>
-		protected static string defaultStatusValueOfNotPlaying = "未プレイ";
+		protected static StatusType defaultStatusValueOfNotPlaying = StatusType.未プレイ;
 
 		/// <summary>
 		/// プレイ中のデフォルトステータス
 		/// </summary>
-		protected static string defaultStatusValueOfPlaying = "プレイ中";
+		protected static StatusType defaultStatusValueOfPlaying = StatusType.プレイ中;
 
 		/// <summary>
 		/// グリッドのイメージサイズ固定フラグ
@@ -467,6 +467,129 @@ namespace glc_cs.Core
 			未攻略,
 			攻略中,
 			攻略済
+		}
+
+		public class GameItem
+		{
+			private string id = string.Empty;
+			private string title = string.Empty;
+			private string exePath = string.Empty;
+			private string executeCmd = string.Empty;
+			private string imgPath = string.Empty;
+			private int startCount = 0;
+			private int runTime = 0;
+			private StatusType status = DefaultStatusValueOfNotPlaying;
+			private string memo = string.Empty;
+			private string dconStatus = string.Empty;
+			private string dconImg = string.Empty;
+			private bool rate = false;
+			private DateTime lastRun = DateTime.Now;
+			private string temp1 = string.Empty;
+			private string extractTool = string.Empty;
+			private string version = string.Empty;
+			private string saveDataPath = string.Empty;
+
+			public string ID
+			{
+				get { return id; }
+				set { id = value; }
+			}
+
+			public string Title
+			{
+				get { return title; }
+				set { title = value; }
+			}
+
+			public string ExePath
+			{
+				get { return exePath; }
+				set { exePath = value; }
+			}
+
+			public string ExecuteCmd
+			{
+				get { return executeCmd; }
+				set { executeCmd = value; }
+			}
+
+			public string ImgPath
+			{
+				get { return imgPath; }
+				set { imgPath = value; }
+			}
+
+			public int StartCount
+			{
+				get { return startCount; }
+				set { startCount = value; }
+			}
+
+			public int RunTime
+			{
+				get { return runTime; }
+				set { runTime = value; }
+			}
+
+			public StatusType Status
+			{
+				get { return status; }
+				set { status = value; }
+			}
+
+			public string Memo
+			{
+				get { return memo; }
+				set { memo = value; }
+			}
+
+			public string DconStatus
+			{
+				get { return dconStatus; }
+				set { dconStatus = value; }
+			}
+
+			public string DconImg
+			{
+				get { return dconImg; }
+				set { dconImg = value; }
+			}
+
+			public bool Rate
+			{
+				get { return rate; }
+				set { rate = value; }
+			}
+
+			public DateTime LastRun
+			{
+				get { return lastRun; }
+				set { lastRun = value; }
+			}
+
+			public string Temp1
+			{
+				get { return temp1; }
+				set { temp1 = value; }
+			}
+
+			public string ExtractTool
+			{
+				get { return extractTool; }
+				set { extractTool = value; }
+			}
+
+			public string Version
+			{
+				get { return version; }
+				set { version = value; }
+			}
+
+			public string SaveDataPath
+			{
+				get { return saveDataPath; }
+				set { saveDataPath = value; }
+			}
 		}
 
 		/// <summary>
@@ -965,7 +1088,7 @@ namespace glc_cs.Core
 		/// <summary>
 		/// 未プレイ時のデフォルトのステータス
 		/// </summary>
-		public static string DefaultStatusValueOfNotPlaying
+		public static StatusType DefaultStatusValueOfNotPlaying
 		{
 			get { return defaultStatusValueOfNotPlaying; }
 			set { defaultStatusValueOfNotPlaying = value; }
@@ -974,7 +1097,7 @@ namespace glc_cs.Core
 		/// <summary>
 		/// プレイ中のデフォルトのステータス
 		/// </summary>
-		public static string DefaultStatusValueOfPlaying
+		public static StatusType DefaultStatusValueOfPlaying
 		{
 			get { return defaultStatusValueOfPlaying; }
 			set { defaultStatusValueOfPlaying = value; }

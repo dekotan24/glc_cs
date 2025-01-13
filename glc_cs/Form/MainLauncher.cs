@@ -916,7 +916,7 @@ namespace glc_cs
 							if (File.Exists(DconPath))
 							{
 								// propertiesファイル書き込み
-								string propertiesfile = Path.GetDirectoryName(DconPath) + "\\run.properties";
+								string propertiesfile = Path.Combine(Path.GetDirectoryName(DconPath), "run.properties");
 								Encoding enc = Encoding.GetEncoding("Shift-JIS");
 								StreamWriter writer = new StreamWriter(propertiesfile, false, enc);
 
@@ -941,13 +941,9 @@ namespace glc_cs
 
 								writer.Close();
 
-								drunp = Process.Start(DconPath); // dcon実行
-								if (drunp == null)
-								{
-									string dconArgs = "-jar " + DconPath;
-									var startInfo = new ProcessStartInfo("javaw.exe", dconArgs);
-									drunp = Process.Start(startInfo);
-								}
+								string dconArgs = "-jar " + DconPath;
+								var startInfo = new ProcessStartInfo("javaw.exe", dconArgs);
+								drunp = Process.Start(startInfo);
 							}
 							else
 							{
@@ -1007,7 +1003,7 @@ namespace glc_cs
 						// 子プロセスの終了
 						if (useDconCheck.Checked)
 						{
-							sucExit = KillChildProcess(drunp);
+							KillChildProcess(drunp);
 						}
 
 						// 起動時間計算
@@ -2859,7 +2855,7 @@ namespace glc_cs
 		/// 子プロセスを終了します
 		/// </summary>
 		/// <param name="process">プロセス</param>
-		bool KillChildProcess(Process process)
+		private bool KillChildProcess(Process process)
 		{
 			try
 			{

@@ -46,10 +46,6 @@
 			this.offlineSaveEnableCheck = new System.Windows.Forms.CheckBox();
 			this.mssqlRadio = new System.Windows.Forms.RadioButton();
 			this.iniRadio = new System.Windows.Forms.RadioButton();
-			this.enableWindowHideControlCheck = new System.Windows.Forms.CheckBox();
-			this.updateCheckDisableCheck = new System.Windows.Forms.CheckBox();
-			this.fixGridSizeCheck = new System.Windows.Forms.CheckBox();
-			this.gridDisableCheck = new System.Windows.Forms.CheckBox();
 			this.dconSearchButton = new System.Windows.Forms.Button();
 			this.extractCurrentDirCheck = new System.Windows.Forms.CheckBox();
 			this.extractSaveButton = new System.Windows.Forms.Button();
@@ -60,7 +56,6 @@
 			this.enableExtractCheck = new System.Windows.Forms.CheckBox();
 			this.saveWithDownloadCheck = new System.Windows.Forms.CheckBox();
 			this.addGameDirCheck = new System.Windows.Forms.CheckBox();
-			this.DisableInitialLoadCountCheck = new System.Windows.Forms.CheckBox();
 			this.iniText = new System.Windows.Forms.TextBox();
 			this.createTableButton = new System.Windows.Forms.Button();
 			this.tableText = new System.Windows.Forms.TextBox();
@@ -71,19 +66,29 @@
 			this.cryptCheck = new System.Windows.Forms.CheckBox();
 			this.executeReaderRadio = new System.Windows.Forms.RadioButton();
 			this.checkBox7 = new System.Windows.Forms.CheckBox();
+			this.fixGridSizeCheck = new System.Windows.Forms.CheckBox();
+			this.gridDisableCheck = new System.Windows.Forms.CheckBox();
+			this.compactModeCheck = new System.Windows.Forms.CheckBox();
+			this.DisableInitialLoadCountCheck = new System.Windows.Forms.CheckBox();
+			this.enableWindowHideControlCheck = new System.Windows.Forms.CheckBox();
+			this.updateCheckDisableCheck = new System.Windows.Forms.CheckBox();
+			this.javaText = new System.Windows.Forms.TextBox();
+			this.javaSearchButton = new System.Windows.Forms.Button();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage7 = new System.Windows.Forms.TabPage();
-			this.groupBox16 = new System.Windows.Forms.GroupBox();
-			this.groupBox14 = new System.Windows.Forms.GroupBox();
+			this.tabControl3 = new System.Windows.Forms.TabControl();
+			this.tabPage11 = new System.Windows.Forms.TabPage();
+			this.backgroundImageSelectButton = new System.Windows.Forms.Button();
+			this.backgroundImageText = new System.Windows.Forms.TextBox();
+			this.tabPage12 = new System.Windows.Forms.TabPage();
 			this.fixGridSize64 = new System.Windows.Forms.RadioButton();
 			this.fixGridSize32 = new System.Windows.Forms.RadioButton();
 			this.fixGridSize8 = new System.Windows.Forms.RadioButton();
-			this.groupBox11 = new System.Windows.Forms.GroupBox();
-			this.backgroundImageSelectButton = new System.Windows.Forms.Button();
-			this.backgroundImageText = new System.Windows.Forms.TextBox();
+			this.tabPage13 = new System.Windows.Forms.TabPage();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.groupBox11 = new System.Windows.Forms.GroupBox();
+			this.javaClearButton = new System.Windows.Forms.Button();
 			this.groupBox13 = new System.Windows.Forms.GroupBox();
-			this.label27 = new System.Windows.Forms.Label();
 			this.dconAppIDClearButton = new System.Windows.Forms.Button();
 			this.groupBox6 = new System.Windows.Forms.GroupBox();
 			this.label11 = new System.Windows.Forms.Label();
@@ -168,6 +173,7 @@
 			this.label26 = new System.Windows.Forms.Label();
 			this.groupBox17 = new System.Windows.Forms.GroupBox();
 			this.TabPage3 = new System.Windows.Forms.TabPage();
+			this.exSplashImgButton = new System.Windows.Forms.Button();
 			this.disclaimerLabel = new System.Windows.Forms.Label();
 			this.authorLabel = new System.Windows.Forms.Label();
 			this.logoPictureBox = new System.Windows.Forms.PictureBox();
@@ -189,14 +195,15 @@
 			this.openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
 			this.openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-			this.exSplashImgButton = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage7.SuspendLayout();
-			this.groupBox16.SuspendLayout();
-			this.groupBox14.SuspendLayout();
-			this.groupBox11.SuspendLayout();
+			this.tabControl3.SuspendLayout();
+			this.tabPage11.SuspendLayout();
+			this.tabPage12.SuspendLayout();
+			this.tabPage13.SuspendLayout();
 			this.tabPage1.SuspendLayout();
+			this.groupBox11.SuspendLayout();
 			this.groupBox13.SuspendLayout();
 			this.groupBox6.SuspendLayout();
 			this.groupBox2.SuspendLayout();
@@ -283,8 +290,9 @@
 			this.dconAppIDText.MaxLength = 20;
 			this.dconAppIDText.Name = "dconAppIDText";
 			this.dconAppIDText.Size = new System.Drawing.Size(402, 24);
-			this.dconAppIDText.TabIndex = 0;
-			this.toolTip1.SetToolTip(this.dconAppIDText, "ご自身で管理しているApplicationに切替できます。");
+			this.dconAppIDText.TabIndex = 30;
+			this.toolTip1.SetToolTip(this.dconAppIDText, "Discord RPCを実行する際のApplication IDを任意の値に変更できます。\r\nランチャー画面の [Discord RPC イメージID] がイメー" +
+        "ジキーになります。\r\n初期値はブランクです。理解できた方のみご利用ください。");
 			// 
 			// portText
 			// 
@@ -404,57 +412,6 @@
 			this.iniRadio.UseVisualStyleBackColor = true;
 			this.iniRadio.CheckedChanged += new System.EventHandler(this.radioButton8_CheckedChanged);
 			// 
-			// enableWindowHideControlCheck
-			// 
-			this.enableWindowHideControlCheck.AutoSize = true;
-			this.enableWindowHideControlCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.enableWindowHideControlCheck.Location = new System.Drawing.Point(15, 50);
-			this.enableWindowHideControlCheck.Name = "enableWindowHideControlCheck";
-			this.enableWindowHideControlCheck.Size = new System.Drawing.Size(159, 22);
-			this.enableWindowHideControlCheck.TabIndex = 9;
-			this.enableWindowHideControlCheck.Text = "最小化ボタンを表示する";
-			this.toolTip1.SetToolTip(this.enableWindowHideControlCheck, "ウィンドウのコントロールに最小化ボタンを追加します。");
-			this.enableWindowHideControlCheck.UseVisualStyleBackColor = true;
-			// 
-			// updateCheckDisableCheck
-			// 
-			this.updateCheckDisableCheck.AutoSize = true;
-			this.updateCheckDisableCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.updateCheckDisableCheck.Location = new System.Drawing.Point(15, 22);
-			this.updateCheckDisableCheck.Name = "updateCheckDisableCheck";
-			this.updateCheckDisableCheck.Size = new System.Drawing.Size(368, 22);
-			this.updateCheckDisableCheck.TabIndex = 8;
-			this.updateCheckDisableCheck.Text = "起動時のDBアップデートチェックをスキップする（試験機能）";
-			this.toolTip1.SetToolTip(this.updateCheckDisableCheck, "各バージョンの2回目以降の起動時のDBアップデートチェックを無効にします。");
-			this.updateCheckDisableCheck.UseVisualStyleBackColor = true;
-			this.updateCheckDisableCheck.CheckedChanged += new System.EventHandler(this.updateCheckDisableCheck_CheckedChanged);
-			// 
-			// fixGridSizeCheck
-			// 
-			this.fixGridSizeCheck.AutoSize = true;
-			this.fixGridSizeCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.fixGridSizeCheck.Location = new System.Drawing.Point(15, 47);
-			this.fixGridSizeCheck.Name = "fixGridSizeCheck";
-			this.fixGridSizeCheck.Size = new System.Drawing.Size(219, 22);
-			this.fixGridSizeCheck.TabIndex = 4;
-			this.fixGridSizeCheck.Text = "グリッドのアイコンサイズを固定化";
-			this.toolTip1.SetToolTip(this.fixGridSizeCheck, "イメージグリッドの画像サイズを固定化します。");
-			this.fixGridSizeCheck.UseVisualStyleBackColor = true;
-			this.fixGridSizeCheck.CheckedChanged += new System.EventHandler(this.fixGridSize_CheckedChanged);
-			// 
-			// gridDisableCheck
-			// 
-			this.gridDisableCheck.AutoSize = true;
-			this.gridDisableCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.gridDisableCheck.Location = new System.Drawing.Point(15, 22);
-			this.gridDisableCheck.Name = "gridDisableCheck";
-			this.gridDisableCheck.Size = new System.Drawing.Size(123, 22);
-			this.gridDisableCheck.TabIndex = 3;
-			this.gridDisableCheck.Text = "グリッドを無効化";
-			this.toolTip1.SetToolTip(this.gridDisableCheck, "イメージグリッドを無効にします。\r\n起動時のロード時間、消費メモリが改善する場合があります。");
-			this.gridDisableCheck.UseVisualStyleBackColor = true;
-			this.gridDisableCheck.CheckedChanged += new System.EventHandler(this.gridDisableCheck_CheckedChanged);
-			// 
 			// dconSearchButton
 			// 
 			this.dconSearchButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
@@ -462,7 +419,7 @@
 			this.dconSearchButton.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
 			this.dconSearchButton.Name = "dconSearchButton";
 			this.dconSearchButton.Size = new System.Drawing.Size(25, 24);
-			this.dconSearchButton.TabIndex = 1;
+			this.dconSearchButton.TabIndex = 21;
 			this.dconSearchButton.Text = "..";
 			this.toolTip1.SetToolTip(this.dconSearchButton, "Discord Connectorのパスを設定します。");
 			this.dconSearchButton.UseVisualStyleBackColor = true;
@@ -569,18 +526,6 @@
 			this.toolTip1.SetToolTip(this.addGameDirCheck, "ゲームのフルパスではなく、ゲームが存在するディレクトリパスを引数に追加します。");
 			this.addGameDirCheck.UseVisualStyleBackColor = true;
 			this.addGameDirCheck.Visible = false;
-			// 
-			// DisableInitialLoadCountCheck
-			// 
-			this.DisableInitialLoadCountCheck.AutoSize = true;
-			this.DisableInitialLoadCountCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.DisableInitialLoadCountCheck.Location = new System.Drawing.Point(15, 78);
-			this.DisableInitialLoadCountCheck.Name = "DisableInitialLoadCountCheck";
-			this.DisableInitialLoadCountCheck.Size = new System.Drawing.Size(243, 22);
-			this.DisableInitialLoadCountCheck.TabIndex = 10;
-			this.DisableInitialLoadCountCheck.Text = "起動時の進捗報告ダイアログの負荷軽減";
-			this.toolTip1.SetToolTip(this.DisableInitialLoadCountCheck, "ランチャー起動中の進捗報告を無効にします。");
-			this.DisableInitialLoadCountCheck.UseVisualStyleBackColor = true;
 			// 
 			// iniText
 			// 
@@ -692,8 +637,108 @@
 			this.toolTip1.SetToolTip(this.checkBox7, "取込処理中にエラーが発生した場合、エラー発生直前までに取り込んだデータをコミットします");
 			this.checkBox7.UseVisualStyleBackColor = true;
 			// 
+			// fixGridSizeCheck
+			// 
+			this.fixGridSizeCheck.AutoSize = true;
+			this.fixGridSizeCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.fixGridSizeCheck.Location = new System.Drawing.Point(6, 34);
+			this.fixGridSizeCheck.Name = "fixGridSizeCheck";
+			this.fixGridSizeCheck.Size = new System.Drawing.Size(219, 22);
+			this.fixGridSizeCheck.TabIndex = 9;
+			this.fixGridSizeCheck.Text = "グリッドのアイコンサイズを固定化";
+			this.toolTip1.SetToolTip(this.fixGridSizeCheck, "イメージグリッドの画像サイズを固定化します。");
+			this.fixGridSizeCheck.UseVisualStyleBackColor = true;
+			// 
+			// gridDisableCheck
+			// 
+			this.gridDisableCheck.AutoSize = true;
+			this.gridDisableCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.gridDisableCheck.Location = new System.Drawing.Point(6, 6);
+			this.gridDisableCheck.Name = "gridDisableCheck";
+			this.gridDisableCheck.Size = new System.Drawing.Size(123, 22);
+			this.gridDisableCheck.TabIndex = 8;
+			this.gridDisableCheck.Text = "グリッドを無効化";
+			this.toolTip1.SetToolTip(this.gridDisableCheck, "イメージグリッドを無効にします。\r\n起動時のロード時間、消費メモリが改善する場合があります。");
+			this.gridDisableCheck.UseVisualStyleBackColor = true;
+			// 
+			// compactModeCheck
+			// 
+			this.compactModeCheck.AutoSize = true;
+			this.compactModeCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.compactModeCheck.Location = new System.Drawing.Point(6, 90);
+			this.compactModeCheck.Name = "compactModeCheck";
+			this.compactModeCheck.Size = new System.Drawing.Size(183, 22);
+			this.compactModeCheck.TabIndex = 15;
+			this.compactModeCheck.Text = "コンパクトモード（開発中）";
+			this.toolTip1.SetToolTip(this.compactModeCheck, "必要最低限の機能のみ表示します。");
+			this.compactModeCheck.UseVisualStyleBackColor = true;
+			this.compactModeCheck.Visible = false;
+			this.compactModeCheck.CheckedChanged += new System.EventHandler(this.compactModeCheck_CheckedChanged);
+			// 
+			// DisableInitialLoadCountCheck
+			// 
+			this.DisableInitialLoadCountCheck.AutoSize = true;
+			this.DisableInitialLoadCountCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.DisableInitialLoadCountCheck.Location = new System.Drawing.Point(6, 62);
+			this.DisableInitialLoadCountCheck.Name = "DisableInitialLoadCountCheck";
+			this.DisableInitialLoadCountCheck.Size = new System.Drawing.Size(243, 22);
+			this.DisableInitialLoadCountCheck.TabIndex = 14;
+			this.DisableInitialLoadCountCheck.Text = "起動時の進捗報告ダイアログの負荷軽減";
+			this.toolTip1.SetToolTip(this.DisableInitialLoadCountCheck, "ランチャー起動中の進捗報告を無効にします。");
+			this.DisableInitialLoadCountCheck.UseVisualStyleBackColor = true;
+			// 
+			// enableWindowHideControlCheck
+			// 
+			this.enableWindowHideControlCheck.AutoSize = true;
+			this.enableWindowHideControlCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.enableWindowHideControlCheck.Location = new System.Drawing.Point(6, 34);
+			this.enableWindowHideControlCheck.Name = "enableWindowHideControlCheck";
+			this.enableWindowHideControlCheck.Size = new System.Drawing.Size(159, 22);
+			this.enableWindowHideControlCheck.TabIndex = 13;
+			this.enableWindowHideControlCheck.Text = "最小化ボタンを表示する";
+			this.toolTip1.SetToolTip(this.enableWindowHideControlCheck, "ウィンドウのコントロールに最小化ボタンを追加します。");
+			this.enableWindowHideControlCheck.UseVisualStyleBackColor = true;
+			// 
+			// updateCheckDisableCheck
+			// 
+			this.updateCheckDisableCheck.AutoSize = true;
+			this.updateCheckDisableCheck.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.updateCheckDisableCheck.Location = new System.Drawing.Point(6, 6);
+			this.updateCheckDisableCheck.Name = "updateCheckDisableCheck";
+			this.updateCheckDisableCheck.Size = new System.Drawing.Size(368, 22);
+			this.updateCheckDisableCheck.TabIndex = 12;
+			this.updateCheckDisableCheck.Text = "起動時のDBアップデートチェックをスキップする（試験機能）";
+			this.toolTip1.SetToolTip(this.updateCheckDisableCheck, "各バージョンの2回目以降の起動時のDBアップデートチェックを無効にします。");
+			this.updateCheckDisableCheck.UseVisualStyleBackColor = true;
+			// 
+			// javaText
+			// 
+			this.javaText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.javaText.ImeMode = System.Windows.Forms.ImeMode.Disable;
+			this.javaText.Location = new System.Drawing.Point(6, 22);
+			this.javaText.MaxLength = 20;
+			this.javaText.Name = "javaText";
+			this.javaText.Size = new System.Drawing.Size(375, 24);
+			this.javaText.TabIndex = 40;
+			this.toolTip1.SetToolTip(this.javaText, "Discord RPCを実行する際のJavaランタイムのパス");
+			// 
+			// javaSearchButton
+			// 
+			this.javaSearchButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.javaSearchButton.Location = new System.Drawing.Point(385, 22);
+			this.javaSearchButton.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+			this.javaSearchButton.Name = "javaSearchButton";
+			this.javaSearchButton.Size = new System.Drawing.Size(25, 24);
+			this.javaSearchButton.TabIndex = 41;
+			this.javaSearchButton.Text = "..";
+			this.toolTip1.SetToolTip(this.javaSearchButton, "Javaランタイムのパスを設定します。");
+			this.javaSearchButton.UseVisualStyleBackColor = true;
+			// 
 			// tabControl1
 			// 
+			this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.tabControl1.Controls.Add(this.tabPage7);
 			this.tabControl1.Controls.Add(this.tabPage1);
 			this.tabControl1.Controls.Add(this.tabPage2);
@@ -708,9 +753,7 @@
 			// 
 			// tabPage7
 			// 
-			this.tabPage7.Controls.Add(this.groupBox16);
-			this.tabPage7.Controls.Add(this.groupBox14);
-			this.tabPage7.Controls.Add(this.groupBox11);
+			this.tabPage7.Controls.Add(this.tabControl3);
 			this.tabPage7.Location = new System.Drawing.Point(4, 22);
 			this.tabPage7.Name = "tabPage7";
 			this.tabPage7.Size = new System.Drawing.Size(483, 320);
@@ -718,43 +761,74 @@
 			this.tabPage7.Text = "全般";
 			this.tabPage7.UseVisualStyleBackColor = true;
 			// 
-			// groupBox16
+			// tabControl3
 			// 
-			this.groupBox16.Controls.Add(this.DisableInitialLoadCountCheck);
-			this.groupBox16.Controls.Add(this.enableWindowHideControlCheck);
-			this.groupBox16.Controls.Add(this.updateCheckDisableCheck);
-			this.groupBox16.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.groupBox16.Location = new System.Drawing.Point(6, 177);
-			this.groupBox16.Name = "groupBox16";
-			this.groupBox16.Size = new System.Drawing.Size(469, 111);
-			this.groupBox16.TabIndex = 5;
-			this.groupBox16.TabStop = false;
-			this.groupBox16.Text = "システム";
+			this.tabControl3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.tabControl3.Controls.Add(this.tabPage11);
+			this.tabControl3.Controls.Add(this.tabPage12);
+			this.tabControl3.Controls.Add(this.tabPage13);
+			this.tabControl3.Location = new System.Drawing.Point(0, 0);
+			this.tabControl3.Name = "tabControl3";
+			this.tabControl3.SelectedIndex = 0;
+			this.tabControl3.Size = new System.Drawing.Size(483, 324);
+			this.tabControl3.TabIndex = 2;
 			// 
-			// groupBox14
+			// tabPage11
 			// 
-			this.groupBox14.Controls.Add(this.fixGridSize64);
-			this.groupBox14.Controls.Add(this.fixGridSize32);
-			this.groupBox14.Controls.Add(this.fixGridSize8);
-			this.groupBox14.Controls.Add(this.fixGridSizeCheck);
-			this.groupBox14.Controls.Add(this.gridDisableCheck);
-			this.groupBox14.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.groupBox14.Location = new System.Drawing.Point(6, 68);
-			this.groupBox14.Name = "groupBox14";
-			this.groupBox14.Size = new System.Drawing.Size(469, 103);
-			this.groupBox14.TabIndex = 4;
-			this.groupBox14.TabStop = false;
-			this.groupBox14.Text = "ゲームリスト";
+			this.tabPage11.Controls.Add(this.backgroundImageSelectButton);
+			this.tabPage11.Controls.Add(this.backgroundImageText);
+			this.tabPage11.Location = new System.Drawing.Point(4, 22);
+			this.tabPage11.Name = "tabPage11";
+			this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage11.Size = new System.Drawing.Size(475, 298);
+			this.tabPage11.TabIndex = 0;
+			this.tabPage11.Text = "背景画像";
+			this.tabPage11.UseVisualStyleBackColor = true;
+			// 
+			// backgroundImageSelectButton
+			// 
+			this.backgroundImageSelectButton.Location = new System.Drawing.Point(444, 6);
+			this.backgroundImageSelectButton.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+			this.backgroundImageSelectButton.Name = "backgroundImageSelectButton";
+			this.backgroundImageSelectButton.Size = new System.Drawing.Size(27, 24);
+			this.backgroundImageSelectButton.TabIndex = 8;
+			this.backgroundImageSelectButton.Text = "..";
+			this.backgroundImageSelectButton.UseVisualStyleBackColor = true;
+			// 
+			// backgroundImageText
+			// 
+			this.backgroundImageText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.backgroundImageText.Location = new System.Drawing.Point(3, 6);
+			this.backgroundImageText.Name = "backgroundImageText";
+			this.backgroundImageText.Size = new System.Drawing.Size(437, 24);
+			this.backgroundImageText.TabIndex = 7;
+			// 
+			// tabPage12
+			// 
+			this.tabPage12.Controls.Add(this.fixGridSize64);
+			this.tabPage12.Controls.Add(this.fixGridSize32);
+			this.tabPage12.Controls.Add(this.fixGridSize8);
+			this.tabPage12.Controls.Add(this.fixGridSizeCheck);
+			this.tabPage12.Controls.Add(this.gridDisableCheck);
+			this.tabPage12.Location = new System.Drawing.Point(4, 22);
+			this.tabPage12.Name = "tabPage12";
+			this.tabPage12.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage12.Size = new System.Drawing.Size(475, 298);
+			this.tabPage12.TabIndex = 1;
+			this.tabPage12.Text = "ゲームリスト";
+			this.tabPage12.UseVisualStyleBackColor = true;
 			// 
 			// fixGridSize64
 			// 
 			this.fixGridSize64.AutoSize = true;
 			this.fixGridSize64.Enabled = false;
 			this.fixGridSize64.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.fixGridSize64.Location = new System.Drawing.Point(283, 72);
+			this.fixGridSize64.Location = new System.Drawing.Point(266, 62);
 			this.fixGridSize64.Name = "fixGridSize64";
 			this.fixGridSize64.Size = new System.Drawing.Size(109, 22);
-			this.fixGridSize64.TabIndex = 7;
+			this.fixGridSize64.TabIndex = 12;
 			this.fixGridSize64.Text = "最大（64x64）";
 			this.fixGridSize64.UseVisualStyleBackColor = true;
 			// 
@@ -764,10 +838,10 @@
 			this.fixGridSize32.Checked = true;
 			this.fixGridSize32.Enabled = false;
 			this.fixGridSize32.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.fixGridSize32.Location = new System.Drawing.Point(167, 72);
+			this.fixGridSize32.Location = new System.Drawing.Point(150, 62);
 			this.fixGridSize32.Name = "fixGridSize32";
 			this.fixGridSize32.Size = new System.Drawing.Size(109, 22);
-			this.fixGridSize32.TabIndex = 6;
+			this.fixGridSize32.TabIndex = 11;
 			this.fixGridSize32.TabStop = true;
 			this.fixGridSize32.Text = "通常（32x32）";
 			this.fixGridSize32.UseVisualStyleBackColor = true;
@@ -777,46 +851,29 @@
 			this.fixGridSize8.AutoSize = true;
 			this.fixGridSize8.Enabled = false;
 			this.fixGridSize8.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.fixGridSize8.Location = new System.Drawing.Point(67, 72);
+			this.fixGridSize8.Location = new System.Drawing.Point(50, 62);
 			this.fixGridSize8.Name = "fixGridSize8";
 			this.fixGridSize8.Size = new System.Drawing.Size(95, 22);
-			this.fixGridSize8.TabIndex = 5;
+			this.fixGridSize8.TabIndex = 10;
 			this.fixGridSize8.Text = "最小（8x8）";
 			this.fixGridSize8.UseVisualStyleBackColor = true;
 			// 
-			// groupBox11
+			// tabPage13
 			// 
-			this.groupBox11.Controls.Add(this.backgroundImageSelectButton);
-			this.groupBox11.Controls.Add(this.backgroundImageText);
-			this.groupBox11.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.groupBox11.Location = new System.Drawing.Point(6, 6);
-			this.groupBox11.Name = "groupBox11";
-			this.groupBox11.Size = new System.Drawing.Size(469, 56);
-			this.groupBox11.TabIndex = 3;
-			this.groupBox11.TabStop = false;
-			this.groupBox11.Text = "背景画像";
-			// 
-			// backgroundImageSelectButton
-			// 
-			this.backgroundImageSelectButton.Location = new System.Drawing.Point(438, 22);
-			this.backgroundImageSelectButton.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-			this.backgroundImageSelectButton.Name = "backgroundImageSelectButton";
-			this.backgroundImageSelectButton.Size = new System.Drawing.Size(27, 24);
-			this.backgroundImageSelectButton.TabIndex = 1;
-			this.backgroundImageSelectButton.Text = "..";
-			this.backgroundImageSelectButton.UseVisualStyleBackColor = true;
-			this.backgroundImageSelectButton.Click += new System.EventHandler(this.BackgroundImageSelectButton_Click);
-			// 
-			// backgroundImageText
-			// 
-			this.backgroundImageText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.backgroundImageText.Location = new System.Drawing.Point(6, 22);
-			this.backgroundImageText.Name = "backgroundImageText";
-			this.backgroundImageText.Size = new System.Drawing.Size(428, 24);
-			this.backgroundImageText.TabIndex = 0;
+			this.tabPage13.Controls.Add(this.compactModeCheck);
+			this.tabPage13.Controls.Add(this.DisableInitialLoadCountCheck);
+			this.tabPage13.Controls.Add(this.enableWindowHideControlCheck);
+			this.tabPage13.Controls.Add(this.updateCheckDisableCheck);
+			this.tabPage13.Location = new System.Drawing.Point(4, 22);
+			this.tabPage13.Name = "tabPage13";
+			this.tabPage13.Size = new System.Drawing.Size(475, 298);
+			this.tabPage13.TabIndex = 2;
+			this.tabPage13.Text = "システム";
+			this.tabPage13.UseVisualStyleBackColor = true;
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.Controls.Add(this.groupBox11);
 			this.tabPage1.Controls.Add(this.groupBox13);
 			this.tabPage1.Controls.Add(this.groupBox6);
 			this.tabPage1.Controls.Add(this.groupBox2);
@@ -828,29 +885,41 @@
 			this.tabPage1.Text = "Discord連携";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
+			// groupBox11
+			// 
+			this.groupBox11.Controls.Add(this.javaSearchButton);
+			this.groupBox11.Controls.Add(this.javaClearButton);
+			this.groupBox11.Controls.Add(this.javaText);
+			this.groupBox11.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox11.Location = new System.Drawing.Point(6, 257);
+			this.groupBox11.Name = "groupBox11";
+			this.groupBox11.Size = new System.Drawing.Size(469, 56);
+			this.groupBox11.TabIndex = 4;
+			this.groupBox11.TabStop = false;
+			this.groupBox11.Text = "Java（開発中）";
+			this.groupBox11.Visible = false;
+			// 
+			// javaClearButton
+			// 
+			this.javaClearButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.javaClearButton.Location = new System.Drawing.Point(414, 22);
+			this.javaClearButton.Name = "javaClearButton";
+			this.javaClearButton.Size = new System.Drawing.Size(49, 24);
+			this.javaClearButton.TabIndex = 42;
+			this.javaClearButton.Text = "クリア";
+			this.javaClearButton.UseVisualStyleBackColor = true;
+			// 
 			// groupBox13
 			// 
-			this.groupBox13.Controls.Add(this.label27);
 			this.groupBox13.Controls.Add(this.dconAppIDClearButton);
 			this.groupBox13.Controls.Add(this.dconAppIDText);
 			this.groupBox13.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.groupBox13.Location = new System.Drawing.Point(6, 199);
+			this.groupBox13.Location = new System.Drawing.Point(6, 195);
 			this.groupBox13.Name = "groupBox13";
-			this.groupBox13.Size = new System.Drawing.Size(469, 112);
+			this.groupBox13.Size = new System.Drawing.Size(469, 56);
 			this.groupBox13.TabIndex = 3;
 			this.groupBox13.TabStop = false;
 			this.groupBox13.Text = "Discord RPC Application ID（上級者向け、dcon v1.50以上）";
-			// 
-			// label27
-			// 
-			this.label27.AutoSize = true;
-			this.label27.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.label27.Location = new System.Drawing.Point(19, 56);
-			this.label27.Name = "label27";
-			this.label27.Size = new System.Drawing.Size(414, 54);
-			this.label27.TabIndex = 2;
-			this.label27.Text = "Discord RPCを実行する際のApplication IDを任意の値に変更できます。\r\nランチャー画面の [Discord RPC イメージID] がイメー" +
-    "ジキーになります。\r\n初期値はブランクです。理解できた方のみご利用ください。";
 			// 
 			// dconAppIDClearButton
 			// 
@@ -858,7 +927,7 @@
 			this.dconAppIDClearButton.Location = new System.Drawing.Point(414, 22);
 			this.dconAppIDClearButton.Name = "dconAppIDClearButton";
 			this.dconAppIDClearButton.Size = new System.Drawing.Size(49, 24);
-			this.dconAppIDClearButton.TabIndex = 1;
+			this.dconAppIDClearButton.TabIndex = 31;
 			this.dconAppIDClearButton.Text = "クリア";
 			this.dconAppIDClearButton.UseVisualStyleBackColor = true;
 			this.dconAppIDClearButton.Click += new System.EventHandler(this.dconAppIDClearButton_Click);
@@ -871,7 +940,7 @@
 			this.groupBox6.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox6.Location = new System.Drawing.Point(6, 134);
 			this.groupBox6.Name = "groupBox6";
-			this.groupBox6.Size = new System.Drawing.Size(469, 59);
+			this.groupBox6.Size = new System.Drawing.Size(469, 55);
 			this.groupBox6.TabIndex = 2;
 			this.groupBox6.TabStop = false;
 			this.groupBox6.Text = "Discord Connector (dcon.jar)";
@@ -894,7 +963,7 @@
 			this.dconText.Name = "dconText";
 			this.dconText.ReadOnly = true;
 			this.dconText.Size = new System.Drawing.Size(384, 24);
-			this.dconText.TabIndex = 0;
+			this.dconText.TabIndex = 20;
 			// 
 			// groupBox2
 			// 
@@ -915,7 +984,7 @@
 			this.dconRatingRadio2.Location = new System.Drawing.Point(253, 26);
 			this.dconRatingRadio2.Name = "dconRatingRadio2";
 			this.dconRatingRadio2.Size = new System.Drawing.Size(137, 22);
-			this.dconRatingRadio2.TabIndex = 1;
+			this.dconRatingRadio2.TabIndex = 11;
 			this.dconRatingRadio2.TabStop = true;
 			this.dconRatingRadio2.Text = "成人ゲーム（R-18）";
 			this.dconRatingRadio2.UseVisualStyleBackColor = true;
@@ -927,7 +996,7 @@
 			this.dconRatingRadio1.Location = new System.Drawing.Point(66, 26);
 			this.dconRatingRadio1.Name = "dconRatingRadio1";
 			this.dconRatingRadio1.Size = new System.Drawing.Size(146, 22);
-			this.dconRatingRadio1.TabIndex = 0;
+			this.dconRatingRadio1.TabIndex = 10;
 			this.dconRatingRadio1.TabStop = true;
 			this.dconRatingRadio1.Text = "一般ゲーム（全年齢）";
 			this.dconRatingRadio1.UseVisualStyleBackColor = true;
@@ -1467,6 +1536,7 @@
 			this.importIniToDbButton.TabIndex = 12;
 			this.importIniToDbButton.Text = "INI→DB取込";
 			this.importIniToDbButton.UseVisualStyleBackColor = true;
+			this.importIniToDbButton.Click += new System.EventHandler(this.ImportIniToDbButton_Click);
 			// 
 			// checkBox6
 			// 
@@ -1847,6 +1917,17 @@
 			this.TabPage3.Text = "バージョン情報";
 			this.TabPage3.UseVisualStyleBackColor = true;
 			// 
+			// exSplashImgButton
+			// 
+			this.exSplashImgButton.Location = new System.Drawing.Point(117, 86);
+			this.exSplashImgButton.Name = "exSplashImgButton";
+			this.exSplashImgButton.Size = new System.Drawing.Size(19, 23);
+			this.exSplashImgButton.TabIndex = 15;
+			this.exSplashImgButton.Text = "..";
+			this.exSplashImgButton.UseVisualStyleBackColor = true;
+			this.exSplashImgButton.Visible = false;
+			this.exSplashImgButton.Click += new System.EventHandler(this.exSplashImgButton_Click);
+			// 
 			// disclaimerLabel
 			// 
 			this.disclaimerLabel.AutoSize = true;
@@ -2014,17 +2095,6 @@
 			// 
 			this.openFileDialog3.FileName = "openFileDialog3";
 			// 
-			// exSplashImgButton
-			// 
-			this.exSplashImgButton.Location = new System.Drawing.Point(117, 86);
-			this.exSplashImgButton.Name = "exSplashImgButton";
-			this.exSplashImgButton.Size = new System.Drawing.Size(19, 23);
-			this.exSplashImgButton.TabIndex = 15;
-			this.exSplashImgButton.Text = "..";
-			this.exSplashImgButton.UseVisualStyleBackColor = true;
-			this.exSplashImgButton.Visible = false;
-			this.exSplashImgButton.Click += new System.EventHandler(this.exSplashImgButton_Click);
-			// 
 			// Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -2046,13 +2116,16 @@
 			this.groupBox1.PerformLayout();
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage7.ResumeLayout(false);
-			this.groupBox16.ResumeLayout(false);
-			this.groupBox16.PerformLayout();
-			this.groupBox14.ResumeLayout(false);
-			this.groupBox14.PerformLayout();
+			this.tabControl3.ResumeLayout(false);
+			this.tabPage11.ResumeLayout(false);
+			this.tabPage11.PerformLayout();
+			this.tabPage12.ResumeLayout(false);
+			this.tabPage12.PerformLayout();
+			this.tabPage13.ResumeLayout(false);
+			this.tabPage13.PerformLayout();
+			this.tabPage1.ResumeLayout(false);
 			this.groupBox11.ResumeLayout(false);
 			this.groupBox11.PerformLayout();
-			this.tabPage1.ResumeLayout(false);
 			this.groupBox13.ResumeLayout(false);
 			this.groupBox13.PerformLayout();
 			this.groupBox6.ResumeLayout(false);
@@ -2152,9 +2225,6 @@
 		private System.Windows.Forms.TextBox iniText;
 		private System.Windows.Forms.TabPage tabPage6;
 		private System.Windows.Forms.TabPage tabPage7;
-		private System.Windows.Forms.GroupBox groupBox11;
-		private System.Windows.Forms.Button backgroundImageSelectButton;
-		private System.Windows.Forms.TextBox backgroundImageText;
 		private System.Windows.Forms.Label label24;
 		private System.Windows.Forms.TextBox tableText;
 		private System.Windows.Forms.Label label23;
@@ -2172,15 +2242,12 @@
 		private System.Windows.Forms.GroupBox groupBox13;
 		private System.Windows.Forms.Button dconAppIDClearButton;
 		private System.Windows.Forms.TextBox dconAppIDText;
-		private System.Windows.Forms.Label label27;
 		private System.Windows.Forms.Button updchkButton;
 		private System.Windows.Forms.Button getDconButton;
 		private System.Windows.Forms.Label label29;
 		private System.Windows.Forms.TextBox portText;
 		private System.Windows.Forms.Label label12;
 		private System.Windows.Forms.RadioButton mysqlRadio;
-		private System.Windows.Forms.GroupBox groupBox14;
-		private System.Windows.Forms.CheckBox gridDisableCheck;
 		private System.Windows.Forms.PictureBox logoPictureBox;
 		private System.Windows.Forms.TabControl tabControl2;
 		private System.Windows.Forms.TabPage tabPage5;
@@ -2211,13 +2278,6 @@
 		private System.Windows.Forms.Button insertDatabaseNameButton;
 		private System.Windows.Forms.CheckBox RoGCheck;
 		private System.Windows.Forms.Label authorLabel;
-		private System.Windows.Forms.GroupBox groupBox16;
-		private System.Windows.Forms.CheckBox updateCheckDisableCheck;
-		private System.Windows.Forms.CheckBox enableWindowHideControlCheck;
-		private System.Windows.Forms.CheckBox fixGridSizeCheck;
-		private System.Windows.Forms.RadioButton fixGridSize64;
-		private System.Windows.Forms.RadioButton fixGridSize32;
-		private System.Windows.Forms.RadioButton fixGridSize8;
 		private System.Windows.Forms.CheckBox saveWithDownloadCheck;
 		private System.Windows.Forms.TabPage tabPage9;
 		private System.Windows.Forms.GroupBox extractToolsGroup;
@@ -2239,7 +2299,6 @@
 		private System.Windows.Forms.CheckBox extractCurrentDirCheck;
 		private System.Windows.Forms.Label disclaimerLabel;
 		private System.Windows.Forms.CheckBox addGameDirCheck;
-		private System.Windows.Forms.CheckBox DisableInitialLoadCountCheck;
 		private System.Windows.Forms.CheckBox cryptCheck;
 		private System.Windows.Forms.TabPage tabPage10;
 		private System.Windows.Forms.GroupBox groupBox18;
@@ -2260,5 +2319,24 @@
 		private System.Windows.Forms.Button importIniToDbButton;
 		private System.Windows.Forms.CheckBox checkBox6;
 		private System.Windows.Forms.Button exSplashImgButton;
+		private System.Windows.Forms.TabControl tabControl3;
+		private System.Windows.Forms.TabPage tabPage11;
+		private System.Windows.Forms.Button backgroundImageSelectButton;
+		private System.Windows.Forms.TextBox backgroundImageText;
+		private System.Windows.Forms.TabPage tabPage12;
+		private System.Windows.Forms.RadioButton fixGridSize64;
+		private System.Windows.Forms.RadioButton fixGridSize32;
+		private System.Windows.Forms.RadioButton fixGridSize8;
+		private System.Windows.Forms.CheckBox fixGridSizeCheck;
+		private System.Windows.Forms.CheckBox gridDisableCheck;
+		private System.Windows.Forms.TabPage tabPage13;
+		private System.Windows.Forms.CheckBox compactModeCheck;
+		private System.Windows.Forms.CheckBox DisableInitialLoadCountCheck;
+		private System.Windows.Forms.CheckBox enableWindowHideControlCheck;
+		private System.Windows.Forms.CheckBox updateCheckDisableCheck;
+		private System.Windows.Forms.GroupBox groupBox11;
+		private System.Windows.Forms.Button javaSearchButton;
+		private System.Windows.Forms.Button javaClearButton;
+		private System.Windows.Forms.TextBox javaText;
 	}
 }
