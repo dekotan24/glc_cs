@@ -2545,7 +2545,7 @@ namespace glc_cs
 			string ans = "";
 			int tmp;
 			Random r = new Random();
-			tmp = r.Next(1, 2);
+			tmp = r.Next(1, 3);
 
 			switch (tmp)
 			{

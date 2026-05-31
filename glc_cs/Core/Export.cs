@@ -103,7 +103,7 @@ namespace glc_cs.Core
 				};
 				cm2.Connection = cn;
 
-				string[,] items = new string[sqlAns, 11];
+				string[,] items = new string[sqlAns + 1, 15];
 				using (var reader = cm2.ExecuteReader())
 				{
 					// ヘッダ追加

@@ -850,7 +850,7 @@ namespace glc_cs
 								/* ↓ [必須] Ver.1.1(update to GL 1.03) ↓ */
 								// アップデート対象のセクションを取得する
 								KeyNames[] keyNames = { KeyNames.dcon_img, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.execute_cmd, KeyNames.extract_tool, KeyNames.savedata_path };
-								string[] failedVal = { "!Err", "!Err", "!Rrr", "!Err", "!Err", "!Err", "!Err" };
+								string[] failedVal = { "!Err", "!Err", "!Err", "!Err", "!Err", "!Err", "!Err" };
 
 								string[] resultValues = IniRead(readini, "game", keyNames, failedVal);
 								dcon_img = resultValues[0];
@@ -1580,7 +1580,7 @@ namespace glc_cs
 							{
 								// アップデート対象のセクションを取得する
 								KeyNames[] keyNames = { KeyNames.temp1, KeyNames.memo, KeyNames.status, KeyNames.ini_version, KeyNames.execute_cmd, KeyNames.extract_tool, KeyNames.savedata_path };
-								string[] failedVal = { "!Err", "!Err", "!Rrr", "!Err", "!Err", "!Err", "!Err" };
+								string[] failedVal = { "!Err", "!Err", "!Err", "!Err", "!Err", "!Err", "!Err" };
 
 								string[] resultValues = IniRead(readini, "game", keyNames, failedVal);
 								dcon_img = resultValues[0];
@@ -1603,7 +1603,7 @@ namespace glc_cs
 
 								/* ↓ [必須] Ver.1.2(update to GL 1.07) ↓ */
 								// 廃止したステータスの場合、アップデートフラグを立てる
-								if (status.Contains("-------") || status.Contains("未着手") || status.Contains(""))
+								if (status.Contains("-------") || status.Contains("未着手"))
 								{
 									IniWrite(readini, "game", KeyNames.status, "未プレイ");
 								}

@@ -688,11 +688,11 @@ namespace glc_cs
 				// アプリケーション情報の取得
 				System.Diagnostics.FileVersionInfo vi = System.Diagnostics.FileVersionInfo.GetVersionInfo(executePath);
 				string productName = vi.ProductName;
-				if (ProductName.Contains("(KIRIKIRI) Z"))
+				if (productName.Contains("(KIRIKIRI) Z"))
 				{
 					result = "krkrz";
 				}
-				else if (ProductName.Contains("(KIRIKIRI)"))
+				else if (productName.Contains("(KIRIKIRI)"))
 				{
 					result = "krkr";
 				}
