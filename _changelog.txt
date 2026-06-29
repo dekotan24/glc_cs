@@ -1,3 +1,17 @@
+2026/06/29 Ver.1.14 Build 43.26.06.29 (github).
+           *[追加] 統計情報表示機能の追加。
+           *[追加] リモートデスクトップ機能の追加（WebSocket + MJPEG）。
+           *[追加] Discord Rich Presence連携機能の追加。
+           *[追加] キーボードショートカットの追加（Enter=起動, F5=リロード, Ctrl+F=検索, Delete=削除）。
+           *[変更] DB操作をasync化（OpenAsync/ExecuteReaderAsync/ReadAsync）。
+           *[変更] SQLインジェクション対策の強化（SafeQualifiedTable/SafeSqlIdentifier）。
+           *[変更] 接続文字列キャッシュの導入（ADO.NET connection pooling活用）。
+           *[変更] DBUpdateの実行フェーズにcurrentVersionガードを追加（適用済みマイグレーションのスキップ）。
+           *[変更] Crypt.csにIDisposable実装。
+           *[修正] DoEvents全廃止。
+           *[修正] 検索時にFormatExceptionが発生する問題の修正。
+           *[修正] 他、細かな修正と最適化を実施。
+
 2025/01/13 Ver.1.13 Build 43.25.01.13 (github).
            *[修正] 設定画面で保存ボタンを押してもINIファイルパスが更新されない問題の修正。
            *[修正] 抽出機能でコマンドラインが正常に動作しない可能性がある問題の修正（未検証）。
