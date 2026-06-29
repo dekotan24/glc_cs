@@ -5,7 +5,7 @@ using static glc_cs.Core.Property;
 
 namespace glc_cs.Core
 {
-	internal class Crypt
+	internal class Crypt : IDisposable
 	{
 		private Encoding enc = Encoding.UTF8;
 		private Aes aes;
@@ -13,8 +13,14 @@ namespace glc_cs.Core
 		public Crypt()
 		{
 			aes = Aes.Create();
-			aes.Key = enc.GetBytes(Secret.Crypt.CryptKey);    // 32桁の鍵を設定する
-			aes.IV = enc.GetBytes(Secret.Crypt.CryptVector);    // 16桁の初期ベクトルを設定する
+			aes.Key = enc.GetBytes(Secret.Crypt.CryptKey);
+			aes.IV = enc.GetBytes(Secret.Crypt.CryptVector);
+		}
+
+		public void Dispose()
+		{
+			aes?.Dispose();
+			aes = null;
 		}
 
 		public string Encode(string str, bool forceCrypt = false)

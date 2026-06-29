@@ -131,8 +131,7 @@ namespace glc_cs
 							// 適用
 							Title = title;
 							RequireApply = true;
-							GC.Collect();
-							this.Hide();
+								this.Hide();
 						};
 
 						flowLayoutPanel1.Controls.Add(pictureBox);

@@ -82,7 +82,7 @@ namespace glc_cs.Core
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"SELECT count(*) FROM " + DbName + "." + DbTable
+						CommandText = @"SELECT count(*) FROM " + SafeQualifiedTable
 					};
 					cm.Connection = cn;
 
@@ -112,7 +112,7 @@ namespace glc_cs.Core
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"SELECT count(*) FROM " + DbTable
+						CommandText = @"SELECT count(*) FROM " + SafeSqlIdentifier(DbTable)
 					};
 					cm.Connection = cn;
 
@@ -159,6 +159,7 @@ namespace glc_cs.Core
 
 				// 総合
 				BgImg = ReadIni("imgd", "bgimg", string.Empty);
+				BgTransparent = Convert.ToInt32(ReadIni("imgd", "transparent", "100"));
 				GridEnable = !Convert.ToBoolean(Convert.ToInt32(ReadIni("disable", "grid", "0")));
 				InitialUpdateCheckSkipFlg = Convert.ToBoolean(Convert.ToInt32(ReadIni("disable", "updchk", "0")));
 				InitialUpdateCheckSkipVer = ReadIni("disable", "updchkVer", string.Empty);
@@ -235,6 +236,7 @@ namespace glc_cs.Core
 
 				// 総合
 				BgImg = string.Empty;
+				BgTransparent= 100;
 
 				// dcon設定
 				Dconnect = false;
@@ -935,7 +937,7 @@ namespace glc_cs.Core
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"SELECT count(*) FROM " + DbName + "." + DbTable
+						CommandText = @"SELECT count(*) FROM " + SafeQualifiedTable
 					};
 					cm.Connection = cn;
 
@@ -963,7 +965,7 @@ namespace glc_cs.Core
 						CommandType = CommandType.Text,
 						CommandTimeout = 60,
 						CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, EXTRACT_TOOL, DB_VERSION "
-									+ " FROM " + DbName + "." + DbTable
+									+ " FROM " + SafeQualifiedTable
 					};
 					cm2.Connection = cn;
 
@@ -1029,7 +1031,7 @@ namespace glc_cs.Core
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"SELECT count(*) FROM " + DbTable
+						CommandText = @"SELECT count(*) FROM " + SafeSqlIdentifier(DbTable)
 					};
 					mcm.Connection = mcn;
 
@@ -1057,7 +1059,7 @@ namespace glc_cs.Core
 						CommandType = CommandType.Text,
 						CommandTimeout = 60,
 						CommandText = @"SELECT ID, GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, EXTRACT_TOOL, DB_VERSION "
-									+ " FROM " + DbTable
+									+ " FROM " + SafeSqlIdentifier(DbTable)
 					};
 					mcm2.Connection = mcn;
 
@@ -1211,7 +1213,7 @@ namespace glc_cs.Core
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 30,
-							CommandText = @"TRUNCATE TABLE " + DbName + "." + DbTable
+							CommandText = @"TRUNCATE TABLE " + SafeQualifiedTable
 						};
 						cm1.Connection = cn1;
 
@@ -1286,7 +1288,7 @@ namespace glc_cs.Core
 							{
 								CommandType = CommandType.Text,
 								CommandTimeout = 30,
-								CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( @game_name, @game_path, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @temp1, @last_run, @dcon_img, @memo, @status, @db_version, @execute_cmd, @extract_tool )"
+								CommandText = @"INSERT INTO " + SafeQualifiedTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( @game_name, @game_path, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @temp1, @last_run, @dcon_img, @memo, @status, @db_version, @execute_cmd, @extract_tool )"
 							};
 							cm2.Connection = cn1;
 							cm2.Transaction = tran1;
@@ -1334,7 +1336,7 @@ namespace glc_cs.Core
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 30,
-							CommandText = @"TRUNCATE TABLE " + DbTable
+							CommandText = @"TRUNCATE TABLE " + SafeSqlIdentifier(DbTable)
 						};
 						mcm1.Connection = mcn1;
 
@@ -1414,7 +1416,7 @@ namespace glc_cs.Core
 							{
 								CommandType = CommandType.Text,
 								CommandTimeout = 30,
-								CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( @game_name, @game_path, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @temp1, @last_run, @dcon_img, @memo, @status, @db_version, @execute_cmd, @extract_tool );"
+								CommandText = @"INSERT INTO " + SafeSqlIdentifier(DbTable) + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( @game_name, @game_path, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @temp1, @last_run, @dcon_img, @memo, @status, @db_version, @execute_cmd, @extract_tool );"
 							};
 							mcm2.Connection = mcn1;
 							mcm2.Transaction = mtran1;
@@ -1593,7 +1595,7 @@ namespace glc_cs.Core
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 30,
-							CommandText = @"TRUNCATE TABLE " + DbName + "." + DbTable
+							CommandText = @"TRUNCATE TABLE " + SafeQualifiedTable
 						};
 						cm1.Connection = cn1;
 
@@ -1605,7 +1607,7 @@ namespace glc_cs.Core
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 30,
-							CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( @game_name, @game_path, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @temp1, @last_run, @dcon_img, @memo, @status, @db_version, @execute_cmd, @extract_tool )"
+							CommandText = @"INSERT INTO " + SafeQualifiedTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( @game_name, @game_path, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @temp1, @last_run, @dcon_img, @memo, @status, @db_version, @execute_cmd, @extract_tool )"
 						};
 						cm2.Connection = cn1;
 						cm2.Parameters.AddWithValue("@game_name", EncodeSQLSpecialChars(returnVal[0]));
@@ -1694,7 +1696,7 @@ namespace glc_cs.Core
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 30,
-							CommandText = @"TRUNCATE TABLE " + DbTable
+							CommandText = @"TRUNCATE TABLE " + SafeSqlIdentifier(DbTable)
 						};
 						mcm1.Connection = mcn1;
 
@@ -1706,7 +1708,7 @@ namespace glc_cs.Core
 						{
 							CommandType = CommandType.Text,
 							CommandTimeout = 30,
-							CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( @game_name, @game_path, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @temp1, @last_run, @dcon_img, @memo, @status, @db_version, @execute_cmd, @extract_tool )"
+							CommandText = @"INSERT INTO " + SafeSqlIdentifier(DbTable) + " ( GAME_NAME, GAME_PATH, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, TEMP1, LAST_RUN, DCON_IMG, MEMO, STATUS, DB_VERSION, EXECUTE_CMD, EXTRACT_TOOL ) VALUES ( @game_name, @game_path, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @temp1, @last_run, @dcon_img, @memo, @status, @db_version, @execute_cmd, @extract_tool )"
 						};
 						mcm2.Connection = mcn1;
 						mcm2.Parameters.AddWithValue("@game_name", EncodeSQLSpecialChars(returnVal[0]));

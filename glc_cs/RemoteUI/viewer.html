@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>GLauncher Remote Desktop</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #1a1a2e; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; overflow: hidden; height: 100vh; }
+
+#auth-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+    display: flex; align-items: center; justify-content: center; z-index: 100;
+}
+#auth-box {
+    background: #16213e; border: 1px solid #0f3460; border-radius: 12px;
+    padding: 32px; width: 320px; text-align: center;
+}
+#auth-box h2 { margin-bottom: 16px; color: #e94560; font-size: 18px; }
+#auth-box input {
+    width: 100%; padding: 10px 14px; background: #1a1a2e; border: 1px solid #0f3460;
+    color: #e0e0e0; border-radius: 6px; font-size: 14px; margin-bottom: 12px; outline: none;
+}
+#auth-box input:focus { border-color: #e94560; }
+#auth-box button {
+    width: 100%; padding: 10px; background: #e94560; color: white; border: none;
+    border-radius: 6px; font-size: 14px; cursor: pointer; transition: background 0.2s;
+}
+#auth-box button:hover { background: #c73a52; }
+#auth-error { color: #e94560; font-size: 12px; margin-top: 8px; display: none; }
+
+#toolbar {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(22, 33, 62, 0.95); border-bottom: 1px solid #0f3460;
+    display: flex; align-items: center; padding: 0 12px; z-index: 50;
+    transition: opacity 0.3s; gap: 8px; height: 40px; flex-shrink: 0;
+}
+#toolbar.hidden { opacity: 0; pointer-events: none; }
+#toolbar .status {
+    width: 10px; height: 10px; border-radius: 50%; background: #4ecca3; flex-shrink: 0;
+}
+#toolbar .status.disconnected { background: #e94560; }
+#toolbar .info { font-size: 12px; color: #8899aa; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#toolbar .rtt { font-size: 11px; color: #4ecca3; white-space: nowrap; flex-shrink: 0; }
+#toolbar select, #toolbar button, #toolbar-items select, #toolbar-items button {
+    background: #1a1a2e; color: #e0e0e0; border: 1px solid #0f3460;
+    border-radius: 4px; padding: 4px 8px; font-size: 12px; cursor: pointer; flex-shrink: 0;
+}
+#toolbar button:hover, #toolbar-items button:hover { background: #0f3460; }
+#toolbar button.active, #toolbar-items button.active { background: #e94560; border-color: #e94560; }
+#toolbar label, #toolbar-items label { font-size: 12px; color: #8899aa; white-space: nowrap; flex-shrink: 0; }
+
+#toolbar-items {
+    display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0;
+}
+#btn-menu {
+    display: none; font-size: 18px; line-height: 1; padding: 4px 8px;
+}
+
+@media (max-width: 768px) {
+    #toolbar { flex-wrap: nowrap; }
+    #toolbar .info { flex: 1; min-width: 0; }
+    #btn-menu { display: block; }
+    #toolbar-items {
+        display: none; position: fixed; top: 40px; left: 0; right: 0;
+        background: rgba(22, 33, 62, 0.98); border-bottom: 1px solid #0f3460;
+        padding: 10px 12px; flex-wrap: wrap; gap: 8px; z-index: 49;
+    }
+    #toolbar-items.show { display: flex; }
+}
+
+#screen-container {
+    width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding-top: 40px; cursor: default;
+}
+#screen-container.fullscreen { padding-top: 0; }
+#screen {
+    image-rendering: auto; max-width: 100%; max-height: 100%;
+    background: #000; display: block;
+}
+
+#reconnect-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+    display: none; align-items: center; justify-content: center; z-index: 90;
+}
+#reconnect-overlay .msg {
+    text-align: center; color: #e0e0e0; font-size: 16px;
+}
+#reconnect-overlay .msg span { color: #e94560; }
+
+#touch-indicator {
+    position: fixed; width: 40px; height: 40px; border-radius: 50%;
+    border: 2px solid #e94560; background: rgba(233,69,96,0.3);
+    pointer-events: none; z-index: 60; display: none;
+    transform: translate(-50%, -50%);
+    animation: pulse 0.6s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { transform: translate(-50%,-50%) scale(1); } 50% { transform: translate(-50%,-50%) scale(1.3); } }
+
+#virtual-cursor {
+    position: fixed; width: 20px; height: 20px; pointer-events: none; z-index: 55; display: none;
+}
+#virtual-cursor::before {
+    content: ''; position: absolute; left: 0; top: 0;
+    border-left: 12px solid #fff; border-top: 6px solid transparent; border-bottom: 6px solid transparent;
+    transform: rotate(-30deg); transform-origin: 0 50%;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.8));
+}
+#virtual-cursor::after {
+    content: ''; position: absolute; left: 3px; top: 3px; width: 6px; height: 6px;
+    background: #e94560; border-radius: 50%;
+}
+
+#toolbar-restore {
+    position: fixed; top: 4px; right: 12px; z-index: 49;
+    background: rgba(22, 33, 62, 0.8); border: 1px solid #0f3460; border-radius: 4px;
+    color: #8899aa; font-size: 16px; padding: 2px 8px; cursor: pointer; display: none;
+    line-height: 1; user-select: none; -webkit-user-select: none;
+}
+#toolbar-restore:hover { background: #0f3460; color: #e0e0e0; }
+
+#clipboard-panel {
+    display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: #16213e; border: 1px solid #0f3460; border-radius: 12px;
+    padding: 20px; width: 340px; max-width: 90vw; z-index: 80;
+    flex-direction: column; gap: 12px;
+}
+#clipboard-panel h3 { font-size: 14px; color: #e94560; text-align: center; }
+#clipboard-text {
+    width: 100%; height: 120px; background: #1a1a2e; border: 1px solid #0f3460;
+    color: #e0e0e0; border-radius: 6px; padding: 10px; font-size: 13px;
+    resize: vertical; outline: none; font-family: inherit;
+}
+#clipboard-text:focus { border-color: #e94560; }
+#clipboard-panel .btn-row { display: flex; gap: 8px; }
+#clipboard-panel .btn-row button {
+    flex: 1; padding: 8px; background: #0f3460; color: #e0e0e0; border: 1px solid #0f3460;
+    border-radius: 6px; font-size: 12px; cursor: pointer;
+}
+#clipboard-panel .btn-row button:hover { background: #1a3a6e; }
+#clipboard-panel .btn-row button.primary { background: #e94560; border-color: #e94560; color: white; }
+#clipboard-panel .btn-row button.primary:hover { background: #c73a52; }
+#clipboard-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 79;
+}
+</style>
+</head>
+<body>
+
+<div id="auth-overlay" style="display:none">
+    <div id="auth-box">
+        <h2>GLauncher Remote Desktop</h2>
+        <input type="password" id="auth-pass" placeholder="パスワード" autocomplete="off">
+        <button id="auth-btn" onclick="doAuth()">接続</button>
+        <div id="auth-error">パスワードが違います</div>
+    </div>
+</div>
+
+<div id="toolbar">
+    <div class="status" id="status-dot"></div>
+    <span class="info" id="info-text">接続中...</span>
+    <span class="rtt" id="rtt-text"></span>
+    <button id="btn-menu" onclick="toggleMenu()">&#9776;</button>
+    <div id="toolbar-items">
+        <label>画質:
+            <select id="sel-quality" onchange="sendSetting('set_quality',{quality:+this.value})">
+                <option value="100" selected>無損失(100)</option>
+                <option value="80">高(80)</option>
+                <option value="60">標準(60)</option>
+                <option value="30">低(30)</option>
+            </select>
+        </label>
+        <label>スケール:
+            <select id="sel-scale" onchange="sendSetting('set_scale',{scale:+this.value})">
+                <option value="1.0" selected>100%</option>
+                <option value="0.75">75%</option>
+                <option value="0.5">50%</option>
+            </select>
+        </label>
+        <label>FPS:
+            <select id="sel-fps" onchange="sendSetting('set_fps',{fps:+this.value})">
+                <option value="30" selected>30</option>
+                <option value="15">15</option>
+                <option value="5">5</option>
+            </select>
+        </label>
+        <label id="monitor-label" style="display:none">モニター:
+            <select id="sel-monitor" onchange="sendSetting('set_monitor',{monitor:+this.value})">
+            </select>
+        </label>
+        <button id="btn-audio" onclick="toggleAudio()">&#x1f507;</button>
+        <button id="btn-keyboard" onclick="toggleKeyboard()" style="display:none">&#x2328;</button>
+        <button id="btn-touchmode" onclick="toggleTouchMode()" style="display:none">直接</button>
+        <select id="sel-specialkeys" onchange="sendSpecialKey(this)">
+            <option value="">特殊キー</option>
+            <option value="atab">Alt+Tab</option>
+            <option value="af4">Alt+F4</option>
+            <option value="wd">Win+D</option>
+            <option value="cse">Ctrl+Shift+Esc</option>
+            <option value="wr">Win+R</option>
+            <option value="we">Win+E</option>
+        </select>
+        <button onclick="toggleClipboard()">&#x1f4cb;</button>
+        <button onclick="toggleFullscreen()">全画面</button>
+        <button onclick="toggleToolbar()">非表示</button>
+    </div>
+</div>
+
+<div id="screen-container">
+    <canvas id="screen"></canvas>
+    <textarea id="mobile-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+        style="position:fixed;left:-9999px;top:50%;width:1px;height:1px;opacity:0;font-size:16px;"></textarea>
+</div>
+
+<div id="touch-indicator"></div>
+<div id="virtual-cursor"></div>
+<div id="toolbar-restore" onclick="restoreToolbar()">&#9776;</div>
+<div id="reconnect-overlay">
+    <div class="msg">接続が切れました。<br><span id="reconnect-timer">再接続中...</span></div>
+</div>
+
+<div id="clipboard-overlay" onclick="toggleClipboard()"></div>
+<div id="clipboard-panel">
+    <h3>クリップボード共有</h3>
+    <textarea id="clipboard-text" placeholder="テキストを入力..."></textarea>
+    <div class="btn-row">
+        <button onclick="clipboardGet()">取得</button>
+        <button class="primary" onclick="clipboardSend()">送信</button>
+        <button onclick="toggleClipboard()">閉じる</button>
+    </div>
+</div>
+
+<script>
+const canvas = document.getElementById('screen');
+const ctx = canvas.getContext('2d');
+let ws = null;
+let screenW = 0, screenH = 0, realW = 0, realH = 0;
+let authenticated = false;
+let needsAuth = false;
+let frameCount = 0;
+let lastFpsTime = Date.now();
+let currentFps = 0;
+let toolbarVisible = true;
+let reconnectTimer = null;
+let pingInterval = null;
+
+// Audio state
+let audioCtx = null;
+let audioEnabled = false;
+let audioServerEnabled = false;
+let audioSampleRate = 48000;
+let audioChannels = 2;
+let audioQueue = [];
+let audioPlaying = false;
+let nextAudioTime = 0;
+
+function initAudio() {
+    if (audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: audioSampleRate });
+    audioEnabled = true;
+    nextAudioTime = 0;
+    document.getElementById('btn-audio').textContent = '\u{1f50a}';
+    document.getElementById('btn-audio').classList.add('active');
+}
+
+function toggleAudio() {
+    if (!audioServerEnabled) return;
+    if (!audioEnabled) {
+        initAudio();
+    } else {
+        audioEnabled = false;
+        if (audioCtx) { audioCtx.close(); audioCtx = null; }
+        nextAudioTime = 0;
+        document.getElementById('btn-audio').textContent = '\u{1f507}';
+        document.getElementById('btn-audio').classList.remove('active');
+    }
+}
+
+function playAudioChunk(pcmData) {
+    if (!audioCtx || !audioEnabled) return;
+
+    const bytesPerFrame = audioChannels * 2;
+    const frames = Math.floor(pcmData.length / bytesPerFrame);
+    if (frames === 0) return;
+
+    const buffer = audioCtx.createBuffer(audioChannels, frames, audioSampleRate);
+    const view = new DataView(pcmData.buffer, pcmData.byteOffset, pcmData.byteLength);
+
+    for (let ch = 0; ch < audioChannels; ch++) {
+        const channel = buffer.getChannelData(ch);
+        for (let i = 0; i < frames; i++) {
+            channel[i] = view.getInt16((i * audioChannels + ch) * 2, true) / 32768.0;
+        }
+    }
+
+    const source = audioCtx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(audioCtx.destination);
+
+    const now = audioCtx.currentTime;
+    if (nextAudioTime < now) {
+        nextAudioTime = now + 0.02;
+    }
+    source.start(nextAudioTime);
+    nextAudioTime += buffer.duration;
+}
+
+function connect() {
+    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    ws = new WebSocket(`${proto}//${location.host}/ws`);
+    ws.binaryType = 'arraybuffer';
+
+    ws.onopen = () => {
+        document.getElementById('status-dot').classList.remove('disconnected');
+        document.getElementById('reconnect-overlay').style.display = 'none';
+        document.getElementById('info-text').textContent = '接続済み';
+        startPing();
+    };
+
+    ws.onmessage = (e) => {
+        if (typeof e.data === 'string') {
+            handleText(JSON.parse(e.data));
+        } else {
+            handleBinary(e.data);
+        }
+    };
+
+    ws.onclose = () => {
+        document.getElementById('status-dot').classList.add('disconnected');
+        stopPing();
+        if (authenticated) {
+            document.getElementById('reconnect-overlay').style.display = 'flex';
+            scheduleReconnect();
+        }
+    };
+
+    ws.onerror = () => {};
+}
+
+// --- RTT Ping ---
+function startPing() {
+    stopPing();
+    pingInterval = setInterval(() => {
+        if (ws && ws.readyState === WebSocket.OPEN && authenticated) {
+            ws.send(JSON.stringify({ type: 'ping', ts: Date.now() }));
+        }
+    }, 3000);
+}
+
+function stopPing() {
+    if (pingInterval) { clearInterval(pingInterval); pingInterval = null; }
+    document.getElementById('rtt-text').textContent = '';
+}
+
+// --- Special Keys ---
+const SPECIAL_KEYS = {
+    'atab': [0x12, 0x09],
+    'af4':  [0x12, 0x73],
+    'wd':   [0x5B, 0x44],
+    'cse':  [0x11, 0x10, 0x1B],
+    'wr':   [0x5B, 0x52],
+    'we':   [0x5B, 0x45],
+};
+
+function sendSpecialKey(sel) {
+    const combo = SPECIAL_KEYS[sel.value];
+    if (combo && ws && ws.readyState === WebSocket.OPEN && authenticated) {
+        ws.send(JSON.stringify({ type: 'key_combo', keys: combo }));
+    }
+    sel.value = '';
+}
+
+// --- Clipboard ---
+let clipboardOpen = false;
+
+function toggleClipboard() {
+    clipboardOpen = !clipboardOpen;
+    document.getElementById('clipboard-panel').style.display = clipboardOpen ? 'flex' : 'none';
+    document.getElementById('clipboard-overlay').style.display = clipboardOpen ? 'block' : 'none';
+}
+
+function clipboardSend() {
+    const text = document.getElementById('clipboard-text').value;
+    if (ws && ws.readyState === WebSocket.OPEN && authenticated) {
+        ws.send(JSON.stringify({ type: 'clipboard_set', text: text }));
+    }
+}
+
+function clipboardGet() {
+    if (ws && ws.readyState === WebSocket.OPEN && authenticated) {
+        ws.send(JSON.stringify({ type: 'clipboard_get' }));
+    }
+}
+
+// --- Mobile Menu ---
+function toggleMenu() {
+    document.getElementById('toolbar-items').classList.toggle('show');
+}
+
+function handleText(msg) {
+    switch (msg.type) {
+        case 'auth_required':
+            needsAuth = true;
+            document.getElementById('auth-overlay').style.display = 'flex';
+            document.getElementById('auth-pass').focus();
+            break;
+        case 'auth_ok':
+            authenticated = true;
+            needsAuth = false;
+            document.getElementById('auth-overlay').style.display = 'none';
+            break;
+        case 'auth_fail':
+            document.getElementById('auth-error').style.display = 'block';
+            document.getElementById('auth-pass').value = '';
+            document.getElementById('auth-pass').focus();
+            break;
+        case 'screen_info':
+            screenW = msg.width;
+            screenH = msg.height;
+            realW = msg.screenWidth;
+            realH = msg.screenHeight;
+            canvas.width = screenW;
+            canvas.height = screenH;
+            if (msg.fps) document.getElementById('sel-fps').value = String(msg.fps);
+            if (msg.quality) document.getElementById('sel-quality').value = String(msg.quality);
+            if (msg.scale) document.getElementById('sel-scale').value = String(msg.scale);
+            if (msg.audioEnabled) {
+                audioServerEnabled = true;
+                if (msg.audioSampleRate) audioSampleRate = msg.audioSampleRate;
+                if (msg.audioChannels) audioChannels = msg.audioChannels;
+                document.getElementById('btn-audio').style.display = '';
+            }
+            if (msg.monitors && msg.monitors.length > 1) {
+                const sel = document.getElementById('sel-monitor');
+                sel.innerHTML = '';
+                msg.monitors.forEach(m => {
+                    const opt = document.createElement('option');
+                    opt.value = m.index;
+                    opt.textContent = m.name;
+                    sel.appendChild(opt);
+                });
+                sel.value = String(msg.currentMonitor != null ? msg.currentMonitor : 0);
+                document.getElementById('monitor-label').style.display = '';
+            }
+            document.getElementById('info-text').textContent =
+                `${realW}x${realH} → ${screenW}x${screenH} | ${currentFps} FPS`;
+            break;
+        case 'pong':
+            var rtt = Date.now() - msg.ts;
+            document.getElementById('rtt-text').textContent = rtt + 'ms';
+            break;
+        case 'clipboard_data':
+            document.getElementById('clipboard-text').value = msg.text || '';
+            if (!clipboardOpen) toggleClipboard();
+            break;
+    }
+}
+
+const img = new Image();
+
+function handleBinary(data) {
+    const arr = new Uint8Array(data);
+    if (arr.length < 2) return;
+
+    const marker = arr[0];
+    const payload = arr.slice(1);
+
+    if (marker === 0x00) {
+        const blob = new Blob([payload], { type: 'image/jpeg' });
+        const url = URL.createObjectURL(blob);
+        img.onload = () => {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            URL.revokeObjectURL(url);
+            frameCount++;
+            const now = Date.now();
+            if (now - lastFpsTime >= 1000) {
+                currentFps = frameCount;
+                frameCount = 0;
+                lastFpsTime = now;
+                document.getElementById('info-text').textContent =
+                    `${realW}x${realH} → ${screenW}x${screenH} | ${currentFps} FPS`;
+            }
+        };
+        img.src = url;
+    } else if (marker === 0x01) {
+        playAudioChunk(payload);
+    }
+}
+
+function doAuth() {
+    const pass = document.getElementById('auth-pass').value;
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(pass);
+    }
+}
+document.getElementById('auth-pass').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') doAuth();
+});
+
+function sendSetting(type, data) {
+    if (ws && ws.readyState === WebSocket.OPEN && authenticated) {
+        ws.send(JSON.stringify({ type, ...data }));
+    }
+}
+
+function getCanvasCoords(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+        x: (e.clientX - rect.left) * scaleX,
+        y: (e.clientY - rect.top) * scaleY
+    };
+}
+
+function buttonName(b) {
+    switch (b) { case 0: return 'left'; case 1: return 'middle'; case 2: return 'right'; default: return 'left'; }
+}
+
+canvas.addEventListener('mousemove', (e) => {
+    if (!authenticated) return;
+    const c = getCanvasCoords(e);
+    ws.send(JSON.stringify({ type: 'mouse_move', x: c.x, y: c.y }));
+});
+
+canvas.addEventListener('mousedown', (e) => {
+    if (!authenticated) return;
+    e.preventDefault();
+    const c = getCanvasCoords(e);
+    ws.send(JSON.stringify({ type: 'mouse_down', x: c.x, y: c.y, button: buttonName(e.button) }));
+});
+
+canvas.addEventListener('mouseup', (e) => {
+    if (!authenticated) return;
+    e.preventDefault();
+    const c = getCanvasCoords(e);
+    ws.send(JSON.stringify({ type: 'mouse_up', x: c.x, y: c.y, button: buttonName(e.button) }));
+});
+
+canvas.addEventListener('dblclick', (e) => {
+    if (!authenticated) return;
+    e.preventDefault();
+    const c = getCanvasCoords(e);
+    ws.send(JSON.stringify({ type: 'mouse_dblclick', x: c.x, y: c.y, button: buttonName(e.button) }));
+});
+
+canvas.addEventListener('wheel', (e) => {
+    if (!authenticated) return;
+    e.preventDefault();
+    const c = getCanvasCoords(e);
+    const delta = -Math.sign(e.deltaY) * 120;
+    ws.send(JSON.stringify({ type: 'mouse_scroll', x: c.x, y: c.y, delta }));
+}, { passive: false });
+
+canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+// Keyboard VK mapping
+const KEY_MAP = {
+    'Backspace': 0x08, 'Tab': 0x09, 'Enter': 0x0D, 'ShiftLeft': 0x10, 'ShiftRight': 0x10,
+    'ControlLeft': 0x11, 'ControlRight': 0x11, 'AltLeft': 0x12, 'AltRight': 0x12,
+    'Pause': 0x13, 'CapsLock': 0x14, 'Escape': 0x1B, 'Space': 0x20,
+    'PageUp': 0x21, 'PageDown': 0x22, 'End': 0x23, 'Home': 0x24,
+    'ArrowLeft': 0x25, 'ArrowUp': 0x26, 'ArrowRight': 0x27, 'ArrowDown': 0x28,
+    'PrintScreen': 0x2C, 'Insert': 0x2D, 'Delete': 0x2E,
+    'Digit0': 0x30, 'Digit1': 0x31, 'Digit2': 0x32, 'Digit3': 0x33, 'Digit4': 0x34,
+    'Digit5': 0x35, 'Digit6': 0x36, 'Digit7': 0x37, 'Digit8': 0x38, 'Digit9': 0x39,
+    'KeyA': 0x41, 'KeyB': 0x42, 'KeyC': 0x43, 'KeyD': 0x44, 'KeyE': 0x45,
+    'KeyF': 0x46, 'KeyG': 0x47, 'KeyH': 0x48, 'KeyI': 0x49, 'KeyJ': 0x4A,
+    'KeyK': 0x4B, 'KeyL': 0x4C, 'KeyM': 0x4D, 'KeyN': 0x4E, 'KeyO': 0x4F,
+    'KeyP': 0x50, 'KeyQ': 0x51, 'KeyR': 0x52, 'KeyS': 0x53, 'KeyT': 0x54,
+    'KeyU': 0x55, 'KeyV': 0x56, 'KeyW': 0x57, 'KeyX': 0x58, 'KeyY': 0x59, 'KeyZ': 0x5A,
+    'MetaLeft': 0x5B, 'MetaRight': 0x5C,
+    'Numpad0': 0x60, 'Numpad1': 0x61, 'Numpad2': 0x62, 'Numpad3': 0x63, 'Numpad4': 0x64,
+    'Numpad5': 0x65, 'Numpad6': 0x66, 'Numpad7': 0x67, 'Numpad8': 0x68, 'Numpad9': 0x69,
+    'NumpadMultiply': 0x6A, 'NumpadAdd': 0x6B, 'NumpadSubtract': 0x6D,
+    'NumpadDecimal': 0x6E, 'NumpadDivide': 0x6F,
+    'F1': 0x70, 'F2': 0x71, 'F3': 0x72, 'F4': 0x73, 'F5': 0x74, 'F6': 0x75,
+    'F7': 0x76, 'F8': 0x77, 'F9': 0x78, 'F10': 0x79, 'F11': 0x7A, 'F12': 0x7B,
+    'NumLock': 0x90, 'ScrollLock': 0x91,
+    'Semicolon': 0xBA, 'Equal': 0xBB, 'Comma': 0xBC, 'Minus': 0xBD,
+    'Period': 0xBE, 'Slash': 0xBF, 'Backquote': 0xC0,
+    'BracketLeft': 0xDB, 'Backslash': 0xDC, 'BracketRight': 0xDD, 'Quote': 0xDE,
+    'IntlBackslash': 0xE2, 'IntlRo': 0xC1, 'IntlYen': 0xDC,
+};
+
+document.addEventListener('keydown', (e) => {
+    if (!authenticated) return;
+    if (document.getElementById('auth-overlay').style.display !== 'none') return;
+    if (clipboardOpen) return;
+    e.preventDefault();
+    const vk = KEY_MAP[e.code] || 0;
+    if (vk) ws.send(JSON.stringify({ type: 'key_down', vk }));
+});
+
+document.addEventListener('keyup', (e) => {
+    if (!authenticated) return;
+    if (document.getElementById('auth-overlay').style.display !== 'none') return;
+    if (clipboardOpen) return;
+    e.preventDefault();
+    const vk = KEY_MAP[e.code] || 0;
+    if (vk) ws.send(JSON.stringify({ type: 'key_up', vk }));
+});
+
+function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+        document.getElementById('screen-container').classList.add('fullscreen');
+    } else {
+        document.exitFullscreen();
+        document.getElementById('screen-container').classList.remove('fullscreen');
+    }
+}
+
+function toggleToolbar() {
+    toolbarVisible = !toolbarVisible;
+    document.getElementById('toolbar').classList.toggle('hidden', !toolbarVisible);
+    document.getElementById('screen-container').style.paddingTop = toolbarVisible ? '40px' : '0';
+    document.getElementById('toolbar-restore').style.display = toolbarVisible ? 'none' : 'block';
+}
+
+function restoreToolbar() {
+    toolbarVisible = true;
+    document.getElementById('toolbar').classList.remove('hidden');
+    document.getElementById('screen-container').style.paddingTop = '40px';
+    document.getElementById('toolbar-restore').style.display = 'none';
+}
+
+function scheduleReconnect() {
+    let countdown = 3;
+    document.getElementById('reconnect-timer').textContent = `${countdown}秒後に再接続...`;
+    reconnectTimer = setInterval(() => {
+        countdown--;
+        if (countdown <= 0) {
+            clearInterval(reconnectTimer);
+            document.getElementById('reconnect-timer').textContent = '再接続中...';
+            connect();
+        } else {
+            document.getElementById('reconnect-timer').textContent = `${countdown}秒後に再接続...`;
+        }
+    }, 1000);
+}
+
+// Prevent touch zoom on mobile
+document.addEventListener('touchmove', (e) => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+
+// Touch mode: 'direct' (tap = click at finger) or 'cursor' (trackpad-style virtual cursor)
+let touchMode = 'direct';
+const LONG_PRESS_MS = 500;
+const DRAG_THRESHOLD = 10;
+let touchState = null;
+const touchIndicator = document.getElementById('touch-indicator');
+const virtualCursor = document.getElementById('virtual-cursor');
+
+// Virtual cursor state (canvas-space coordinates)
+let vcX = 0, vcY = 0;
+const VC_SPEED = 1.5;
+
+function toggleTouchMode() {
+    const btn = document.getElementById('btn-touchmode');
+    if (touchMode === 'direct') {
+        touchMode = 'cursor';
+        btn.textContent = 'カーソル';
+        btn.classList.add('active');
+        vcX = screenW / 2; vcY = screenH / 2;
+        updateVirtualCursor();
+        virtualCursor.style.display = 'block';
+    } else {
+        touchMode = 'direct';
+        btn.textContent = '直接';
+        btn.classList.remove('active');
+        virtualCursor.style.display = 'none';
+    }
+}
+
+function updateVirtualCursor() {
+    vcX = Math.max(0, Math.min(screenW, vcX));
+    vcY = Math.max(0, Math.min(screenH, vcY));
+    const rect = canvas.getBoundingClientRect();
+    const px = rect.left + (vcX / screenW) * rect.width;
+    const py = rect.top + (vcY / screenH) * rect.height;
+    virtualCursor.style.left = px + 'px';
+    virtualCursor.style.top = py + 'px';
+}
+
+// --- Direct touch mode handlers ---
+function directTouchStart(e) {
+    if (e.touches.length === 2) {
+        if (touchState && touchState.timer) clearTimeout(touchState.timer);
+        touchIndicator.style.display = 'none';
+        const t0 = e.touches[0], t1 = e.touches[1];
+        const c = getCanvasCoords({ clientX: (t0.clientX+t1.clientX)/2, clientY: (t0.clientY+t1.clientY)/2 });
+        ws.send(JSON.stringify({ type: 'mouse_move', x: c.x, y: c.y }));
+        ws.send(JSON.stringify({ type: 'mouse_click', x: c.x, y: c.y, button: 'right' }));
+        touchState = { twoFinger: true };
+        return;
+    }
+    const t = e.touches[0];
+    const c = getCanvasCoords(t);
+    touchState = {
+        startX: t.clientX, startY: t.clientY,
+        coords: c, dragging: false, longPressed: false,
+        timer: setTimeout(() => {
+            if (!touchState) return;
+            touchState.longPressed = true;
+            touchIndicator.style.left = t.clientX + 'px';
+            touchIndicator.style.top = t.clientY + 'px';
+            touchIndicator.style.display = 'block';
+            if (navigator.vibrate) navigator.vibrate(50);
+        }, LONG_PRESS_MS)
+    };
+}
+
+function directTouchMove(e) {
+    if (!touchState || touchState.twoFinger) return;
+    const t = e.touches[0];
+    const c = getCanvasCoords(t);
+    const dx = t.clientX - touchState.startX, dy = t.clientY - touchState.startY;
+    if (!touchState.dragging && Math.sqrt(dx*dx+dy*dy) > DRAG_THRESHOLD) {
+        touchState.dragging = true;
+        clearTimeout(touchState.timer);
+        touchIndicator.style.display = 'none';
+        ws.send(JSON.stringify({ type: 'mouse_move', x: touchState.coords.x, y: touchState.coords.y }));
+        ws.send(JSON.stringify({ type: 'mouse_down', x: touchState.coords.x, y: touchState.coords.y, button: 'left' }));
+    }
+    if (touchState.dragging) {
+        touchState.coords = c;
+        ws.send(JSON.stringify({ type: 'mouse_move', x: c.x, y: c.y }));
+    }
+}
+
+function directTouchEnd() {
+    clearTimeout(touchState.timer);
+    touchIndicator.style.display = 'none';
+    if (touchState.twoFinger) { touchState = null; return; }
+    const c = touchState.coords;
+    if (touchState.longPressed) {
+        ws.send(JSON.stringify({ type: 'mouse_move', x: c.x, y: c.y }));
+        ws.send(JSON.stringify({ type: 'mouse_click', x: c.x, y: c.y, button: 'right' }));
+    } else if (touchState.dragging) {
+        ws.send(JSON.stringify({ type: 'mouse_up', x: c.x, y: c.y, button: 'left' }));
+    } else {
+        ws.send(JSON.stringify({ type: 'mouse_move', x: c.x, y: c.y }));
+        ws.send(JSON.stringify({ type: 'mouse_click', x: c.x, y: c.y, button: 'left' }));
+    }
+    touchState = null;
+}
+
+// --- Virtual cursor (trackpad) mode handlers ---
+function cursorTouchStart(e) {
+    if (e.touches.length === 2) {
+        if (touchState && touchState.timer) clearTimeout(touchState.timer);
+        ws.send(JSON.stringify({ type: 'mouse_click', x: vcX, y: vcY, button: 'right' }));
+        touchState = { twoFinger: true };
+        return;
+    }
+    const t = e.touches[0];
+    touchState = {
+        lastX: t.clientX, lastY: t.clientY,
+        startX: t.clientX, startY: t.clientY,
+        dragging: false, longPressed: false, moved: false,
+        timer: setTimeout(() => {
+            if (!touchState) return;
+            touchState.longPressed = true;
+            touchIndicator.style.left = virtualCursor.style.left;
+            touchIndicator.style.top = virtualCursor.style.top;
+            touchIndicator.style.display = 'block';
+            if (navigator.vibrate) navigator.vibrate(50);
+        }, LONG_PRESS_MS)
+    };
+}
+
+function cursorTouchMove(e) {
+    if (!touchState || touchState.twoFinger) return;
+    const t = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = screenW / rect.width;
+    const scaleY = screenH / rect.height;
+    const dx = (t.clientX - touchState.lastX) * scaleX * VC_SPEED;
+    const dy = (t.clientY - touchState.lastY) * scaleY * VC_SPEED;
+    touchState.lastX = t.clientX;
+    touchState.lastY = t.clientY;
+
+    const rawDx = t.clientX - touchState.startX;
+    const rawDy = t.clientY - touchState.startY;
+    if (!touchState.moved && Math.sqrt(rawDx*rawDx+rawDy*rawDy) > 10) {
+        touchState.moved = true;
+        if (!touchState.longPressed) {
+            clearTimeout(touchState.timer);
+            touchIndicator.style.display = 'none';
+        }
+    }
+
+    if (touchState.moved) {
+        vcX += dx; vcY += dy;
+        updateVirtualCursor();
+
+        if (touchState.longPressed && !touchState.dragging) {
+            touchState.dragging = true;
+            touchIndicator.style.display = 'none';
+            ws.send(JSON.stringify({ type: 'mouse_down', x: vcX, y: vcY, button: 'left' }));
+        }
+
+        ws.send(JSON.stringify({ type: 'mouse_move', x: vcX, y: vcY }));
+    }
+}
+
+function cursorTouchEnd() {
+    clearTimeout(touchState.timer);
+    touchIndicator.style.display = 'none';
+    if (touchState.twoFinger) { touchState = null; return; }
+
+    if (touchState.dragging) {
+        ws.send(JSON.stringify({ type: 'mouse_up', x: vcX, y: vcY, button: 'left' }));
+    } else if (touchState.longPressed && !touchState.moved) {
+        ws.send(JSON.stringify({ type: 'mouse_click', x: vcX, y: vcY, button: 'right' }));
+    } else if (!touchState.moved) {
+        ws.send(JSON.stringify({ type: 'mouse_click', x: vcX, y: vcY, button: 'left' }));
+    }
+    touchState = null;
+}
+
+// --- Unified touch event listeners ---
+canvas.addEventListener('touchstart', (e) => {
+    if (!authenticated) return;
+    e.preventDefault();
+    if (touchMode === 'direct') directTouchStart(e);
+    else cursorTouchStart(e);
+}, { passive: false });
+
+canvas.addEventListener('touchmove', (e) => {
+    if (!authenticated || !touchState) return;
+    e.preventDefault();
+    if (touchMode === 'direct') directTouchMove(e);
+    else cursorTouchMove(e);
+}, { passive: false });
+
+canvas.addEventListener('touchend', (e) => {
+    if (!authenticated || !touchState) return;
+    e.preventDefault();
+    if (touchMode === 'direct') directTouchEnd();
+    else cursorTouchEnd();
+}, { passive: false });
+
+canvas.addEventListener('touchcancel', (e) => {
+    if (touchState) {
+        clearTimeout(touchState.timer);
+        touchIndicator.style.display = 'none';
+    }
+    touchState = null;
+}, { passive: false });
+
+// Virtual keyboard for tablets
+const mobileInput = document.getElementById('mobile-input');
+let lastInputValue = '';
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+if (isTouchDevice) {
+    document.getElementById('btn-keyboard').style.display = '';
+    document.getElementById('btn-touchmode').style.display = '';
+}
+
+function toggleKeyboard() {
+    const btn = document.getElementById('btn-keyboard');
+    if (document.activeElement === mobileInput) {
+        mobileInput.blur();
+        btn.classList.remove('active');
+    } else {
+        resetPad();
+        mobileInput.focus();
+        btn.classList.add('active');
+    }
+}
+
+mobileInput.addEventListener('blur', () => {
+    document.getElementById('btn-keyboard').classList.remove('active');
+});
+
+let composing = false;
+const PAD = '​​​​​';
+let bsHandled = false;
+
+function resetPad() {
+    mobileInput.value = PAD;
+    lastInputValue = PAD;
+    mobileInput.selectionStart = mobileInput.selectionEnd = PAD.length;
+}
+
+function sendKey(vk) {
+    if (ws && ws.readyState === WebSocket.OPEN && authenticated) {
+        ws.send(JSON.stringify({ type: 'key_down', vk }));
+        ws.send(JSON.stringify({ type: 'key_up', vk }));
+    }
+}
+
+mobileInput.addEventListener('compositionstart', () => { composing = true; });
+mobileInput.addEventListener('compositionend', (e) => {
+    composing = false;
+    const text = e.data;
+    if (text && ws && ws.readyState === WebSocket.OPEN && authenticated) {
+        ws.send(JSON.stringify({ type: 'type_text', text }));
+    }
+    resetPad();
+});
+
+mobileInput.addEventListener('beforeinput', (e) => {
+    if (composing) return;
+    if (e.inputType === 'deleteContentBackward') {
+        e.preventDefault();
+        bsHandled = true;
+        sendKey(0x08);
+    } else if (e.inputType === 'deleteContentForward') {
+        e.preventDefault();
+        bsHandled = true;
+        sendKey(0x2E);
+    }
+});
+
+mobileInput.addEventListener('input', (e) => {
+    if (composing) return;
+    if (bsHandled) { bsHandled = false; return; }
+    const current = mobileInput.value;
+    const prev = lastInputValue;
+    if (current.length < prev.length) {
+        const deleted = prev.length - current.length;
+        for (let i = 0; i < deleted; i++) sendKey(0x08);
+    } else if (current.length > prev.length) {
+        let added = current.replace(/​/g, '');
+        let prevClean = prev.replace(/​/g, '');
+        let text = added.slice(prevClean.length);
+        if (text && ws && ws.readyState === WebSocket.OPEN && authenticated) {
+            ws.send(JSON.stringify({ type: 'type_text', text }));
+        }
+    }
+    resetPad();
+});
+
+mobileInput.addEventListener('keydown', (e) => {
+    if (!authenticated) return;
+    if (composing) return;
+    if (e.key === 'Backspace') {
+        if (!bsHandled) { sendKey(0x08); bsHandled = true; }
+        e.preventDefault();
+        return;
+    }
+    if (e.key === 'Delete') {
+        sendKey(0x2E); e.preventDefault(); return;
+    }
+    if (e.key === 'Enter') {
+        sendKey(0x0D); e.preventDefault(); return;
+    }
+    const vk = KEY_MAP[e.code] || 0;
+    if (vk) {
+        ws.send(JSON.stringify({ type: 'key_down', vk }));
+    }
+});
+
+mobileInput.addEventListener('keyup', (e) => {
+    if (!authenticated) return;
+    if (composing) return;
+    bsHandled = false;
+    if (e.key === 'Backspace' || e.key === 'Delete' || e.key === 'Enter') return;
+    const vk = KEY_MAP[e.code] || 0;
+    if (vk) {
+        ws.send(JSON.stringify({ type: 'key_up', vk }));
+    }
+});
+
+// Show toolbar on mouse near top
+document.addEventListener('mousemove', (e) => {
+    if (!toolbarVisible && e.clientY < 5) {
+        toolbarVisible = true;
+        document.getElementById('toolbar').classList.remove('hidden');
+        document.getElementById('screen-container').style.paddingTop = '40px';
+    }
+});
+
+connect();
+</script>
+</body>
+</html>

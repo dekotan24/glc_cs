@@ -31,7 +31,6 @@
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Config));
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.getDconButton = new System.Windows.Forms.Button();
 			this.dconEnableCheck = new System.Windows.Forms.CheckBox();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.mailLinkLabel = new System.Windows.Forms.LinkLabel();
@@ -46,7 +45,6 @@
 			this.offlineSaveEnableCheck = new System.Windows.Forms.CheckBox();
 			this.mssqlRadio = new System.Windows.Forms.RadioButton();
 			this.iniRadio = new System.Windows.Forms.RadioButton();
-			this.dconSearchButton = new System.Windows.Forms.Button();
 			this.extractCurrentDirCheck = new System.Windows.Forms.CheckBox();
 			this.extractSaveButton = new System.Windows.Forms.Button();
 			this.calcExecPlanButton = new System.Windows.Forms.Button();
@@ -72,12 +70,17 @@
 			this.DisableInitialLoadCountCheck = new System.Windows.Forms.CheckBox();
 			this.enableWindowHideControlCheck = new System.Windows.Forms.CheckBox();
 			this.updateCheckDisableCheck = new System.Windows.Forms.CheckBox();
-			this.javaText = new System.Windows.Forms.TextBox();
-			this.javaSearchButton = new System.Windows.Forms.Button();
+			this.rdPasswordText = new System.Windows.Forms.TextBox();
+			this.button1 = new System.Windows.Forms.Button();
+			this.rdFpsComboBox = new System.Windows.Forms.ComboBox();
+			this.rdScaleComboBox = new System.Windows.Forms.ComboBox();
+			this.rdQualityComboBox = new System.Windows.Forms.ComboBox();
+			this.rdEnableSoundCheck = new System.Windows.Forms.CheckBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage7 = new System.Windows.Forms.TabPage();
 			this.tabControl3 = new System.Windows.Forms.TabControl();
 			this.tabPage11 = new System.Windows.Forms.TabPage();
+			this.bgtransparentBar = new System.Windows.Forms.TrackBar();
 			this.backgroundImageSelectButton = new System.Windows.Forms.Button();
 			this.backgroundImageText = new System.Windows.Forms.TextBox();
 			this.tabPage12 = new System.Windows.Forms.TabPage();
@@ -86,16 +89,8 @@
 			this.fixGridSize8 = new System.Windows.Forms.RadioButton();
 			this.tabPage13 = new System.Windows.Forms.TabPage();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.groupBox11 = new System.Windows.Forms.GroupBox();
-			this.javaClearButton = new System.Windows.Forms.Button();
 			this.groupBox13 = new System.Windows.Forms.GroupBox();
 			this.dconAppIDClearButton = new System.Windows.Forms.Button();
-			this.groupBox6 = new System.Windows.Forms.GroupBox();
-			this.label11 = new System.Windows.Forms.Label();
-			this.dconText = new System.Windows.Forms.TextBox();
-			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.dconRatingRadio2 = new System.Windows.Forms.RadioButton();
-			this.dconRatingRadio1 = new System.Windows.Forms.RadioButton();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.groupBox5 = new System.Windows.Forms.GroupBox();
 			this.RoGCheck = new System.Windows.Forms.CheckBox();
@@ -172,6 +167,17 @@
 			this.extractToolPathText = new System.Windows.Forms.TextBox();
 			this.label26 = new System.Windows.Forms.Label();
 			this.groupBox17 = new System.Windows.Forms.GroupBox();
+			this.tabPage14 = new System.Windows.Forms.TabPage();
+			this.urlLinkLabel = new System.Windows.Forms.LinkLabel();
+			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+			this.label11 = new System.Windows.Forms.Label();
+			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.rdPortNumericBox = new System.Windows.Forms.NumericUpDown();
+			this.label10 = new System.Windows.Forms.Label();
+			this.label5 = new System.Windows.Forms.Label();
+			this.label6 = new System.Windows.Forms.Label();
+			this.label7 = new System.Windows.Forms.Label();
+			this.label8 = new System.Windows.Forms.Label();
 			this.TabPage3 = new System.Windows.Forms.TabPage();
 			this.exSplashImgButton = new System.Windows.Forms.Button();
 			this.disclaimerLabel = new System.Windows.Forms.Label();
@@ -200,13 +206,11 @@
 			this.tabPage7.SuspendLayout();
 			this.tabControl3.SuspendLayout();
 			this.tabPage11.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.bgtransparentBar)).BeginInit();
 			this.tabPage12.SuspendLayout();
 			this.tabPage13.SuspendLayout();
 			this.tabPage1.SuspendLayout();
-			this.groupBox11.SuspendLayout();
 			this.groupBox13.SuspendLayout();
-			this.groupBox6.SuspendLayout();
-			this.groupBox2.SuspendLayout();
 			this.tabPage2.SuspendLayout();
 			this.groupBox5.SuspendLayout();
 			this.groupBox4.SuspendLayout();
@@ -228,13 +232,15 @@
 			this.tabPage9.SuspendLayout();
 			this.extractToolsGroup.SuspendLayout();
 			this.groupBox17.SuspendLayout();
+			this.tabPage14.SuspendLayout();
+			this.groupBox2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.rdPortNumericBox)).BeginInit();
 			this.TabPage3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.Add(this.getDconButton);
 			this.groupBox1.Controls.Add(this.dconEnableCheck);
 			this.groupBox1.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.groupBox1.Location = new System.Drawing.Point(6, 6);
@@ -243,18 +249,6 @@
 			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "機能有効化";
-			// 
-			// getDconButton
-			// 
-			this.getDconButton.Font = new System.Drawing.Font("メイリオ", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.getDconButton.Location = new System.Drawing.Point(367, 19);
-			this.getDconButton.Name = "getDconButton";
-			this.getDconButton.Size = new System.Drawing.Size(96, 29);
-			this.getDconButton.TabIndex = 1;
-			this.getDconButton.Text = "Get dcon";
-			this.toolTip1.SetToolTip(this.getDconButton, "Discord Connectorを取得します。");
-			this.getDconButton.UseVisualStyleBackColor = true;
-			this.getDconButton.Click += new System.EventHandler(this.getDconButton_Click);
 			// 
 			// dconEnableCheck
 			// 
@@ -411,19 +405,6 @@
 			this.toolTip1.SetToolTip(this.iniRadio, "ローカルのINIファイルを使用します。");
 			this.iniRadio.UseVisualStyleBackColor = true;
 			this.iniRadio.CheckedChanged += new System.EventHandler(this.radioButton8_CheckedChanged);
-			// 
-			// dconSearchButton
-			// 
-			this.dconSearchButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.dconSearchButton.Location = new System.Drawing.Point(394, 22);
-			this.dconSearchButton.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-			this.dconSearchButton.Name = "dconSearchButton";
-			this.dconSearchButton.Size = new System.Drawing.Size(25, 24);
-			this.dconSearchButton.TabIndex = 21;
-			this.dconSearchButton.Text = "..";
-			this.toolTip1.SetToolTip(this.dconSearchButton, "Discord Connectorのパスを設定します。");
-			this.dconSearchButton.UseVisualStyleBackColor = true;
-			this.dconSearchButton.Click += new System.EventHandler(this.dconSearchButton_Click);
 			// 
 			// extractCurrentDirCheck
 			// 
@@ -711,28 +692,79 @@
 			this.toolTip1.SetToolTip(this.updateCheckDisableCheck, "各バージョンの2回目以降の起動時のDBアップデートチェックを無効にします。");
 			this.updateCheckDisableCheck.UseVisualStyleBackColor = true;
 			// 
-			// javaText
+			// rdPasswordText
 			// 
-			this.javaText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.javaText.ImeMode = System.Windows.Forms.ImeMode.Disable;
-			this.javaText.Location = new System.Drawing.Point(6, 22);
-			this.javaText.MaxLength = 20;
-			this.javaText.Name = "javaText";
-			this.javaText.Size = new System.Drawing.Size(375, 24);
-			this.javaText.TabIndex = 40;
-			this.toolTip1.SetToolTip(this.javaText, "Discord RPCを実行する際のJavaランタイムのパス");
+			this.rdPasswordText.Location = new System.Drawing.Point(306, 17);
+			this.rdPasswordText.Name = "rdPasswordText";
+			this.rdPasswordText.Size = new System.Drawing.Size(154, 24);
+			this.rdPasswordText.TabIndex = 11;
+			this.toolTip1.SetToolTip(this.rdPasswordText, "リモートデスクトップ画面にログインするためのパスワード");
 			// 
-			// javaSearchButton
+			// button1
 			// 
-			this.javaSearchButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.javaSearchButton.Location = new System.Drawing.Point(385, 22);
-			this.javaSearchButton.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
-			this.javaSearchButton.Name = "javaSearchButton";
-			this.javaSearchButton.Size = new System.Drawing.Size(25, 24);
-			this.javaSearchButton.TabIndex = 41;
-			this.javaSearchButton.Text = "..";
-			this.toolTip1.SetToolTip(this.javaSearchButton, "Javaランタイムのパスを設定します。");
-			this.javaSearchButton.UseVisualStyleBackColor = true;
+			this.button1.Location = new System.Drawing.Point(3, 121);
+			this.button1.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(90, 24);
+			this.button1.TabIndex = 20;
+			this.button1.Text = "配信開始";
+			this.toolTip1.SetToolTip(this.button1, "リモートデスクトップ配信の開始／停止");
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.RdToggle_Click);
+			// 
+			// rdFpsComboBox
+			// 
+			this.rdFpsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.rdFpsComboBox.FormattingEnabled = true;
+			this.rdFpsComboBox.Items.AddRange(new object[] {
+            "30",
+            "15",
+            "5"});
+			this.rdFpsComboBox.Location = new System.Drawing.Point(306, 78);
+			this.rdFpsComboBox.Name = "rdFpsComboBox";
+			this.rdFpsComboBox.Size = new System.Drawing.Size(154, 25);
+			this.rdFpsComboBox.TabIndex = 15;
+			this.toolTip1.SetToolTip(this.rdFpsComboBox, "デフォルトの最大リフレッシュレート");
+			// 
+			// rdScaleComboBox
+			// 
+			this.rdScaleComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.rdScaleComboBox.FormattingEnabled = true;
+			this.rdScaleComboBox.Items.AddRange(new object[] {
+            "100%",
+            "75%",
+            "50%"});
+			this.rdScaleComboBox.Location = new System.Drawing.Point(306, 47);
+			this.rdScaleComboBox.Name = "rdScaleComboBox";
+			this.rdScaleComboBox.Size = new System.Drawing.Size(154, 25);
+			this.rdScaleComboBox.TabIndex = 13;
+			this.toolTip1.SetToolTip(this.rdScaleComboBox, "デフォルトの配信解像度");
+			// 
+			// rdQualityComboBox
+			// 
+			this.rdQualityComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.rdQualityComboBox.FormattingEnabled = true;
+			this.rdQualityComboBox.Items.AddRange(new object[] {
+            "無損失(100)",
+            "高(80)",
+            "標準(60)",
+            "低(30)"});
+			this.rdQualityComboBox.Location = new System.Drawing.Point(86, 47);
+			this.rdQualityComboBox.Name = "rdQualityComboBox";
+			this.rdQualityComboBox.Size = new System.Drawing.Size(121, 25);
+			this.rdQualityComboBox.TabIndex = 12;
+			this.toolTip1.SetToolTip(this.rdQualityComboBox, "デフォルトの配信クオリティ");
+			// 
+			// rdEnableSoundCheck
+			// 
+			this.rdEnableSoundCheck.AutoSize = true;
+			this.rdEnableSoundCheck.Location = new System.Drawing.Point(86, 82);
+			this.rdEnableSoundCheck.Name = "rdEnableSoundCheck";
+			this.rdEnableSoundCheck.Size = new System.Drawing.Size(82, 21);
+			this.rdEnableSoundCheck.TabIndex = 14;
+			this.rdEnableSoundCheck.Text = "音声を配信";
+			this.toolTip1.SetToolTip(this.rdEnableSoundCheck, "デフォルトでPC音声配信をする");
+			this.rdEnableSoundCheck.UseVisualStyleBackColor = true;
 			// 
 			// tabControl1
 			// 
@@ -777,6 +809,7 @@
 			// 
 			// tabPage11
 			// 
+			this.tabPage11.Controls.Add(this.bgtransparentBar);
 			this.tabPage11.Controls.Add(this.backgroundImageSelectButton);
 			this.tabPage11.Controls.Add(this.backgroundImageText);
 			this.tabPage11.Location = new System.Drawing.Point(4, 22);
@@ -787,6 +820,16 @@
 			this.tabPage11.Text = "背景画像";
 			this.tabPage11.UseVisualStyleBackColor = true;
 			// 
+			// bgtransparentBar
+			// 
+			this.bgtransparentBar.Location = new System.Drawing.Point(3, 37);
+			this.bgtransparentBar.Maximum = 100;
+			this.bgtransparentBar.Minimum = 1;
+			this.bgtransparentBar.Name = "bgtransparentBar";
+			this.bgtransparentBar.Size = new System.Drawing.Size(468, 45);
+			this.bgtransparentBar.TabIndex = 9;
+			this.bgtransparentBar.Value = 1;
+			// 
 			// backgroundImageSelectButton
 			// 
 			this.backgroundImageSelectButton.Location = new System.Drawing.Point(444, 6);
@@ -796,6 +839,7 @@
 			this.backgroundImageSelectButton.TabIndex = 8;
 			this.backgroundImageSelectButton.Text = "..";
 			this.backgroundImageSelectButton.UseVisualStyleBackColor = true;
+			this.backgroundImageSelectButton.Click += new System.EventHandler(this.BackgroundImageSelectButton_Click);
 			// 
 			// backgroundImageText
 			// 
@@ -873,10 +917,7 @@
 			// 
 			// tabPage1
 			// 
-			this.tabPage1.Controls.Add(this.groupBox11);
 			this.tabPage1.Controls.Add(this.groupBox13);
-			this.tabPage1.Controls.Add(this.groupBox6);
-			this.tabPage1.Controls.Add(this.groupBox2);
 			this.tabPage1.Controls.Add(this.groupBox1);
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
@@ -885,36 +926,12 @@
 			this.tabPage1.Text = "Discord連携";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
-			// groupBox11
-			// 
-			this.groupBox11.Controls.Add(this.javaSearchButton);
-			this.groupBox11.Controls.Add(this.javaClearButton);
-			this.groupBox11.Controls.Add(this.javaText);
-			this.groupBox11.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.groupBox11.Location = new System.Drawing.Point(6, 257);
-			this.groupBox11.Name = "groupBox11";
-			this.groupBox11.Size = new System.Drawing.Size(469, 56);
-			this.groupBox11.TabIndex = 4;
-			this.groupBox11.TabStop = false;
-			this.groupBox11.Text = "Java（開発中）";
-			this.groupBox11.Visible = false;
-			// 
-			// javaClearButton
-			// 
-			this.javaClearButton.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.javaClearButton.Location = new System.Drawing.Point(414, 22);
-			this.javaClearButton.Name = "javaClearButton";
-			this.javaClearButton.Size = new System.Drawing.Size(49, 24);
-			this.javaClearButton.TabIndex = 42;
-			this.javaClearButton.Text = "クリア";
-			this.javaClearButton.UseVisualStyleBackColor = true;
-			// 
 			// groupBox13
 			// 
 			this.groupBox13.Controls.Add(this.dconAppIDClearButton);
 			this.groupBox13.Controls.Add(this.dconAppIDText);
 			this.groupBox13.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.groupBox13.Location = new System.Drawing.Point(6, 195);
+			this.groupBox13.Location = new System.Drawing.Point(6, 72);
 			this.groupBox13.Name = "groupBox13";
 			this.groupBox13.Size = new System.Drawing.Size(469, 56);
 			this.groupBox13.TabIndex = 3;
@@ -931,75 +948,6 @@
 			this.dconAppIDClearButton.Text = "クリア";
 			this.dconAppIDClearButton.UseVisualStyleBackColor = true;
 			this.dconAppIDClearButton.Click += new System.EventHandler(this.dconAppIDClearButton_Click);
-			// 
-			// groupBox6
-			// 
-			this.groupBox6.Controls.Add(this.label11);
-			this.groupBox6.Controls.Add(this.dconSearchButton);
-			this.groupBox6.Controls.Add(this.dconText);
-			this.groupBox6.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.groupBox6.Location = new System.Drawing.Point(6, 134);
-			this.groupBox6.Name = "groupBox6";
-			this.groupBox6.Size = new System.Drawing.Size(469, 55);
-			this.groupBox6.TabIndex = 2;
-			this.groupBox6.TabStop = false;
-			this.groupBox6.Text = "Discord Connector (dcon.jar)";
-			// 
-			// label11
-			// 
-			this.label11.AutoSize = true;
-			this.label11.ForeColor = System.Drawing.Color.ForestGreen;
-			this.label11.Location = new System.Drawing.Point(429, 23);
-			this.label11.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(34, 20);
-			this.label11.TabIndex = 2;
-			this.label11.Text = "N/A";
-			// 
-			// dconText
-			// 
-			this.dconText.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.dconText.Location = new System.Drawing.Point(6, 22);
-			this.dconText.Name = "dconText";
-			this.dconText.ReadOnly = true;
-			this.dconText.Size = new System.Drawing.Size(384, 24);
-			this.dconText.TabIndex = 20;
-			// 
-			// groupBox2
-			// 
-			this.groupBox2.Controls.Add(this.dconRatingRadio2);
-			this.groupBox2.Controls.Add(this.dconRatingRadio1);
-			this.groupBox2.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.groupBox2.Location = new System.Drawing.Point(6, 72);
-			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(469, 56);
-			this.groupBox2.TabIndex = 1;
-			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "デフォルト レーティング設定";
-			// 
-			// dconRatingRadio2
-			// 
-			this.dconRatingRadio2.AutoSize = true;
-			this.dconRatingRadio2.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.dconRatingRadio2.Location = new System.Drawing.Point(253, 26);
-			this.dconRatingRadio2.Name = "dconRatingRadio2";
-			this.dconRatingRadio2.Size = new System.Drawing.Size(137, 22);
-			this.dconRatingRadio2.TabIndex = 11;
-			this.dconRatingRadio2.TabStop = true;
-			this.dconRatingRadio2.Text = "成人ゲーム（R-18）";
-			this.dconRatingRadio2.UseVisualStyleBackColor = true;
-			// 
-			// dconRatingRadio1
-			// 
-			this.dconRatingRadio1.AutoSize = true;
-			this.dconRatingRadio1.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.dconRatingRadio1.Location = new System.Drawing.Point(66, 26);
-			this.dconRatingRadio1.Name = "dconRatingRadio1";
-			this.dconRatingRadio1.Size = new System.Drawing.Size(146, 22);
-			this.dconRatingRadio1.TabIndex = 10;
-			this.dconRatingRadio1.TabStop = true;
-			this.dconRatingRadio1.Text = "一般ゲーム（全年齢）";
-			this.dconRatingRadio1.UseVisualStyleBackColor = true;
 			// 
 			// tabPage2
 			// 
@@ -1366,6 +1314,7 @@
 			this.tabControl2.Controls.Add(this.tabPage10);
 			this.tabControl2.Controls.Add(this.tabPage8);
 			this.tabControl2.Controls.Add(this.tabPage9);
+			this.tabControl2.Controls.Add(this.tabPage14);
 			this.tabControl2.Location = new System.Drawing.Point(2, 2);
 			this.tabControl2.Name = "tabControl2";
 			this.tabControl2.SelectedIndex = 0;
@@ -1893,6 +1842,138 @@
 			this.groupBox17.TabStop = false;
 			this.groupBox17.Text = "機能有効化";
 			// 
+			// tabPage14
+			// 
+			this.tabPage14.Controls.Add(this.urlLinkLabel);
+			this.tabPage14.Controls.Add(this.richTextBox1);
+			this.tabPage14.Controls.Add(this.label11);
+			this.tabPage14.Controls.Add(this.groupBox2);
+			this.tabPage14.Controls.Add(this.button1);
+			this.tabPage14.Location = new System.Drawing.Point(4, 22);
+			this.tabPage14.Name = "tabPage14";
+			this.tabPage14.Size = new System.Drawing.Size(472, 291);
+			this.tabPage14.TabIndex = 4;
+			this.tabPage14.Text = "リモート";
+			this.tabPage14.UseVisualStyleBackColor = true;
+			// 
+			// urlLinkLabel
+			// 
+			this.urlLinkLabel.AutoSize = true;
+			this.urlLinkLabel.Location = new System.Drawing.Point(295, 127);
+			this.urlLinkLabel.Name = "urlLinkLabel";
+			this.urlLinkLabel.Size = new System.Drawing.Size(9, 12);
+			this.urlLinkLabel.TabIndex = 31;
+			this.urlLinkLabel.TabStop = true;
+			this.urlLinkLabel.Text = "_";
+			this.urlLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.urlLinkLabel_LinkClicked);
+			//
+			// richTextBox1
+			// 
+			this.richTextBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+			this.richTextBox1.DetectUrls = false;
+			this.richTextBox1.ForeColor = System.Drawing.SystemColors.Window;
+			this.richTextBox1.Location = new System.Drawing.Point(4, 151);
+			this.richTextBox1.Name = "richTextBox1";
+			this.richTextBox1.ReadOnly = true;
+			this.richTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+			this.richTextBox1.Size = new System.Drawing.Size(465, 137);
+			this.richTextBox1.TabIndex = 30;
+			this.richTextBox1.Text = "";
+			// 
+			// label11
+			// 
+			this.label11.AutoSize = true;
+			this.label11.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.label11.Location = new System.Drawing.Point(97, 124);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(44, 18);
+			this.label11.TabIndex = 10;
+			this.label11.Text = "停止中";
+			// 
+			// groupBox2
+			// 
+			this.groupBox2.Controls.Add(this.rdPortNumericBox);
+			this.groupBox2.Controls.Add(this.rdFpsComboBox);
+			this.groupBox2.Controls.Add(this.label10);
+			this.groupBox2.Controls.Add(this.rdScaleComboBox);
+			this.groupBox2.Controls.Add(this.rdQualityComboBox);
+			this.groupBox2.Controls.Add(this.label5);
+			this.groupBox2.Controls.Add(this.label6);
+			this.groupBox2.Controls.Add(this.rdEnableSoundCheck);
+			this.groupBox2.Controls.Add(this.label7);
+			this.groupBox2.Controls.Add(this.label8);
+			this.groupBox2.Controls.Add(this.rdPasswordText);
+			this.groupBox2.Font = new System.Drawing.Font("メイリオ", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.groupBox2.Location = new System.Drawing.Point(4, 4);
+			this.groupBox2.Name = "groupBox2";
+			this.groupBox2.Size = new System.Drawing.Size(465, 112);
+			this.groupBox2.TabIndex = 6;
+			this.groupBox2.TabStop = false;
+			this.groupBox2.Text = "接続設定";
+			// 
+			// rdPortNumericBox
+			// 
+			this.rdPortNumericBox.ImeMode = System.Windows.Forms.ImeMode.Off;
+			this.rdPortNumericBox.Location = new System.Drawing.Point(86, 18);
+			this.rdPortNumericBox.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+			this.rdPortNumericBox.Name = "rdPortNumericBox";
+			this.rdPortNumericBox.Size = new System.Drawing.Size(121, 24);
+			this.rdPortNumericBox.TabIndex = 10;
+			this.rdPortNumericBox.Value = new decimal(new int[] {
+            8090,
+            0,
+            0,
+            0});
+			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
+			this.label10.Location = new System.Drawing.Point(239, 81);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(61, 17);
+			this.label10.TabIndex = 12;
+			this.label10.Text = "最大FPS：";
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Location = new System.Drawing.Point(237, 50);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(63, 17);
+			this.label5.TabIndex = 8;
+			this.label5.Text = "スケール：";
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(39, 50);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(41, 17);
+			this.label6.TabIndex = 7;
+			this.label6.Text = "画質：";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(226, 20);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(74, 17);
+			this.label7.TabIndex = 4;
+			this.label7.Text = "パスワード：";
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(6, 20);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(74, 17);
+			this.label8.TabIndex = 3;
+			this.label8.Text = "ポート番号：";
+			// 
 			// TabPage3
 			// 
 			this.TabPage3.Controls.Add(this.exSplashImgButton);
@@ -2119,19 +2200,14 @@
 			this.tabControl3.ResumeLayout(false);
 			this.tabPage11.ResumeLayout(false);
 			this.tabPage11.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.bgtransparentBar)).EndInit();
 			this.tabPage12.ResumeLayout(false);
 			this.tabPage12.PerformLayout();
 			this.tabPage13.ResumeLayout(false);
 			this.tabPage13.PerformLayout();
 			this.tabPage1.ResumeLayout(false);
-			this.groupBox11.ResumeLayout(false);
-			this.groupBox11.PerformLayout();
 			this.groupBox13.ResumeLayout(false);
 			this.groupBox13.PerformLayout();
-			this.groupBox6.ResumeLayout(false);
-			this.groupBox6.PerformLayout();
-			this.groupBox2.ResumeLayout(false);
-			this.groupBox2.PerformLayout();
 			this.tabPage2.ResumeLayout(false);
 			this.groupBox5.ResumeLayout(false);
 			this.groupBox5.PerformLayout();
@@ -2164,6 +2240,11 @@
 			this.extractToolsGroup.PerformLayout();
 			this.groupBox17.ResumeLayout(false);
 			this.groupBox17.PerformLayout();
+			this.tabPage14.ResumeLayout(false);
+			this.tabPage14.PerformLayout();
+			this.groupBox2.ResumeLayout(false);
+			this.groupBox2.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.rdPortNumericBox)).EndInit();
 			this.TabPage3.ResumeLayout(false);
 			this.TabPage3.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
@@ -2192,9 +2273,6 @@
 		private System.Windows.Forms.TabPage tabPage4;
 		private System.Windows.Forms.Button iniFolderSelectButton;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
-		private System.Windows.Forms.GroupBox groupBox2;
-		private System.Windows.Forms.RadioButton dconRatingRadio2;
-		private System.Windows.Forms.RadioButton dconRatingRadio1;
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.GroupBox groupBox4;
 		private System.Windows.Forms.Button byResetButton;
@@ -2210,10 +2288,6 @@
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog2;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label verLabel;
-		private System.Windows.Forms.GroupBox groupBox6;
-		private System.Windows.Forms.Label label11;
-		private System.Windows.Forms.Button dconSearchButton;
-		private System.Windows.Forms.TextBox dconText;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
 		private System.Windows.Forms.GroupBox groupBox9;
 		private System.Windows.Forms.RadioButton mssqlRadio;
@@ -2243,7 +2317,6 @@
 		private System.Windows.Forms.Button dconAppIDClearButton;
 		private System.Windows.Forms.TextBox dconAppIDText;
 		private System.Windows.Forms.Button updchkButton;
-		private System.Windows.Forms.Button getDconButton;
 		private System.Windows.Forms.Label label29;
 		private System.Windows.Forms.TextBox portText;
 		private System.Windows.Forms.Label label12;
@@ -2334,9 +2407,23 @@
 		private System.Windows.Forms.CheckBox DisableInitialLoadCountCheck;
 		private System.Windows.Forms.CheckBox enableWindowHideControlCheck;
 		private System.Windows.Forms.CheckBox updateCheckDisableCheck;
-		private System.Windows.Forms.GroupBox groupBox11;
-		private System.Windows.Forms.Button javaSearchButton;
-		private System.Windows.Forms.Button javaClearButton;
-		private System.Windows.Forms.TextBox javaText;
+		private System.Windows.Forms.TrackBar bgtransparentBar;
+		private System.Windows.Forms.TabPage tabPage14;
+		private System.Windows.Forms.GroupBox groupBox2;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.CheckBox rdEnableSoundCheck;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.TextBox rdPasswordText;
+		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.ComboBox rdFpsComboBox;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.ComboBox rdScaleComboBox;
+		private System.Windows.Forms.ComboBox rdQualityComboBox;
+		private System.Windows.Forms.RichTextBox richTextBox1;
+		private System.Windows.Forms.NumericUpDown rdPortNumericBox;
+		private System.Windows.Forms.LinkLabel urlLinkLabel;
 	}
 }

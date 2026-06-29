@@ -215,7 +215,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT GAME_NAME FROM " + DbName + "." + DbTable
+					CommandText = @"SELECT GAME_NAME FROM " + SafeQualifiedTable
 									+ " WHERE ID = " + gameIDLabel.Text.Trim()
 				};
 
@@ -225,7 +225,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET MEMO = @memo "
+					CommandText = @"UPDATE " + SafeQualifiedTable + " SET MEMO = @memo "
 									+ "WHERE ID = @game_id"
 				};
 				cm.Connection = con;
@@ -277,7 +277,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT GAME_NAME FROM " + DbTable
+					CommandText = @"SELECT GAME_NAME FROM " + SafeSqlIdentifier(DbTable)
 									+ " WHERE ID = " + gameIDLabel.Text.Trim()
 				};
 
@@ -287,7 +287,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET MEMO = @memo "
+					CommandText = @"UPDATE " + SafeSqlIdentifier(DbTable) + " SET MEMO = @memo "
 									+ "WHERE ID = @game_id"
 				};
 				cm.Connection = con2;

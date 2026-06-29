@@ -35,8 +35,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -229,10 +228,16 @@
   <ItemGroup>
     <Compile Include="Core\Archive.cs" />
     <Compile Include="Core\Crypt.cs" />
+    <Compile Include="Core\DiscordRpc.cs" />
     <Compile Include="Core\DataBind.cs" />
     <Compile Include="Core\Exception.cs" />
     <Compile Include="Core\Export.cs" />
     <Compile Include="Core\Property.cs" />
+    <Compile Include="Core\RemoteDesktop\AudioCapture.cs" />
+    <Compile Include="Core\RemoteDesktop\SimpleWsServer.cs" />
+    <Compile Include="Core\RemoteDesktop\ScreenCapture.cs" />
+    <Compile Include="Core\RemoteDesktop\InputSimulator.cs" />
+    <Compile Include="Core\RemoteDesktop\RemoteDesktopService.cs" />
     <Compile Include="Form\DataViewForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -312,6 +317,12 @@
     </Compile>
     <Compile Include="Form\Editor.Designer.cs">
       <DependentUpon>Editor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\Statistics.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\Statistics.Designer.cs">
+      <DependentUpon>Statistics.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\Program.cs" />
     <EmbeddedResource Include="Form\DataViewForm.resx">
@@ -445,6 +456,11 @@
       <Project>{743f3245-4e32-4da3-b879-1dd13979c286}</Project>
       <Name>DLsiteInfoGetter</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="RemoteUI\viewer.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

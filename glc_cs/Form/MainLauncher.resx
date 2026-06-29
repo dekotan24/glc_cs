@@ -1558,7 +1558,7 @@
     <value>40</value>
   </data>
   <data name="dconImgPictureBox.ToolTip" xml:space="preserve">
-    <value>Discord RPCステータスに表示されるカスタムテキスト</value>
+    <value>Discord RPCに表示されるイメージID</value>
   </data>
   <data name="&gt;&gt;dconImgPictureBox.Name" xml:space="preserve">
     <value>dconImgPictureBox</value>
@@ -1796,7 +1796,7 @@
     <value>66</value>
   </data>
   <data name="dconTextPictureBox.ToolTip" xml:space="preserve">
-    <value>Discord RPCに表示されるイメージID</value>
+    <value>Discord RPCステータスに表示されるカスタムテキスト</value>
   </data>
   <data name="&gt;&gt;dconTextPictureBox.Name" xml:space="preserve">
     <value>dconTextPictureBox</value>

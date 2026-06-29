@@ -276,7 +276,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT GAME_NAME FROM " + DbName + "." + DbTable
+					CommandText = @"SELECT GAME_NAME FROM " + SafeQualifiedTable
 									+ " WHERE ID = " + label9.Text.Trim()
 				};
 				cm2.Connection = con;
@@ -286,7 +286,7 @@ namespace glc_cs
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
 					// SQL文
-					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET GAME_NAME = @game_name, GAME_PATH = @game_path, IMG_PATH = @img_path, UPTIME = @uptime, RUN_COUNT = @run_count, DCON_TEXT = @dcon_text, AGE_FLG = @age_flg, DCON_IMG = @dcon_img, EXECUTE_CMD = @execute_cmd, EXTRACT_TOOL = @extract_tool, SAVEDATA_PATH = @savePath "
+					CommandText = @"UPDATE " + SafeQualifiedTable + " SET GAME_NAME = @game_name, GAME_PATH = @game_path, IMG_PATH = @img_path, UPTIME = @uptime, RUN_COUNT = @run_count, DCON_TEXT = @dcon_text, AGE_FLG = @age_flg, DCON_IMG = @dcon_img, EXECUTE_CMD = @execute_cmd, EXTRACT_TOOL = @extract_tool, SAVEDATA_PATH = @savePath "
 								+ "WHERE ID = @id"
 				};
 				// パラメータの設定
@@ -350,7 +350,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"SELECT GAME_NAME FROM " + DbTable
+					CommandText = @"SELECT GAME_NAME FROM " + SafeSqlIdentifier(DbTable)
 									+ " WHERE ID = " + label9.Text.Trim()
 				};
 
@@ -361,7 +361,7 @@ namespace glc_cs
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
 					// SQL文
-					CommandText = @"UPDATE " + DbTable + " SET GAME_NAME = @game_name, GAME_PATH = @game_path, IMG_PATH = @img_path, UPTIME = @uptime, RUN_COUNT = @run_count, DCON_TEXT = @dcon_text, AGE_FLG = @age_flg, DCON_IMG = @dcon_img, EXECUTE_CMD = @execute_cmd, EXTRACT_TOOL = @extract_tool, SAVEDATA_PATH = @savePath "
+					CommandText = @"UPDATE " + SafeSqlIdentifier(DbTable) + " SET GAME_NAME = @game_name, GAME_PATH = @game_path, IMG_PATH = @img_path, UPTIME = @uptime, RUN_COUNT = @run_count, DCON_TEXT = @dcon_text, AGE_FLG = @age_flg, DCON_IMG = @dcon_img, EXECUTE_CMD = @execute_cmd, EXTRACT_TOOL = @extract_tool, SAVEDATA_PATH = @savePath "
 												+ "WHERE ID = @id"
 				};
 				// パラメータの設定

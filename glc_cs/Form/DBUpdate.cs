@@ -490,8 +490,7 @@ namespace glc_cs
 					}
 					updatePhaseCount++;
 				}
-				/* ↑ [必須] Ver.1.4(update to GL 1.10) ↑ */
-
+				/* ↑ [必須] Ver.1.5(update to GL 1.11) ↑ */
 
 			}
 			else if (saveType == "M")   // MySQLの場合
@@ -1018,226 +1017,211 @@ namespace glc_cs
 				SqlCommand cm = new SqlCommand();
 
 				// [必須] Ver.1.1(update to GL 1.03)
-				try
+				if (string.Compare(currentVersion, "1.1") < 0)
 				{
-					con.Open();
-					// 文字エンコード変更（ALTER TABLE）
-					/*
-					 * MSSQLでは文字コード変換を行わない
-					cm = new SqlCommand()
+					try
 					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbName + "." + DbName + " COLLATE Japanese_CI_AS;"
-					};
-					cm.Connection = con;
-					cm.ExecuteNonQuery();
-					*/
+						con.Open();
 
-					// カラム追加（DCON_IMG, MEMO, STATUS, DB_VERSION）
-					cm = new SqlCommand()
-					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbName + "." + DbTable + " ADD DCON_IMG NVARCHAR(50) NULL, MEMO NVARCHAR(500) NULL, STATUS NVARCHAR(10) NULL DEFAULT N'未プレイ', DB_VERSION NVARCHAR(5) NOT NULL DEFAULT N'1.1';"
-					};
-					cm.Connection = con;
-					cm.ExecuteNonQuery();
+						// カラム追加（DCON_IMG, MEMO, STATUS, DB_VERSION）
+						cm = new SqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"ALTER TABLE " + SafeQualifiedTable + " ADD DCON_IMG NVARCHAR(50) NULL, MEMO NVARCHAR(500) NULL, STATUS NVARCHAR(10) NULL DEFAULT N'未プレイ', DB_VERSION NVARCHAR(5) NOT NULL DEFAULT N'1.1';"
+						};
+						cm.Connection = con;
+						cm.ExecuteNonQuery();
 
-					// カラム更新（TEMP1→DCON_IMG）
-					cm = new SqlCommand()
-					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"UPDATE " + DbName + "." + DbTable + " SET DCON_IMG = TEMP1 WHERE TEMP1 IS NOT NULL;"
-					};
-					cm.Connection = con;
-					cm.ExecuteNonQuery();
+						// カラム更新（TEMP1→DCON_IMG）
+						cm = new SqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"UPDATE " + SafeQualifiedTable + " SET DCON_IMG = TEMP1 WHERE TEMP1 IS NOT NULL;"
+						};
+						cm.Connection = con;
+						cm.ExecuteNonQuery();
 
-					// カラム更新（STATUS）
-					cm = new SqlCommand()
-					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"UPDATE " + DbName + "." + DbTable + " SET STATUS = (CASE WHEN RUN_COUNT = '0' THEN N'未プレイ' ELSE N'プレイ中' END) WHERE STATUS IN(N'未着手',N'着手中',N'完了');"
-					};
-					cm.Connection = con;
-					cm.ExecuteNonQuery();
+						// カラム更新（STATUS）
+						cm = new SqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"UPDATE " + SafeQualifiedTable + " SET STATUS = (CASE WHEN RUN_COUNT = '0' THEN N'未プレイ' ELSE N'プレイ中' END) WHERE STATUS IN(N'未着手',N'着手中',N'完了');"
+						};
+						cm.Connection = con;
+						cm.ExecuteNonQuery();
 
-					// カラム更新（NULL→TEMP1）
-					cm = new SqlCommand()
-					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"UPDATE " + DbName + "." + DbTable + " SET TEMP1 = NULL WHERE TEMP1 IS NOT NULL;"
-					};
-					cm.Connection = con;
-					cm.ExecuteNonQuery();
+						// カラム更新（NULL→TEMP1）
+						cm = new SqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"UPDATE " + SafeQualifiedTable + " SET TEMP1 = NULL WHERE TEMP1 IS NOT NULL;"
+						};
+						cm.Connection = con;
+						cm.ExecuteNonQuery();
 
-					// カラム文字コード一括変換（ALTER TABLE）
-					/*
-					 * MSSQLでは文字コード変換を行わない
-					cm = new SqlCommand()
-					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbName + "." + DbTable + " CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
-					};
-					cm.Connection = con;
-					cm.ExecuteNonQuery();
-					*/
-
-					updateStatus = 1;
-				}
-				catch (Exception ex)
-				{
-					string errorMsg = "[v1.0 -> v1.1 | ALTER TABLE(ADD), UPDATE] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText;
-					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
-					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
-					updateStatus = -1;
-				}
-				finally
-				{
-					if (con.State == ConnectionState.Open)
-					{
-						con.Close();
+						updateStatus = 1;
 					}
-					// アップデート処理後のステータス更新
-					updateProgress.Value++;
+					catch (Exception ex)
+					{
+						string errorMsg = "[v1.0 -> v1.1 | ALTER TABLE(ADD), UPDATE] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText;
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+						errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+						updateStatus = -1;
+					}
+					finally
+					{
+						if (con.State == ConnectionState.Open)
+						{
+							con.Close();
+						}
+					}
 				}
+				updateProgress.Value++;
 
 				// [必須] Ver.1.2(update to GL 1.07)
-				try
+				if (string.Compare(currentVersion, "1.2") < 0)
 				{
-					con.Open();
-
-					// レコード更新
-					cm = new SqlCommand()
+					try
 					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"UPDATE " + DbName + "." + DbTable + " SET STATUS = (CASE WHEN STATUS = N'完了' THEN N'プレイ済' WHEN STATUS = N'着手中' THEN N'プレイ中' ELSE N'未プレイ' END) WHERE STATUS IN(N'未着手',N'着手中',N'完了',N'-------',N'',NULL);"
-					};
-					cm.Connection = con;
-					cm.ExecuteNonQuery();
+						con.Open();
 
-					updateStatus = 1;
-				}
-				catch (Exception ex)
-				{
-					string errorMsg = "[v1.1 -> v1.2 | UPDATE] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText;
-					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
-					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
-					updateStatus = -1;
-				}
-				finally
-				{
-					if (con.State == ConnectionState.Open)
-					{
-						con.Close();
+						// レコード更新
+						cm = new SqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"UPDATE " + SafeQualifiedTable + " SET STATUS = (CASE WHEN STATUS = N'完了' THEN N'プレイ済' WHEN STATUS = N'着手中' THEN N'プレイ中' ELSE N'未プレイ' END) WHERE STATUS IN(N'未着手',N'着手中',N'完了',N'-------',N'',NULL);"
+						};
+						cm.Connection = con;
+						cm.ExecuteNonQuery();
+
+						updateStatus = 1;
 					}
-					// アップデート処理後のステータス更新
-					updateProgress.Value++;
+					catch (Exception ex)
+					{
+						string errorMsg = "[v1.1 -> v1.2 | UPDATE] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText;
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+						errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+						updateStatus = -1;
+					}
+					finally
+					{
+						if (con.State == ConnectionState.Open)
+						{
+							con.Close();
+						}
+					}
 				}
+				updateProgress.Value++;
 
 				// [必須] Ver.1.3(update to GL 1.09)
-				try
+				if (string.Compare(currentVersion, "1.3") < 0)
 				{
-					con.Open();
-					// カラム追加（EXECUTE_CMD）
-					cm = new SqlCommand()
+					try
 					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbName + "." + DbTable + " ADD EXECUTE_CMD NVARCHAR(500) NULL;"
-					};
-					cm.Connection = con;
-					cm.ExecuteNonQuery();
+						con.Open();
+						// カラム追加（EXECUTE_CMD）
+						cm = new SqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"ALTER TABLE " + SafeQualifiedTable + " ADD EXECUTE_CMD NVARCHAR(500) NULL;"
+						};
+						cm.Connection = con;
+						cm.ExecuteNonQuery();
 
-					updateStatus = 1;
-				}
-				catch (Exception ex)
-				{
-					string errorMsg = "[v1.2 -> v1.3 | ALTER TABLE(ADD), EXECUTE_CMD] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText;
-					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
-					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
-					updateStatus = -1;
-				}
-				finally
-				{
-					if (con.State == ConnectionState.Open)
-					{
-						con.Close();
+						updateStatus = 1;
 					}
-					// アップデート処理後のステータス更新
-					updateProgress.Value++;
+					catch (Exception ex)
+					{
+						string errorMsg = "[v1.2 -> v1.3 | ALTER TABLE(ADD), EXECUTE_CMD] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText;
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+						errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+						updateStatus = -1;
+					}
+					finally
+					{
+						if (con.State == ConnectionState.Open)
+						{
+							con.Close();
+						}
+					}
 				}
+				updateProgress.Value++;
 
 				// [必須] Ver.1.4(update to GL 1.10)
-				try
+				if (string.Compare(currentVersion, "1.4") < 0)
 				{
-					con.Open();
-					// カラム追加（EXTRACT_TOOL）
-					cm = new SqlCommand()
+					try
 					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbName + "." + DbTable + " ADD EXTRACT_TOOL NVARCHAR(10) NULL DEFAULT N'0';"
-					};
-					cm.Connection = con;
-					cm.ExecuteNonQuery();
+						con.Open();
+						// カラム追加（EXTRACT_TOOL）
+						cm = new SqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"ALTER TABLE " + SafeQualifiedTable + " ADD EXTRACT_TOOL NVARCHAR(10) NULL DEFAULT N'0';"
+						};
+						cm.Connection = con;
+						cm.ExecuteNonQuery();
 
-					updateStatus = 1;
-				}
-				catch (Exception ex)
-				{
-					string errorMsg = "[v1.3 -> v1.4 | ALTER TABLE(ADD), EXTRACT_TOOL] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText;
-					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
-					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
-					updateStatus = -1;
-				}
-				finally
-				{
-					if (con.State == ConnectionState.Open)
-					{
-						con.Close();
+						updateStatus = 1;
 					}
-					// アップデート処理後のステータス更新
-					updateProgress.Value++;
+					catch (Exception ex)
+					{
+						string errorMsg = "[v1.3 -> v1.4 | ALTER TABLE(ADD), EXTRACT_TOOL] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText;
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+						errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+						updateStatus = -1;
+					}
+					finally
+					{
+						if (con.State == ConnectionState.Open)
+						{
+							con.Close();
+						}
+					}
 				}
+				updateProgress.Value++;
 
 				// [必須] Ver.1.5(update to GL 1.11)
-				try
+				if (string.Compare(currentVersion, "1.5") < 0)
 				{
-					con.Open();
-					// カラム追加（EXTRACT_TOOL）
-					cm = new SqlCommand()
+					try
 					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbName + "." + DbTable + " ADD SAVEDATA_PATH NVARCHAR(MAX) NULL;"
-					};
-					cm.Connection = con;
-					cm.ExecuteNonQuery();
+						con.Open();
+						// カラム追加（SAVEDATA_PATH）
+						cm = new SqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"ALTER TABLE " + SafeQualifiedTable + " ADD SAVEDATA_PATH NVARCHAR(MAX) NULL;"
+						};
+						cm.Connection = con;
+						cm.ExecuteNonQuery();
 
-					updateStatus = 1;
-				}
-				catch (Exception ex)
-				{
-					string errorMsg = "[v1.4 -> v1.5 | ALTER TABLE(ADD), SAVEDATA_PATH] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText;
-					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
-					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
-					updateStatus = -1;
-				}
-				finally
-				{
-					if (con.State == ConnectionState.Open)
-					{
-						con.Close();
+						updateStatus = 1;
 					}
-					// アップデート処理後のステータス更新
-					updateProgress.Value++;
+					catch (Exception ex)
+					{
+						string errorMsg = "[v1.4 -> v1.5 | ALTER TABLE(ADD), SAVEDATA_PATH] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con.ConnectionString + " / SQLCommand:" + cm.CommandText;
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+						errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+						updateStatus = -1;
+					}
+					finally
+					{
+						if (con.State == ConnectionState.Open)
+						{
+							con.Close();
+						}
+					}
 				}
+				updateProgress.Value++;
 
 				// ↓ 最終共通処理
 				try
@@ -1248,7 +1232,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"UPDATE " + DbName + "." + DbTable + " SET DB_VERSION = N'" + latestVersion + "';"
+						CommandText = @"UPDATE " + SafeQualifiedTable + " SET DB_VERSION = N'" + latestVersion + "';"
 					};
 					cm.Connection = con;
 					cm.ExecuteNonQuery();
@@ -1258,7 +1242,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbName + "." + DbTable + " ADD DEFAULT N'" + latestVersion + "' FOR DB_VERSION;"
+						CommandText = @"ALTER TABLE " + SafeQualifiedTable + " ADD DEFAULT N'" + latestVersion + "' FOR DB_VERSION;"
 					};
 					cm.Connection = con;
 					cm.ExecuteNonQuery();
@@ -1287,220 +1271,230 @@ namespace glc_cs
 				MySqlCommand cm = new MySqlCommand();
 
 				// [必須] Ver.1.1(update to GL 1.03)
-				try
+				if (string.Compare(currentVersion, "1.1") < 0)
 				{
-					con2.Open();
-					// テーブル文字コード変更（ALTER TABLE）
-					cm = new MySqlCommand()
+					try
 					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbTable + " CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
-					};
-					cm.Connection = con2;
-					cm.ExecuteNonQuery();
+						con2.Open();
+						// テーブル文字コード変更（ALTER TABLE）
+						cm = new MySqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"ALTER TABLE " + SafeSqlIdentifier(DbTable) + " CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
+						};
+						cm.Connection = con2;
+						cm.ExecuteNonQuery();
 
-					// カラム追加（DCON_IMG, MEMO, STATUS, DB_VERSION）
-					cm = new MySqlCommand()
-					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbTable + " ADD COLUMN DCON_IMG NVARCHAR(50) NULL, ADD COLUMN MEMO NVARCHAR(500) NULL, ADD COLUMN STATUS NVARCHAR(10) NULL DEFAULT '未プレイ', ADD COLUMN DB_VERSION NVARCHAR(5) NOT NULL DEFAULT '1.1';"
-					};
-					cm.Connection = con2;
-					cm.ExecuteNonQuery();
+						// カラム追加（DCON_IMG, MEMO, STATUS, DB_VERSION）
+						cm = new MySqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"ALTER TABLE " + SafeSqlIdentifier(DbTable) + " ADD COLUMN DCON_IMG NVARCHAR(50) NULL, ADD COLUMN MEMO NVARCHAR(500) NULL, ADD COLUMN STATUS NVARCHAR(10) NULL DEFAULT '未プレイ', ADD COLUMN DB_VERSION NVARCHAR(5) NOT NULL DEFAULT '1.1';"
+						};
+						cm.Connection = con2;
+						cm.ExecuteNonQuery();
 
-					// カラム更新（TEMP1→DCON_IMG）
-					cm = new MySqlCommand()
-					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"UPDATE " + DbTable + " SET DCON_IMG = TEMP1 WHERE TEMP1 IS NOT NULL;"
-					};
-					cm.Connection = con2;
-					cm.ExecuteNonQuery();
+						// カラム更新（TEMP1→DCON_IMG）
+						cm = new MySqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"UPDATE " + SafeSqlIdentifier(DbTable) + " SET DCON_IMG = TEMP1 WHERE TEMP1 IS NOT NULL;"
+						};
+						cm.Connection = con2;
+						cm.ExecuteNonQuery();
 
-					// カラム更新（STATUS）
-					cm = new MySqlCommand()
-					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"UPDATE " + DbTable + " SET STATUS = (CASE WHEN RUN_COUNT = '0' THEN N'未プレイ' ELSE N'プレイ中' END);"
-					};
-					cm.Connection = con2;
-					cm.ExecuteNonQuery();
+						// カラム更新（STATUS）
+						cm = new MySqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"UPDATE " + SafeSqlIdentifier(DbTable) + " SET STATUS = (CASE WHEN RUN_COUNT = '0' THEN N'未プレイ' ELSE N'プレイ中' END);"
+						};
+						cm.Connection = con2;
+						cm.ExecuteNonQuery();
 
-					// カラム更新（NULL→TEMP1）
-					cm = new MySqlCommand()
-					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"UPDATE " + DbTable + " SET TEMP1 = NULL;"
-					};
-					cm.Connection = con2;
-					cm.ExecuteNonQuery();
+						// カラム更新（NULL→TEMP1）
+						cm = new MySqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"UPDATE " + SafeSqlIdentifier(DbTable) + " SET TEMP1 = NULL;"
+						};
+						cm.Connection = con2;
+						cm.ExecuteNonQuery();
 
-					// カラム文字コード一括変換（ALTER TABLE）
-					cm = new MySqlCommand()
-					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbTable + " CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
-					};
-					cm.Connection = con2;
-					cm.ExecuteNonQuery();
+						// カラム文字コード一括変換（ALTER TABLE）
+						cm = new MySqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"ALTER TABLE " + SafeSqlIdentifier(DbTable) + " CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
+						};
+						cm.Connection = con2;
+						cm.ExecuteNonQuery();
 
-					updateStatus = 1;
-				}
-				catch (Exception ex)
-				{
-					string errorMsg = "[v1.0 -> v1.1 | ALTER TABLE(ADD), UPDATE] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con2.ConnectionString + " / SQLCommand:" + cm.CommandText;
-					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
-					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
-					updateStatus = -1;
-				}
-				finally
-				{
-					if (con2.State == ConnectionState.Open)
-					{
-						con2.Close();
+						updateStatus = 1;
 					}
-					// アップデート処理後のステータス更新
-					updateProgress.Value++;
+					catch (Exception ex)
+					{
+						string errorMsg = "[v1.0 -> v1.1 | ALTER TABLE(ADD), UPDATE] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con2.ConnectionString + " / SQLCommand:" + cm.CommandText;
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+						errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+						updateStatus = -1;
+					}
+					finally
+					{
+						if (con2.State == ConnectionState.Open)
+						{
+							con2.Close();
+						}
+					}
 				}
+				updateProgress.Value++;
 
 				// [必須] Ver.1.2(update to GL 1.07)
-				try
+				if (string.Compare(currentVersion, "1.2") < 0)
 				{
-					con2.Open();
-
-					// カラム更新（STATUS）
-					cm = new MySqlCommand()
+					try
 					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"UPDATE " + DbTable + " SET STATUS = (CASE WHEN STATUS = N'完了' THEN N'プレイ済' WHEN STATUS = N'着手中' THEN N'プレイ中' ELSE N'未プレイ' END) WHERE STATUS IN(N'未着手',N'着手中',N'完了',N'-------',N'',NULL);"
-					};
-					cm.Connection = con2;
-					cm.ExecuteNonQuery();
+						con2.Open();
 
-					updateStatus = 1;
-				}
-				catch (Exception ex)
-				{
-					string errorMsg = "[v1.1 -> v1.2 | UPDATE] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con2.ConnectionString + " / SQLCommand:" + cm.CommandText;
-					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
-					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
-					updateStatus = -1;
-				}
-				finally
-				{
-					if (con2.State == ConnectionState.Open)
-					{
-						con2.Close();
+						// カラム更新（STATUS）
+						cm = new MySqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"UPDATE " + SafeSqlIdentifier(DbTable) + " SET STATUS = (CASE WHEN STATUS = N'完了' THEN N'プレイ済' WHEN STATUS = N'着手中' THEN N'プレイ中' ELSE N'未プレイ' END) WHERE STATUS IN(N'未着手',N'着手中',N'完了',N'-------',N'',NULL);"
+						};
+						cm.Connection = con2;
+						cm.ExecuteNonQuery();
+
+						updateStatus = 1;
 					}
-					// アップデート処理後のステータス更新
-					updateProgress.Value++;
+					catch (Exception ex)
+					{
+						string errorMsg = "[v1.1 -> v1.2 | UPDATE] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con2.ConnectionString + " / SQLCommand:" + cm.CommandText;
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+						errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+						updateStatus = -1;
+					}
+					finally
+					{
+						if (con2.State == ConnectionState.Open)
+						{
+							con2.Close();
+						}
+					}
 				}
+				updateProgress.Value++;
 
 				// [必須] Ver.1.3(update to GL 1.09)
-				try
+				if (string.Compare(currentVersion, "1.3") < 0)
 				{
-					con2.Open();
-					// カラム追加（EXECUTE_CMD）
-					cm = new MySqlCommand()
+					try
 					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbTable + " ADD COLUMN EXECUTE_CMD NVARCHAR(500) NULL;"
-					};
-					cm.Connection = con2;
-					cm.ExecuteNonQuery();
+						con2.Open();
+						// カラム追加（EXECUTE_CMD）
+						cm = new MySqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"ALTER TABLE " + SafeSqlIdentifier(DbTable) + " ADD COLUMN EXECUTE_CMD NVARCHAR(500) NULL;"
+						};
+						cm.Connection = con2;
+						cm.ExecuteNonQuery();
 
-					updateStatus = 1;
-				}
-				catch (Exception ex)
-				{
-					string errorMsg = "[v1.2 -> v1.3 | ALTER TABLE(ADD), EXECUTE_CMD] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con2.ConnectionString + " / SQLCommand:" + cm.CommandText;
-					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
-					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
-					updateStatus = -1;
-				}
-				finally
-				{
-					if (con2.State == ConnectionState.Open)
-					{
-						con2.Close();
+						updateStatus = 1;
 					}
-					// アップデート処理後のステータス更新
-					updateProgress.Value++;
+					catch (Exception ex)
+					{
+						string errorMsg = "[v1.2 -> v1.3 | ALTER TABLE(ADD), EXECUTE_CMD] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con2.ConnectionString + " / SQLCommand:" + cm.CommandText;
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+						errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+						updateStatus = -1;
+					}
+					finally
+					{
+						if (con2.State == ConnectionState.Open)
+						{
+							con2.Close();
+						}
+					}
 				}
+				updateProgress.Value++;
 
 				// [必須] Ver.1.4(update to GL 1.10)
-				try
+				if (string.Compare(currentVersion, "1.4") < 0)
 				{
-					con2.Open();
-					// カラム追加（EXTRACT_TOOL）
-					cm = new MySqlCommand()
+					try
 					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbTable + " ADD COLUMN EXTRACT_TOOL NVARCHAR(10) NULL DEFAULT '0';"
-					};
-					cm.Connection = con2;
-					cm.ExecuteNonQuery();
+						con2.Open();
+						// カラム追加（EXTRACT_TOOL）
+						cm = new MySqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"ALTER TABLE " + SafeSqlIdentifier(DbTable) + " ADD COLUMN EXTRACT_TOOL NVARCHAR(10) NULL DEFAULT '0';"
+						};
+						cm.Connection = con2;
+						cm.ExecuteNonQuery();
 
-					updateStatus = 1;
-				}
-				catch (Exception ex)
-				{
-					string errorMsg = "[v1.3 -> v1.4 | ALTER TABLE(ADD), EXTRACT_TOOL] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con2.ConnectionString + " / SQLCommand:" + cm.CommandText;
-					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
-					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
-					updateStatus = -1;
-				}
-				finally
-				{
-					if (con2.State == ConnectionState.Open)
-					{
-						con2.Close();
+						updateStatus = 1;
 					}
-					// アップデート処理後のステータス更新
-					updateProgress.Value++;
+					catch (Exception ex)
+					{
+						string errorMsg = "[v1.3 -> v1.4 | ALTER TABLE(ADD), EXTRACT_TOOL] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con2.ConnectionString + " / SQLCommand:" + cm.CommandText;
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+						errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+						updateStatus = -1;
+					}
+					finally
+					{
+						if (con2.State == ConnectionState.Open)
+						{
+							con2.Close();
+						}
+					}
 				}
+				updateProgress.Value++;
 
 				// [必須] Ver.1.5(update to GL 1.11)
-				try
+				if (string.Compare(currentVersion, "1.5") < 0)
 				{
-					con2.Open();
-					// カラム追加（SAVEDATA_PATH）
-					cm = new MySqlCommand()
+					try
 					{
-						CommandType = CommandType.Text,
-						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbTable + " ADD COLUMN SAVEDATA_PATH NVARCHAR(500) NULL;"
-					};
-					cm.Connection = con2;
-					cm.ExecuteNonQuery();
+						con2.Open();
+						// カラム追加（SAVEDATA_PATH）
+						cm = new MySqlCommand()
+						{
+							CommandType = CommandType.Text,
+							CommandTimeout = 30,
+							CommandText = @"ALTER TABLE " + SafeSqlIdentifier(DbTable) + " ADD COLUMN SAVEDATA_PATH NVARCHAR(500) NULL;"
+						};
+						cm.Connection = con2;
+						cm.ExecuteNonQuery();
 
-					updateStatus = 1;
-				}
-				catch (Exception ex)
-				{
-					string errorMsg = "[v1.4 -> v1.5 | ALTER TABLE(ADD), SAVEDATA_PATH] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con2.ConnectionString + " / SQLCommand:" + cm.CommandText;
-					WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
-					errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
-					updateStatus = -1;
-				}
-				finally
-				{
-					if (con2.State == ConnectionState.Open)
-					{
-						con2.Close();
+						updateStatus = 1;
 					}
-					// アップデート処理後のステータス更新
-					updateProgress.Value++;
+					catch (Exception ex)
+					{
+						string errorMsg = "[v1.4 -> v1.5 | ALTER TABLE(ADD), SAVEDATA_PATH] " + ex.Message + " / SaveType:" + saveType + " / SQLCon:" + con2.ConnectionString + " / SQLCommand:" + cm.CommandText;
+						WriteErrorLog(ex.Message, MethodBase.GetCurrentMethod().Name, errorMsg);
+						errMsg.AppendLine("[ERROR] [" + DateTime.Now + "] " + errorMsg);
+						updateStatus = -1;
+					}
+					finally
+					{
+						if (con2.State == ConnectionState.Open)
+						{
+							con2.Close();
+						}
+					}
 				}
+				updateProgress.Value++;
 
 				// ↓ 最終共通処理
 				try
@@ -1511,7 +1505,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"UPDATE " + DbTable + " SET DB_VERSION = N'" + latestVersion + "';"
+						CommandText = @"UPDATE " + SafeSqlIdentifier(DbTable) + " SET DB_VERSION = N'" + latestVersion + "';"
 					};
 					cm.Connection = con2;
 					cm.ExecuteNonQuery();
@@ -1521,7 +1515,7 @@ namespace glc_cs
 					{
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
-						CommandText = @"ALTER TABLE " + DbTable + " ALTER DB_VERSION SET DEFAULT N'" + latestVersion + "';"
+						CommandText = @"ALTER TABLE " + SafeSqlIdentifier(DbTable) + " ALTER DB_VERSION SET DEFAULT N'" + latestVersion + "';"
 					};
 					cm.Connection = con2;
 					cm.ExecuteNonQuery();
@@ -1730,13 +1724,13 @@ namespace glc_cs
 			{
 				case 0:
 					// MSSQL
-					ans = @"USE " + DbName + "; SELECT * FROM sys.columns WHERE Name = '" + columnName + "' AND Object_ID = OBJECT_ID(N'" + DbTable + "');";
+					ans = @"USE " + SafeSqlIdentifier(DbName) + "; SELECT * FROM sys.columns WHERE Name = '" + columnName + "' AND Object_ID = OBJECT_ID(N'" + SafeSqlIdentifier(DbTable) + "');";
 					break;
 
 				default:
 				case 1:
 					// MySQL / default
-					ans = @"DESCRIBE " + DbTable + " " + columnName + ";";
+					ans = @"DESCRIBE " + SafeSqlIdentifier(DbTable) + " " + columnName + ";";
 					break;
 			}
 
@@ -1758,13 +1752,13 @@ namespace glc_cs
 			{
 				case 0:
 					// MSSQL
-					ans = @"USE " + DbName + "; SELECT " + getTargetColumn + " FROM " + DbTable + " " + wherePhraseFullText + ";";
+					ans = @"USE " + SafeSqlIdentifier(DbName) + "; SELECT " + getTargetColumn + " FROM " + SafeSqlIdentifier(DbTable) + " " + wherePhraseFullText + ";";
 					break;
 
 				default:
 				case 1:
 					// MySQL / default
-					ans = @"SELECT " + getTargetColumn + " FROM " + DbName + "." + DbTable + " " + wherePhraseFullText + ";";
+					ans = @"SELECT " + getTargetColumn + " FROM " + SafeQualifiedTable + " " + wherePhraseFullText + ";";
 					break;
 			}
 

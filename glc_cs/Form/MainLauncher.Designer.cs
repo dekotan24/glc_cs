@@ -59,6 +59,7 @@
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.sensCheck = new System.Windows.Forms.CheckBox();
 			this.configButton = new System.Windows.Forms.Button();
+			this.statsButton = new System.Windows.Forms.Button();
 			this.editButton = new System.Windows.Forms.Button();
 			this.dconImgPictureBox = new System.Windows.Forms.PictureBox();
 			this.gameStartCountPictureBox = new System.Windows.Forms.PictureBox();
@@ -159,7 +160,7 @@
 			this.titleLabel.Name = "titleLabel";
 			this.titleLabel.UseMnemonic = false;
 			this.titleLabel.DoubleClick += new System.EventHandler(this.CopySelectedGameTitle);
-			// 
+			//
 			// startButton
 			// 
 			resources.ApplyResources(this.startButton, "startButton");
@@ -320,7 +321,17 @@
 			this.toolTip1.SetToolTip(this.configButton, resources.GetString("configButton.ToolTip"));
 			this.configButton.UseVisualStyleBackColor = true;
 			this.configButton.Click += new System.EventHandler(this.ConfigButton_Click);
-			// 
+			//
+			// statsButton
+			//
+			this.statsButton.Location = new System.Drawing.Point(383, 3);
+			this.statsButton.Name = "statsButton";
+			this.statsButton.Size = new System.Drawing.Size(70, 25);
+			this.statsButton.TabIndex = 68;
+			this.statsButton.Text = "統計";
+			this.statsButton.UseVisualStyleBackColor = true;
+			this.statsButton.Click += new System.EventHandler(this.statsButton_Click);
+			//
 			// editButton
 			// 
 			resources.ApplyResources(this.editButton, "editButton");
@@ -333,7 +344,7 @@
 			// 
 			resources.ApplyResources(this.dconImgPictureBox, "dconImgPictureBox");
 			this.dconImgPictureBox.BackColor = System.Drawing.Color.Transparent;
-			this.dconImgPictureBox.Image = global::glc_cs.Properties.Resources.dconstat;
+			this.dconImgPictureBox.Image = global::glc_cs.Properties.Resources.dconico;
 			this.dconImgPictureBox.Name = "dconImgPictureBox";
 			this.dconImgPictureBox.TabStop = false;
 			this.toolTip1.SetToolTip(this.dconImgPictureBox, resources.GetString("dconImgPictureBox.ToolTip"));
@@ -403,7 +414,7 @@
 			// dconTextPictureBox
 			// 
 			this.dconTextPictureBox.BackColor = System.Drawing.Color.Transparent;
-			this.dconTextPictureBox.Image = global::glc_cs.Properties.Resources.dconico;
+			this.dconTextPictureBox.Image = global::glc_cs.Properties.Resources.dconstat;
 			resources.ApplyResources(this.dconTextPictureBox, "dconTextPictureBox");
 			this.dconTextPictureBox.Name = "dconTextPictureBox";
 			this.dconTextPictureBox.TabStop = false;
@@ -695,6 +706,7 @@
 			this.flowLayoutPanel1.Controls.Add(this.editButton);
 			this.flowLayoutPanel1.Controls.Add(this.infoButton);
 			this.flowLayoutPanel1.Controls.Add(this.configButton);
+			this.flowLayoutPanel1.Controls.Add(this.statsButton);
 			resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
 			// 
@@ -867,6 +879,7 @@
         private System.Windows.Forms.Button editButton;
         private System.Windows.Forms.CheckBox sensCheck;
         private System.Windows.Forms.Button configButton;
+        private System.Windows.Forms.Button statsButton;
         private System.Windows.Forms.Button downButton;
         private System.Windows.Forms.Button upButton;
         private System.Windows.Forms.GroupBox dconConnectGroupBox;

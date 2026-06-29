@@ -19,7 +19,7 @@ namespace glc_cs.Core
 		/// <summary>
 		/// アプリケーションバージョン
 		/// </summary>
-		protected static readonly string appVer = "1.13";
+		protected static readonly string appVer = "1.14";
 
 		/// <summary>
 		/// アプリケーションビルド番号
@@ -90,6 +90,11 @@ namespace glc_cs.Core
 		/// 背景画像パス
 		/// </summary>
 		protected static string bgimg = string.Empty;
+
+		/// <summary>
+		/// 背景画像透明度
+		/// </summary>
+		protected static int bgTransparent = 100;
 
 		/// <summary>
 		/// グリッドロード有無
@@ -729,12 +734,21 @@ namespace glc_cs.Core
 		}
 
 		/// <summary>
-		/// ゲームの最大数を設定/返却します
+		/// 背景画像のパスを設定/返却します
 		/// </summary>
 		public static string BgImg
 		{
 			get { return bgimg; }
 			set { bgimg = value; }
+		}
+
+		/// <summary>
+		/// 背景画像の透明度を設定/返却します
+		/// </summary>
+		public static int BgTransparent
+		{
+			get { return bgTransparent; }
+			set { bgTransparent = value; }
 		}
 
 		/// <summary>
@@ -872,6 +886,15 @@ namespace glc_cs.Core
 			set { dbPass = value; }
 		}
 
+		private static string _cachedSqlConStr;
+		private static string _cachedSqlCon2Str;
+
+		public static void InvalidateConnectionCache()
+		{
+			_cachedSqlConStr = null;
+			_cachedSqlCon2Str = null;
+		}
+
 		/// <summary>
 		/// MSSQLの<see cref="SqlConnection"/>
 		/// </summary>
@@ -879,16 +902,17 @@ namespace glc_cs.Core
 		{
 			get
 			{
-				return new SqlConnection(
-					new SqlConnectionStringBuilder()
+				if (_cachedSqlConStr == null)
+				{
+					_cachedSqlConStr = new SqlConnectionStringBuilder()
 					{
 						IntegratedSecurity = false,
-						//InitialCatalog = dbName,
 						DataSource = DbUrl + "," + DbPort,
 						UserID = DbUser,
 						Password = DbPass
-					}.ToString()
-				);
+					}.ToString();
+				}
+				return new SqlConnection(_cachedSqlConStr);
 			}
 		}
 
@@ -899,16 +923,37 @@ namespace glc_cs.Core
 		{
 			get
 			{
-				string server = DbUrl;
-				string port = DbPort;
-				string database = DbName;
-				string user = DbUser;
-				string pass = DbPass;
-				string charset = "utf8mb4";
-				string connectionString = string.Format("Server={0};Port={1};Database={2};Uid={3};Pwd={4};Charset={5}", server, port, database, user, pass, charset);
+				if (_cachedSqlCon2Str == null)
+				{
+					_cachedSqlCon2Str = new MySqlConnectionStringBuilder
+					{
+						Server = DbUrl,
+						Port = uint.TryParse(DbPort, out uint p) ? p : 3306,
+						Database = DbName,
+						UserID = DbUser,
+						Password = DbPass,
+						CharacterSet = "utf8mb4"
+					}.ConnectionString;
+				}
+				return new MySqlConnection(_cachedSqlCon2Str);
+			}
+		}
 
-				MySqlConnection cn = new MySqlConnection(connectionString);
-				return cn;
+		private static readonly System.Text.RegularExpressions.Regex SqlIdentifierRegex =
+			new System.Text.RegularExpressions.Regex(@"^[a-zA-Z_][a-zA-Z0-9_]*$");
+
+		public static string SafeSqlIdentifier(string name)
+		{
+			if (string.IsNullOrEmpty(name) || !SqlIdentifierRegex.IsMatch(name))
+				throw new ArgumentException("不正なSQL識別子: " + (name ?? "(null)"));
+			return name;
+		}
+
+		public static string SafeQualifiedTable
+		{
+			get
+			{
+				return SafeSqlIdentifier(DbName) + "." + SafeSqlIdentifier(DbTable);
 			}
 		}
 

@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 // 既定値にすることができます:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.12.0.0")]
-[assembly: AssemblyFileVersion("42.24.04.22")]
+[assembly: AssemblyFileVersion("43.26.06.29")]
 [assembly: NeutralResourcesLanguage("ja-JP")]

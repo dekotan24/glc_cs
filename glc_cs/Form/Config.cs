@@ -17,9 +17,16 @@ namespace glc_cs
 	public partial class Config : Form
 	{
 		private int spCnt = 0;
+		private static bool _exitHandlerRegistered;
+
 		public Config()
 		{
 			InitializeComponent();
+			if (!_exitHandlerRegistered)
+			{
+				_exitHandlerRegistered = true;
+				Application.ApplicationExit += (s, e) => StopRdService();
+			}
 		}
 
 		/// <summary>
@@ -40,6 +47,8 @@ namespace glc_cs
 			// [全般]タブ
 			// 背景画像
 			backgroundImageText.Text = BgImg;
+			// 背景画像透明度
+			bgtransparentBar.Value = BgTransparent;
 			// グリッド無効化
 			gridDisableCheck.Checked = !GridEnable;
 			// アップデートフラグ
@@ -73,40 +82,11 @@ namespace glc_cs
 			// 機能アクティブ
 			if (dconActive)
 			{
-				groupBox2.Enabled = true;
-				groupBox6.Enabled = true;
 				groupBox13.Enabled = true;
 			}
 			else
 			{
-				groupBox2.Enabled = false;
-				groupBox6.Enabled = false;
 				groupBox13.Enabled = false;
-			}
-
-			// レート設定
-			if (Rate == 1)
-			{
-				dconRatingRadio2.Checked = true;
-			}
-			else
-			{
-				dconRatingRadio1.Checked = true;
-			}
-
-			// Discord Connectorパス取得
-			string dconpath = DconPath;
-
-			if (File.Exists(dconpath))
-			{
-				// 指定パスにdcon.jar存在する場合
-				dconText.Text = dconpath;
-				label11.Text = "OK";
-			}
-			else
-			{
-				dconText.Text = string.Empty;
-				label11.Text = "NG";
 			}
 
 			// 棒読みちゃん設定読み込み
@@ -219,6 +199,9 @@ namespace glc_cs
 
 			saveWithDownloadCheck.Visible = OfflineSave && (SaveType == "M" || SaveType == "D");
 
+			// リモートデスクトップタブ追加
+			InitRemoteDesktopTab();
+
 			// バージョン情報タブ
 			exSplashImgButton.Visible = Convert.ToBoolean(Convert.ToInt32(ReadIni("general", "exSplash", "0")));
 		}
@@ -268,6 +251,7 @@ namespace glc_cs
 			// 全般
 			WriteIni("default", "directory", iniText.Text.Trim().EndsWith("\\") ? iniText.Text.Trim() : iniText.Text.Trim() + "\\");
 			WriteIni("imgd", "bgimg", backgroundImageText.Text.Trim());
+			WriteIni("imgd", "transparent", bgtransparentBar.Value.ToString());
 			WriteIni("disable", "grid", gridDisableCheck.Checked ? "1" : "0");
 			WriteIni("disable", "updchk", updateCheckDisableCheck.Checked ? "1" : "0");
 			if (updateCheckDisableCheck.Checked)
@@ -299,15 +283,6 @@ namespace glc_cs
 
 			// discord設定適用
 			WriteIni("checkbox", "dconnect", (Convert.ToInt32(dconEnableCheck.Checked)).ToString());
-			if (dconRatingRadio1.Checked)
-			{
-				WriteIni("checkbox", "rate", "0");
-			}
-			else if (dconRatingRadio2.Checked)
-			{
-				WriteIni("checkbox", "rate", "1");
-			}
-			WriteIni("connect", "dconpath", dconText.Text);
 			WriteIni("connect", "dconappid", dconAppIDText.Text);
 
 			// 棒読みちゃん設定適用
@@ -321,6 +296,9 @@ namespace glc_cs
 
 			// 抽出
 			WriteIni("Extract", "Enabled", (Convert.ToInt32(enableExtractCheck.Checked)).ToString());
+
+			// リモートデスクトップ
+			SaveRdSettings();
 
 			// データベースをローカルにINIで保存する
 			if (offlineSaveEnableCheck.Checked && saveWithDownloadCheck.Checked)
@@ -400,6 +378,16 @@ namespace glc_cs
 			System.Diagnostics.Process.Start("https://github.com/dekotan24/glc_cs");
 		}
 
+		private void urlLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			string url = urlLinkLabel.Text;
+			if (!string.IsNullOrEmpty(url))
+			{
+				urlLinkLabel.LinkVisited = true;
+				System.Diagnostics.Process.Start(url);
+			}
+		}
+
 		private void byResetButton_Click(object sender, EventArgs e)
 		{
 			textBox4.Text = "127.0.0.1";
@@ -466,8 +454,6 @@ namespace glc_cs
 			if (openFileDialog1.ShowDialog() == DialogResult.OK)
 			{
 				newpath = openFileDialog1.FileName;
-				dconText.Text = newpath;
-				label11.Text = "OK";
 			}
 			return;
 		}
@@ -667,14 +653,10 @@ namespace glc_cs
 		{
 			if (dconEnableCheck.Checked)
 			{
-				groupBox2.Enabled = true;
-				groupBox6.Enabled = true;
 				groupBox13.Enabled = true;
 			}
 			else
 			{
-				groupBox2.Enabled = false;
-				groupBox6.Enabled = false;
 				groupBox13.Enabled = false;
 			}
 		}
@@ -1010,7 +992,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET UPTIME = N'" + Int32.MaxValue + "' WHERE CAST(UPTIME AS BIGINT) > " + Int32.MaxValue
+					CommandText = @"UPDATE " + SafeQualifiedTable + " SET UPTIME = N'" + Int32.MaxValue + "' WHERE CAST(UPTIME AS BIGINT) > " + Int32.MaxValue
 				};
 				cm.Connection = cn;
 
@@ -1019,7 +1001,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"UPDATE " + DbName + "." + DbTable + " SET RUN_COUNT = N'" + Int32.MaxValue + "' WHERE CAST(RUN_COUNT AS BIGINT) > " + Int32.MaxValue
+					CommandText = @"UPDATE " + SafeQualifiedTable + " SET RUN_COUNT = N'" + Int32.MaxValue + "' WHERE CAST(RUN_COUNT AS BIGINT) > " + Int32.MaxValue
 				};
 				cm2.Connection = cn;
 
@@ -1058,7 +1040,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"UPDATE " + DbTable + " SET UPTIME = N'" + Int32.MaxValue + "' WHERE CAST(UPTIME AS SIGNED) > " + Int32.MaxValue
+					CommandText = @"UPDATE " + SafeSqlIdentifier(DbTable) + " SET UPTIME = N'" + Int32.MaxValue + "' WHERE CAST(UPTIME AS SIGNED) > " + Int32.MaxValue
 				};
 				mcm.Connection = mcn;
 
@@ -1067,7 +1049,7 @@ namespace glc_cs
 				{
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
-					CommandText = @"UPDATE " + DbTable + " SET RUN_COUNT = N'" + Int32.MaxValue + "' WHERE CAST(RUN_COUNT AS SIGNED) > " + Int32.MaxValue
+					CommandText = @"UPDATE " + SafeSqlIdentifier(DbTable) + " SET RUN_COUNT = N'" + Int32.MaxValue + "' WHERE CAST(RUN_COUNT AS SIGNED) > " + Int32.MaxValue
 				};
 				mcm2.Connection = mcn;
 
@@ -1952,5 +1934,201 @@ namespace glc_cs
 		private void compactModeCheck_CheckedChanged(object sender, EventArgs e)
 		{
 		}
+
+		#region リモートデスクトップ設定
+
+		private static Core.RemoteDesktop.RemoteDesktopService _rdService;
+
+		internal static Core.RemoteDesktop.RemoteDesktopService RdService => _rdService;
+
+		internal static void StopRdService()
+		{
+			_rdService?.Stop();
+			_rdService?.Dispose();
+			_rdService = null;
+		}
+
+		private void InitRemoteDesktopTab()
+		{
+			LoadRdSettings();
+			UpdateRdUI();
+		}
+
+		private void RdToggle_Click(object sender, EventArgs e)
+		{
+			if (_rdService != null && _rdService.IsRunning)
+			{
+				_rdService.Stop();
+				_rdService.Dispose();
+				_rdService = null;
+				SaveRdSettings();
+				UpdateRdUI();
+			}
+			else
+			{
+				try
+				{
+					_rdService = new Core.RemoteDesktop.RemoteDesktopService();
+					_rdService.Port = (int)rdPortNumericBox.Value;
+					_rdService.Password = rdPasswordText.Text;
+					_rdService.Quality = GetRdQuality();
+					_rdService.Scale = GetRdScale();
+					_rdService.Fps = int.Parse(rdFpsComboBox.SelectedItem.ToString());
+					_rdService.AudioEnabled = rdEnableSoundCheck.Checked;
+
+					_rdService.OnLog += msg =>
+					{
+						try
+						{
+							if (richTextBox1 != null && richTextBox1.IsHandleCreated && !richTextBox1.IsDisposed)
+							{
+								if (richTextBox1.InvokeRequired)
+									richTextBox1.BeginInvoke((Action)(() => AppendRdLog(msg)));
+								else
+									AppendRdLog(msg);
+							}
+						}
+						catch (ObjectDisposedException) { }
+					};
+
+					_rdService.OnClientCountChanged += count =>
+					{
+						try
+						{
+							if (label11 != null && label11.IsHandleCreated && !label11.IsDisposed)
+							{
+								Action update = () =>
+								{
+									label11.Text = "稼働中 — 接続数: " + count;
+									label11.ForeColor = System.Drawing.Color.Green;
+								};
+								if (label11.InvokeRequired)
+									label11.BeginInvoke(update);
+								else
+									update();
+							}
+						}
+						catch (ObjectDisposedException) { }
+					};
+
+					_rdService.Start();
+					SaveRdSettings();
+					UpdateRdUI();
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show("起動に失敗しました:\n" + ex.Message, "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					_rdService?.Dispose();
+					_rdService = null;
+				}
+			}
+		}
+
+		private void UpdateRdUI()
+		{
+			bool running = _rdService != null && _rdService.IsRunning;
+			button1.Text = running ? "停止" : "開始";
+			button1.BackColor = running ? System.Drawing.Color.FromArgb(233, 69, 96) : System.Drawing.SystemColors.Control;
+			button1.ForeColor = running ? System.Drawing.Color.White : System.Drawing.SystemColors.ControlText;
+
+			rdPortNumericBox.Enabled = !running;
+			rdPasswordText.Enabled = !running;
+			rdQualityComboBox.Enabled = !running;
+			rdScaleComboBox.Enabled = !running;
+			rdFpsComboBox.Enabled = !running;
+			rdEnableSoundCheck.Enabled = !running;
+
+			if (running)
+			{
+				label11.Text = "稼働中 — 接続数: 0";
+				label11.ForeColor = System.Drawing.Color.Green;
+				urlLinkLabel.Text = "http://localhost:" + rdPortNumericBox.Value + "/";
+			}
+			else
+			{
+				label11.Text = "停止中";
+				label11.ForeColor = System.Drawing.SystemColors.ControlText;
+				urlLinkLabel.Text = "";
+			}
+		}
+
+		private void AppendRdLog(string msg)
+		{
+			if (richTextBox1.TextLength > 50000)
+				richTextBox1.Text = richTextBox1.Text.Substring(richTextBox1.TextLength - 30000);
+			richTextBox1.AppendText("[" + DateTime.Now.ToString("HH:mm:ss") + "] " + msg + "\r\n");
+		}
+
+		private int GetRdQuality()
+		{
+			switch (rdQualityComboBox.SelectedIndex)
+			{
+				case 0: return 100;
+				case 1: return 80;
+				case 2: return 60;
+				case 3: return 30;
+				default: return 100;
+			}
+		}
+
+		private float GetRdScale()
+		{
+			switch (rdScaleComboBox.SelectedIndex)
+			{
+				case 0: return 1.0f;
+				case 1: return 0.75f;
+				case 2: return 0.5f;
+				default: return 1.0f;
+			}
+		}
+
+		private void SaveRdSettings()
+		{
+			try
+			{
+				WriteIni("remote", "port", rdPortNumericBox.Value.ToString());
+				WriteIni("remote", "password", rdPasswordText.Text);
+				WriteIni("remote", "quality", GetRdQuality().ToString());
+				WriteIni("remote", "scale", ((int)(GetRdScale() * 100)).ToString());
+				WriteIni("remote", "fps", rdFpsComboBox.SelectedItem.ToString());
+				WriteIni("remote", "audio", rdEnableSoundCheck.Checked ? "1" : "0");
+			}
+			catch { }
+		}
+
+		private void LoadRdSettings()
+		{
+			try
+			{
+				int port;
+				if (int.TryParse(ReadIni("remote", "port", "8090"), out port))
+					rdPortNumericBox.Value = Math.Max(rdPortNumericBox.Minimum, Math.Min(rdPortNumericBox.Maximum, port));
+
+				rdPasswordText.Text = ReadIni("remote", "password", "");
+
+				switch (ReadIni("remote", "quality", "100"))
+				{
+					case "30": rdQualityComboBox.SelectedIndex = 3; break;
+					case "60": rdQualityComboBox.SelectedIndex = 2; break;
+					case "80": rdQualityComboBox.SelectedIndex = 1; break;
+					default: rdQualityComboBox.SelectedIndex = 0; break;
+				}
+
+				switch (ReadIni("remote", "scale", "100"))
+				{
+					case "50": rdScaleComboBox.SelectedIndex = 2; break;
+					case "75": rdScaleComboBox.SelectedIndex = 1; break;
+					default: rdScaleComboBox.SelectedIndex = 0; break;
+				}
+
+				int fpsIdx = rdFpsComboBox.Items.IndexOf(ReadIni("remote", "fps", "30"));
+				rdFpsComboBox.SelectedIndex = fpsIdx >= 0 ? fpsIdx : 0;
+
+				rdEnableSoundCheck.Checked = ReadIni("remote", "audio", "1") == "1";
+			}
+			catch { }
+		}
+
+		#endregion
 	}
 }

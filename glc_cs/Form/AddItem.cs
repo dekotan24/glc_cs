@@ -305,7 +305,7 @@ namespace glc_cs
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
 						// SQL文
-						CommandText = @"INSERT INTO " + DbName + "." + DbTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION, EXTRACT_TOOL, TEMP1, SAVEDATA_PATH ) VALUES ( @game_name, @game_path, @execute_cmd, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @dcon_img, '', '未プレイ', @db_version, @extract_tool, @temp1, @savedata_path )"
+						CommandText = @"INSERT INTO " + SafeQualifiedTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION, EXTRACT_TOOL, TEMP1, SAVEDATA_PATH ) VALUES ( @game_name, @game_path, @execute_cmd, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @dcon_img, '', '未プレイ', @db_version, @extract_tool, @temp1, @savedata_path )"
 					};
 					cm.Connection = cn;
 					// パラメータの設定
@@ -350,7 +350,7 @@ namespace glc_cs
 						CommandType = CommandType.Text,
 						CommandTimeout = 30,
 						// SQL文
-						CommandText = @"INSERT INTO " + DbTable + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION, EXTRACT_TOOL, TEMP1, SAVEDATA_PATH ) VALUES ( @game_name, @game_path, @execute_cmd, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @dcon_img, '', N'未プレイ', @db_version, @extract_tool, @temp1, @savedata_path );"
+						CommandText = @"INSERT INTO " + SafeSqlIdentifier(DbTable) + " ( GAME_NAME, GAME_PATH, EXECUTE_CMD, IMG_PATH, UPTIME, RUN_COUNT, DCON_TEXT, AGE_FLG, DCON_IMG, MEMO, STATUS, DB_VERSION, EXTRACT_TOOL, TEMP1, SAVEDATA_PATH ) VALUES ( @game_name, @game_path, @execute_cmd, @img_path, @uptime, @run_count, @dcon_text, @age_flg, @dcon_img, '', N'未プレイ', @db_version, @extract_tool, @temp1, @savedata_path );"
 					};
 					cm.Connection = cn;
 					// パラメータの設定
@@ -703,7 +703,7 @@ namespace glc_cs
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
 					// SQL文
-					CommandText = @"SELECT ID FROM " + DbName + "." + DbTable + " WHERE GAME_PATH = @game_path"
+					CommandText = @"SELECT ID FROM " + SafeQualifiedTable + " WHERE GAME_PATH = @game_path"
 				};
 				cm.Connection = cn;
 				// パラメータの設定
@@ -741,7 +741,7 @@ namespace glc_cs
 					CommandType = CommandType.Text,
 					CommandTimeout = 30,
 					// SQL文
-					CommandText = @"SELECT ID FROM " + DbTable + " WHERE GAME_PATH = @game_path;"
+					CommandText = @"SELECT ID FROM " + SafeSqlIdentifier(DbTable) + " WHERE GAME_PATH = @game_path;"
 				};
 				cm.Connection = cn;
 				// パラメータの設定
