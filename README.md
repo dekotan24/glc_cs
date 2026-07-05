@@ -1,4 +1,4 @@
-# <img width="32" height="32" alt="icon_gh" src="https://github.com/user-attachments/assets/e6fc4dd6-01a4-415b-9c12-ffd037f906d9" />GLauncher（Game Launcher C# Edition）
+# <img width="32" height="32" alt="icon_gh" src="https://github.com/user-attachments/assets/e6fc4dd6-01a4-415b-9c12-ffd037f906d9" /> GLauncher（Game Launcher C# Edition）
 
 <img width="841" height="497" alt="2026-07-06_01h37_51" src="https://github.com/user-attachments/assets/b910e0fe-1c41-46eb-ad6f-d70fe4189d93" />
 
